@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="寻常科技正在杭州招聘前端工程师、后端工程师、产品设计师与内容运营实习生。我们做 AI 个人效率工具，让工具更懂日常，让人更专注创造。">
+  <title>加入我们｜寻常科技</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="寻常科技，回到页面顶部">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
+            <circle cx="16" cy="16" r="14.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10.5 12.5h11M10.5 17h8M10.5 21.5h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-name">寻常科技</span>
+      </a>
+
+      <nav class="main-nav" aria-label="主导航">
+        <a href="#about">我们在做什么</a>
+        <a href="#work">工作方式</a>
+        <a href="#roles">开放岗位</a>
+      </nav>
+
+      <a class="header-cta" href="#roles">看看机会</a>
+
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="menu-toggle-lines" aria-hidden="true"><span></span><span></span></span>
+        <span class="sr-only">打开导航菜单</span>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <nav aria-label="移动端导航">
+        <a href="#about">我们在做什么</a>
+        <a href="#work">工作方式</a>
+        <a href="#roles">开放岗位</a>
+        <a href="#process">加入流程</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <svg class="hero-ring" viewBox="0 0 560 560" aria-hidden="true">
+        <circle cx="280" cy="280" r="250" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 14" opacity=".5"/>
+        <circle cx="280" cy="280" r="206" fill="none" stroke="currentColor" stroke-width="1" opacity=".18"/>
+        <path d="M280 30v18M280 512v18M30 280h18M512 280h18" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+        <circle cx="280" cy="74" r="4" fill="currentColor" opacity=".8"/>
+      </svg>
+
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="hero-place">
+            <span class="place-dot" aria-hidden="true"></span>
+            常驻杭州，做 AI 个人效率工具
+          </p>
+
+          <h1 class="hero-title" id="hero-title">
+            <span class="title-line"><span class="title-line-inner">把日常理清，</span></span>
+            <span class="title-line"><span class="title-line-inner">把时间</span></span>
+            <span class="title-line"><span class="title-line-inner marker">留给自己。</span></span>
+          </h1>
+
+          <p class="hero-sub">
+            寻常科技做笔记、任务与日程之间的那层理解。先弄懂人为什么需要，再把技术变成清楚、可靠、顺手的产品。
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#roles">看看开放岗位</a>
+            <a class="text-link" href="#work">了解我们怎么工作</a>
+          </div>
+
+          <p class="hero-note">4 个岗位在杭州开放。没有完全匹配的职位，也欢迎先来聊聊。</p>
+        </div>
+
+        <div class="desk-wrap">
+          <section class="day-desk" aria-labelledby="desk-title">
+            <header class="desk-head">
+              <div>
+                <p class="desk-date" id="desk-date">今天</p>
+                <h2 id="desk-title">先把今天理一理</h2>
+              </div>
+              <span class="desk-badge">可以试试</span>
+            </header>
+
+            <div class="desk-board">
+              <div class="inbox" id="inbox" aria-label="刚刚记下的三件小事">
+                <p class="zone-label">刚刚记下的</p>
+
+                <article class="fragment" data-type="note" data-target="slot-note">
+                  <span class="fragment-dot" aria-hidden="true"></span>
+                  <p>周会上有人说：打开工具时，最想先看到今天要做什么。</p>
+                </article>
+
+                <article class="fragment" data-type="task" data-target="slot-task">
+                  <span class="fragment-dot" aria-hidden="true"></span>
+                  <p>周四前，把新首页的交互稿发给设计伙伴。</p>
+                </article>
+
+                <article class="fragment" data-type="event" data-target="slot-event">
+                  <span class="fragment-dot" aria-hidden="true"></span>
+                  <p>周三 14:00 产品评审，会议室「小满」。</p>
+                </article>
+
+                <p class="inbox-empty" id="inbox-empty" hidden>今天的输入都理好了。</p>
+              </div>
+
+              <div class="results" aria-label="整理后的结果">
+                <div class="result-lane">
+                  <p class="lane-name">笔记</p>
+                  <div class="lane-slot" id="slot-note" data-empty="等待归位"></div>
+                </div>
+                <div class="result-lane">
+                  <p class="lane-name">任务</p>
+                  <div class="lane-slot" id="slot-task" data-empty="等待归位"></div>
+                </div>
+                <div class="result-lane">
+                  <p class="lane-name">日程</p>
+                  <div class="lane-slot" id="slot-event" data-empty="等待归位"></div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="desk-foot">
+              <button class="sort-button" id="sort-button" type="button">帮我理一理</button>
+              <p class="desk-status" id="desk-status" aria-live="polite">三件小事，各归其位。</p>
+            </footer>
+          </section>
+          <p class="desk-caption">一次很轻的整理，把输入变成下一步。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-about" id="about" aria-labelledby="about-title">
+      <div class="section-inner">
+        <aside class="section-rail">
+          <p class="rail-label">关于寻常</p>
+          <p class="rail-note">我们把「寻常」当作褒义词：日常、具体、每天都用得上。</p>
+        </aside>
+
+        <div class="section-body">
+          <h2 class="display" id="about-title">我们想做的，<br>是让工具真正理解日常。</h2>
+
+          <div class="about-lede">
+            <p class="lead">
+              我们从笔记、任务和日程这些日常小事出发，探索更自然的智能工具。先理解用户为什么需要它，再把技术变成清楚、可靠、容易使用的产品，让人少花一点时间整理，多留一点空间思考。
+            </p>
+
+            <dl class="facts">
+              <div>
+                <dt>在做的事</dt>
+                <dd>AI 个人效率工具</dd>
+              </div>
+              <div>
+                <dt>从哪里开始</dt>
+                <dd>笔记、任务、日程</dd>
+              </div>
+              <div>
+                <dt>在哪里</dt>
+                <dd>杭州</dd>
+              </div>
+              <div>
+                <dt>正在寻找</dt>
+                <dd>4 位新伙伴</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="product-areas" aria-label="我们关注的三个日常场景">
+            <article class="product-area">
+              <span class="area-icon" aria-hidden="true">
+                <svg viewBox="0 0 36 36" fill="none">
+                  <path d="M9 6.5h18v23H9z" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M13 13h10M13 18h10M13 23h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <h3>笔记</h3>
+              <p>把散落的想法留住，也把重要的上下文一起留下。</p>
+            </article>
+
+            <article class="product-area">
+              <span class="area-icon" aria-hidden="true">
+                <svg viewBox="0 0 36 36" fill="none">
+                  <rect x="7" y="7" width="22" height="22" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="m12 18 4 4 8-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <h3>任务</h3>
+              <p>从一句模糊的待办里，找到今天真正该做的下一步。</p>
+            </article>
+
+            <article class="product-area">
+              <span class="area-icon" aria-hidden="true">
+                <svg viewBox="0 0 36 36" fill="none">
+                  <circle cx="18" cy="18" r="11" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M18 11v7l5 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <h3>日程</h3>
+              <p>给重要的事留出整块时间，而不是把一天塞满。</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-work" id="work" aria-labelledby="work-title">
+      <div class="section-inner">
+        <aside class="section-rail">
+          <p class="rail-label">工作方式</p>
+          <p class="rail-note">复杂留给系统，清楚留给人。</p>
+        </aside>
+
+        <div class="section-body">
+          <h2 class="display" id="work-title">好的工具，<br>不打断生活。</h2>
+
+          <ul class="principles">
+            <li>
+              <h3 class="principle-name">先理解，再动手</h3>
+              <p>先搞清楚用户为什么需要它、在什么时刻需要它，再决定要做什么。我们把问题本身，当作产品的一部分。</p>
+            </li>
+            <li>
+              <h3 class="principle-name">清楚，比聪明更难</h3>
+              <p>技术可以复杂，使用它的过程不应该复杂。可靠、容易理解、出错时知道怎么办，比一时的惊艳更重要。</p>
+            </li>
+            <li>
+              <h3 class="principle-name">把时间还给创造</h3>
+              <p>整理是为了不再反复整理。我们做工具的标准很朴素：让人少花一点时间收拾日常，多留一点空间想事情。</p>
+            </li>
+          </ul>
+
+          <div class="work-note">
+            <p class="note-title">一起工作时，我们尽量做到</p>
+            <ul>
+              <li>设计和工程从第一版就坐在一起，不把问题留到交接之后。</li>
+              <li>每周留出整块不被打断的时间，认真做难而具体的事。</li>
+              <li>把真实的用户反馈带进讨论，不用想象代替使用。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-roles" id="roles" aria-labelledby="roles-title">
+      <div class="section-inner">
+        <aside class="section-rail">
+          <p class="rail-label">开放岗位</p>
+          <p class="rail-note">4 个位置，等愿意把日常做深的人。</p>
+        </aside>
+
+        <div class="section-body">
+          <div class="roles-head">
+            <h2 class="display" id="roles-title">现在，我们在找<br>这些伙伴。</h2>
+            <p>职位名称不必完全一致。更重要的是，你愿意把一件日常小事做深、做顺，也愿意和不同角色一起把问题想清楚。</p>
+          </div>
+
+          <div class="roles-layout">
+            <div class="role-list" aria-label="开放岗位列表">
+              <button class="role-tab is-active" type="button" data-role="frontend" data-role-name="前端工程师" aria-pressed="true" aria-controls="role-frontend">
+                <span class="role-title">前端工程师</span>
+                <span class="role-meta">全职，杭州</span>
+              </button>
+
+              <button class="role-tab" type="button" data-role="backend" data-role-name="后端工程师" aria-pressed="false" aria-controls="role-backend">
+                <span class="role-title">后端工程师</span>
+                <span class="role-meta">全职，杭州</span>
+              </button>
+
+              <button class="role-tab" type="button" data-role="designer" data-role-name="产品设计师" aria-pressed="false" aria-controls="role-designer">
+                <span class="role-title">产品设计师</span>
+                <span class="role-meta">全职，杭州</span>
+              </button>
+
+              <button class="role-tab" type="button" data-role="content" data-role-name="内容运营实习生" aria-pressed="false" aria-controls="role-content">
+                <span class="role-title">内容运营实习生</span>
+                <span class="role-meta">实习，杭州</span>
+              </button>
+            </div>
+
+            <div class="role-panels">
+              <article class="role-panel" id="role-frontend" data-panel="frontend">
+                <p class="panel-tag">全职，杭州</p>
+                <h3>前端工程师</h3>
+                <p class="panel-lead">参与 AI 效率工具的 Web 界面开发，关注流畅交互与可靠体验。</p>
+                <div class="panel-grid">
+                  <div>
+                    <h4>你会参与</h4>
+                    <ul>
+                      <li>和设计、后端一起，把笔记、任务与日程的 Web 体验做顺。</li>
+                      <li>打磨编辑器、快捷键、同步状态这些每天都会被用到的细节。</li>
+                      <li>关注性能与可访问性，让工具在不同设备上都稳定好用。</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4>我们期待</h4>
+                    <ul>
+                      <li>熟悉 HTML、CSS、JavaScript，理解常见前端框架。</li>
+                      <li>对交互细节敏感，愿意从用户的问题出发。</li>
+                      <li>有完整项目或作品，也能讲清楚自己的取舍。</li>
+                    </ul>
+                  </div>
+                </div>
+                <button class="button button-primary js-apply" type="button" data-role="前端工程师">投递这个岗位</button>
+              </article>
+
+              <article class="role-panel" id="role-backend" data-panel="backend" hidden>
+                <p class="panel-tag">全职，杭州</p>
+                <h3>后端工程师</h3>
+                <p class="panel-lead">建设数据同步与协作服务，让用户的信息可靠流转。</p>
+                <div class="panel-grid">
+                  <div>
+                    <h4>你会参与</h4>
+                    <ul>
+                      <li>建设笔记、任务与日程的数据同步服务，守住信息的可靠性。</li>
+                      <li>处理多端同步、离线编辑与冲突合并这些真实场景。</li>
+                      <li>和前端一起把接口做得清楚，让每一次流转都可预期。</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4>我们期待</h4>
+                    <ul>
+                      <li>熟悉至少一种后端语言和数据库，理解服务端基本功。</li>
+                      <li>愿意认真对待一致性、并发与性能问题。</li>
+                      <li>重视可维护性，能把复杂系统解释给别人听。</li>
+                    </ul>
+                  </div>
+                </div>
+                <button class="button button-primary js-apply" type="button" data-role="后端工程师">投递这个岗位</button>
+              </article>
+
+              <article class="role-panel" id="role-designer" data-panel="designer" hidden>
+                <p class="panel-tag">全职，杭州</p>
+                <h3>产品设计师</h3>
+                <p class="panel-lead">从真实问题出发，把复杂流程变成清楚易用的体验。</p>
+                <div class="panel-grid">
+                  <div>
+                    <h4>你会参与</h4>
+                    <ul>
+                      <li>从真实使用场景出发，梳理笔记、任务、日程之间的流转。</li>
+                      <li>把复杂流程画清楚，做出能验证想法的原型和界面。</li>
+                      <li>和工程一起打磨上线前的每一个状态，也包括出错的时候。</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4>我们期待</h4>
+                    <ul>
+                      <li>有产品设计或交互设计经验，能独立推进一段体验。</li>
+                      <li>能说明设计决策背后的用户问题，而不只是视觉效果。</li>
+                      <li>习惯用原型、观察和真实反馈来推进判断。</li>
+                    </ul>
+                  </div>
+                </div>
+                <button class="button button-primary js-apply" type="button" data-role="产品设计师">投递这个岗位</button>
+              </article>
+
+              <article class="role-panel" id="role-content" data-panel="content" hidden>
+                <p class="panel-tag">实习，杭州</p>
+                <h3>内容运营实习生</h3>
+                <p class="panel-lead">撰写教程与使用案例，让更多人理解产品的价值。</p>
+                <div class="panel-grid">
+                  <div>
+                    <h4>你会参与</h4>
+                    <ul>
+                      <li>写教程、使用案例和产品更新，让功能变得好理解。</li>
+                      <li>和用户聊天，收集他们真正遇到的日常问题。</li>
+                      <li>参与内容选题与复盘，让好内容被需要的人看见。</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4>我们期待</h4>
+                    <ul>
+                      <li>文字清楚、有耐心，愿意为一句话改到准确。</li>
+                      <li>对效率工具和个人知识管理有真实兴趣。</li>
+                      <li>每周至少到岗三天，能连续实习三个月以上。</li>
+                    </ul>
+                  </div>
+                </div>
+                <button class="button button-primary js-apply" type="button" data-role="内容运营实习生">投递这个岗位</button>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-process" id="process" aria-labelledby="process-title">
+      <div class="section-inner">
+        <aside class="section-rail">
+          <p class="rail-label">接下来</p>
+          <p class="rail-note">从一次坦诚的对话开始，不赶流程。</p>
+        </aside>
+
+        <div class="section-body">
+          <h2 class="display" id="process-title">先聊一聊，<br>再一起做点东西。</h2>
+
+          <ol class="steps">
+            <li>
+              <span class="step-number" aria-hidden="true">01</span>
+              <div class="step-copy">
+                <h3>聊一聊</h3>
+                <p>半小时，聊聊你为什么对效率工具感兴趣，也让你了解我们正在做的事。</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-number" aria-hidden="true">02</span>
+              <div class="step-copy">
+                <h3>一起看问题</h3>
+                <p>给你一个真实的日常场景，我们一起拆解，看看彼此怎么想、怎么合作。</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-number" aria-hidden="true">03</span>
+              <div class="step-copy">
+                <h3>双向选择</h3>
+                <p>聊聊节奏、协作方式和期待。彼此合适的话，我们尽快发出邀请。</p>
+              </div>
+            </li>
+          </ol>
+
+          <div class="process-cta">
+            <p>没有完全匹配的岗位？也可以先说说你想做什么。</p>
+            <button class="text-link text-link-button js-apply" type="button" data-role="">写信聊聊</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-kicker">寻常科技</p>
+      <h2>来，一起把日常<br>做轻一点。</h2>
+      <button class="button button-light js-apply" type="button" data-role="">聊聊加入的机会</button>
+
+      <div class="footer-bottom">
+        <p class="footer-motto">让工具更懂日常，让人更专注创造。</p>
+        <div class="footer-meta">
+          <p>杭州</p>
+          <p>© <span id="year">2025</span> 寻常科技</p>
+        </div>
+        <nav class="footer-nav" aria-label="页脚导航">
+          <a href="#about">关于</a>
+          <a href="#work">工作方式</a>
+          <a href="#roles">岗位</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="apply-dialog" id="apply-dialog" aria-labelledby="apply-title">
+    <div class="apply-panel">
+      <button class="dialog-close" id="dialog-close" type="button">关闭</button>
+      <p class="dialog-kicker">聊一聊</p>
+      <h2 id="apply-title">投递这个岗位</h2>
+      <p class="dialog-intro">留下你的联系方式。我们会尽快看完，并在三个工作日内回复。</p>
+
+      <form id="apply-form" novalidate>
+        <div class="field">
+          <label for="apply-name">怎么称呼你</label>
+          <input id="apply-name" name="name" type="text" autocomplete="name" placeholder="例如：林予" required>
+        </div>
+
+        <div class="field">
+          <label for="apply-contact">邮箱或微信</label>
+          <input id="apply-contact" name="contact" type="text" placeholder="方便联系你的方式" required>
+        </div>
+
+        <div class="field">
+          <label for="apply-role">想聊的岗位</label>
+          <select id="apply-role" name="role">
+            <option value="前端工程师">前端工程师</option>
+            <option value="后端工程师">后端工程师</option>
+            <option value="产品设计师">产品设计师</option>
+            <option value="内容运营实习生">内容运营实习生</option>
+            <option value="先聊聊">还没有确定，想先聊聊</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="apply-note">想让我们先知道的事<span class="field-hint">选填</span></label>
+          <textarea id="apply-note" name="note" rows="4" placeholder="一段经历、一个作品，或者你最近在意的问题。"></textarea>
+        </div>
+
+        <p class="form-error" id="form-error" role="alert" hidden></p>
+        <button class="button button-primary form-submit" type="submit">发出申请</button>
+      </form>
+
+      <div class="apply-success" id="apply-success" hidden>
+        <p class="success-mark" aria-hidden="true">好</p>
+        <h3>申请已经记下。</h3>
+        <p>我们会尽快看完，并在三个工作日内通过你留下的方式联系你。</p>
+        <button class="button button-primary" id="success-close" type="button">回到页面</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>林间 — 独立视觉与数字产品设计师</title>
+  <meta name="description" content="林间，独立视觉与数字产品设计师，现居杭州，接受远程合作。关注品牌视觉、网站设计与数字产品体验。">
+  <meta name="theme-color" content="#f4efe5">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231b2a23'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23f4efe5' font-family='serif'%3E%E6%9E%97%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- 顶部导航 -->
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="林间，返回页面顶部">
+        <span class="brand-mark" aria-hidden="true">林</span>
+        <span class="brand-name">林间<small>独立设计师</small></span>
+      </a>
+
+      <nav class="primary-nav" aria-label="主要导航">
+        <a href="#about" data-nav="about">关于</a>
+        <a href="#works" data-nav="works">作品</a>
+        <a href="#approach" data-nav="approach">方式</a>
+        <a href="#contact" data-nav="contact">合作</a>
+      </nav>
+
+      <a class="header-cta" href="#contact">聊聊想法<span aria-hidden="true">↗</span></a>
+
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="sr-only">打开菜单</span>
+        <span class="menu-bars" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 移动端菜单 -->
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav aria-label="移动端导航">
+      <a href="#about"><span>01</span>关于</a>
+      <a href="#works"><span>02</span>作品</a>
+      <a href="#approach"><span>03</span>方式</a>
+      <a href="#contact"><span>04</span>合作</a>
+    </nav>
+    <div class="mobile-menu-foot">
+      <p>杭州 · 接受远程合作</p>
+      <a href="mailto:linjian@example.com">linjian@example.com</a>
+      <span class="demo-badge">虚拟设计师 · 作品集演示</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- 首屏 -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy" data-reveal>
+        <p class="eyebrow"><span class="pulse"></span>独立视觉与数字产品设计师</p>
+        <h1 id="hero-title">让清楚的表达，<br>也有<span class="mark">自己的性格</span>。</h1>
+        <p class="hero-lede">我是林间，在杭州工作。从一个品牌的第一印象，到一个产品里的细小操作，我希望设计既能传达独特的气质，也能让使用变得自然。</p>
+
+        <div class="hero-actions">
+          <a class="button button--ink" href="#works">浏览作品<span aria-hidden="true">↘</span></a>
+          <button class="button button--ghost" type="button" data-copy-email>复制邮箱<span aria-hidden="true">⧉</span></button>
+        </div>
+
+        <dl class="hero-facts">
+          <div><dt>坐标</dt><dd>杭州 · 远程</dd></div>
+          <div><dt>方向</dt><dd>品牌 / 网站 / 产品</dd></div>
+          <div><dt>状态</dt><dd><span class="pulse pulse--small"></span>可接新项目</dd></div>
+        </dl>
+        <p class="demo-note">虚拟设计师 · 作品集演示</p>
+      </div>
+
+      <div class="hero-visual" data-reveal data-reveal-delay="1" aria-hidden="true">
+        <div class="hero-poster">
+          <svg class="hero-scene" viewBox="0 0 600 720" preserveAspectRatio="xMidYMid slice">
+            <rect width="600" height="720" fill="#dcd2bf"/>
+            <circle cx="438" cy="168" r="88" fill="#c65b3c"/>
+            <path d="M0 468 C120 408 214 448 322 418 C430 388 518 408 600 356 L600 720 L0 720 Z" fill="#b5c3a2"/>
+            <path d="M0 536 C128 490 236 528 352 492 C464 458 542 478 600 436 L600 720 L0 720 Z" fill="#6f8d6b"/>
+            <path d="M0 604 C150 564 250 604 384 588 C486 576 554 550 600 524 L600 720 L0 720 Z" fill="#2f5b45"/>
+            <g fill="none" stroke="#f4efe5" stroke-width="1.6" opacity=".5">
+              <path d="M16 664 C142 622 260 660 390 646 C490 636 552 612 596 586"/>
+              <path d="M52 690 C194 650 300 684 428 668 C512 658 566 638 600 618"/>
+            </g>
+            <g fill="#f4efe5" opacity=".75">
+              <circle cx="116" cy="510" r="2.6"/>
+              <circle cx="168" cy="530" r="2"/>
+              <circle cx="86" cy="554" r="2.2"/>
+              <circle cx="205" cy="562" r="2.6"/>
+            </g>
+            <text x="38" y="60" fill="#2f5b45" font-size="12" letter-spacing="4" font-family="Georgia, serif">FIELD NOTES</text>
+            <text x="38" y="82" fill="#2f5b45" font-size="10" letter-spacing="2.4" font-family="Georgia, serif">LIN JIAN / 2025</text>
+          </svg>
+          <span class="poster-label">阅读 / 散步 / 观察</span>
+        </div>
+
+        <div class="hero-card">
+          <span class="hero-card-kicker">独立设计师</span>
+          <strong>林间</strong>
+          <span class="hero-card-en">LIN JIAN</span>
+          <span class="hero-card-line"></span>
+          <p>品牌视觉<br>网站设计<br>数字产品体验</p>
+        </div>
+
+        <div class="hero-chip"><span class="pulse"></span>正在接新项目</div>
+
+        <div class="hero-stamp">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <path id="stamp-circle" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"></path>
+            </defs>
+            <text>
+              <textPath href="#stamp-circle">从日常出发 · 找到设计的起点 · </textPath>
+            </text>
+          </svg>
+          <span aria-hidden="true">✳</span>
+        </div>
+
+        <p class="hero-caption">作品集 / 2022—2025</p>
+      </div>
+    </section>
+
+    <!-- 滚动字幕 -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <div class="ticker-group">
+          <span>品牌视觉</span><span class="ticker-star">✳</span>
+          <span>网站设计</span><span class="ticker-star">✳</span>
+          <span>数字产品体验</span><span class="ticker-star">✳</span>
+          <span>编辑设计</span><span class="ticker-star">✳</span>
+          <span>持续设计支持</span><span class="ticker-star">✳</span>
+        </div>
+        <div class="ticker-group">
+          <span>品牌视觉</span><span class="ticker-star">✳</span>
+          <span>网站设计</span><span class="ticker-star">✳</span>
+          <span>数字产品体验</span><span class="ticker-star">✳</span>
+          <span>编辑设计</span><span class="ticker-star">✳</span>
+          <span>持续设计支持</span><span class="ticker-star">✳</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 关于 -->
+    <section class="section about" id="about" aria-labelledby="about-title">
+      <div class="shell">
+        <div class="section-head" data-reveal>
+          <span class="section-index">01</span>
+          <h2 id="about-title">关于林间</h2>
+          <p class="section-note">认识一个人，<br>再决定要不要一起工作。</p>
+        </div>
+
+        <div class="about-grid">
+          <figure class="portrait" data-reveal>
+            <div class="portrait-frame">
+              <svg viewBox="0 0 520 640" preserveAspectRatio="xMidYMid slice" role="img" aria-label="林间的抽象插画肖像">
+                <rect width="520" height="640" fill="#d9cfbc"></rect>
+                <circle cx="418" cy="112" r="84" fill="#c65b3c"></circle>
+                <path d="M0 530 C84 492 158 512 236 486 C326 456 428 486 520 440 L520 640 L0 640 Z" fill="#c8bba4" opacity=".65"></path>
+                <path d="M0 584 C112 550 198 574 292 552 C380 532 456 546 520 512 L520 640 L0 640 Z" fill="#b9ab93" opacity=".55"></path>
+                <g>
+                  <path d="M142 640 C148 524 190 464 270 464 C350 464 392 524 398 640 Z" fill="#2f5b45"></path>
+                  <path d="M228 408 H312 V492 H228 Z" fill="#dfb99d"></path>
+                  <ellipse cx="270" cy="316" rx="98" ry="118" fill="#f0d6be"></ellipse>
+                  <path d="M172 316 C158 208 210 170 270 170 C334 170 384 214 368 320 C360 266 336 250 312 244 C278 262 224 258 199 244 C183 260 176 286 172 316 Z" fill="#202c26"></path>
+                  <path d="M172 316 C166 380 180 428 218 452 L218 414 C190 390 180 358 182 316 Z" fill="#202c26"></path>
+                  <path d="M368 316 C374 380 360 428 322 452 L322 414 C350 390 360 358 358 316 Z" fill="#202c26"></path>
+                  <path d="M209 300 Q231 288 253 300" fill="none" stroke="#202c26" stroke-width="5" stroke-linecap="round"></path>
+                  <path d="M287 300 Q309 288 331 300" fill="none" stroke="#202c26" stroke-width="5" stroke-linecap="round"></path>
+                  <path d="M212 332 Q232 342 252 332" fill="none" stroke="#202c26" stroke-width="4" stroke-linecap="round"></path>
+                  <path d="M288 332 Q308 342 328 332" fill="none" stroke="#202c26" stroke-width="4" stroke-linecap="round"></path>
+                  <path d="M270 334 Q262 358 272 364" fill="none" stroke="#c99c80" stroke-width="4" stroke-linecap="round"></path>
+                  <path d="M246 390 Q270 402 294 390" fill="none" stroke="#a95f4c" stroke-width="5" stroke-linecap="round"></path>
+                  <ellipse cx="210" cy="364" rx="18" ry="8" fill="#d88b74" opacity=".32"></ellipse>
+                  <ellipse cx="330" cy="364" rx="18" ry="8" fill="#d88b74" opacity=".32"></ellipse>
+                  <circle cx="174" cy="354" r="7" fill="#c65b3c"></circle>
+                  <path d="M230 464 L270 516 L310 464" fill="#f4efe5"></path>
+                  <path d="M262 486 L278 486 L286 640 L254 640 Z" fill="#24483a"></path>
+                </g>
+                <text x="36" y="612" fill="#f4efe5" font-size="10" letter-spacing="3.4" font-family="Georgia, serif">LIN JIAN / ILLUSTRATION</text>
+                <text x="446" y="612" fill="#f4efe5" font-size="10" letter-spacing="2" font-family="Georgia, serif" text-anchor="end">HZ</text>
+              </svg>
+              <span class="portrait-tag">杭州 · 2025</span>
+            </div>
+            <figcaption>在工作室里，也在地铁、菜场和旧书店里找灵感。</figcaption>
+          </figure>
+
+          <div class="about-copy" data-reveal data-reveal-delay="1">
+            <p class="about-lead">我关注人与信息之间的关系，喜欢从日常观察中寻找设计的起点。</p>
+            <p>从一个品牌的第一印象，到一个产品里的细小操作，我希望设计既能传达独特的气质，也能让使用变得自然。</p>
+            <p>目前以独立设计师的身份工作，接受来自不同城市的远程合作。比起套用风格，我更在意一个项目真正想说什么。</p>
+
+            <dl class="facts">
+              <div><dt>所在地</dt><dd>杭州，接受远程合作</dd></div>
+              <div><dt>创作方向</dt><dd>品牌视觉 / 网站设计 / 数字产品体验</dd></div>
+              <div><dt>合作方式</dt><dd>项目合作 / 持续设计支持</dd></div>
+            </dl>
+
+            <blockquote class="quote">
+              <span class="quote-mark" aria-hidden="true">“</span>
+              <p>让清楚的表达，也有自己的性格。</p>
+              <cite>— 林间</cite>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 作品 -->
+    <section class="section works" id="works" aria-labelledby="works-title">
+      <div class="shell">
+        <div class="section-head" data-reveal>
+          <span class="section-index">02</span>
+          <h2 id="works-title">代表作品</h2>
+          <p class="section-note">四个项目，<br>四种把话说清楚的方式。</p>
+        </div>
+
+        <div class="works-toolbar" data-reveal>
+          <div class="filters" role="group" aria-label="按类型筛选作品">
+            <button class="filter is-active" type="button" data-filter="all" aria-pressed="true">全部 <span>04</span></button>
+            <button class="filter" type="button" data-filter="brand" aria-pressed="false">品牌视觉 <span>01</span></button>
+            <button class="filter" type="button" data-filter="product" aria-pressed="false">数字产品 <span>01</span></button>
+            <button class="filter" type="button" data-filter="web" aria-pressed="false">网站设计 <span>01</span></button>
+            <button class="filter" type="button" data-filter="editorial" aria-pressed="false">编辑设计 <span>01</span></button>
+          </div>
+          <p class="filter-status" id="filter-status" aria-live="polite">共 4 个项目</p>
+        </div>
+
+        <div class="works-grid" id="works-grid">
+          <!-- 田野书店 -->
+          <article class="work-card" data-type="brand" data-reveal>
+            <div class="work-visual">
+              <div class="art art-field" aria-hidden="true">
+                <svg class="field-scene" viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice">
+                  <rect width="640" height="480" fill="#dfe6d2"></rect>
+                  <circle cx="502" cy="114" r="64" fill="#d4855d"></circle>
+                  <path d="M0 296 C120 250 210 268 320 300 C440 334 540 318 640 266 L640 480 L0 480 Z" fill="#b6c5a4"></path>
+                  <path d="M0 348 C150 312 250 348 372 356 C480 364 560 340 640 306 L640 480 L0 480 Z" fill="#7f9c7c"></path>
+                  <path d="M0 390 C160 356 260 398 390 404 C500 410 580 386 640 356 L640 480 L0 480 Z" fill="#2f5b45"></path>
+                  <g fill="none" stroke="#f4efe5" stroke-width="1.5" opacity=".55">
+                    <path d="M20 440 C160 404 270 440 400 444"></path>
+                    <path d="M60 460 C200 424 330 458 470 462"></path>
+                    <path d="M420 458 C520 438 590 420 640 402"></path>
+                  </g>
+                  <g fill="#f4efe5" opacity=".8">
+                    <circle cx="104" cy="330" r="2.4"></circle>
+                    <circle cx="150" cy="344" r="2"></circle>
+                    <circle cx="196" cy="332" r="2.6"></circle>
+                    <circle cx="238" cy="360" r="2"></circle>
+                  </g>
+                </svg>
+                <div class="book-cover">
+                  <span class="book-top">TIANYE BOOKS · HANGZHOU</span>
+                  <span class="book-title">田野<br>书店</span>
+                  <span class="book-rule"></span>
+                  <span class="book-bottom">阅读 / 艺术 / 在地生活</span>
+                  <span class="book-seal">田</span>
+                </div>
+              </div>
+              <span class="work-view" aria-hidden="true">查看项目 ↗</span>
+            </div>
+            <div class="work-meta">
+              <div>
+                <p class="work-type">品牌视觉</p>
+                <h3>田野书店</h3>
+                <p class="work-desc">为一家独立书店，种下一片可阅读的田野。</p>
+              </div>
+              <span class="work-year">2024</span>
+            </div>
+            <button class="work-hit" type="button" data-project="field">
+              <span class="sr-only">查看项目：田野书店</span>
+            </button>
+          </article>
+
+          <!-- 同频 -->
+          <article class="work-card" data-type="product" data-reveal data-reveal-delay="1">
+            <div class="work-visual">
+              <div class="art art-app" aria-hidden="true">
+                <div class="app-window">
+                  <div class="app-bar"><i class="app-dot"></i><i></i><i></i><span>同频 · 项目协作</span></div>
+                  <div class="app-body">
+                    <aside class="app-side">
+                      <div class="app-logo">同频</div>
+                      <span class="app-nav-item is-on">项目概览</span>
+                      <span class="app-nav-item">我的任务</span>
+                      <span class="app-nav-item">团队讨论</span>
+                      <span class="app-nav-item">文件资料</span>
+                      <span class="app-side-foot">TONG PIN<br>v2.1</span>
+                    </aside>
+                    <div class="app-main">
+                      <div class="app-head"><span>项目概览</span><span class="app-week">本周 · 8 项进行中</span></div>
+                      <div class="kanban">
+                        <div class="kcol">
+                          <div class="kcol-title"><span>待处理</span><span>3</span></div>
+                          <div class="kcard"><span class="ktag ktag--sage">品牌</span><p>整理品牌关键词</p><span class="kavatar">林</span></div>
+                          <div class="kcard"><span class="ktag ktag--clay">讨论</span><p>确认首页信息结构</p></div>
+                        </div>
+                        <div class="kcol">
+                          <div class="kcol-title"><span>进行中</span><span>4</span></div>
+                          <div class="kcard"><span class="ktag ktag--clay">设计</span><p>书店活动海报初稿</p><div class="kbar"><i style="width:64%"></i></div></div>
+                          <div class="kcard"><span class="ktag ktag--sage">产品</span><p>看板组件走查</p><div class="kbar"><i style="width:38%"></i></div></div>
+                        </div>
+                        <div class="kcol">
+                          <div class="kcol-title"><span>已完成</span><span>1</span></div>
+                          <div class="kcard"><span class="ktag ktag--gray">交付</span><p>项目启动会议记录</p></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="work-view" aria-hidden="true">查看项目 ↗</span>
+            </div>
+            <div class="work-meta">
+              <div>
+                <p class="work-type">数字产品</p>
+                <h3>同频</h3>
+                <p class="work-desc">把任务、讨论和进度，放回同一张桌面。</p>
+              </div>
+              <span class="work-year">2023</span>
+            </div>
+            <button class="work-hit" type="button" data-project="sync">
+              <span class="sr-only">查看项目：同频</span>
+            </button>
+          </article>
+
+          <!-- 慢日咖啡 -->
+          <article class="work-card" data-type="web" data-reveal>
+            <div class="work-visual">
+              <div class="art art-cafe" aria-hidden="true">
+                <div class="cafe-window">
+                  <div class="cafe-nav"><span class="cafe-logo">慢日咖啡</span><span>菜单　空间　关于　到店</span></div>
+                  <div class="cafe-body">
+                    <div class="cafe-copy">
+                      <p class="cafe-eyebrow">SLOW DAY COFFEE · 社区店</p>
+                      <p class="cafe-title">慢一点，<br>也很好。</p>
+                      <p class="cafe-sub">一杯咖啡，一段不赶时间的下午。</p>
+                      <div class="cafe-cup">
+                        <svg viewBox="0 0 130 120">
+                          <path d="M42 48 C42 34 54 30 54 20" fill="none" stroke="#b58d67" stroke-width="2.4" stroke-linecap="round" opacity=".7"></path>
+                          <path d="M60 46 C60 32 72 28 72 18" fill="none" stroke="#b58d67" stroke-width="2.4" stroke-linecap="round" opacity=".7"></path>
+                          <path d="M78 50 C78 38 90 34 90 24" fill="none" stroke="#b58d67" stroke-width="2.4" stroke-linecap="round" opacity=".7"></path>
+                          <ellipse cx="64" cy="103" rx="42" ry="8" fill="#d8c2a5"></ellipse>
+                          <path d="M28 64 H98 L92 98 C90 103 86 106 80 106 H46 C40 106 36 103 34 98 Z" fill="#3a2a1d"></path>
+                          <path d="M98 70 C114 67 119 80 108 89 C103 93 98 94 94 93" fill="none" stroke="#3a2a1d" stroke-width="5" stroke-linecap="round"></path>
+                          <ellipse cx="63" cy="64" rx="35" ry="6" fill="#6f4f35"></ellipse>
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div class="cafe-menu">
+                      <p class="cafe-menu-title">本季菜单 <span>SUMMER</span></p>
+                      <div class="menu-row"><span>桂花冷萃</span><span>¥32</span></div>
+                      <div class="menu-row"><span>海盐拿铁</span><span>¥30</span></div>
+                      <div class="menu-row"><span>青梅气泡</span><span>¥28</span></div>
+                      <p class="cafe-hours">营业时间 08:00 — 20:00<br>杭州市西湖区慢日巷 7 号</p>
+                      <span class="cafe-cta">查看完整菜单 →</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cafe-phone">
+                  <span class="phone-notch"></span>
+                  <p class="phone-time">15:24</p>
+                  <p class="phone-logo">慢日</p>
+                  <p class="phone-line">今天想喝点什么？</p>
+                  <div class="phone-item">桂花冷萃 <span>¥32</span></div>
+                  <div class="phone-item">海盐拿铁 <span>¥30</span></div>
+                  <span class="phone-btn">到店坐坐</span>
+                </div>
+              </div>
+              <span class="work-view" aria-hidden="true">查看项目 ↗</span>
+            </div>
+            <div class="work-meta">
+              <div>
+                <p class="work-type">网站设计</p>
+                <h3>慢日咖啡</h3>
+                <p class="work-desc">让浏览网站，像在店里坐一会儿。</p>
+              </div>
+              <span class="work-year">2023</span>
+            </div>
+            <button class="work-hit" type="button" data-project="cafe">
+              <span class="sr-only">查看项目：慢日咖啡</span>
+            </button>
+          </article>
+
+          <!-- 城市间隙 -->
+          <article class="work-card" data-type="editorial" data-reveal data-reveal-delay="1">
+            <div class="work-visual">
+              <div class="art art-editorial" aria-hidden="true">
+                <div class="spread">
+                  <div class="page page--left">
+                    <span class="issue">ISSUE 03 / 城市散步</span>
+                    <p class="vertical-title">城市间隙</p>
+                    <span class="issue-bottom">URBAN GAPS<br>2022</span>
+                  </div>
+                  <div class="page page--right">
+                    <div class="city-photo">
+                      <svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid slice">
+                        <rect width="300" height="220" fill="#cfc8ba"></rect>
+                        <rect x="0" y="90" width="70" height="130" fill="#7c8178"></rect>
+                        <rect x="62" y="60" width="55" height="160" fill="#9b9485"></rect>
+                        <rect x="110" y="110" width="90" height="110" fill="#5e665d"></rect>
+                        <rect x="195" y="80" width="60" height="140" fill="#b3a995"></rect>
+                        <rect x="250" y="120" width="50" height="100" fill="#767d72"></rect>
+                        <g fill="#e8e1d3" opacity=".65">
+                          <rect x="12" y="104" width="8" height="10"></rect>
+                          <rect x="28" y="104" width="8" height="10"></rect>
+                          <rect x="44" y="120" width="8" height="10"></rect>
+                          <rect x="72" y="76" width="8" height="10"></rect>
+                          <rect x="90" y="76" width="8" height="10"></rect>
+                          <rect x="72" y="98" width="8" height="10"></rect>
+                          <rect x="124" y="126" width="9" height="11"></rect>
+                          <rect x="142" y="126" width="9" height="11"></rect>
+                          <rect x="160" y="146" width="9" height="11"></rect>
+                          <rect x="208" y="96" width="8" height="10"></rect>
+                          <rect x="226" y="96" width="8" height="10"></rect>
+                          <rect x="208" y="116" width="8" height="10"></rect>
+                          <rect x="262" y="138" width="8" height="10"></rect>
+                        </g>
+                        <circle cx="248" cy="42" r="19" fill="#c65b3c"></circle>
+                        <path d="M0 200 C60 190 120 205 180 198 C230 192 270 200 300 194" fill="none" stroke="#2d3a31" stroke-width="2"></path>
+                      </svg>
+                      <span class="photo-caption">街角，16:40</span>
+                    </div>
+                    <p class="page-kicker">散步笔记 / 03</p>
+                    <p class="page-headline">在被忽略的地方，<br>重新看见城市。</p>
+                    <div class="page-lines"><i></i><i></i><i></i><i></i></div>
+                    <span class="page-num">042</span>
+                  </div>
+                </div>
+              </div>
+              <span class="work-view" aria-hidden="true">查看项目 ↗</span>
+            </div>
+            <div class="work-meta">
+              <div>
+                <p class="work-type">编辑设计</p>
+                <h3>城市间隙</h3>
+                <p class="work-desc">把被忽略的街角，重新编排进视野。</p>
+              </div>
+              <span class="work-year">2022</span>
+            </div>
+            <button class="work-hit" type="button" data-project="city">
+              <span class="sr-only">查看项目：城市间隙</span>
+            </button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 工作方式 -->
+    <section class="section approach" id="approach" aria-labelledby="approach-title">
+      <div class="shell">
+        <div class="section-head" data-reveal>
+          <span class="section-index">03</span>
+          <h2 id="approach-title">工作方式</h2>
+          <p class="section-note">先理解，再动手；<br>先建立结构，再打磨气质。</p>
+        </div>
+
+        <div class="approach-layout">
+          <div class="approach-statement" data-reveal>
+            <p>好的设计不是装饰，<br>是把复杂的事<span class="mark">说清楚</span>。</p>
+            <p class="small">每个项目从一次坦诚的对话开始。我会先弄清楚问题是什么，再决定它应该长成什么样子。过程保持透明，节奏可以一起商量。</p>
+            <a class="text-link" href="#contact">聊聊你的项目 <span aria-hidden="true">→</span></a>
+          </div>
+
+          <ol class="steps" data-reveal data-reveal-delay="1">
+            <li>
+              <span class="step-num">01</span>
+              <div><h3>观察</h3><p>走进真实的场景，收集语言、图像与使用中的细节。</p></div>
+            </li>
+            <li>
+              <span class="step-num">02</span>
+              <div><h3>提炼</h3><p>把纷杂的信息收拢成一个清楚、可被记住的核心。</p></div>
+            </li>
+            <li>
+              <span class="step-num">03</span>
+              <div><h3>表达</h3><p>用合适的字体、色彩与节奏，让它在每一个触点成立。</p></div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="services" data-reveal>
+          <span class="services-label">可以一起做的事</span>
+          <ul>
+            <li>品牌视觉</li>
+            <li>官网设计</li>
+            <li>数字产品界面</li>
+            <li>编辑设计</li>
+            <li>持续设计支持</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 合作 -->
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="shell">
+        <div class="contact-panel">
+          <div class="contact-copy" data-reveal>
+            <span class="contact-kicker">04 / 合作</span>
+            <h2 id="contact-title">如果你有一个<br>正在萌芽的想法，<br><em>我们可以一起</em><br>把它变得清楚。</h2>
+            <p class="contact-lede">品牌视觉、官网设计、数字产品界面与编辑设计，都可以聊。项目合作或持续设计支持，按你的节奏来。</p>
+
+            <div class="contact-email">
+              <span class="contact-email-label">写封信</span>
+              <a href="mailto:linjian@example.com">linjian@example.com</a>
+              <button type="button" data-copy-email aria-label="复制邮箱地址">复制</button>
+            </div>
+
+            <ul class="contact-meta">
+              <li><span>所在地</span>杭州 · 接受远程合作</li>
+              <li><span>回复时间</span>通常 1—2 个工作日</li>
+            </ul>
+          </div>
+
+          <div class="contact-form-wrap" data-reveal data-reveal-delay="1">
+            <form class="contact-form" id="contact-form" novalidate>
+              <div class="form-intro">
+                <span>项目咨询</span>
+                <p>简单说说你的想法，剩下的我们慢慢聊。</p>
+              </div>
+
+              <div class="field-row">
+                <label>怎么称呼你
+                  <input type="text" name="name" autocomplete="name" placeholder="你的名字" required>
+                </label>
+                <label>邮箱
+                  <input type="email" name="email" autocomplete="email" placeholder="name@example.com" required>
+                </label>
+              </div>
+
+              <label>想聊什么
+                <select name="service">
+                  <option value="品牌视觉">品牌视觉</option>
+                  <option value="官网设计">官网设计</option>
+                  <option value="数字产品界面">数字产品界面</option>
+                  <option value="编辑设计">编辑设计</option>
+                  <option value="持续设计支持">持续设计支持</option>
+                </select>
+              </label>
+
+              <label>简单说说你的想法
+                <textarea name="message" rows="4" placeholder="项目是什么、希望解决什么问题、大概的时间安排……" required></textarea>
+              </label>
+
+              <button class="button button--accent form-submit" type="submit">
+                <span>发送想法</span><span aria-hidden="true">↗</span>
+              </button>
+              <p class="form-note">演示表单，不会真的发送邮件。</p>
+
+              <div class="form-success" id="form-success" hidden>
+                <span class="success-icon" aria-hidden="true">✓</span>
+                <h3>想法已经记下了</h3>
+                <p>这是演示页面，邮件不会真正发出。你可以直接写信到 <a href="mailto:linjian@example.com">linjian@example.com</a>。</p>
+                <button class="text-button" type="button" id="form-again">再写一条 →</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="#top" aria-label="林间，返回页面顶部">
+          <span class="brand-mark" aria-hidden="true">林</span>
+          <span class="brand-name">林间<small>LIN JIAN</small></span>
+        </a>
+        <p>独立视觉与数字产品设计师<br>杭州 · 接受远程合作</p>
+      </div>
+
+      <nav class="footer-nav" aria-label="页脚导航">
+        <a href="#about">关于</a>
+        <a href="#works">作品</a>
+        <a href="#approach">方式</a>
+        <a href="#contact">合作</a>
+      </nav>
+
+      <div class="footer-end">
+        <span class="demo-badge">虚拟设计师 · 作品集演示</span>
+        <p>© <span id="year">2025</span> 林间 · 以好奇心与耐心制作</p>
+        <a class="footer-mail" href="mailto:linjian@example.com">linjian@example.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 项目详情弹窗 -->
+  <div class="modal" id="project-modal" hidden>
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+      <button class="modal-close" type="button" data-modal-close aria-label="关闭项目详情">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 L19 19 M19 5 L5 19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+      </button>
+      <div class="modal-scroll" id="modal-scroll">
+        <div class="modal-visual" id="modal-visual"></div>
+        <div class="modal-content">
+          <p class="modal-kicker" id="modal-kicker"></p>
+          <h2 id="modal-title"></h2>
+          <p class="modal-lede" id="modal-lede"></p>
+
+          <div class="modal-columns">
+            <div>
+              <h3>项目背景</h3>
+              <p id="modal-bg"></p>
+            </div>
+            <div>
+              <h3>设计内容</h3>
+              <ul id="modal-scope"></ul>
+            </div>
+          </div>
+
+          <div class="modal-idea">
+            <span>创作思路</span>
+            <p id="modal-idea"></p>
+          </div>
+
+          <div class="modal-foot">
+            <div class="modal-tags" id="modal-tags"></div>
+            <div class="modal-nav">
+              <button type="button" id="modal-prev" aria-label="查看上一个项目">← 上一个</button>
+              <button type="button" id="modal-next" aria-label="查看下一个项目">下一个 →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <style>[data-reveal]{opacity:1;transform:none}.mobile-menu{display:none}.work-hit{cursor:pointer}</style>
+  </noscript>
+
+  <script src="script.js"></script>
+</body>
+</html>

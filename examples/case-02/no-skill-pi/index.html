@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>同频 · 让每个人，都知道下一步</title>
+  <meta name="description" content="同频是面向自由职业者与小型团队的项目协作工具。把任务、讨论与进度放在一起，少一点来回确认，多一点共同推进。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='11' fill='%23112A21'/%3E%3Cpath d='M9 23c3.5-7 6.5-7 10 0s6.5 7 10 0' fill='none' stroke='%23D9F275' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <!-- 图标库：全站复用，避免任何外部依赖 -->
+  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="logo-mark" viewBox="0 0 40 40">
+        <rect width="40" height="40" rx="12" fill="#112A21"></rect>
+        <path d="M9 23c3.5-7 6.5-7 10 0s6.5 7 10 0" fill="none" stroke="#D9F275" stroke-width="3" stroke-linecap="round"></path>
+        <circle cx="30.5" cy="14" r="2.2" fill="#F87555"></circle>
+      </symbol>
+      <symbol id="icon-arrow" viewBox="0 0 20 20">
+        <path d="M3.5 10h12M11 5.5l4.5 4.5-4.5 4.5"></path>
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 20 20">
+        <path d="M4 10.5l4 4 8-9"></path>
+      </symbol>
+      <symbol id="icon-menu" viewBox="0 0 20 20">
+        <path d="M3 6h14M3 10h14M3 14h14"></path>
+      </symbol>
+      <symbol id="icon-close" viewBox="0 0 20 20">
+        <path d="M5 5l10 10M15 5L5 15"></path>
+      </symbol>
+      <symbol id="icon-grid" viewBox="0 0 20 20">
+        <rect x="3" y="3" width="5.5" height="5.5" rx="1.4"></rect>
+        <rect x="11.5" y="3" width="5.5" height="5.5" rx="1.4"></rect>
+        <rect x="3" y="11.5" width="5.5" height="5.5" rx="1.4"></rect>
+        <rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1.4"></rect>
+      </symbol>
+      <symbol id="icon-board" viewBox="0 0 20 20">
+        <rect x="3" y="3" width="4" height="14" rx="1.2"></rect>
+        <rect x="8.5" y="3" width="4" height="9" rx="1.2"></rect>
+        <rect x="14" y="3" width="3" height="12" rx="1.2"></rect>
+      </symbol>
+      <symbol id="icon-chat" viewBox="0 0 20 20">
+        <path d="M3 9.5a6 6 0 016-6h2a6 6 0 016 6v.5a6 6 0 01-6 6H8l-4.2 2.3.3-3.2A6 6 0 013 10v-.5z"></path>
+      </symbol>
+      <symbol id="icon-chart" viewBox="0 0 20 20">
+        <path d="M4 16V9M10 16V4M16 16v-5"></path>
+        <path d="M2.5 16.5h15"></path>
+      </symbol>
+      <symbol id="icon-search" viewBox="0 0 20 20">
+        <circle cx="9" cy="9" r="5.5"></circle>
+        <path d="M13 13l4 4"></path>
+      </symbol>
+      <symbol id="icon-spark" viewBox="0 0 20 20">
+        <path d="M10 2.5l1.8 5.2 5.2 1.8-5.2 1.8L10 16.5l-1.8-5.2L3 9.5l5.2-1.8L10 2.5z"></path>
+      </symbol>
+      <symbol id="icon-users" viewBox="0 0 20 20">
+        <circle cx="7.5" cy="7" r="3"></circle>
+        <path d="M2.5 16c.4-3 2.3-4.6 5-4.6s4.6 1.6 5 4.6"></path>
+        <path d="M13 4.4a2.8 2.8 0 010 5.3M14.5 11.8c2 .4 3.2 1.8 3.5 4.2"></path>
+      </symbol>
+      <symbol id="icon-calendar" viewBox="0 0 20 20">
+        <rect x="3" y="4.5" width="14" height="12" rx="2"></rect>
+        <path d="M6.5 2.8v3.4M13.5 2.8v3.4M3 8.5h14"></path>
+      </symbol>
+      <symbol id="icon-comment" viewBox="0 0 20 20">
+        <path d="M4 5.5A2.5 2.5 0 016.5 3h7A2.5 2.5 0 0116 5.5v5a2.5 2.5 0 01-2.5 2.5H9l-3.7 2.4.3-2.4H6.5A2.5 2.5 0 014 10.5v-5z"></path>
+      </symbol>
+      <symbol id="icon-file" viewBox="0 0 20 20">
+        <path d="M5 2.8h6l4 4v10.4H5z"></path>
+        <path d="M11 2.8v4h4M7.8 11h4.4M7.8 14h3.2"></path>
+      </symbol>
+      <symbol id="icon-plus" viewBox="0 0 20 20">
+        <path d="M10 4v12M4 10h12"></path>
+      </symbol>
+      <symbol id="icon-chevron" viewBox="0 0 20 20">
+        <path d="M5 7.5l5 5 5-5"></path>
+      </symbol>
+      <symbol id="icon-info" viewBox="0 0 20 20">
+        <circle cx="10" cy="10" r="7"></circle>
+        <path d="M10 9v4.5M10 6.3v.2"></path>
+      </symbol>
+      <symbol id="icon-alert" viewBox="0 0 20 20">
+        <path d="M10 3.2l7 12.3H3L10 3.2z"></path>
+        <path d="M10 8v3.5M10 14v.2"></path>
+      </symbol>
+      <symbol id="icon-mail" viewBox="0 0 20 20">
+        <rect x="2.8" y="4.5" width="14.4" height="11" rx="2"></rect>
+        <path d="M3.5 5.5l6.5 5 6.5-5"></path>
+      </symbol>
+      <symbol id="icon-arrow-up" viewBox="0 0 20 20">
+        <path d="M10 16V4M5.5 8.5L10 4l4.5 4.5"></path>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- 顶部导航 -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="同频首页">
+        <svg class="brand-svg" aria-hidden="true"><use href="#logo-mark"></use></svg>
+        <span class="brand-name">同频</span>
+        <span class="brand-dot" aria-hidden="true"></span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="主导航">
+        <a href="#features" data-nav="features">功能</a>
+        <a href="#workflow" data-nav="workflow">工作方式</a>
+        <a href="#pricing" data-nav="pricing">价格</a>
+        <a href="#stories" data-nav="stories">用户故事</a>
+        <a href="#faq" data-nav="faq">常见问题</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="text-button" type="button" id="loginBtn">登录</button>
+        <button class="btn btn-sm btn-dark" type="button" data-open-auth="trial" data-plan="免费版">
+          免费开始
+          <span class="btn-icon"><svg aria-hidden="true"><use href="#icon-arrow"></use></svg></span>
+        </button>
+      </div>
+
+      <button class="menu-toggle" type="button" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="打开菜单">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 移动端菜单 -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <nav class="mobile-nav" aria-label="移动端导航">
+      <a href="#features" data-mobile-link><span>功能</span><span class="mobile-index">01</span></a>
+      <a href="#workflow" data-mobile-link><span>工作方式</span><span class="mobile-index">02</span></a>
+      <a href="#pricing" data-mobile-link><span>价格</span><span class="mobile-index">03</span></a>
+      <a href="#stories" data-mobile-link><span>用户故事</span><span class="mobile-index">04</span></a>
+      <a href="#faq" data-mobile-link><span>常见问题</span><span class="mobile-index">05</span></a>
+    </nav>
+    <div class="mobile-menu-foot">
+      <button class="btn btn-dark btn-block" type="button" data-open-auth="trial" data-plan="免费版">免费开始</button>
+      <button class="text-button" type="button" id="mobileLoginBtn">已有账号，去登录</button>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- 首屏 -->
+    <section class="hero" id="top">
+      <div class="hero-bg" aria-hidden="true">
+        <span class="hero-orb hero-orb-lime"></span>
+        <span class="hero-orb hero-orb-coral"></span>
+        <span class="hero-grid"></span>
+      </div>
+
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow hero-eyebrow"><span class="eyebrow-dot"></span>为自由职业者与小型团队打造</p>
+          <h1 class="hero-title">
+            <span class="hero-line">让每个人，</span>
+            <span class="hero-line">都知道<span class="marker">下一步</span>。</span>
+          </h1>
+          <p class="hero-lede">把任务、讨论与进度放在一起，让小团队少一点忙乱，多一点默契。</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" type="button" data-open-auth="trial" data-plan="免费版">
+              免费开始
+              <span class="btn-icon"><svg aria-hidden="true"><use href="#icon-arrow"></use></svg></span>
+            </button>
+            <a class="btn btn-secondary" href="#features">
+              了解功能
+              <span class="btn-icon"><svg aria-hidden="true"><use href="#icon-chevron"></use></svg></span>
+            </a>
+          </div>
+          <p class="hero-note">
+            <span><svg aria-hidden="true"><use href="#icon-check"></use></svg>无需信用卡</span>
+            <span><svg aria-hidden="true"><use href="#icon-check"></use></svg>3 分钟开始</span>
+            <span><svg aria-hidden="true"><use href="#icon-check"></use></svg>免费版长期可用</span>
+          </p>
+          <div class="hero-proof">
+            <div class="avatar-stack" aria-hidden="true">
+              <span class="avatar avatar-lh">禾</span>
+              <span class="avatar avatar-zy">远</span>
+              <span class="avatar avatar-cn">宁</span>
+              <span class="avatar avatar-me">我</span>
+            </div>
+            <p>从一个人的项目，到多人协作，<br>都能在这里保持同一个节奏。</p>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-stage">
+            <div class="stage-shape" aria-hidden="true"></div>
+
+            <div class="hero-app" aria-label="同频项目界面预览">
+              <aside class="app-sidebar" aria-hidden="true">
+                <div class="app-brand">
+                  <svg><use href="#logo-mark"></use></svg>
+                  <span>同频</span>
+                </div>
+                <div class="app-nav">
+                  <span class="active"><svg><use href="#icon-grid"></use></svg><i>项目</i></span>
+                  <span><svg><use href="#icon-board"></use></svg><i>任务</i></span>
+                  <span><svg><use href="#icon-chat"></use></svg><i>讨论</i></span>
+                  <span><svg><use href="#icon-chart"></use></svg><i>进展</i></span>
+                </div>
+                <div class="app-user">
+                  <span class="avatar avatar-lh">禾</span>
+                  <span class="app-user-meta"><strong>林禾</strong><small>主理人</small></span>
+                </div>
+              </aside>
+
+              <div class="app-body">
+                <div class="app-bar">
+                  <div class="app-crumb"><span>项目</span><span class="crumb-sep">/</span><strong>春日品牌焕新</strong></div>
+                  <div class="app-bar-right" aria-hidden="true">
+                    <span class="app-search"><svg><use href="#icon-search"></use></svg><i>搜索</i></span>
+                    <div class="mini-avatars">
+                      <span class="avatar avatar-zy">远</span>
+                      <span class="avatar avatar-cn">宁</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="app-canvas">
+                  <div class="app-project-head">
+                    <div>
+                      <span class="status-pill"><i></i>进行中</span>
+                      <h3>春日品牌焕新</h3>
+                      <p>让春天的第一眼，更像我们自己。</p>
+                    </div>
+                    <div class="progress-ring" style="--progress: 68" aria-label="整体进度 68%">
+                      <span>68<small>%</small></span>
+                      <em>整体进度</em>
+                    </div>
+                  </div>
+
+                  <div class="app-metrics" aria-hidden="true">
+                    <div><span>本周完成</span><strong>8<small> / 12</small></strong></div>
+                    <div><span>待处理</span><strong>3<small> 项</small></strong></div>
+                    <div><span>参与成员</span><strong>4<small> 人</small></strong></div>
+                  </div>
+
+                  <div class="app-task-head">
+                    <h4>今天要做</h4>
+                    <span>3 项</span>
+                  </div>
+
+                  <ul class="hero-task-list">
+                    <li class="is-done">
+                      <span class="task-check-static"><svg aria-hidden="true"><use href="#icon-check"></use></svg></span>
+                      <div><span>确认首页主视觉方向</span><small>设计 · 陈宁</small></div>
+                      <span class="task-due muted">已完成</span>
+                    </li>
+                    <li>
+                      <span class="task-check-static"></span>
+                      <div><span>整理客户修改意见</span><small>讨论 · 4 条新回复</small></div>
+                      <span class="task-due urgent">今天</span>
+                    </li>
+                    <li>
+                      <span class="task-check-static"></span>
+                      <div><span>补齐移动端交互说明</span><small>开发 · 周远</small></div>
+                      <span class="task-due">周五</span>
+                    </li>
+                  </ul>
+
+                  <div class="decision-note">
+                    <span class="decision-icon"><svg aria-hidden="true"><use href="#icon-spark"></use></svg></span>
+                    <div>
+                      <strong>已记录决定</strong>
+                      <p>首页采用「留白」方向，周四前完成第一版。</p>
+                    </div>
+                    <div class="mini-avatars" aria-hidden="true">
+                      <span class="avatar avatar-lh">禾</span>
+                      <span class="avatar avatar-cn">宁</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="float-card float-card-top">
+              <span class="float-icon"><svg aria-hidden="true"><use href="#icon-check"></use></svg></span>
+              <div><strong>讨论已归档</strong><span>3 条修改意见 · 刚刚</span></div>
+            </div>
+
+            <div class="float-card float-card-bottom">
+              <div class="avatar-stack small" aria-hidden="true">
+                <span class="avatar avatar-lh">禾</span>
+                <span class="avatar avatar-zy">远</span>
+                <span class="avatar avatar-cn">宁</span>
+              </div>
+              <div><strong>4 人保持同频</strong><span>进度已自动同步</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 品牌主张 -->
+    <section class="manifesto" id="why" aria-labelledby="manifestoTitle">
+      <div class="container manifesto-inner">
+        <div class="manifesto-aside reveal">
+          <p class="eyebrow">为什么是同频</p>
+          <p class="manifesto-note">面向自由职业者与小型团队的项目协作工具</p>
+        </div>
+        <div class="manifesto-main reveal" style="--delay: 80ms">
+          <h2 id="manifestoTitle">工具可以很多，<br><span>但节奏最好只有一个。</span></h2>
+          <div class="manifesto-copy">
+            <p>同频把项目里最容易被拆散的三件事——任务、讨论、进度——放回同一个上下文。信息跟着工作走，大家自然保持同一个节奏。</p>
+            <div class="mini-principles" aria-label="产品原则">
+              <span>信息不断线</span>
+              <span>决定有出处</span>
+              <span>进展看得见</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 核心功能 -->
+    <section class="features section" id="features" aria-labelledby="featuresTitle">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">核心功能</p>
+            <h2 id="featuresTitle">三件事，<br>放在同一个节奏里。</h2>
+          </div>
+          <div class="section-head-side">
+            <p>不用在任务工具、聊天软件和表格之间来回切换。项目的下一步、来龙去脉和整体进展，都留在同一个地方。</p>
+            <span class="section-index">01 — 03</span>
+          </div>
+        </div>
+
+        <div class="feature-shell reveal" style="--delay: 100ms">
+          <div class="feature-tabs" role="tablist" aria-label="核心功能" aria-orientation="vertical">
+            <button class="feature-tab is-active" id="tab-tasks" role="tab" aria-selected="true" aria-controls="panel-tasks" tabindex="0">
+              <span class="tab-num">01</span>
+              <span class="tab-text"><strong>任务有序</strong><small>负责人、截止日期与优先级</small></span>
+              <svg class="tab-arrow" aria-hidden="true"><use href="#icon-arrow"></use></svg>
+            </button>
+            <button class="feature-tab" id="tab-talk" role="tab" aria-selected="false" aria-controls="panel-talk" tabindex="-1">
+              <span class="tab-num">02</span>
+              <span class="tab-text"><strong>讨论不散</strong><small>文件、回复与决定都有出处</small></span>
+              <svg class="tab-arrow" aria-hidden="true"><use href="#icon-arrow"></use></svg>
+            </button>
+            <button class="feature-tab" id="tab-progress" role="tab" aria-selected="false" aria-controls="panel-progress" tabindex="-1">
+              <span class="tab-num">03</span>
+              <span class="tab-text"><strong>进展透明</strong><small>状态自动汇总，卡点及时出现</small></span>
+              <svg class="tab-arrow" aria-hidden="true"><use href="#icon-arrow"></use></svg>
+            </button>
+          </div>
+
+          <div class="feature-stage">
+            <!-- 功能一：任务有序 -->
+            <div class="feature-view is-active" id="panel-tasks" role="tabpanel" aria-labelledby="tab-tasks">
+              <div class="view-head">
+                <div>
+                  <span class="view-kicker">任务有序</span>
+                  <h3>每一项，都有清楚的下一步。</h3>
+                  <p>用列表和看板组织项目，明确负责人、截止日期与优先级，让「等谁来做什么」不再需要猜。</p>
+                </div>
+                <span class="view-badge">列表 + 看板</span>
+              </div>
+
+              <div class="task-demo">
+                <div class="task-demo-top">
+                  <span>品牌焕新 · 本周</span>
+                  <span id="featureTaskCount"><b>3</b> / 5 已完成</span>
+                </div>
+                <div class="mini-progress" aria-hidden="true"><i id="featureTaskBar" style="width: 60%"></i></div>
+
+                <ul class="feature-task-list" id="featureTaskList">
+                  <li class="is-done">
+                    <button class="task-check" type="button" aria-pressed="true" aria-label="将「梳理首页信息层级」标记为未完成"><svg aria-hidden="true"><use href="#icon-check"></use></svg></button>
+                    <div class="feature-task-main"><span class="feature-task-title">梳理首页信息层级</span><span class="feature-task-meta"><em class="tag tag-design">设计</em>陈宁 · 今天</span></div>
+                    <span class="priority priority-high">高</span>
+                  </li>
+                  <li class="is-done">
+                    <button class="task-check" type="button" aria-pressed="true" aria-label="将「确认拍摄清单」标记为未完成"><svg aria-hidden="true"><use href="#icon-check"></use></svg></button>
+                    <div class="feature-task-main"><span class="feature-task-title">确认拍摄清单</span><span class="feature-task-meta"><em class="tag tag-run">执行</em>周远 · 周三</span></div>
+                    <span class="priority priority-mid">中</span>
+                  </li>
+                  <li class="is-done">
+                    <button class="task-check" type="button" aria-pressed="true" aria-label="将「归档旧版 logo」标记为未完成"><svg aria-hidden="true"><use href="#icon-check"></use></svg></button>
+                    <div class="feature-task-main"><span class="feature-task-title">归档旧版 logo 与字体</span><span class="feature-task-meta"><em class="tag tag-organize">整理</em>林禾 · 已完成</span></div>
+                    <span class="priority priority-low">低</span>
+                  </li>
+                  <li>
+                    <button class="task-check" type="button" aria-pressed="false" aria-label="将「确定移动端断点」标记为已完成"><svg aria-hidden="true"><use href="#icon-check"></use></svg></button>
+                    <div class="feature-task-main"><span class="feature-task-title">确定移动端断点</span><span class="feature-task-meta"><em class="tag tag-dev">开发</em>周远 · 周五</span></div>
+                    <span class="priority priority-high">高</span>
+                  </li>
+                  <li>
+                    <button class="task-check" type="button" aria-pressed="false" aria-label="将「发布更新公告」标记为已完成"><svg aria-hidden="true"><use href="#icon-check"></use></svg></button>
+                    <div class="feature-task-main"><span class="feature-task-title">发布更新公告</span><span class="feature-task-meta"><em class="tag tag-content">内容</em>陈宁 · 下周一</span></div>
+                    <span class="priority priority-mid">中</span>
+                  </li>
+                </ul>
+                <p class="demo-hint"><span class="hint-dot"></span>点击勾选框，试试完成一项任务。</p>
+              </div>
+            </div>
+
+            <!-- 功能二：讨论不散 -->
+            <div class="feature-view" id="panel-talk" role="tabpanel" aria-labelledby="tab-talk" hidden>
+              <div class="view-head">
+                <div>
+                  <span class="view-kicker">讨论不散</span>
+                  <h3>话说在事旁边，就不用再翻聊天记录。</h3>
+                  <p>围绕任务交流，集中保存相关文件与决定。新加入的伙伴顺着上下文，就能快速接上进度。</p>
+                </div>
+                <span class="view-badge">3 人参与</span>
+              </div>
+
+              <div class="thread-demo">
+                <div class="thread-head">
+                  <span class="thread-title"><svg aria-hidden="true"><use href="#icon-comment"></use></svg>首页视觉方向</span>
+                  <span class="thread-live"><i></i>实时同步</span>
+                </div>
+
+                <div class="thread-messages" id="threadMessages">
+                  <div class="thread-message">
+                    <span class="avatar avatar-lh">禾</span>
+                    <div>
+                      <div class="message-meta"><strong>林禾</strong><time>10:24</time></div>
+                      <p>我把首页留白比例调大了，重点信息更集中。文件放在下面，大家看看这一版。</p>
+                      <div class="attachment"><svg aria-hidden="true"><use href="#icon-file"></use></svg><span>首页方案_v3.fig</span><small>2.4 MB</small></div>
+                    </div>
+                  </div>
+                  <div class="thread-message">
+                    <span class="avatar avatar-zy">远</span>
+                    <div>
+                      <div class="message-meta"><strong>周远</strong><time>10:31</time></div>
+                      <p>开发侧没问题。移动端断点我下午补上，会保留同样的信息顺序。</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="decision-row">
+                  <span class="decision-icon"><svg aria-hidden="true"><use href="#icon-check"></use></svg></span>
+                  <div><strong>已记录为决定</strong><p>首页采用「留白」方向，周四前完成第一版。</p></div>
+                </div>
+
+                <form class="reply-form" id="replyForm" novalidate>
+                  <label class="sr-only" for="replyInput">写下回复</label>
+                  <input id="replyInput" type="text" maxlength="120" placeholder="写下回复，按 Enter 发送…" autocomplete="off">
+                  <button type="submit" aria-label="发送回复"><svg aria-hidden="true"><use href="#icon-arrow"></use></svg></button>
+                </form>
+                <p class="demo-hint"><span class="hint-dot"></span>回复只出现在本页演示中，不会发送给任何人。</p>
+              </div>
+            </div>
+
+            <!-- 功能三：进展透明 -->
+            <div class="feature-view" id="panel-progress" role="tabpanel" aria-labelledby="tab-progress" hidden>
+              <div class="view-head">
+                <div>
+                  <span class="view-kicker">进展透明</span>
+                  <h3>不用问进度，打开就是答案。</h3>
+                  <p>汇总项目状态与待办事项，及时发现卡点，减少反复询问与临时会议。</p>
+                </div>
+                <span class="view-badge">自动汇总</span>
+              </div>
+
+              <div class="progress-demo">
+                <div class="progress-summary">
+                  <div class="summary-card">
+                    <span>进行中的项目</span>
+                    <strong>3<small> 个</small></strong>
+                    <small>本周新增 1 个</small>
+                  </div>
+                  <div class="summary-card summary-card-lime">
+                    <span>本周完成</span>
+                    <strong>18<small> 项</small></strong>
+                    <small>比上周多 5 项</small>
+                  </div>
+                </div>
+
+                <div class="health-list">
+                  <div class="health-row">
+                    <div class="health-name"><strong>春日品牌焕新</strong><span>进行中 · 68%</span></div>
+                    <div class="health-bar"><i style="--bar-width: 68%"></i></div>
+                    <em class="health-status normal">正常</em>
+                  </div>
+                  <div class="health-row">
+                    <div class="health-name"><strong>官网内容改版</strong><span>进行中 · 42%</span></div>
+                    <div class="health-bar"><i class="bar-warn" style="--bar-width: 42%"></i></div>
+                    <em class="health-status warn">需关注</em>
+                  </div>
+                  <div class="health-row">
+                    <div class="health-name"><strong>内容栏目规划</strong><span>进行中 · 89%</span></div>
+                    <div class="health-bar"><i style="--bar-width: 89%"></i></div>
+                    <em class="health-status normal">正常</em>
+                  </div>
+                </div>
+
+                <div class="blocker-card">
+                  <span class="blocker-icon"><svg aria-hidden="true"><use href="#icon-alert"></use></svg></span>
+                  <div><strong>发现一个卡点</strong><p>「预约拍摄场地」等待客户确认，已提醒负责人。</p></div>
+                  <span class="blocker-tag">已通知</span>
+                </div>
+                <p class="demo-hint"><span class="hint-dot"></span>状态自动汇总，不用再单独开会同步。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 交互式工作台演示 -->
+    <section class="workflow section" id="workflow" aria-labelledby="workflowTitle">
+      <div class="workflow-glow" aria-hidden="true"></div>
+      <div class="container">
+        <div class="section-head section-head-light reveal">
+          <div>
+            <p class="eyebrow eyebrow-light">工作方式</p>
+            <h2 id="workflowTitle">把一天的工作，<br><span class="lime-text">装进一个视图</span>。</h2>
+          </div>
+          <div class="section-head-side">
+            <p>看板看推进，列表看细节。点击任意任务，负责人、截止日期、相关讨论与文件都在手边。</p>
+            <span class="section-index">可交互演示</span>
+          </div>
+        </div>
+
+        <div class="workspace reveal" style="--delay: 100ms" aria-label="同频工作台交互演示">
+          <div class="workspace-topbar">
+            <div class="workspace-project">
+              <span class="workspace-icon"><svg aria-hidden="true"><use href="#icon-grid"></use></svg></span>
+              <div><strong>春日品牌焕新</strong><span><b id="workspaceCount">7</b> 个任务 · 4 位成员</span></div>
+            </div>
+
+            <div class="workspace-tools">
+              <div class="filter-select">
+                <label class="sr-only" for="memberFilter">按负责人筛选</label>
+                <svg aria-hidden="true"><use href="#icon-users"></use></svg>
+                <select id="memberFilter">
+                  <option value="all">全部成员</option>
+                  <option value="林禾">林禾</option>
+                  <option value="周远">周远</option>
+                  <option value="陈宁">陈宁</option>
+                </select>
+                <svg class="select-chevron" aria-hidden="true"><use href="#icon-chevron"></use></svg>
+              </div>
+
+              <div class="segmented" role="group" aria-label="切换视图">
+                <button type="button" class="is-active" data-view="board" aria-pressed="true">
+                  <svg aria-hidden="true"><use href="#icon-board"></use></svg>看板
+                </button>
+                <button type="button" data-view="list" aria-pressed="false">
+                  <svg aria-hidden="true"><use href="#icon-grid"></use></svg>列表
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="board-view" id="boardView">
+            <div class="board-column" data-status="todo">
+              <div class="board-column-head"><span class="column-dot dot-todo"></span><h3>待处理</h3><span class="column-count" data-count="todo">0</span></div>
+              <div class="board-cards" data-cards="todo"></div>
+            </div>
+            <div class="board-column" data-status="doing">
+              <div class="board-column-head"><span class="column-dot dot-doing"></span><h3>进行中</h3><span class="column-count" data-count="doing">0</span></div>
+              <div class="board-cards" data-cards="doing"></div>
+            </div>
+            <div class="board-column" data-status="done">
+              <div class="board-column-head"><span class="column-dot dot-done"></span><h3>已完成</h3><span class="column-count" data-count="done">0</span></div>
+              <div class="board-cards" data-cards="done"></div>
+            </div>
+          </div>
+
+          <div class="list-view" id="listView" hidden>
+            <div class="list-header" aria-hidden="true">
+              <span>任务</span><span>状态</span><span>负责人</span><span>截止日期</span><span>讨论</span>
+            </div>
+            <div id="listRows"></div>
+          </div>
+
+          <div class="workspace-footer">
+            <span class="workspace-note"><svg aria-hidden="true"><use href="#icon-info"></use></svg>演示项目 · 所有操作仅保存在当前页面</span>
+            <button class="text-button workspace-reset" type="button" id="resetDemo">重置演示</button>
+          </div>
+        </div>
+
+        <p class="workspace-caption reveal">点击任务卡片即可查看详情，并把它推进到下一步。</p>
+      </div>
+    </section>
+
+    <!-- 开始使用 -->
+    <section class="how section" id="how" aria-labelledby="howTitle">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">开始使用</p>
+            <h2 id="howTitle">从第一件事开始，<br>三步进入同频。</h2>
+          </div>
+          <div class="section-head-side">
+            <p>不需要重新整理所有资料。先建一个项目，把下一步写下来，节奏就会慢慢长出来。</p>
+            <span class="section-index">约 3 分钟</span>
+          </div>
+        </div>
+
+        <div class="steps">
+          <article class="step-card reveal">
+            <div class="step-top"><span class="step-num">01</span><span class="step-time">30 秒</span></div>
+            <span class="step-icon"><svg aria-hidden="true"><use href="#icon-grid"></use></svg></span>
+            <h3>建立项目</h3>
+            <p>把一个目标、参与的人与关键节点放进同一个项目，从第一天就有共同上下文。</p>
+            <span class="step-line" aria-hidden="true"></span>
+          </article>
+          <article class="step-card reveal" style="--delay: 80ms">
+            <div class="step-top"><span class="step-num">02</span><span class="step-time">1 分钟</span></div>
+            <span class="step-icon"><svg aria-hidden="true"><use href="#icon-board"></use></svg></span>
+            <h3>拆解下一步</h3>
+            <p>把任务分给具体的人，设好时间与优先级。每个人打开项目，就知道现在该做什么。</p>
+            <span class="step-line" aria-hidden="true"></span>
+          </article>
+          <article class="step-card reveal" style="--delay: 160ms">
+            <div class="step-top"><span class="step-num">03</span><span class="step-time">一直</span></div>
+            <span class="step-icon"><svg aria-hidden="true"><use href="#icon-chat"></use></svg></span>
+            <h3>保持同频</h3>
+            <p>讨论、文件与进度自动留在任务身边。少一点来回确认，多一点共同推进。</p>
+            <span class="step-line" aria-hidden="true"></span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 用户评价 -->
+    <section class="stories section" id="stories" aria-labelledby="storiesTitle">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">用户故事</p>
+            <h2 id="storiesTitle">他们这样，<br>保持同频。</h2>
+          </div>
+          <div class="section-head-side">
+            <p>来自独立创作者、小团队负责人和工作室主理人的工作片段。少一点忙乱，多一点默契。</p>
+            <span class="section-index">虚拟用户评价</span>
+          </div>
+        </div>
+
+        <div class="story-grid">
+          <article class="story-card story-card-cream reveal">
+            <span class="story-tag">设计交付</span>
+            <blockquote>终于不用在聊天记录里找客户的修改意见了。任务和讨论放在一起，交付前心里更有底。</blockquote>
+            <footer class="story-foot">
+              <span class="avatar avatar-lh">禾</span>
+              <div><strong>林禾</strong><span>独立设计师</span></div>
+              <span class="story-mark" aria-hidden="true">“</span>
+            </footer>
+          </article>
+
+          <article class="story-card story-card-lime reveal" style="--delay: 80ms">
+            <span class="story-tag">每日推进</span>
+            <blockquote>每天打开项目，就能知道哪里需要我帮忙。我们少开了几次确认进度的会，多了一些专注做事的时间。</blockquote>
+            <footer class="story-foot">
+              <span class="avatar avatar-zy">远</span>
+              <div><strong>周远</strong><span>小型开发团队负责人</span></div>
+              <span class="story-mark" aria-hidden="true">“</span>
+            </footer>
+          </article>
+
+          <article class="story-card story-card-peach reveal" style="--delay: 160ms">
+            <span class="story-tag">新人上手</span>
+            <blockquote>从选题到发布，谁负责、做到哪一步都很清楚。新人加入后，也不用把整个流程重新讲一遍。</blockquote>
+            <footer class="story-foot">
+              <span class="avatar avatar-cn">宁</span>
+              <div><strong>陈宁</strong><span>内容工作室主理人</span></div>
+              <span class="story-mark" aria-hidden="true">“</span>
+            </footer>
+          </article>
+        </div>
+        <p class="stories-note reveal">以上为虚拟用户评价，仅用于官网展示演示。</p>
+      </div>
+    </section>
+
+    <!-- 价格 -->
+    <section class="pricing section" id="pricing" aria-labelledby="pricingTitle">
+      <div class="container">
+        <div class="section-head pricing-head reveal">
+          <div>
+            <p class="eyebrow">价格方案</p>
+            <h2 id="pricingTitle">从一个人开始，<br>按你的节奏长大。</h2>
+          </div>
+          <div class="section-head-side">
+            <p>所有付费方案按月计费，按团队成员人数计算。随时升级、降级或取消。</p>
+            <span class="section-index">按月计费</span>
+          </div>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="price-card reveal">
+            <div class="price-card-head">
+              <span class="plan-label">个人与起步团队</span>
+              <h3>免费版</h3>
+              <p>个人与刚开始协作的小团队</p>
+            </div>
+            <div class="price"><span class="price-currency">¥</span><span class="price-num">0</span><span class="price-unit">永久免费</span></div>
+            <button class="btn btn-outline btn-block" type="button" data-open-auth="trial" data-plan="免费版">免费开始</button>
+            <ul class="plan-features">
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>最多 3 位成员</li>
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>3 个项目</li>
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>基础任务与讨论</li>
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>1 GB 文件空间</li>
+            </ul>
+          </article>
+
+          <article class="price-card price-card-featured reveal" style="--delay: 80ms">
+            <span class="popular-badge">最受欢迎</span>
+            <div class="price-card-head">
+              <span class="plan-label">持续协作</span>
+              <h3>专业版</h3>
+              <p>需要持续管理多个项目的团队</p>
+            </div>
+            <div class="price"><span class="price-currency">¥</span><span class="price-num">39</span><span class="price-unit">/ 成员 / 月</span></div>
+            <button class="btn btn-lime btn-block" type="button" data-open-auth="trial" data-plan="专业版">选择专业版</button>
+            <ul class="plan-features">
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>不限项目</li>
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>全部任务与讨论功能</li>
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>进度汇总</li>
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>20 GB 团队文件空间</li>
+            </ul>
+          </article>
+
+          <article class="price-card reveal" style="--delay: 160ms">
+            <div class="price-card-head">
+              <span class="plan-label">完整管理</span>
+              <h3>团队版</h3>
+              <p>需要更完整管理能力的团队</p>
+            </div>
+            <div class="price"><span class="price-currency">¥</span><span class="price-num">69</span><span class="price-unit">/ 成员 / 月</span></div>
+            <button class="btn btn-outline btn-block" type="button" data-open-auth="trial" data-plan="团队版">选择团队版</button>
+            <ul class="plan-features">
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>专业版全部功能</li>
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>成员权限管理</li>
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>操作记录</li>
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>100 GB 团队文件空间</li>
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>优先支持</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="pricing-foot reveal">
+          <p><svg aria-hidden="true"><use href="#icon-info"></use></svg>付费方案按月计费，价格以人民币计。演示页面不会产生任何真实费用。</p>
+          <button class="compare-toggle" type="button" id="compareToggle" aria-expanded="false" aria-controls="comparePanel">
+            查看完整功能对比
+            <svg aria-hidden="true"><use href="#icon-chevron"></use></svg>
+          </button>
+        </div>
+
+        <div class="compare-panel" id="comparePanel" aria-hidden="true">
+          <div class="compare-inner">
+            <table class="compare-table">
+              <caption class="sr-only">同频各价格方案功能对比</caption>
+              <thead>
+                <tr><th scope="col">功能</th><th scope="col">免费版</th><th scope="col">专业版</th><th scope="col">团队版</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">成员数量</th><td>最多 3 位</td><td>按成员计费</td><td>按成员计费</td></tr>
+                <tr><th scope="row">项目数量</th><td>3 个</td><td>不限</td><td>不限</td></tr>
+                <tr><th scope="row">任务与讨论</th><td>基础功能</td><td>全部功能</td><td>全部功能</td></tr>
+                <tr><th scope="row">进度汇总</th><td><span class="dash">—</span></td><td><span class="yes"><svg aria-hidden="true"><use href="#icon-check"></use></svg></span></td><td><span class="yes"><svg aria-hidden="true"><use href="#icon-check"></use></svg></span></td></tr>
+                <tr><th scope="row">团队文件空间</th><td>1 GB</td><td>20 GB</td><td>100 GB</td></tr>
+                <tr><th scope="row">成员权限管理</th><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="yes"><svg aria-hidden="true"><use href="#icon-check"></use></svg></span></td></tr>
+                <tr><th scope="row">操作记录</th><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="yes"><svg aria-hidden="true"><use href="#icon-check"></use></svg></span></td></tr>
+                <tr><th scope="row">优先支持</th><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="yes"><svg aria-hidden="true"><use href="#icon-check"></use></svg></span></td></tr>
+                <tr><th scope="row">计费方式</th><td>免费</td><td>按月计费</td><td>按月计费</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 常见问题 -->
+    <section class="faq section" id="faq" aria-labelledby="faqTitle">
+      <div class="container faq-layout">
+        <div class="faq-intro reveal">
+          <p class="eyebrow">常见问题</p>
+          <h2 id="faqTitle">开始之前，<br>你可能想知道。</h2>
+          <div class="faq-contact">
+            <span class="contact-icon"><svg aria-hidden="true"><use href="#icon-mail"></use></svg></span>
+            <div><strong>还有别的问题？</strong><p>写信到 <a href="mailto:hello@example.com">hello@example.com</a></p></div>
+          </div>
+        </div>
+
+        <div class="faq-list reveal" style="--delay: 80ms">
+          <div class="faq-item is-open">
+            <h3><button class="faq-question" type="button" aria-expanded="true" aria-controls="faqAnswer1" id="faqQuestion1">
+              <span><span class="faq-num">01</span>免费版有什么限制？</span>
+              <span class="faq-icon"><svg aria-hidden="true"><use href="#icon-plus"></use></svg></span>
+            </button></h3>
+            <div class="faq-answer" id="faqAnswer1" role="region" aria-labelledby="faqQuestion1"><div><p>免费版最多 3 位成员、3 个项目，包含基础任务与讨论以及 1 GB 文件空间，适合个人或刚开始协作的小团队。需要更多空间与项目时，可以随时升级。</p></div></div>
+          </div>
+
+          <div class="faq-item">
+            <h3><button class="faq-question" type="button" aria-expanded="false" aria-controls="faqAnswer2" id="faqQuestion2">
+              <span><span class="faq-num">02</span>付费方案怎么计费？</span>
+              <span class="faq-icon"><svg aria-hidden="true"><use href="#icon-plus"></use></svg></span>
+            </button></h3>
+            <div class="faq-answer" id="faqAnswer2" role="region" aria-labelledby="faqQuestion2"><div><p>专业版 ¥39 / 成员 / 月，团队版 ¥69 / 成员 / 月，均按月计费。费用按团队中的成员人数计算，可随时升级、降级或取消。</p></div></div>
+          </div>
+
+          <div class="faq-item">
+            <h3><button class="faq-question" type="button" aria-expanded="false" aria-controls="faqAnswer3" id="faqQuestion3">
+              <span><span class="faq-num">03</span>可以随时更换方案吗？</span>
+              <span class="faq-icon"><svg aria-hidden="true"><use href="#icon-plus"></use></svg></span>
+            </button></h3>
+            <div class="faq-answer" id="faqAnswer3" role="region" aria-labelledby="faqQuestion3"><div><p>可以。升级后立即生效，降级会在当前计费周期结束后生效。项目、任务与讨论都会保留。本演示页面不会产生任何真实费用。</p></div></div>
+          </div>
+
+          <div class="faq-item">
+            <h3><button class="faq-question" type="button" aria-expanded="false" aria-controls="faqAnswer4" id="faqQuestion4">
+              <span><span class="faq-num">04</span>项目数据可以导出吗？</span>
+              <span class="faq-icon"><svg aria-hidden="true"><use href="#icon-plus"></use></svg></span>
+            </button></h3>
+            <div class="faq-answer" id="faqAnswer4" role="region" aria-labelledby="faqQuestion4"><div><p>正式产品支持导出任务、讨论与文件，方便备份或迁移。本演示页面中的操作只保留在当前浏览器页面内，刷新后即恢复初始状态。</p></div></div>
+          </div>
+
+          <div class="faq-item">
+            <h3><button class="faq-question" type="button" aria-expanded="false" aria-controls="faqAnswer5" id="faqQuestion5">
+              <span><span class="faq-num">05</span>同频适合多大的团队？</span>
+              <span class="faq-icon"><svg aria-hidden="true"><use href="#icon-plus"></use></svg></span>
+            </button></h3>
+            <div class="faq-answer" id="faqAnswer5" role="region" aria-labelledby="faqQuestion5"><div><p>同频为自由职业者与小型团队设计，从一个人的项目到十余人协作都能使用。团队版提供成员权限管理与操作记录，适合需要更完整管理能力的团队。</p></div></div>
+          </div>
+
+          <div class="faq-item">
+            <h3><button class="faq-question" type="button" aria-expanded="false" aria-controls="faqAnswer6" id="faqQuestion6">
+              <span><span class="faq-num">06</span>新成员能快速上手吗？</span>
+              <span class="faq-icon"><svg aria-hidden="true"><use href="#icon-plus"></use></svg></span>
+            </button></h3>
+            <div class="faq-answer" id="faqAnswer6" role="region" aria-labelledby="faqQuestion6"><div><p>项目的任务、讨论、文件与决定都在同一个上下文里。新成员加入后，可以从项目概览快速了解进展，不必把整个流程重新讲一遍。</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 最终行动号召 -->
+    <section class="final-cta" aria-labelledby="ctaTitle">
+      <div class="container">
+        <div class="cta-panel reveal">
+          <div class="cta-rings" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="cta-copy">
+            <p class="eyebrow eyebrow-light">免费开始</p>
+            <h2 id="ctaTitle">下一次推进，<br>从同频开始。</h2>
+            <p class="cta-lede">留下邮箱，先把项目、任务和讨论放到同一个地方。让每个人，都知道下一步。</p>
+            <ul class="cta-points">
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>免费版长期可用</li>
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>无需信用卡</li>
+              <li><svg aria-hidden="true"><use href="#icon-check"></use></svg>演示环境，不产生费用</li>
+            </ul>
+          </div>
+
+          <div class="cta-action">
+            <form class="cta-form" id="ctaForm" novalidate>
+              <label for="ctaEmail">工作邮箱</label>
+              <div class="cta-input-row">
+                <input type="email" id="ctaEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+                <button class="btn btn-lime" type="submit">免费开始<span class="btn-icon"><svg aria-hidden="true"><use href="#icon-arrow"></use></svg></span></button>
+              </div>
+              <p class="form-error" id="ctaError" role="alert"></p>
+              <p class="cta-fineprint">提交即表示你了解：这是虚拟产品的官网演示，不会创建真实账号。</p>
+            </form>
+
+            <div class="cta-success" id="ctaSuccess" hidden>
+              <span class="success-icon"><svg aria-hidden="true"><use href="#icon-check"></use></svg></span>
+              <h3>演示注册成功。</h3>
+              <p>我们已经「记录」了 <strong id="successEmail"></strong>。正式产品会在这里发出试用入口，本演示不会发送任何邮件。</p>
+              <button class="btn btn-outline-light" type="button" id="resetCta">换个邮箱再试</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="#top" aria-label="同频首页">
+            <svg class="brand-svg" aria-hidden="true"><use href="#logo-mark"></use></svg>
+            <span class="brand-name">同频</span>
+          </a>
+          <p class="footer-tagline">让工作同频，让协作轻松。</p>
+          <a class="footer-mail" href="mailto:hello@example.com"><svg aria-hidden="true"><use href="#icon-mail"></use></svg>hello@example.com</a>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-column">
+            <h3>产品</h3>
+            <a href="#features">功能</a>
+            <a href="#workflow">工作方式</a>
+            <a href="#pricing">价格</a>
+            <a href="#stories">用户故事</a>
+          </div>
+          <div class="footer-column">
+            <h3>了解</h3>
+            <a href="#faq">常见问题</a>
+            <a href="#how">开始使用</a>
+            <button type="button" class="footer-link" data-demo="帮助中心将在正式产品中开放。">帮助中心</button>
+            <button type="button" class="footer-link" data-demo="更新日志将在正式产品中开放。">更新日志</button>
+          </div>
+          <div class="footer-column">
+            <h3>联系</h3>
+            <a href="mailto:hello@example.com">写信给我们</a>
+            <button type="button" class="footer-link" data-demo="关于同频：一个面向小团队的协作工具演示。">关于同频</button>
+            <button type="button" class="footer-link" data-demo="隐私说明仅用于官网展示演示。">隐私说明</button>
+            <button type="button" class="footer-link" data-demo="服务条款仅用于官网展示演示。">服务条款</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© <span id="footerYear">2025</span> 同频 · 虚拟产品 · 官网展示演示</p>
+        <a class="back-top" href="#top">回到顶部<svg aria-hidden="true"><use href="#icon-arrow-up"></use></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 注册 / 登录弹窗 -->
+  <div class="modal-backdrop" id="authModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <button class="modal-close" type="button" data-close-auth aria-label="关闭弹窗"><svg aria-hidden="true"><use href="#icon-close"></use></svg></button>
+
+      <div id="authFormView">
+        <span class="modal-badge" id="authBadge">免费开始</span>
+        <h2 id="authTitle">先把下一步，放进同频。</h2>
+        <p class="modal-subtitle" id="authSubtitle">填写邮箱，开启你的演示空间。不需要信用卡，也不会真的创建账号。</p>
+
+        <form id="authForm" novalidate>
+          <div class="field">
+            <label for="authEmail">工作邮箱</label>
+            <input type="email" id="authEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+            <p class="field-error" id="authEmailError" role="alert"></p>
+          </div>
+          <div class="field" id="planField">
+            <label for="authPlan">选择方案</label>
+            <div class="select-field">
+              <select id="authPlan">
+                <option value="免费版">免费版 · ¥0</option>
+                <option value="专业版">专业版 · ¥39 / 成员 / 月</option>
+                <option value="团队版">团队版 · ¥69 / 成员 / 月</option>
+              </select>
+              <svg aria-hidden="true"><use href="#icon-chevron"></use></svg>
+            </div>
+          </div>
+          <button class="btn btn-dark btn-block" type="submit" id="authSubmit">创建免费空间</button>
+          <p class="modal-fineprint">这是官网演示，不会创建真实账号，也不会发送邮件。</p>
+        </form>
+      </div>
+
+      <div class="auth-success" id="authSuccess" hidden>
+        <span class="success-icon dark"><svg aria-hidden="true"><use href="#icon-check"></use></svg></span>
+        <h2>演示完成。</h2>
+        <p>这是官网交互演示，没有创建真实账号。你可以继续浏览，或体验下方的工作台。</p>
+        <button class="btn btn-dark btn-block" type="button" data-close-auth>继续浏览</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 任务详情抽屉 -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="task-drawer" id="taskDrawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="drawerTitle">
+    <div class="drawer-head">
+      <span class="drawer-kicker">任务详情</span>
+      <button class="drawer-close" type="button" data-close-drawer aria-label="关闭任务详情"><svg aria-hidden="true"><use href="#icon-close"></use></svg></button>
+    </div>
+
+    <div class="drawer-body">
+      <div class="drawer-badges">
+        <span class="status-chip" id="drawerStatus">待处理</span>
+        <span class="priority-chip" id="drawerPriority">高优先级</span>
+      </div>
+      <h2 id="drawerTitle">任务名称</h2>
+      <p class="drawer-desc" id="drawerDesc"></p>
+
+      <div class="drawer-meta-grid">
+        <div><span>负责人</span><strong id="drawerAssignee">—</strong></div>
+        <div><span>截止日期</span><strong id="drawerDue">—</strong></div>
+        <div><span>讨论</span><strong id="drawerComments">—</strong></div>
+        <div><span>所属项目</span><strong>春日品牌焕新</strong></div>
+      </div>
+
+      <div class="drawer-file">
+        <span class="drawer-file-icon"><svg aria-hidden="true"><use href="#icon-file"></use></svg></span>
+        <div><span>相关文件</span><strong id="drawerFileName">项目资料.pdf</strong><small>演示文件 · 仅作展示</small></div>
+      </div>
+
+      <div class="drawer-discussion">
+        <span class="drawer-section-label">最近讨论</span>
+        <p>「这一版的信息层级更清楚了，移动端也要保留同样的顺序。」</p>
+        <span class="drawer-discussion-meta">陈宁 · 2 小时前</span>
+      </div>
+
+      <p class="drawer-note"><svg aria-hidden="true"><use href="#icon-info"></use></svg>这是交互演示。状态变更只保存在当前页面，刷新后恢复。</p>
+    </div>
+
+    <div class="drawer-foot">
+      <button class="btn btn-outline" type="button" data-close-drawer>关闭</button>
+      <button class="btn btn-dark" type="button" id="drawerAction">开始处理</button>
+    </div>
+  </aside>
+
+  <!-- 全局提示 -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
