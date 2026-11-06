@@ -151,6 +151,8 @@
   .c-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 6px; font-size: 12px; color: var(--muted); }
   .c-note { margin: 12px 0 0; font-size: 14px; line-height: 1.85; max-width: 48ch; }
   .c-link { display: inline-block; margin-top: 12px; font-size: 12px; text-underline-offset: 3px; }
+  .c-links { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 12px; }
+  .c-links .c-link { margin-top: 0; }
   .c-none { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--muted); }
 
   /* 目次 */
@@ -247,16 +249,16 @@
       <p class="hero-intro">每件成品都从同一份提示词出发，使用同一个执行环境，只改变挂载的技能。图版按同一窗口截取，摆在一起，差异才看得见。</p>
     </div>
     <div class="chapter">
-      <p class="small">案例 01 / 2026</p>
-      <h2>精品咖啡<br>订阅官网</h2>
-      <p class="note">TerraBrew，哥伦比亚埃尔帕拉伊索庄园，本季批次</p>
+      <p class="small">案例 02 / 2026</p>
+      <h2>绘本插画师<br>个人网站</h2>
+      <p class="note">一位独立插画师的首页与作品详情页，六种做法</p>
     </div>
   </section>
 
   <dl class="colophon">
-    <div><dt>收录</dt><dd>01 案例 / 06 结果</dd></div>
+    <div><dt>收录</dt><dd>02 案例 / 12 结果</dd></div>
     <div><dt>生成环境</dt><dd>CLAUDE CODE</dd></div>
-    <div><dt>更新</dt><dd>2026-11-06</dd></div>
+    <div><dt>更新</dt><dd>2026-11-07</dd></div>
   </dl>
 
   <section class="case" id="cases">
@@ -366,22 +368,137 @@
     </div>
   </section>
 
-  <section class="contents" id="queue">
-    <div class="section-head"><h2>目次 / 待刊</h2><span>三份提示词，等待生成</span></div>
-    <ol>
-      <li>
-        <span class="toc-num">02</span>
-        <div class="toc-main">
-          <div class="toc-line"><h3>黑胶播放器</h3><span class="dots"></span></div>
-          <p>桌面端音乐 App 的「正在播放」模块：唱臂落下开始播放，拖动唱臂可以跳到歌曲的某一段，暂停时唱片慢慢停下。</p>
+  <section class="case" id="case-02">
+    <div class="chapter-band">
+      <div class="num">02</div>
+      <h2>绘本插画师个人网站</h2>
+      <div class="side">案例 02 / 6 个结果</div>
+    </div>
+
+    <div class="spread">
+      <aside class="case-aside">
+        <h3>题解</h3>
+        <p class="case-desc">一位独立绘本插画师的个人网站。首页呈现作品集、正在连载的绘本与合作邀约，作品详情页展开单本绘本的完整介绍。</p>
+        <details class="prompt">
+          <summary><span>提示词</span><span class="hint" aria-hidden="true"></span></summary>
+          <div class="prompt-body">
+            <p id="prompt-02">一位独立绘本插画师的个人网站：作品集、正在连载的绘本、合作邀约。做首页和一个作品详情页。<br><br>插画师的作品主要画给孩子，也画给仍然愿意读故事的大人。作品集里既有已经出版的绘本，也有杂志插画与日常速写，按主题分成几组；正在连载的绘本按章节更新，能看到故事简介和最新一章；合作邀约写明绘本出版、品牌插画与线下工作坊三类合作，并给出联系方式与回复时间。<br><br>整个网站要精美，翻看起来像翻开一本绘本书。</p>
+          </div>
+        </details>
+        <p class="gen-note">生成日期 2026-11-07。六组结果均由 Claude Code 调用 <code>codex/gpt-6.1-terra</code> 生成，思考强度 xhigh。<a href="../../examples/case-02/对照记录.md">对照记录</a>保存了轮次、用时与费用。</p>
+      </aside>
+
+      <div>
+        <div class="track-head">
+          <span>结果 07–12</span>
+          <div class="arrows">
+            <button type="button" data-prev="case02" aria-label="上一个结果">←</button>
+            <button type="button" data-next="case02" aria-label="下一个结果">→</button>
+          </div>
         </div>
-        <span class="toc-status">等待生成</span>
-      </li>
+        <div class="track" data-track="case02" role="group" aria-label="绘本插画师案例的六个结果">
+
+          <figure class="plate">
+            <a class="shot" href="../../examples/case-02/no-skill-claude-code/index.html" target="_blank" rel="noopener">
+              <img src="../../assets/previews/case-02/no-skill.jpg" alt="不使用技能生成的绘本插画师网站首屏，左侧标题把小小日子画成大大故事，右侧夜景里骑车的熊" loading="lazy">
+            </a>
+            <figcaption class="caption">
+              <div class="c-top"><h3>基准 · 不使用技能</h3><span class="c-index">图版 07</span></div>
+              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>11 轮 / 283 秒</span><span>$0.734</span></div>
+              <p class="c-note">米色底配深绿，标题分三行，右侧木框夜景里小熊骑车经过小屋，右下角一枚圆形徽章。</p>
+              <div class="c-links"><a class="c-link" href="../../examples/case-02/no-skill-claude-code/work.html" target="_blank" rel="noopener">作品详情页</a></div>
+              <span class="c-none">对照组，不挂载技能</span>
+            </figcaption>
+          </figure>
+
+          <figure class="plate">
+            <a class="shot" href="../../examples/case-02/frontend-design-claude-code/index.html" target="_blank" rel="noopener">
+              <img src="../../assets/previews/case-02/frontend-design.jpg" alt="frontend-design 生成的绘本插画师网站首屏，左侧标题与右侧蓝天狐狸插画分栏" loading="lazy">
+            </a>
+            <figcaption class="caption">
+              <div class="c-top"><h3>frontend-design</h3><span class="c-index">图版 08</span></div>
+              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>9 轮 / 357 秒</span><span>$0.458</span></div>
+              <p class="c-note">左右对半分栏，右半幅是蓝天、狐狸与小屋；最左侧一行竖排小字，标题上方用短横线引导。</p>
+              <div class="c-links">
+                <a class="c-link" href="../../examples/case-02/frontend-design-claude-code/work.html" target="_blank" rel="noopener">作品详情页</a>
+                <a class="c-link" href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">技能仓库</a>
+              </div>
+            </figcaption>
+          </figure>
+
+          <figure class="plate">
+            <a class="shot" href="../../examples/case-02/oil-ui-claude-code/index.html" target="_blank" rel="noopener">
+              <img src="../../assets/previews/case-02/oil-ui.jpg" alt="oil-ui 生成的绘本插画师网站首屏，左侧标题与右侧提灯小熊插画" loading="lazy">
+            </a>
+            <figcaption class="caption">
+              <div class="c-top"><h3>oil-ui</h3><span class="c-index">图版 09</span></div>
+              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>33 轮 / 401 秒</span><span>$1.293</span></div>
+              <p class="c-note">鼠尾草绿与米白分栏，右侧插画标着 ILLUSTRATION NO. 01，小熊提灯站在林间；画面下沿露出下一组作品的编号。</p>
+              <div class="c-links">
+                <a class="c-link" href="../../examples/case-02/oil-ui-claude-code/work.html" target="_blank" rel="noopener">作品详情页</a>
+                <a class="c-link" href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener">技能仓库</a>
+              </div>
+            </figcaption>
+          </figure>
+
+          <figure class="plate">
+            <a class="shot" href="../../examples/case-02/impeccable-claude-code/index.html" target="_blank" rel="noopener">
+              <img src="../../assets/previews/case-02/impeccable.jpg" alt="impeccable 生成的绘本插画师网站首屏，淡紫天空下孩子与狐狸坐在打开的书上" loading="lazy">
+            </a>
+            <figcaption class="caption">
+              <div class="c-top"><h3>impeccable</h3><span class="c-index">图版 10</span></div>
+              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>15 轮 / 355 秒</span><span>$0.515</span></div>
+              <p class="c-note">淡紫天空铺满首屏，孩子与狐狸坐在打开的书上，标题后半句转为锈红；首屏下沿已经露出自我介绍。</p>
+              <div class="c-links">
+                <a class="c-link" href="../../examples/case-02/impeccable-claude-code/work.html" target="_blank" rel="noopener">作品详情页</a>
+                <a class="c-link" href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">技能仓库</a>
+              </div>
+            </figcaption>
+          </figure>
+
+          <figure class="plate">
+            <a class="shot" href="../../examples/case-02/design-taste-frontend-claude-code/index.html" target="_blank" rel="noopener">
+              <img src="../../assets/previews/case-02/design-taste-frontend.jpg" alt="design-taste-frontend 生成的绘本插画师网站首屏，圆拱形画框里熊和孩子共读一本书" loading="lazy">
+            </a>
+            <figcaption class="caption">
+              <div class="c-top"><h3>design-taste-frontend</h3><span class="c-index">图版 11</span></div>
+              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>15 轮 / 480 秒</span><span>$0.548</span></div>
+              <p class="c-note">右侧插画收进圆拱形画框，熊与孩子共读一本书；金色圆形贴纸压在画框右下角，画框外留出米色空白。</p>
+              <div class="c-links">
+                <a class="c-link" href="../../examples/case-02/design-taste-frontend-claude-code/work.html" target="_blank" rel="noopener">作品详情页</a>
+                <a class="c-link" href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener">技能仓库</a>
+              </div>
+            </figcaption>
+          </figure>
+
+          <figure class="plate">
+            <a class="shot" href="../../examples/case-02/hallmark-claude-code/index.html" target="_blank" rel="noopener">
+              <img src="../../assets/previews/case-02/hallmark.jpg" alt="hallmark 生成的绘本插画师网站首屏，芥末黄底色上白色相框里兔子拿着信封" loading="lazy">
+            </a>
+            <figcaption class="caption">
+              <div class="c-top"><h3>hallmark</h3><span class="c-index">图版 12</span></div>
+              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>37 轮 / 528 秒</span><span>$1.016</span></div>
+              <p class="c-note">芥末黄铺满首屏，白色相框略微倾斜，夜里兔子拿着一封信；红色圆形贴纸压在相框左下角。</p>
+              <div class="c-links">
+                <a class="c-link" href="../../examples/case-02/hallmark-claude-code/work.html" target="_blank" rel="noopener">作品详情页</a>
+                <a class="c-link" href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener">技能仓库</a>
+              </div>
+            </figcaption>
+          </figure>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contents" id="queue">
+    <div class="section-head"><h2>目次 / 待刊</h2><span>两份提示词，等待生成</span></div>
+    <ol>
       <li>
         <span class="toc-num">03</span>
         <div class="toc-main">
-          <div class="toc-line"><h3>绘本插画师个人网站</h3><span class="dots"></span></div>
-          <p>一位独立绘本插画师的个人网站：作品集、正在连载的绘本、合作邀约。首页加一个作品详情页。</p>
+          <div class="toc-line"><h3>黑胶播放器</h3><span class="dots"></span></div>
+          <p>桌面端音乐 App 的「正在播放」模块：唱臂落下开始播放，拖动唱臂可以跳到歌曲的某一段，暂停时唱片慢慢停下。</p>
         </div>
         <span class="toc-status">等待生成</span>
       </li>
@@ -412,7 +529,7 @@
     <div class="method-body">
       <h2>把技能单独<br>拿出来看。</h2>
       <div>
-        <p>每次运行使用同一份提示词、同一个执行环境与同一个模型 codex/gpt-6.1-terra，思考强度 high。对照组不挂载技能，其余运行只多出一个技能。每组使用独立进程、独立配置目录与空 MCP 配置，隔离脚本会在运行结束后核验技能清单。</p>
+        <p>每次运行使用同一份提示词、同一个执行环境与同一个模型 codex/gpt-6.1-terra；同一案例内思考强度一致，案例 01 为 high，案例 02 为 xhigh。案例 02 的每组成品包含首页与作品详情页。对照组不挂载技能，其余运行只多出一个技能。每组使用独立进程、独立配置目录与空 MCP 配置，隔离脚本会在运行结束后核验技能清单。</p>
         <p>图版统一按 1440 × 900 截取首屏，按原比例排入册页。单次生成不能代表技能的平均水平；这本册子记录可见的差异，不做排名。</p>
       </div>
     </div>

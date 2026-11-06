@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 仓库用途
 
-前端技能横向对比仓库：用完全相同的提示词与模型，分别在不挂载技能、挂载单个技能的隔离 Claude Code 进程中生成前端页面，把成品与指标归档，供静态画廊展示。`bench/` 负责隔离运行与核验，`frontend-skills/` 保存上游技能快照，`examples/` 保存每个案例的成品与对照记录。
+前端技能横向对比仓库：用完全相同的提示词与模型，分别在不挂载技能、挂载单个技能的隔离 Claude Code 进程中生成前端页面，把成品与指标归档，供静态画廊展示。根目录 `index.html` 是画廊首页，`bench/` 负责隔离运行与核验，`frontend-skills/` 保存上游技能快照，`examples/` 保存每个案例的成品与对照记录，`assets/previews/` 保存画廊使用的页面截图。
 
 ## 常用命令
 
@@ -26,9 +26,25 @@ bash bench/run.sh --prompt <提示词文件> --model codex/gpt-6.1-terra --out ~
 python3 bench/verify_run.py --cfg <cfg 目录> --skill <技能名|none> --model <模型> --result <result.json> --html <页面>
 ```
 
-仓库没有构建步骤与单元测试，改动后的验证方式是实际跑一组生成任务，查看 `verify_run.py` 的输出与生成的页面。
+本地预览画廊首页：
+
+```bash
+python3 -m http.server 8765 --directory .
+```
+
+然后打开 `http://localhost:8765/`。首页的预览图与示例链接都使用相对路径，直接打开 `index.html` 也能浏览，通过本地服务器预览更接近发布环境。
+
+仓库没有构建步骤与单元测试。改动后的验证方式是实际跑一组生成任务，查看 `verify_run.py` 的输出与生成的页面；改动首页时，在 1440 与 375 两个宽度下检查案例轨道、图片与跳转链接。
 
 未另行说明时，同一案例的多组生成默认三路并发：调度脚本写在 `.tmp/` 下（该目录已忽略），同时保持三个生成进程，任一组结束后补入下一组。
+
+## 静态画廊
+
+- 根 `index.html` 是正式首页，采用纵向案例、横向结果轨道的版式，点击缩略图在新标签页打开 `examples/` 下的成品，滚动位置存入 `sessionStorage`。
+- `assets/previews/case-NN/<技能名>.jpg` 是 1440×900 的首屏截图，由首页直接引用；新增案例时同步补齐截图。
+- `gallery-prototype/design-demos/dir-1.html` 是首页的设计源文件，与根首页内容同步，仅资源路径不同（`../../assets/`、`../../examples/`）。
+- [gallery-prototype/direction-approved.md](gallery-prototype/direction-approved.md) 记录选定方向与用户原话，[gallery-prototype/directions.md](gallery-prototype/directions.md) 保存全部候选与筛选理由。`gallery-prototype/` 已入库，用于追溯设计过程，不属于归档案例。
+- 归档新案例时，需要把成品放进 `examples/case-NN/`，补齐 `对照记录.md` 与 `assets/previews/case-NN/`，再更新首页的目次、结果卡片与生成说明（日期、模型、思考强度）。
 
 ## 运行链路
 
@@ -40,11 +56,11 @@ python3 bench/verify_run.py --cfg <cfg 目录> --skill <技能名|none> --model 
 
 ## 目录约定
 
-- `examples/case-NN/<技能名>-claude-code/index.html`：单文件成品，样式与脚本内联，图片内嵌。案例编号递增，同目录的 `对照记录.md` 汇总运行条件与指标。
+- `examples/case-NN/<技能名>-claude-code/`：单个结果的成品目录，自包含、无外部依赖，样式与脚本内联，图片内嵌。通常包含 `index.html`；提示词要求多页时还会有 `work.html` 等页面，页面之间用相对链接。
+- `examples/case-NN/对照记录.md`：汇总该案例的运行条件、六组指标与页面观察；`examples/case-NN` 的编号递增。
 - 原始运行目录（`result.json`、`cfg-*` 会话记录、`run.meta`）放在仓库外的 `~/Code/benchmark-runs/<案例>/`，体积大且只用于追溯，不入库。
 - `frontend-skills/` 是上游技能的只读快照，来源仓库、提交号与许可证记录在 [frontend-skills/README.md](frontend-skills/README.md)，不要修改其中的技能内容。
 - [案例提示词.md](案例提示词.md) 保存各案例的提示词原文；实际运行时在提示词末尾补一段「交付要求」，写明文件名、单文件与内联约束。
-- `gallery-prototype/` 当前未被 Git 跟踪，由画廊工作线维护，不要当作已归档案例。
 
 ## 结果记录
 

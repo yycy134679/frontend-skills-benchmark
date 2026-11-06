@@ -15,4 +15,4 @@
 
 A 签名册。后续只细化 `design-demos/dir-1.html`，B 与 C 保持为备选。
 
-最终接入：根目录 `index.html` 使用 A 的版式，内容更新为案例 01 的六个结果；`design-demos/dir-1.html` 与首页保持同步，图片与示例改用相对路径。
+最终接入：根目录 `index.html` 使用 A 的版式，内容更新为案例 01 与案例 02 的十二个结果；`design-demos/dir-1.html` 与首页保持同步，图片与示例改用相对路径。
