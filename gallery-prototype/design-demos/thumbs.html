@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>六个方向缩略图</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #2a2a28; padding: 24px; font-family: "PingFang SC", "Helvetica Neue", sans-serif; }
+  .grid { display: grid; grid-template-columns: repeat(3, 480px); gap: 28px 24px; }
+  .cell { width: 480px; }
+  .screen { width: 480px; height: 300px; overflow: hidden; position: relative; background: #fff; }
+  .cap { color: #b9b7ae; font-size: 12px; letter-spacing: .08em; margin-top: 8px; display: flex; justify-content: space-between; }
+  .cap b { color: #f2efe6; font-weight: 500; letter-spacing: 0; }
+  img.shot { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+
+  /* A · 签名册 */
+  .a { background: #f1ead9; color: #211d18; padding: 18px 22px; }
+  .a .top { display: flex; justify-content: space-between; font-size: 9px; letter-spacing: .12em; border-bottom: 1px solid #211d18; padding-bottom: 7px; }
+  .a h1 { font-family: "Songti SC", serif; font-size: 40px; line-height: 1.18; font-weight: 600; margin-top: 22px; letter-spacing: -.02em; }
+  .a .band { position: absolute; right: 0; top: 64px; width: 118px; height: 236px; background: #28503c; color: #f1ead9; padding: 14px; font-family: "Songti SC", serif; font-size: 20px; line-height: 1.35; }
+  .a .band small { display: block; font-family: "PingFang SC", sans-serif; font-size: 9px; letter-spacing: .14em; margin-bottom: 10px; }
+  .a .plates { position: absolute; left: 22px; bottom: -34px; display: flex; gap: 8px; width: 330px; }
+  .a .plates img { width: 161px; height: 118px; object-fit: cover; object-position: top; border: 3px solid #f1ead9; }
+
+  /* B · 索引 */
+  .b { background: #fafaf7; color: #111; padding: 14px 18px; border-top: 5px solid #d23a1e; }
+  .b .top { display: flex; justify-content: space-between; font-size: 9px; letter-spacing: .1em; border-bottom: 1px solid #111; padding-bottom: 6px; }
+  .b .head { display: flex; align-items: flex-end; gap: 14px; margin-top: 14px; }
+  .b .num { font-family: "Helvetica Neue", Arial; font-size: 88px; line-height: .8; font-weight: 700; letter-spacing: -.06em; }
+  .b h1 { font-size: 24px; font-weight: 600; line-height: 1.2; padding-bottom: 6px; }
+  .b .sub { font-size: 9px; color: #555; margin-top: 4px; }
+  .b .cols { display: flex; gap: 10px; margin-top: 14px; border-top: 1px solid #bbb; padding-top: 8px; }
+  .b .col { width: 189px; }
+  .b .col img { width: 189px; height: 96px; object-fit: cover; object-position: top; border: 1px solid #bbb; }
+  .b .meta { display: flex; justify-content: space-between; font-size: 8px; letter-spacing: .04em; margin-top: 5px; color: #333; }
+  .b .col p { font-size: 8px; line-height: 1.45; color: #555; margin-top: 3px; }
+  .b .col:last-child { border-left: 1px solid #bbb; padding-left: 10px; width: 199px; }
+  .b .col:last-child img { width: 189px; }
+
+  /* C · 精选流 */
+  .c { background: #f3f1ec; color: #171717; display: flex; }
+  .c .rail { width: 92px; border-right: 1px solid #d8d5cd; padding: 14px 10px; font-size: 9px; line-height: 2.2; color: #6c6a64; }
+  .c .rail b { display: block; color: #111; font-weight: 600; font-size: 10px; margin-bottom: 6px; }
+  .c .main { flex: 1; padding: 12px 14px; }
+  .c .mrow { display: flex; justify-content: space-between; align-items: baseline; }
+  .c h1 { font-size: 18px; letter-spacing: -.02em; }
+  .c .pills { display: flex; gap: 4px; margin-top: 8px; }
+  .c .pills span { border: 1px solid #cfccc4; border-radius: 20px; font-size: 7px; padding: 2px 6px; color: #555; }
+  .c .pills span.on { background: #171717; color: #fff; border-color: #171717; }
+  .c .tiles { display: flex; gap: 8px; margin-top: 10px; }
+  .c .tile { width: 172px; }
+  .c .tile img { width: 172px; height: 122px; object-fit: cover; object-position: top; border-radius: 3px; }
+  .c .tcap { display: flex; justify-content: space-between; font-size: 7px; color: #6c6a64; margin-top: 4px; }
+  .c .tname { font-size: 9px; font-weight: 600; margin-top: 2px; }
+
+  /* D · 陈列墙 */
+  .d { background: #0b0b0b; color: #f1efe8; padding: 16px 18px; }
+  .d .top { display: flex; justify-content: space-between; font-size: 8px; color: #a7a49b; letter-spacing: .08em; }
+  .d h1 { text-align: center; font-family: "Songti SC", serif; font-size: 30px; font-weight: 400; margin-top: 14px; letter-spacing: .04em; }
+  .d .pills { display: flex; justify-content: center; gap: 4px; margin-top: 9px; }
+  .d .pills span { border: 1px solid #333; border-radius: 20px; font-size: 7px; padding: 2px 7px; color: #b9b6ad; }
+  .d .wall { display: flex; gap: 8px; margin-top: 13px; }
+  .d .w { width: 143px; }
+  .d .w img { width: 143px; height: 96px; object-fit: cover; object-position: top; }
+  .d .w .empty { width: 143px; height: 96px; border: 1px dashed #3a3a38; display: flex; align-items: center; justify-content: center; color: #555; font-size: 8px; }
+  .d .wname { font-size: 8px; margin-top: 4px; }
+  .d .wmeta { font-size: 7px; color: #807d75; margin-top: 2px; }
+
+  /* E · 暗房 */
+  .e { background: #0a0a0a; color: #f0ede4; padding: 14px 22px; }
+  .e .top { display: flex; justify-content: space-between; align-items: center; font-size: 8px; color: #a29f96; letter-spacing: .12em; }
+  .e .top b { font-family: Georgia, serif; font-size: 18px; font-weight: 400; color: #f0ede4; letter-spacing: .16em; }
+  .e h1 { font-family: "Songti SC", serif; font-size: 26px; font-weight: 400; text-align: center; margin-top: 10px; letter-spacing: .04em; }
+  .e .plate { width: 336px; height: 148px; margin: 12px auto 0; overflow: hidden; }
+  .e .plate img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .e .exif { display: flex; justify-content: space-between; width: 336px; margin: 7px auto 0; font-size: 7px; color: #8c8981; letter-spacing: .04em; }
+
+  /* F · 招牌墙 */
+  .f { background: #121412; color: #f2ecdc; padding: 0; overflow: hidden; }
+  .f .top { display: flex; justify-content: space-between; padding: 12px 16px 0; font-size: 8px; color: #9c998f; letter-spacing: .1em; }
+  .f .wall { position: relative; height: 274px; }
+  .f .card { position: absolute; width: 196px; height: 132px; border: 1px solid #3b3d38; overflow: hidden; }
+  .f .card img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .f .c1 { left: 24px; top: 26px; transform: rotate(-2deg); }
+  .f .c2 { left: 246px; top: 58px; transform: rotate(1.6deg); }
+  .f .sign { position: absolute; padding: 6px 10px; font-weight: 800; font-size: 13px; letter-spacing: .04em; }
+  .f .s1 { background: #d02b1d; color: #fff3d8; left: 8px; top: 10px; writing-mode: vertical-rl; height: 118px; font-size: 18px; }
+  .f .s2 { background: #f2c53d; color: #1b1b18; left: 198px; top: 8px; transform: rotate(-2deg); }
+  .f .s3 { background: #1d4fa1; color: #f7f3e6; left: 330px; top: 24px; transform: rotate(2deg); }
+  .f .s4 { background: #f4edda; color: #1b1b18; left: 152px; top: 214px; font-size: 10px; transform: rotate(-1deg); }
+  .f .s5 { background: #0f0f0f; color: #e0523f; border: 1px solid #e0523f; left: 340px; top: 196px; font-size: 9px; }
+</style>
+</head>
+<body>
+<div class="grid">
+
+  <div class="cell">
+    <div class="screen a">
+      <div class="top"><span>技能对照册 · SKILL CATALOGUE</span><span>第一辑 / 2026</span></div>
+      <h1>同一道题目，<br>不同的手。</h1>
+      <div class="band"><small>CASE 04</small>精品咖啡<br>订阅官网</div>
+      <div class="plates">
+        <img src="../assets/no-skill-1440.jpg" alt="">
+        <img src="../assets/frontend-design-1440.jpg" alt="">
+      </div>
+    </div>
+    <div class="cap"><b>A1 · 签名册</b><span>Irma Boom</span></div>
+  </div>
+
+  <div class="cell">
+    <div class="screen b">
+      <div class="top"><span>对照 / FRONTEND SKILLS BENCHMARK</span><span>案例 · 技能 · 方法</span></div>
+      <div class="head">
+        <div class="num">04</div>
+        <div><h1>精品咖啡订阅官网</h1><div class="sub">TerraBrew · 同一份提示词 · 两个结果</div></div>
+      </div>
+      <div class="cols">
+        <div class="col">
+          <img src="../assets/no-skill-1440.jpg" alt="">
+          <div class="meta"><span>基准 · 不使用技能</span><span>01 / 02</span></div>
+          <p>整幅果实照片铺满首屏，导航三项，画面下沿只留批次与庄园一行。</p>
+        </div>
+        <div class="col">
+          <img src="../assets/frontend-design-1440.jpg" alt="">
+          <div class="meta"><span>frontend-design</span><span>02 / 02</span></div>
+          <p>导航扩为四项，画面底部并列庄园、产区、海拔与批次四项信息。</p>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><b>B1 · 索引标本</b><span>Experimental Jetset</span></div>
+  </div>
+
+  <div class="cell">
+    <div class="screen c">
+      <div class="rail"><b>对照</b>案例<br>技能<br>方法<br>关于</div>
+      <div class="main">
+        <div class="mrow"><h1>同一道题目，不同的手。</h1><span style="font-size:8px;color:#6c6a64">01 案例 / 02 结果</span></div>
+        <div class="pills"><span class="on">全部</span><span>咖啡</span><span>播放器</span><span>绘本</span><span>3D</span></div>
+        <div class="tiles">
+          <div class="tile"><img src="../assets/no-skill-1440.jpg" alt=""><div class="tcap"><span>基准</span><span>Claude Code</span></div><div class="tname">不使用技能</div></div>
+          <div class="tile"><img src="../assets/frontend-design-1440.jpg" alt=""><div class="tcap"><span>frontend-design</span><span>Claude Code</span></div><div class="tname">精品咖啡订阅官网</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><b>C1 · 精选流</b><span>Recent.design</span></div>
+  </div>
+
+  <div class="cell">
+    <div class="screen d">
+      <div class="top"><span>设计</span><span>案例 / 技能 / 方法</span></div>
+      <h1>同一道题目，不同的手。</h1>
+      <div class="pills"><span>全部</span><span>咖啡</span><span>播放器</span><span>绘本</span><span>3D 雪景</span></div>
+      <div class="wall">
+        <div class="w"><img src="../assets/no-skill-1440.jpg" alt=""><div class="wname">不使用技能</div><div class="wmeta">基准 · Claude Code</div></div>
+        <div class="w"><img src="../assets/frontend-design-1440.jpg" alt=""><div class="wname">frontend-design</div><div class="wmeta">Claude Code</div></div>
+        <div class="w"><div class="empty">等待生成</div><div class="wname">impeccable</div><div class="wmeta">队列中</div></div>
+      </div>
+    </div>
+    <div class="cap"><b>D1 · 陈列墙</b><span>Minimal.gallery</span></div>
+  </div>
+
+  <div class="cell">
+    <div class="screen e">
+      <div class="top"><span>案例 01 / 04</span><b>对 照</b><span>档案 · 技能 · 关于</span></div>
+      <h1>同一道题目，不同的手。</h1>
+      <div class="plate"><img src="../assets/no-skill-1440.jpg" alt=""></div>
+      <div class="exif"><span>基准 · 不使用技能 · Claude Code</span><span>1440 × 900 · 01 / 02</span></div>
+    </div>
+    <div class="cap"><b>E1 · 暗房</b><span>Gallery Dark</span></div>
+  </div>
+
+  <div class="cell">
+    <div class="screen f">
+      <div class="top"><span>对照 · 技能画廊</span><span>01 / 04</span></div>
+      <div class="wall">
+        <div class="card c1"><img src="../assets/no-skill-1440.jpg" alt=""></div>
+        <div class="card c2"><img src="../assets/frontend-design-1440.jpg" alt=""></div>
+        <div class="sign s1">基准</div>
+        <div class="sign s2">frontend-design</div>
+        <div class="sign s3">精品咖啡</div>
+        <div class="sign s4">同一份提示词 · 两个结果</div>
+        <div class="sign s5">案例 04</div>
+      </div>
+    </div>
+    <div class="cap"><b>F1 · 招牌墙</b><span>香港街招</span></div>
+  </div>
+
+</div>
+</body>
+</html>

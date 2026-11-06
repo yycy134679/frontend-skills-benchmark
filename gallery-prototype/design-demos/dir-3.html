@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>对照 · 前端技能画廊</title>
+<style>
+  :root {
+    --wall: #141613;
+    --wall-2: #1b1e1a;
+    --cream: #f6efdc;
+    --ink: #171712;
+    --muted: #a9a79c;
+    --line: #3a3d37;
+    --red: #c3281c;
+    --yellow: #f2c53d;
+    --blue: #1d4fa1;
+    --green: #1f6b47;
+    --pad: clamp(20px, 3.4vw, 52px);
+    --sans: "PingFang SC", "Helvetica Neue", "Noto Sans SC", sans-serif;
+    --mono: "SF Mono", "Menlo", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; color: var(--cream); font-family: var(--sans); font-size: 14px; line-height: 1.7;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 79px, rgba(255,255,255,.018) 79px 80px),
+      repeating-linear-gradient(0deg, transparent 0 79px, rgba(255,255,255,.018) 79px 80px),
+      var(--wall);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  img { display: block; max-width: 100%; }
+  figure { margin: 0; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  ::selection { background: var(--yellow); color: var(--ink); }
+  .shell { max-width: 1640px; margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+
+  /* 招牌式刊头 */
+  .masthead {
+    display: flex; align-items: center; gap: 14px;
+    padding-top: 18px; padding-bottom: 18px;
+  }
+  .logo {
+    width: 58px; height: 58px; background: var(--red); color: var(--cream);
+    border: 3px solid var(--cream); box-shadow: 4px 4px 0 #000;
+    display: grid; place-items: center; font-size: 27px; font-weight: 800; line-height: 1;
+    text-decoration: none; flex: none;
+  }
+  .brand { font-size: 14px; letter-spacing: .16em; color: var(--muted); }
+  .brand b { display: block; color: var(--cream); font-size: 15px; letter-spacing: .06em; font-weight: 700; }
+  .nav-plate {
+    margin-left: auto; background: var(--cream); color: var(--ink);
+    display: flex; gap: 26px; align-items: center; padding: 10px 18px;
+    border: 3px solid #000; box-shadow: 4px 4px 0 #000; font-size: 12px; font-weight: 600;
+  }
+  .nav-plate a { text-decoration: none; }
+  .nav-plate a:hover { color: var(--red); }
+
+  /* 首屏 */
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr);
+    gap: clamp(18px, 2.4vw, 36px); align-items: start;
+    padding-top: clamp(40px, 5vw, 72px); padding-bottom: clamp(48px, 6vw, 88px);
+  }
+  .hero-sign {
+    background: var(--red); color: var(--cream); border: 4px solid var(--cream);
+    box-shadow: 10px 10px 0 #000; padding: clamp(24px, 3vw, 44px);
+    transform: rotate(-.5deg);
+  }
+  .hero-sign .topline {
+    display: flex; justify-content: space-between; gap: 16px;
+    font-family: var(--mono); font-size: 14px; letter-spacing: .1em; margin-bottom: 30px;
+  }
+  .hero-sign h1 {
+    margin: 0; font-size: clamp(46px, 6vw, 86px); line-height: 1.06;
+    letter-spacing: -.04em; font-weight: 800;
+  }
+  .hero-sign h1 em { font-style: normal; color: var(--yellow); }
+  .hero-sign .bottom {
+    display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 30px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .06em;
+  }
+  .hero-side { display: flex; flex-direction: column; gap: 18px; }
+  .side-case {
+    background: var(--blue); color: var(--cream); border: 3px solid #000;
+    box-shadow: 6px 6px 0 #000; padding: 20px; transform: rotate(.7deg);
+  }
+  .side-case .no { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; }
+  .side-case h2 { margin: 10px 0 4px; font-size: 27px; line-height: 1.3; font-weight: 800; letter-spacing: -.02em; }
+  .side-case p { margin: 0; font-size: 14px; line-height: 1.7; color: #d7e1f4; }
+  .side-note {
+    background: var(--cream); color: var(--ink); border: 3px solid #000;
+    box-shadow: 6px 6px 0 #000; padding: 20px; transform: rotate(-.5deg);
+  }
+  .side-note p { margin: 0 0 14px; font-size: 14px; line-height: 1.85; }
+  .side-note a { font-size: 12px; font-weight: 700; text-underline-offset: 4px; }
+
+  /* 案例招牌 */
+  .case { padding-top: 10px; }
+  .case-sign {
+    background: var(--green); color: #fffdf5; border: 3px solid #000;
+    box-shadow: 7px 7px 0 #000; padding: 18px 24px;
+    display: flex; align-items: center; gap: 22px;
+  }
+  .case-sign .num { font-family: var(--mono); font-size: clamp(38px, 4vw, 58px); line-height: 1; font-weight: 700; letter-spacing: -.05em; }
+  .case-sign h2 { margin: 0; font-size: clamp(22px, 2.2vw, 30px); font-weight: 800; letter-spacing: -.02em; }
+  .case-sign .side { margin-left: auto; font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-align: right; }
+
+  .case-body {
+    display: grid; grid-template-columns: 300px minmax(0, 1fr);
+    gap: clamp(24px, 3vw, 44px); padding-top: 30px; align-items: start;
+  }
+  .board-note {
+    background: var(--cream); color: var(--ink); border: 3px solid #000;
+    box-shadow: 5px 5px 0 #000; padding: 20px; transform: rotate(-.4deg);
+  }
+  .board-note h3 { margin: 0 0 10px; font-size: 18px; font-weight: 800; }
+  .board-note .desc { margin: 0 0 14px; font-size: 14px; line-height: 1.8; color: #4a483f; }
+  details.prompt { border-top: 1px solid #bdb6a1; }
+  details.prompt summary {
+    list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 12px;
+    padding: 9px 0; font-size: 12px; font-weight: 700; border-bottom: 1px solid #bdb6a1;
+  }
+  details.prompt summary::-webkit-details-marker { display: none; }
+  details.prompt summary .hint { font-family: var(--mono); font-size: 12px; color: #6a675c; font-weight: 400; }
+  details.prompt[open] summary .hint::before { content: "收起"; }
+  details.prompt:not([open]) summary .hint::before { content: "展开"; }
+  .prompt-body { padding: 12px 0 0; }
+  .prompt-body p { margin: 0 0 12px; font-size: 14px; line-height: 1.85; color: #33322b; }
+  .gen-note { margin: 14px 0 0; font-size: 12px; line-height: 1.7; color: #6a675c; }
+
+  .track-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--line);
+    font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--muted);
+  }
+  .arrows { display: flex; gap: 6px; }
+  .arrows button {
+    width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer;
+    background: var(--yellow); color: var(--ink); border: 2px solid #000; box-shadow: 3px 3px 0 #000;
+    font-size: 17px; font-weight: 700;
+  }
+  .arrows button:hover:not(:disabled) { background: var(--cream); }
+  .arrows button:disabled { opacity: .28; cursor: default; box-shadow: none; }
+
+  .track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; padding: 18px 0 10px; }
+  .result { flex: 0 0 60%; margin-right: 4%; scroll-snap-align: start; min-width: 0; }
+  .result:last-child { margin-right: 0; }
+  .result-sign {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    padding: 10px 14px; border: 3px solid #000; box-shadow: 4px 4px 0 #000;
+    font-size: 17px; font-weight: 800; letter-spacing: -.01em; transform: rotate(-.35deg);
+  }
+  .result:nth-child(even) .result-sign { transform: rotate(.35deg); }
+  .result-sign.red { background: var(--red); color: var(--cream); }
+  .result-sign.yellow { background: var(--yellow); color: var(--ink); }
+  .result-sign .idx { font-family: var(--mono); font-size: 12px; font-weight: 400; letter-spacing: .08em; }
+  .window {
+    margin-top: 12px; background: var(--cream); padding: 8px; border: 3px solid #000;
+    box-shadow: 0 12px 34px rgba(0,0,0,.42);
+  }
+  .window a { display: block; }
+  .window img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
+  .window a:hover img { opacity: .9; }
+  .chalk {
+    margin-top: 12px; background: var(--wall-2); border: 1px solid var(--line); padding: 14px 16px;
+  }
+  .chalk .meta { display: flex; flex-wrap: wrap; gap: 4px 16px; font-family: var(--mono); font-size: 12px; color: var(--yellow); letter-spacing: .05em; }
+  .chalk p { margin: 9px 0 0; font-size: 14px; line-height: 1.8; color: #ddd7c6; max-width: 50ch; }
+  .chalk a { display: inline-block; margin-top: 9px; font-size: 12px; color: var(--cream); text-underline-offset: 3px; }
+  .chalk .none { display: inline-block; margin-top: 9px; font-size: 12px; color: var(--muted); }
+
+  /* 待生成 */
+  .queue { padding-top: clamp(64px, 7vw, 104px); }
+  .section-sign {
+    display: inline-flex; align-items: baseline; gap: 14px; background: var(--red); color: var(--cream);
+    border: 3px solid #000; box-shadow: 5px 5px 0 #000; padding: 8px 16px; transform: rotate(-.4deg);
+  }
+  .section-sign h2 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
+  .section-sign span { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; }
+  .queue-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 22px; }
+  .queue-item {
+    background: var(--wall-2); border: 1px solid var(--line); border-top: 4px solid var(--yellow);
+    padding: 18px; min-height: 170px;
+  }
+  .queue-item .qno { font-family: var(--mono); font-size: 12px; color: var(--yellow); letter-spacing: .1em; }
+  .queue-item h3 { margin: 8px 0 8px; font-size: 20px; font-weight: 800; letter-spacing: -.02em; }
+  .queue-item p { margin: 0; font-size: 14px; line-height: 1.75; color: var(--muted); }
+  .queue-item .status { display: inline-block; margin-top: 14px; font-size: 12px; color: var(--yellow); border: 1px solid var(--yellow); padding: 2px 8px; }
+
+  /* 技能墙 */
+  .skills { padding-top: clamp(64px, 7vw, 104px); }
+  .sign-wall { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 22px; }
+  .wall-sign {
+    display: flex; flex-direction: column; justify-content: space-between; min-height: 128px;
+    padding: 14px; border: 3px solid #000; box-shadow: 4px 4px 0 #000; text-decoration: none;
+    transition: transform .15s ease;
+  }
+  .wall-sign:hover { transform: translateY(-3px); }
+  .wall-sign strong { font-size: 17px; font-weight: 800; line-height: 1.25; letter-spacing: -.02em; }
+  .wall-sign span { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; word-break: break-all; }
+  .wall-sign.s1 { background: var(--yellow); color: var(--ink); }
+  .wall-sign.s2 { background: var(--red); color: var(--cream); }
+  .wall-sign.s3 { background: var(--blue); color: var(--cream); }
+  .wall-sign.s4 { background: var(--cream); color: var(--ink); }
+  .wall-sign.s5 { background: var(--green); color: #fffdf5; }
+  .wall-sign:nth-child(odd) { transform: rotate(-.7deg); }
+  .wall-sign:nth-child(even) { transform: rotate(.7deg); }
+  .wall-sign:hover { transform: rotate(0) translateY(-3px); }
+
+  /* 方法：墙上的说明纸 */
+  .method { padding-top: clamp(64px, 7vw, 104px); }
+  .paper {
+    max-width: 820px; margin-top: 24px; background: var(--cream); color: var(--ink);
+    border: 3px solid #000; box-shadow: 8px 8px 0 #000; padding: 26px 28px; transform: rotate(-.4deg);
+  }
+  .paper h2 { margin: 0 0 12px; font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
+  .paper p { margin: 0 0 12px; font-size: 14px; line-height: 1.9; }
+  .paper p:last-child { margin-bottom: 0; color: #57544a; }
+
+  footer { margin-top: clamp(64px, 8vw, 110px); border-top: 1px solid var(--line); padding-top: 16px; padding-bottom: 52px; }
+  .foot { display: flex; justify-content: space-between; gap: 24px; font-size: 12px; color: var(--muted); }
+  .foot nav { display: flex; gap: 18px; }
+  .foot a { text-underline-offset: 3px; }
+
+  @media (max-width: 1180px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-side { display: grid; grid-template-columns: 1fr 1fr; }
+    .case-body { grid-template-columns: 1fr; }
+    .board-note { transform: none; }
+    .sign-wall { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .masthead { flex-wrap: wrap; }
+    .nav-plate { margin-left: 0; width: 100%; justify-content: space-between; }
+    .hero-sign { transform: none; box-shadow: 6px 6px 0 #000; }
+    .hero-sign h1 { font-size: clamp(38px, 11vw, 52px); }
+    .hero-sign .topline { flex-direction: column; gap: 4px; }
+    .hero-side { grid-template-columns: 1fr; }
+    .side-case, .side-note { transform: none; }
+    .case-sign { flex-wrap: wrap; gap: 10px 16px; }
+    .case-sign .side { margin-left: 0; width: 100%; text-align: left; }
+    .result { flex-basis: 88%; margin-right: 5%; }
+    .result-sign { font-size: 15px; }
+    .queue-row { grid-template-columns: 1fr; }
+    .sign-wall { grid-template-columns: 1fr 1fr; }
+    .wall-sign:nth-child(odd), .wall-sign:nth-child(even) { transform: none; }
+    .paper { transform: none; }
+    .foot { flex-direction: column; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead shell">
+  <a class="logo" href="#top" aria-label="回到顶部">对</a>
+  <div class="brand"><b>对照</b>FRONTEND SKILLS</div>
+  <nav class="nav-plate" aria-label="页面导航"><a href="#cases">案例</a><a href="#skills">技能</a><a href="#method">方法</a></nav>
+</header>
+
+<main class="shell" id="top">
+
+  <section class="hero">
+    <div class="hero-sign">
+      <div class="topline"><span>SAME BRIEF / DIFFERENT HANDS</span><span>2026</span></div>
+      <h1>同一道题目，<br><em>不同的手。</em></h1>
+      <div class="bottom"><span>01 案例</span><span>02 结果</span><span>05 技能</span><span>Claude Code</span></div>
+    </div>
+    <div class="hero-side">
+      <div class="side-case">
+        <span class="no">案例 04 / 精品咖啡</span>
+        <h2>精品咖啡<br>订阅官网</h2>
+        <p>TerraBrew，单一庄园，哥伦比亚埃尔帕拉伊索</p>
+      </div>
+      <div class="side-note">
+        <p>每组结果使用同一份提示词与同一执行环境，只改变挂载的技能。点开窗口，可以看完整成品。</p>
+        <a href="#cases">看第一组案例</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="case" id="cases">
+    <div class="case-sign">
+      <span class="num">04</span>
+      <h2>精品咖啡订阅官网</h2>
+      <span class="side">案例 04 / 2 个结果<br>2026-11-06 收录</span>
+    </div>
+
+    <div class="case-body">
+      <aside class="board-note">
+        <h3>题解</h3>
+        <p class="desc">单一庄园精品咖啡品牌 TerraBrew 的官网首页。首屏呈现哥伦比亚埃尔帕拉伊索庄园当季咖啡果枝与产区批次信息。</p>
+        <details class="prompt">
+          <summary><span>提示词</span><span class="hint" aria-hidden="true"></span></summary>
+          <div class="prompt-body">
+            <p id="prompt-04">单一庄园精品咖啡品牌「TerraBrew」官网（1440×900 起，响应式到 390 宽）：首屏呈现哥伦比亚埃尔帕拉伊索庄园当季咖啡果枝实景与产区批次信息；往下依次展开可点击切换的八维咖啡风味轮（花香、果香、酸质、甜感、醇厚、坚果、巧克力、香料）、五步庄园溯源时间轴、带植物线稿印章的单批次凭证卡，以及深烘焙褐订阅配置器与页脚。<br><br>八维风味轮、溯源节点与订阅配置器是这件作品的核心：点击风味扇区同步切换庄园风味笔记，切换重量、配送周期和研磨方式时实时计算每次配送价格并生成配置摘要。</p>
+          </div>
+        </details>
+        <p class="gen-note">两组结果均由 Claude Code 生成。模型与生成时间未在运行记录中保留。</p>
+      </aside>
+
+      <div>
+        <div class="track-head">
+          <span>结果 01–02</span>
+          <div class="arrows">
+            <button type="button" data-prev="case04" aria-label="上一个结果">←</button>
+            <button type="button" data-next="case04" aria-label="下一个结果">→</button>
+          </div>
+        </div>
+        <div class="track" data-track="case04">
+
+          <figure class="result">
+            <div class="result-sign red"><span>基准 · 不使用技能</span><span class="idx">01 / 02</span></div>
+            <div class="window">
+              <a href="../../examples/case-01/no-skill-claude-code/index.html" target="_blank" rel="noopener">
+                <img src="../assets/no-skill-1440.jpg" alt="不使用技能生成的精品咖啡官网首屏，整幅咖啡果实照片上压着中文标题">
+              </a>
+            </div>
+            <figcaption class="chalk">
+              <div class="meta"><span>Claude Code</span><span>1440 × 900</span><span>无技能</span></div>
+              <p>首屏用整幅果实照片铺满，中文标题压在画面左侧，导航三项；画面下沿只留批次与庄园一行小字。</p>
+              <span class="none">对照组，不挂载技能</span>
+            </figcaption>
+          </figure>
+
+          <figure class="result">
+            <div class="result-sign yellow"><span>frontend-design</span><span class="idx">02 / 02</span></div>
+            <div class="window">
+              <a href="../../examples/case-01/frontend-design-claude-code/index.html" target="_blank" rel="noopener">
+                <img src="../assets/frontend-design-1440.jpg" alt="frontend-design 生成的精品咖啡官网首屏，果实照片下方并列庄园、产区、海拔与批次">
+              </a>
+            </div>
+            <figcaption class="chalk">
+              <div class="meta"><span>Claude Code</span><span>1440 × 900</span><span>Anthropic</span></div>
+              <p>首屏同样是果实照片，标题下多一行英文，导航扩为四项；画面底部并列庄园、产区、海拔与批次四项信息。</p>
+              <a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">查看技能仓库</a>
+            </figcaption>
+          </figure>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="queue" id="queue">
+    <div class="section-sign"><h2>待生成的招牌</h2><span>三份提示词</span></div>
+    <div class="queue-row">
+      <article class="queue-item">
+        <span class="qno">案例 05</span>
+        <h3>黑胶播放器</h3>
+        <p>桌面端音乐 App 的「正在播放」模块：唱臂落下开始播放，拖动唱臂跳到歌曲某一段，暂停时唱片慢慢停下。</p>
+        <span class="status">等待生成</span>
+      </article>
+      <article class="queue-item">
+        <span class="qno">案例 06</span>
+        <h3>绘本插画师个人网站</h3>
+        <p>作品集、正在连载的绘本、合作邀约。做一个首页和一个作品详情页。</p>
+        <span class="status">等待生成</span>
+      </article>
+      <article class="queue-item">
+        <span class="qno">案例 07</span>
+        <h3>3D 雪景页面</h3>
+        <p>一个三维雪景页面，雪花飘扬，用页面展示浪漫与美学。</p>
+        <span class="status">等待生成</span>
+      </article>
+    </div>
+  </section>
+
+  <section class="skills" id="skills">
+    <div class="section-sign"><h2>五个技能，五块招牌</h2><span>五个快照</span></div>
+    <div class="sign-wall">
+      <a class="wall-sign s1" href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener"><strong>frontend-design</strong><span>anthropics/skills</span></a>
+      <a class="wall-sign s2" href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener"><strong>impeccable</strong><span>pbakaus/impeccable</span></a>
+      <a class="wall-sign s3" href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener"><strong>oil-ui</strong><span>oil-oil/oil-ui</span></a>
+      <a class="wall-sign s4" href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener"><strong>design-taste-frontend</strong><span>leonxlnx/taste-skill</span></a>
+      <a class="wall-sign s5" href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener"><strong>hallmark</strong><span>Nutlope/hallmark</span></a>
+    </div>
+  </section>
+
+  <section class="method" id="method">
+    <div class="section-sign"><h2>墙上的说明</h2><span>只留一个变量</span></div>
+    <div class="paper">
+      <h2>把技能单独拿出来看。</h2>
+      <p>每次运行使用同一份提示词、同一个执行环境、同一个模型。对照组不挂载技能，其余运行只多出一个技能。隔离脚本会在运行结束后核验技能清单，确认没有别的技能混入。</p>
+      <p>窗口统一按 1440 × 900 截取首屏，按原比例挂上墙。单次生成不能代表技能的平均水平；这里记录可见的差异，不做排名。</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="shell foot">
+    <span>每组结果只来自一次生成，用于看见差异，不用于给技能排名。</span>
+    <nav aria-label="页脚导航"><a href="#cases">案例</a><a href="#skills">技能</a><a href="#method">方法</a></nav>
+  </div>
+</footer>
+
+<script>
+  const tracks = [...document.querySelectorAll('[data-track]')];
+  const save = (key, value) => sessionStorage.setItem(key, String(value));
+
+  tracks.forEach(track => {
+    const id = track.dataset.track;
+    const prev = document.querySelector(`[data-prev="${id}"]`);
+    const next = document.querySelector(`[data-next="${id}"]`);
+    const step = () => {
+      const card = track.querySelector('.result');
+      return card ? card.getBoundingClientRect().width + parseFloat(getComputedStyle(card).marginRight) : 400;
+    };
+    const update = () => {
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+    track.addEventListener('scroll', () => { update(); save(`track-${id}`, track.scrollLeft); }, { passive: true });
+
+    const saved = sessionStorage.getItem(`track-${id}`);
+    if (saved !== null) track.scrollLeft = Number(saved);
+    update();
+  });
+
+  const savedY = sessionStorage.getItem('gallery-y');
+  if (savedY !== null) requestAnimationFrame(() => window.scrollTo(0, Number(savedY)));
+  window.addEventListener('scroll', () => save('gallery-y', window.scrollY), { passive: true });
+</script>
+</body>
+</html>

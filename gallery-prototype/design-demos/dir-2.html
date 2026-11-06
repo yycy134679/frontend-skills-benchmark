@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>对照 · 前端技能基准</title>
+<style>
+  :root {
+    --paper: #fafaf7;
+    --ink: #111110;
+    --muted: #66655f;
+    --line: #d7d5cc;
+    --line-soft: #e8e6de;
+    --accent: #d23a1e;
+    --pad: clamp(20px, 3vw, 48px);
+    --sans: "Helvetica Neue", "PingFang SC", "Noto Sans SC", sans-serif;
+    --mono: "SF Mono", "JetBrains Mono", "Menlo", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  img { display: block; max-width: 100%; }
+  figure { margin: 0; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  ::selection { background: var(--accent); color: #fff; }
+
+  .shell { max-width: 1680px; margin: 0 auto; padding: 0 var(--pad); }
+
+  /* 刊头 */
+  .masthead {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; padding-top: 22px; padding-bottom: 14px; border-bottom: 1px solid var(--ink);
+  }
+  .mark { text-decoration: none; display: flex; align-items: baseline; gap: 14px; }
+  .mark strong { font-size: 24px; font-weight: 700; letter-spacing: -.04em; }
+  .mark span { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; color: var(--muted); }
+  .masthead nav { display: flex; gap: 28px; font-size: 14px; }
+  .masthead nav a { text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; }
+  .masthead nav a:hover { border-color: var(--ink); }
+
+  /* 首屏 */
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 1fr) 340px;
+    gap: clamp(32px, 6vw, 96px); align-items: end;
+    padding: clamp(56px, 8vw, 112px) 0 clamp(48px, 6vw, 88px);
+    border-bottom: 1px solid var(--ink);
+  }
+  .kicker {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .04em;
+    color: var(--muted); margin: 0 0 22px;
+  }
+  .kicker::before { content: ""; width: 34px; height: 2px; background: var(--accent); }
+  h1 {
+    margin: 0; font-size: clamp(48px, 6.6vw, 96px); line-height: .98;
+    letter-spacing: -.055em; font-weight: 650;
+  }
+  .hero-note { padding-bottom: 8px; }
+  .hero-note p { margin: 0 0 18px; font-size: 14px; line-height: 1.8; color: var(--muted); }
+  .hero-note dl { margin: 0; border-top: 1px solid var(--line); }
+  .hero-note dl div { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .hero-note dt { font-size: 12px; color: var(--muted); }
+  .hero-note dd { margin: 0; font-family: var(--mono); font-size: 12px; }
+
+  /* 案例 */
+  .case { padding-top: clamp(52px, 7vw, 92px); }
+  .case-rule {
+    display: flex; justify-content: space-between; gap: 16px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--ink);
+    font-family: var(--mono); font-size: 12px; letter-spacing: .06em;
+  }
+  .case-rule span:first-child { color: var(--accent); }
+  .case-body {
+    display: grid; grid-template-columns: 300px minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 64px); padding-top: 22px;
+  }
+  .case-aside { position: relative; }
+  .case-num {
+    font-family: var(--mono); font-size: clamp(72px, 8vw, 112px); line-height: .78;
+    font-weight: 700; letter-spacing: -.07em; color: #8b887e; margin-bottom: 18px;
+  }
+  .case-aside h2 { margin: 0; font-size: clamp(26px, 2.4vw, 34px); line-height: 1.2; letter-spacing: -.03em; }
+  .case-desc { margin: 12px 0 22px; color: var(--muted); font-size: 14px; line-height: 1.75; }
+  details.prompt { border-top: 1px solid var(--line); }
+  details.prompt summary {
+    list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 12px;
+    padding: 11px 0; font-size: 14px; border-bottom: 1px solid var(--line);
+  }
+  details.prompt summary::-webkit-details-marker { display: none; }
+  details.prompt summary .hint { color: var(--muted); font-family: var(--mono); font-size: 12px; }
+  details.prompt[open] summary .hint::before { content: "收起"; }
+  details.prompt:not([open]) summary .hint::before { content: "展开"; }
+  .prompt-body { padding: 14px 0 4px; }
+  .prompt-body p { margin: 0 0 14px; font-size: 14px; line-height: 1.85; color: #33322e; }
+  .gen-note { margin: 18px 0 0; font-size: 12px; line-height: 1.7; color: var(--muted); }
+
+  .track-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--ink);
+    font-family: var(--mono); font-size: 12px; letter-spacing: .05em;
+  }
+  .arrows { display: flex; gap: 6px; }
+  .arrows button {
+    width: 44px; height: 44px; display: grid; place-items: center;
+    background: transparent; border: 1px solid var(--line); cursor: pointer; font-size: 16px;
+  }
+  .arrows button:hover:not(:disabled) { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+  .arrows button:disabled { opacity: .28; cursor: default; }
+
+  .track {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: thin; padding: 22px 0 8px;
+  }
+  .result {
+    flex: 0 0 47%; margin-right: 5%; scroll-snap-align: start; min-width: 0;
+  }
+  .result:last-child { margin-right: 0; }
+  .shot { display: block; border: 1px solid var(--line); overflow: hidden; }
+  .shot img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; transition: opacity .25s ease; }
+  .shot:hover img { opacity: .86; }
+  .result figcaption { padding-top: 14px; }
+  .r-top { display: grid; grid-template-columns: 38px minmax(0, 1fr); align-items: baseline; gap: 6px; }
+  .r-index { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .r-top h3 { margin: 0; font-size: 18px; line-height: 1.35; letter-spacing: -.02em; }
+  .r-meta {
+    display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 7px;
+    font-family: var(--mono); font-size: 12px; color: var(--muted);
+  }
+  .r-note { margin: 12px 0 0; font-size: 14px; line-height: 1.75; max-width: 46ch; }
+  .r-link { display: inline-block; margin-top: 12px; font-size: 12px; text-underline-offset: 3px; }
+  .r-none { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--muted); }
+
+  /* 队列 */
+  .queue, .skills, .method { padding-top: clamp(64px, 8vw, 112px); }
+  .sec-rule {
+    display: flex; justify-content: space-between; gap: 16px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--ink); font-family: var(--mono); font-size: 12px; letter-spacing: .05em;
+  }
+  .sec-rule span:first-child { color: var(--accent); }
+  .queue ol { list-style: none; margin: 0; padding: 0; }
+  .queue li {
+    display: grid; grid-template-columns: 70px minmax(0, 1fr) 120px; gap: 20px;
+    align-items: start; padding: 20px 0; border-bottom: 1px solid var(--line);
+  }
+  .q-num { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 4px; }
+  .q-main h3 { margin: 0 0 4px; font-size: 20px; letter-spacing: -.02em; }
+  .q-main p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 62ch; }
+  .q-status { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: right; padding-top: 5px; }
+
+  /* 技能 */
+  .skill-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-bottom: 1px solid var(--ink); }
+  .skill-grid a {
+    display: block; padding: 18px 16px 22px; text-decoration: none;
+    border-left: 1px solid var(--line); min-height: 128px;
+  }
+  .skill-grid a:first-child { border-left: 0; padding-left: 0; }
+  .skill-grid a:hover { background: #f1efe7; }
+  .skill-grid strong { display: block; font-size: 17px; letter-spacing: -.02em; margin-bottom: 8px; }
+  .skill-grid span { display: block; font-family: var(--mono); font-size: 12px; color: var(--muted); word-break: break-all; line-height: 1.6; }
+
+  /* 方法 */
+  .method-body { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); padding-top: 22px; }
+  .method-body h2 { margin: 0; font-size: clamp(26px, 2.4vw, 34px); line-height: 1.2; letter-spacing: -.03em; }
+  .method-body p { margin: 0 0 14px; font-size: 14px; line-height: 1.85; max-width: 66ch; }
+  .method-body p:last-child { color: var(--muted); font-size: 14px; }
+
+  footer { margin-top: clamp(72px, 9vw, 120px); border-top: 1px solid var(--ink); padding: 20px 0 56px; }
+  .foot { display: flex; justify-content: space-between; gap: 24px; font-size: 12px; color: var(--muted); }
+  .foot nav { display: flex; gap: 20px; }
+  .foot a { text-underline-offset: 3px; }
+
+  @media (max-width: 1180px) {
+    .hero { grid-template-columns: 1fr; align-items: start; }
+    .hero-note { max-width: 520px; }
+    .case-body, .method-body { grid-template-columns: 1fr; }
+    .case-aside { display: grid; grid-template-columns: 120px minmax(0, 1fr); column-gap: 24px; align-items: start; }
+    .case-num { grid-row: span 4; margin: 0; }
+    .case-aside h2, .case-desc, details.prompt, .gen-note { grid-column: 2; }
+    .skill-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .skill-grid a:nth-child(4) { border-left: 0; padding-left: 0; }
+    .skill-grid a { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 760px) {
+    body { font-size: 14px; }
+    .masthead { align-items: center; }
+    .mark strong { font-size: 20px; }
+    .mark span { display: none; }
+    .masthead nav { gap: 16px; font-size: 12px; }
+    h1 { font-size: clamp(38px, 11vw, 52px); }
+    .case-aside { grid-template-columns: 64px minmax(0, 1fr); }
+    .case-num { font-size: 64px; }
+    .result { flex-basis: 88%; margin-right: 6%; }
+    .queue li { grid-template-columns: 44px minmax(0, 1fr); }
+    .q-status { grid-column: 2; text-align: left; padding-top: 2px; }
+    .skill-grid { grid-template-columns: 1fr 1fr; }
+    .skill-grid a:nth-child(3), .skill-grid a:nth-child(5) { border-left: 0; padding-left: 0; }
+    .skill-grid a:nth-child(4) { border-left: 1px solid var(--line); padding-left: 16px; }
+    .skill-grid a { min-height: 112px; }
+    .foot { flex-direction: column; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead shell">
+  <a class="mark" href="#top"><strong>对照</strong><span>FRONTEND SKILLS BENCHMARK</span></a>
+  <nav aria-label="页面导航"><a href="#cases">案例</a><a href="#skills">技能</a><a href="#method">方法</a></nav>
+</header>
+
+<main class="shell" id="top">
+
+  <section class="hero">
+    <div>
+      <p class="kicker">01 个案例 / 02 个结果 / 05 个技能</p>
+      <h1>同一道题目，<br>不同的手。</h1>
+    </div>
+    <div class="hero-note">
+      <p>每组结果使用同一份提示词与同一执行环境，只改变挂载的技能。缩略图按同一窗口截取，点击可在新标签页打开完整成品。</p>
+      <dl>
+        <div><dt>已完成案例</dt><dd>01</dd></div>
+        <div><dt>已收录结果</dt><dd>02</dd></div>
+        <div><dt>参与技能</dt><dd>05</dd></div>
+        <div><dt>最近更新</dt><dd>2026-11-06</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="case" id="cases">
+    <div class="case-rule"><span>CASE 04</span><span>精品咖啡订阅官网 / 2026-11-06 收录</span></div>
+    <div class="case-body">
+      <aside class="case-aside">
+        <div class="case-num" aria-hidden="true">04</div>
+        <h2>精品咖啡订阅官网</h2>
+        <p class="case-desc">单一庄园精品咖啡品牌 TerraBrew 的官网首页。首屏呈现哥伦比亚埃尔帕拉伊索庄园当季咖啡果枝与产区批次信息。</p>
+        <details class="prompt">
+          <summary><span>提示词</span><span class="hint" aria-hidden="true"></span></summary>
+          <div class="prompt-body">
+            <p id="prompt-04">单一庄园精品咖啡品牌「TerraBrew」官网（1440×900 起，响应式到 390 宽）：首屏呈现哥伦比亚埃尔帕拉伊索庄园当季咖啡果枝实景与产区批次信息；往下依次展开可点击切换的八维咖啡风味轮（花香、果香、酸质、甜感、醇厚、坚果、巧克力、香料）、五步庄园溯源时间轴、带植物线稿印章的单批次凭证卡，以及深烘焙褐订阅配置器与页脚。<br><br>八维风味轮、溯源节点与订阅配置器是这件作品的核心：点击风味扇区同步切换庄园风味笔记，切换重量、配送周期和研磨方式时实时计算每次配送价格并生成配置摘要。</p>
+          </div>
+        </details>
+        <p class="gen-note">两组结果均由 Claude Code 生成。模型与生成时间未在运行记录中保留，因此不填写。</p>
+      </aside>
+
+      <div>
+        <div class="track-head">
+          <span>结果 01–02</span>
+          <div class="arrows">
+            <button type="button" data-prev="case04" aria-label="上一个结果">←</button>
+            <button type="button" data-next="case04" aria-label="下一个结果">→</button>
+          </div>
+        </div>
+        <div class="track" data-track="case04">
+
+          <figure class="result">
+            <a class="shot" href="../../examples/case-01/no-skill-claude-code/index.html" target="_blank" rel="noopener">
+              <img src="../assets/no-skill-1440.jpg" alt="不使用技能生成的精品咖啡官网首屏，整幅咖啡果实照片上压着中文标题">
+            </a>
+            <figcaption>
+              <div class="r-top"><span class="r-index">01</span><h3>基准 · 不使用技能</h3></div>
+              <div class="r-meta"><span>Claude Code</span><span>1440 × 900</span><span>无技能仓库</span></div>
+              <p class="r-note">首屏用整幅果实照片铺满，中文标题压在画面左侧，导航三项；画面下沿只留批次与庄园一行小字。</p>
+              <span class="r-none">对照组，不挂载技能</span>
+            </figcaption>
+          </figure>
+
+          <figure class="result">
+            <a class="shot" href="../../examples/case-01/frontend-design-claude-code/index.html" target="_blank" rel="noopener">
+              <img src="../assets/frontend-design-1440.jpg" alt="frontend-design 生成的精品咖啡官网首屏，果实照片下方并列庄园、产区、海拔与批次">
+            </a>
+            <figcaption>
+              <div class="r-top"><span class="r-index">02</span><h3>frontend-design</h3></div>
+              <div class="r-meta"><span>Claude Code</span><span>1440 × 900</span><span>Anthropic</span></div>
+              <p class="r-note">首屏同样是果实照片，标题下多一行英文，导航扩为四项；画面底部并列庄园、产区、海拔与批次四项信息。</p>
+              <a class="r-link" href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">查看技能仓库</a>
+            </figcaption>
+          </figure>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="queue" id="queue">
+    <div class="sec-rule"><span>队列</span><span>三份提示词，等待生成</span></div>
+    <ol>
+      <li>
+        <span class="q-num">05</span>
+        <div class="q-main"><h3>黑胶播放器</h3><p>桌面端音乐 App 的「正在播放」模块：唱片在转盘上转，唱臂落下开始播放，旁边是歌词与播放控制。拖动唱臂可以跳到歌曲的某一段，暂停时唱片慢慢停下。</p></div>
+        <span class="q-status">等待生成</span>
+      </li>
+      <li>
+        <span class="q-num">06</span>
+        <div class="q-main"><h3>绘本插画师个人网站</h3><p>一位独立绘本插画师的个人网站：作品集、正在连载的绘本、合作邀约。首页加一个作品详情页。</p></div>
+        <span class="q-status">等待生成</span>
+      </li>
+      <li>
+        <span class="q-num">07</span>
+        <div class="q-main"><h3>3D 雪景页面</h3><p>一个三维雪景页面，雪花飘扬，用页面展示浪漫与美学。</p></div>
+        <span class="q-status">等待生成</span>
+      </li>
+    </ol>
+  </section>
+
+  <section class="skills" id="skills">
+    <div class="sec-rule"><span>技能</span><span>五个快照，各自独立挂载</span></div>
+    <div class="skill-grid">
+      <a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener"><strong>frontend-design</strong><span>anthropics/skills</span></a>
+      <a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener"><strong>impeccable</strong><span>pbakaus/impeccable</span></a>
+      <a href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener"><strong>oil-ui</strong><span>oil-oil/oil-ui</span></a>
+      <a href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener"><strong>design-taste-frontend</strong><span>leonxlnx/taste-skill</span></a>
+      <a href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener"><strong>hallmark</strong><span>Nutlope/hallmark</span></a>
+    </div>
+  </section>
+
+  <section class="method" id="method">
+    <div class="sec-rule"><span>方法</span><span>只留一个变量</span></div>
+    <div class="method-body">
+      <h2>把技能单独<br>拿出来看。</h2>
+      <div>
+        <p>每次运行使用同一份提示词、同一个执行环境、同一个模型，对照组不挂载技能，其余运行只多出一个技能。隔离脚本会在运行结束后核验技能清单，确认没有别的技能混入。</p>
+        <p>画廊里的缩略图统一按 1440 × 900 截取首屏，按原比例展示。单次生成不能代表技能的平均水平；这里记录的是可见的差异，不是排名。</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="shell foot">
+    <span>每组结果只来自一次生成，用于看见差异，不用于给技能排名。</span>
+    <nav aria-label="页脚导航"><a href="#cases">案例</a><a href="#skills">技能</a><a href="#method">方法</a></nav>
+  </div>
+</footer>
+
+<script>
+  const tracks = [...document.querySelectorAll('[data-track]')];
+
+  const save = (key, value) => sessionStorage.setItem(key, String(value));
+
+  tracks.forEach(track => {
+    const id = track.dataset.track;
+    const prev = document.querySelector(`[data-prev="${id}"]`);
+    const next = document.querySelector(`[data-next="${id}"]`);
+    const step = () => {
+      const card = track.querySelector('.result');
+      return card ? card.getBoundingClientRect().width + parseFloat(getComputedStyle(card).marginRight) : 400;
+    };
+    const update = () => {
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+    track.addEventListener('scroll', () => { update(); save(`track-${id}`, track.scrollLeft); }, { passive: true });
+
+    const saved = sessionStorage.getItem(`track-${id}`);
+    if (saved !== null) track.scrollLeft = Number(saved);
+    update();
+  });
+
+  const savedY = sessionStorage.getItem('gallery-y');
+  if (savedY !== null) requestAnimationFrame(() => window.scrollTo(0, Number(savedY)));
+  window.addEventListener('scroll', () => save('gallery-y', window.scrollY), { passive: true });
+</script>
+</body>
+</html>
