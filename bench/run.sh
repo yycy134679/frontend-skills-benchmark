@@ -1,0 +1,136 @@
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+die() {
+  printf '错误：%s\n' "$1" >&2
+  exit 1
+}
+
+usage() {
+  cat <<'USAGE'
+用法：
+  bash bench/run.sh --prompt <提示词文件> --model <模型> --out <输出目录> [选项]
+
+选项：
+  --skill <名称>       一起运行的技能名；不传或填 none 表示无技能对照组
+  --skill-dir <目录>   技能目录，必须包含 SKILL.md；指定 --skill 时必填
+  --effort <级别>      思考强度，默认 high
+  -h, --help           显示帮助
+
+依赖环境变量：
+  ANTHROPIC_BASE_URL   模型服务地址
+  ANTHROPIC_AUTH_TOKEN 访问令牌
+
+示例：
+  export ANTHROPIC_BASE_URL=http://127.0.0.1:3425
+  export ANTHROPIC_AUTH_TOKEN=magpie
+  bash bench/run.sh \
+    --prompt case.md \
+    --skill frontend-design \
+    --skill-dir "$HOME/.config/magpie/library/skills/frontend-design" \
+    --model codex/gpt-6.1-terra \
+    --out "$HOME/Code/benchmark-runs/coffee-fd"
+USAGE
+}
+
+PROMPT_FILE=""
+SKILL_NAME="none"
+SKILL_DIR=""
+MODEL=""
+EFFORT="high"
+OUT_DIR=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --prompt) PROMPT_FILE="$2"; shift 2 ;;
+    --skill) SKILL_NAME="$2"; shift 2 ;;
+    --skill-dir) SKILL_DIR="$2"; shift 2 ;;
+    --model) MODEL="$2"; shift 2 ;;
+    --effort) EFFORT="$2"; shift 2 ;;
+    --out) OUT_DIR="$2"; shift 2 ;;
+    -h|--help) usage; exit 0 ;;
+    *) die "未知参数：$1" ;;
+  esac
+done
+
+[ -n "$PROMPT_FILE" ] || die "缺少 --prompt"
+[ -f "$PROMPT_FILE" ] || die "提示词文件不存在：$PROMPT_FILE"
+[ -n "$MODEL" ] || die "缺少 --model"
+[ -n "$OUT_DIR" ] || die "缺少 --out"
+
+if [ "$SKILL_NAME" != "none" ]; then
+  [ -n "$SKILL_DIR" ] || die "指定 --skill 时必须同时指定 --skill-dir"
+  [ -f "$SKILL_DIR/SKILL.md" ] || die "技能目录缺少 SKILL.md：$SKILL_DIR"
+fi
+
+: "${ANTHROPIC_BASE_URL:?请先导出 ANTHROPIC_BASE_URL}"
+: "${ANTHROPIC_AUTH_TOKEN:?请先导出 ANTHROPIC_AUTH_TOKEN}"
+command -v claude >/dev/null 2>&1 || die "找不到 claude 命令"
+command -v python3 >/dev/null 2>&1 || die "找不到 python3 命令"
+
+case "$OUT_DIR" in
+  /*) ;;
+  *) OUT_DIR="$PWD/$OUT_DIR" ;;
+esac
+case "$OUT_DIR/" in
+  "$REPO_ROOT"/*) die "输出目录必须位于仓库之外，避免模型读到仓库内的案例与基准文件：$OUT_DIR" ;;
+esac
+mkdir -p "$OUT_DIR"
+OUT_DIR="$(cd "$OUT_DIR" && pwd)"
+
+CFG_DIR="$OUT_DIR/cfg-$(date +%Y%m%d-%H%M%S)-$$"
+mkdir -p "$CFG_DIR"
+cp "$PROMPT_FILE" "$OUT_DIR/prompt.md"
+
+RUN_ARGS=(
+  --model "$MODEL"
+  --effort "$EFFORT"
+  --strict-mcp-config
+  --mcp-config '{"mcpServers":{}}'
+  --permission-mode bypassPermissions
+  --output-format json
+)
+
+if [ "$SKILL_NAME" != "none" ]; then
+  PLUGIN_DIR="$OUT_DIR/plugin"
+  [ -e "$PLUGIN_DIR" ] && die "插件目录已存在，请换一个输出目录：$PLUGIN_DIR"
+  mkdir -p "$PLUGIN_DIR/.claude-plugin" "$PLUGIN_DIR/skills"
+  cp -RL "$SKILL_DIR" "$PLUGIN_DIR/skills/$SKILL_NAME"
+  printf '{"name":"%s","version":"1.0.0","description":"benchmark snapshot"}\n' "$SKILL_NAME" > "$PLUGIN_DIR/.claude-plugin/plugin.json"
+  RUN_ARGS+=(--plugin-dir "$PLUGIN_DIR")
+fi
+
+PROMPT_TEXT="$(cat "$OUT_DIR/prompt.md")"
+cd "$OUT_DIR"
+
+printf '开始运行：模型 %s，技能 %s，输出 %s\n' "$MODEL" "$SKILL_NAME" "$OUT_DIR"
+
+if ! env -i \
+  PATH="$PATH" \
+  HOME="$HOME" \
+  CLAUDE_CONFIG_DIR="$CFG_DIR" \
+  CLAUDE_CODE_DISABLE_CLAUDE_MDS=1 \
+  CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1 \
+  ANTHROPIC_BASE_URL="$ANTHROPIC_BASE_URL" \
+  ANTHROPIC_AUTH_TOKEN="$ANTHROPIC_AUTH_TOKEN" \
+  claude -p "$PROMPT_TEXT" "${RUN_ARGS[@]}" > result.json 2>&1; then
+  die "claude 执行失败，查看 $OUT_DIR/result.json"
+fi
+
+VERIFY_ARGS=(--cfg "$CFG_DIR" --skill "$SKILL_NAME" --model "$MODEL" --result "$OUT_DIR/result.json")
+if [ -f "$OUT_DIR/index.html" ]; then
+  VERIFY_ARGS+=(--html "$OUT_DIR/index.html")
+fi
+python3 "$SCRIPT_DIR/verify_run.py" "${VERIFY_ARGS[@]}"
+
+{
+  printf 'model=%s\n' "$MODEL"
+  printf 'skill=%s\n' "$SKILL_NAME"
+  printf 'effort=%s\n' "$EFFORT"
+  printf 'date=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  printf 'config_dir=%s\n' "$CFG_DIR"
+} > "$OUT_DIR/run.meta"
+
+printf '完成：%s\n' "$OUT_DIR"
