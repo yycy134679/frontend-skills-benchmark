@@ -4,10 +4,10 @@
 
 | 目录 | 技能名 | 来源 | 提交 | 许可 | 大小 |
 | --- | --- | --- | --- | --- | --- |
-| `oil-ui` | `oil-ui` | [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui) | `0d64a00f3a5c45bf7a30d35bded9b7c0fdff2128` | MIT | 2.1 MB |
+| `oil-ui` | `oil-ui` | [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui) | `65dee4e5262635651712c338ad7dbfe0929e318c` | MIT | 2.1 MB |
 | `frontend-design` | `frontend-design` | [anthropics/skills · skills/frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | `ca45fc496a3436251f191354091d557da31c15b5` | Apache 2.0 | 24 KB |
 | `impeccable` | `impeccable` | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | `c3bb418ee38ee49a6b999b7752c1368f3123a2bd` | Apache 2.0 | 2.2 MB |
-| `taste-skill` | `design-taste-frontend` | [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill) | `9b4bf937a1f69348126959c15d2f99a73e65699b` | MIT | 39 MB |
+| `taste-skill` | `design-taste-frontend` | [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill) | `f6b76575f949707b4e3c37cd86cb44b0b98643e8` | MIT | 39 MB |
 | `hallmark` | `hallmark` | [Nutlope/hallmark](https://github.com/Nutlope/hallmark) | `407fa689f4a276f2fd389208d271d0fef08f5058` | MIT | 7.1 MB |
 
 ## 各技能内容
