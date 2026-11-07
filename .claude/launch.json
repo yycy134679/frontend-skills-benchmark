@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8777", "-d", "/Users/yycy/Code/benchmark-runs"],
       "port": 8777
+    },
+    {
+      "name": "gallery",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8765", "-d", "/Users/yycy/Code/frontend-skills-benchmark"],
+      "port": 8765
     }
   ]
 }
