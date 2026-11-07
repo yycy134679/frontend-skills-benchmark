@@ -115,7 +115,18 @@
   details.prompt summary .hint { font-family: var(--latin); font-size: 12px; color: var(--muted); }
   details.prompt[open] summary .hint::before { content: "收起"; }
   details.prompt:not([open]) summary .hint::before { content: "展开"; }
-  .prompt-body { padding: 14px 0 2px; }
+  .prompt-body {
+    max-height: 420px; overflow-y: auto; overscroll-behavior: contain;
+    padding: 14px 10px 2px 0; scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+    /* 滚动阴影：顶部或底部还有内容时显示一条渐隐，滚到头时由 local 背景盖住 */
+    background:
+      linear-gradient(var(--paper) 30%, rgba(242, 235, 221, 0)) top / 100% 28px no-repeat local,
+      linear-gradient(rgba(242, 235, 221, 0), var(--paper) 70%) bottom / 100% 28px no-repeat local,
+      linear-gradient(rgba(72, 58, 34, .12), rgba(72, 58, 34, 0)) top / 100% 12px no-repeat scroll,
+      linear-gradient(rgba(72, 58, 34, 0), rgba(72, 58, 34, .12)) bottom / 100% 12px no-repeat scroll;
+    border-bottom: 1px solid var(--line);
+  }
+  .prompt-body:focus-visible { outline-offset: 2px; }
   .prompt-body p { margin: 0 0 14px; font-size: 14px; line-height: 1.95; color: #3a3329; }
   .gen-note { margin: 18px 0 0; font-size: 12px; line-height: 1.8; color: var(--muted); }
 
@@ -279,7 +290,7 @@
         <p class="case-desc">单一庄园精品咖啡品牌 TerraBrew 的官网首页。首屏呈现哥伦比亚埃尔帕拉伊索庄园当季咖啡果枝与产区批次信息。</p>
         <details class="prompt">
           <summary><span>提示词</span><span class="hint" aria-hidden="true"></span></summary>
-          <div class="prompt-body">
+          <div class="prompt-body" tabindex="0" role="region" aria-label="提示词全文">
             <p id="prompt-01">单一庄园精品咖啡品牌「TerraBrew」官网（1440×900 起，响应式到 390 宽）：首屏呈现哥伦比亚埃尔帕拉伊索庄园当季咖啡果枝实景与产区批次信息；往下依次展开可点击切换的八维咖啡风味轮（花香、果香、酸质、甜感、醇厚、坚果、巧克力、香料）、五步庄园溯源时间轴、带植物线稿印章的单批次凭证卡，以及深烘焙褐订阅配置器与页脚。<br><br>八维风味轮、溯源节点与订阅配置器是这件作品的核心：点击风味扇区同步切换庄园风味笔记，切换重量、配送周期和研磨方式时实时计算每次配送价格并生成配置摘要。</p>
           </div>
         </details>
@@ -381,7 +392,7 @@
         <p class="case-desc">一位独立绘本插画师的个人网站。首页呈现作品集、正在连载的绘本与合作邀约，作品详情页展开单本绘本的完整介绍。</p>
         <details class="prompt">
           <summary><span>提示词</span><span class="hint" aria-hidden="true"></span></summary>
-          <div class="prompt-body">
+          <div class="prompt-body" tabindex="0" role="region" aria-label="提示词全文">
             <p id="prompt-02">一位独立绘本插画师的个人网站：作品集、正在连载的绘本、合作邀约。做首页和一个作品详情页。<br><br>插画师的作品主要画给孩子，也画给仍然愿意读故事的大人。作品集里既有已经出版的绘本，也有杂志插画与日常速写，按主题分成几组；正在连载的绘本按章节更新，能看到故事简介和最新一章；合作邀约写明绘本出版、品牌插画与线下工作坊三类合作，并给出联系方式与回复时间。<br><br>整个网站要精美，翻看起来像翻开一本绘本书。</p>
           </div>
         </details>
@@ -499,7 +510,7 @@
         <p class="case-desc">桌面端音乐 App 的「正在播放」模块。唱臂落针开始播放，拖动唱臂选段，歌词随进度逐行高亮，播放队列可以展开收起。</p>
         <details class="prompt">
           <summary><span>提示词</span><span class="hint" aria-hidden="true"></span></summary>
-          <div class="prompt-body">
+          <div class="prompt-body" tabindex="0" role="region" aria-label="提示词全文">
             <p id="prompt-03">一个桌面端音乐 App 的「正在播放」模块，播放一张三首曲目的虚构专辑，曲目、歌手、专辑名与歌词全部虚构，每首有独立时长和逐行时间戳歌词。<br><br>唱臂从支架落到唱片开始播放，落针过程中可以抬臂取消。播放时唱片转动，暂停时减速停下。拖动唱臂可以选段：落针角度对应播放位置，拖动时显示预览时间，松手后从该处继续播放，按 Esc 取消并回到拖动前的位置。唱臂可以用方向键调整位置。<br><br>播放控制包含播放与暂停、上一首、下一首、单曲循环开关、进度拖动、音量拖动与静音，显示当前时间与总时长。一首放完自动进入下一首，开启单曲循环时重头再放。<br><br>歌词随播放进度逐行高亮并自动滚动，点击任意一行从该行的时间开始播放。播放队列可以展开收起，列出三首曲目并标出正在播放的一首，点击切换，点击面板外或按 Esc 关闭。<br><br>空格键播放暂停，左右方向键前后跳五秒。收藏与音量在刷新后保留。系统开启减弱动态效果时唱片停止旋转。<br><br>音频用 Web Audio 合成或直接内嵌在页面里，不引用外部音频文件。页面为单个 HTML 文件，样式与脚本内联，打开即可运行。</p>
           </div>
         </details>
