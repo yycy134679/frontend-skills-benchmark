@@ -129,7 +129,9 @@ def main():
     print("技能清单：" + ("、".join(sorted(listed)) if listed else "（空）"))
     print("技能调用：" + ("、".join(str(call) for call in calls) if calls else "（无）"))
     print(f"实际模型：{models}")
-    print(f"轮次：{data.get('num_turns')}，耗时：{data.get('duration_ms')} 毫秒，费用：{data.get('total_cost_usd')}")
+    duration_ms = data.get("duration_ms")
+    duration = f"{duration_ms / 60000:.1f} min" if isinstance(duration_ms, (int, float)) else "未知"
+    print(f"轮次：{data.get('num_turns')}，耗时：{duration}")
     if args.html:
         print(f"页面大小：{os.path.getsize(args.html)} 字节")
 

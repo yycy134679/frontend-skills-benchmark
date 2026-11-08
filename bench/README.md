@@ -56,7 +56,7 @@ bash bench/run.sh \
   plugin/                      仅技能组存在，含被测技能快照
   result.json                  claude 的 JSON 输出
   index.html                   提示词要求模型生成的页面
-  run.meta                     模型、技能、思考强度、时间与配置目录
+  run.meta                     模型、技能、思考强度、轮次、耗时（分钟）、时间与配置目录
 ```
 
 ## 自动核验
@@ -69,7 +69,7 @@ bash bench/run.sh \
 - `result.json` 里的实际模型与 `--model` 不一致；
 - 生成了 `index.html` 但文件为空。
 
-核验通过时打印技能清单、技能调用、实际模型、轮次、耗时、费用与页面大小，可直接写入对照记录。
+核验通过时打印技能清单、技能调用、实际模型、轮次、耗时（分钟）与页面大小，可直接写入对照记录。Claude Code 调用第三方模型时统计的费用不准确，脚本不再读取或记录费用。
 
 ## 模型选择
 
@@ -79,5 +79,5 @@ bash bench/run.sh \
 
 - `plugin-authoring` 不随 `CLAUDE_CODE_DISABLE_BUNDLED_SKILLS` 关闭，它与网页设计无关，两组中同样存在。
 - 插件名与技能名相同时，技能清单可能出现 `frontend-design:frontend-design` 这种带命名空间的写法，指向同一个技能。
-- 单个样本的耗时与费用受模型波动影响，比较技能效果时应多轮采样，并在记录里保留 `run.meta` 与 `cfg-*` 会话记录。
+- 单个样本的轮次与耗时受模型波动影响，比较技能效果时应多轮采样，并在记录里保留 `run.meta` 与 `cfg-*` 会话记录。
 - 不同 Claude Code 版本的环境变量与参数可能变化，脚本只保证在 2.1.318 上验证过的行为。

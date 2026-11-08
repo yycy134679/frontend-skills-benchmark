@@ -125,10 +125,22 @@ if [ -f "$OUT_DIR/index.html" ]; then
 fi
 python3 "$SCRIPT_DIR/verify_run.py" "${VERIFY_ARGS[@]}"
 
+# 只记录轮次与耗时（分钟）；第三方模型经 Claude Code 统计的费用不准确，不再记录
+read -r TURNS DURATION_MIN < <(python3 - "$OUT_DIR/result.json" <<'PY'
+import json, sys
+lines = [line for line in open(sys.argv[1], encoding="utf-8").read().splitlines() if line.strip()]
+data = json.loads(lines[-1])
+ms = data.get("duration_ms")
+print(data.get("num_turns"), f"{ms / 60000:.1f}" if isinstance(ms, (int, float)) else "unknown")
+PY
+)
+
 {
   printf 'model=%s\n' "$MODEL"
   printf 'skill=%s\n' "$SKILL_NAME"
   printf 'effort=%s\n' "$EFFORT"
+  printf 'turns=%s\n' "$TURNS"
+  printf 'duration_min=%s\n' "$DURATION_MIN"
   printf 'date=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
   printf 'config_dir=%s\n' "$CFG_DIR"
 } > "$OUT_DIR/run.meta"
