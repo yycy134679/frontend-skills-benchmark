@@ -1,0 +1,1354 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#E9EDE6">
+  <title>把拾页的同步从 iCloud 迁到自建服务 · 周屿</title>
+  <meta name="description" content="一次不浪漫但值得的迁移：从 CloudKit 容器，到杭州的一台 Postgres、一个对象存储和自建同步服务。">
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('zhouyu-theme');
+        if (saved === 'light' || saved === 'dark') {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #E9EDE6;
+      --paper: #F4F6F0;
+      --ink: #162A24;
+      --ink-soft: #2B4038;
+      --muted: #586A62;
+      --line: #C9D3C9;
+      --line-strong: #A9B9AE;
+      --accent: #2F4BFF;
+      --accent-soft: #DDE2FF;
+      --green: #1F6B4F;
+      --amber: #8A5B12;
+      --rust: #A34A28;
+      --highlight: #E8D98B;
+      --code-bg: #162821;
+      --code-ink: #DFEAE1;
+      --deep: #14352B;
+      --deep-ink: #F0F4EC;
+      --deep-muted: #B4C8BD;
+      --deep-line: #345246;
+      --header: rgba(233, 237, 230, 0.88);
+      --grid: rgba(22, 42, 36, 0.045);
+      --island-fill: #F1F4EE;
+      --sans: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --serif: "Songti SC", "STSong", "Noto Serif CJK SC", "SimSun", serif;
+      --mono: "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #0D1714;
+        --paper: #13211C;
+        --ink: #E9EFE7;
+        --ink-soft: #C8D4CB;
+        --muted: #98A89F;
+        --line: #293A33;
+        --line-strong: #41544B;
+        --accent: #91A2FF;
+        --accent-soft: #222C55;
+        --green: #7ECAA6;
+        --amber: #E3B36B;
+        --rust: #E38C6B;
+        --highlight: #6D5B25;
+        --code-bg: #07110E;
+        --code-ink: #DFEAE1;
+        --deep: #162B23;
+        --deep-ink: #F0F4EC;
+        --deep-muted: #A6BAAF;
+        --deep-line: #365044;
+        --header: rgba(13, 23, 20, 0.88);
+        --grid: rgba(233, 239, 231, 0.035);
+        --island-fill: #12211C;
+      }
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #0D1714;
+      --paper: #13211C;
+      --ink: #E9EFE7;
+      --ink-soft: #C8D4CB;
+      --muted: #98A89F;
+      --line: #293A33;
+      --line-strong: #41544B;
+      --accent: #91A2FF;
+      --accent-soft: #222C55;
+      --green: #7ECAA6;
+      --amber: #E3B36B;
+      --rust: #E38C6B;
+      --highlight: #6D5B25;
+      --code-bg: #07110E;
+      --code-ink: #DFEAE1;
+      --deep: #162B23;
+      --deep-ink: #F0F4EC;
+      --deep-muted: #A6BAAF;
+      --deep-line: #365044;
+      --header: rgba(13, 23, 20, 0.88);
+      --grid: rgba(233, 239, 231, 0.035);
+      --island-fill: #12211C;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      transition: background-color 220ms ease, color 220ms ease;
+    }
+
+    body.article-page {
+      background-image: none;
+    }
+
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    a { color: inherit; }
+    button { color: inherit; }
+    svg { display: block; }
+    [hidden] { display: none !important; }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 200;
+      padding: 10px 15px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--bg);
+      font-size: 13px;
+      text-decoration: none;
+      transform: translateY(-160%);
+      transition: transform 160ms ease;
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .wrap {
+      width: min(1240px, calc(100% - 128px));
+      margin-inline: auto;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 80;
+      background: var(--header);
+      border-bottom: 1px solid var(--line);
+      -webkit-backdrop-filter: blur(15px) saturate(135%);
+      backdrop-filter: blur(15px) saturate(135%);
+      transition: background-color 220ms ease, border-color 220ms ease;
+    }
+
+    .header-inner {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .brand {
+      margin-right: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 42px;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 25px;
+      height: 25px;
+      flex: none;
+      color: var(--ink);
+    }
+    .brand-mark svg { width: 100%; height: 100%; }
+
+    .brand-name {
+      font-family: var(--serif);
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      line-height: 1;
+    }
+
+    .brand-role {
+      margin-left: 4px;
+      padding-left: 14px;
+      border-left: 1px solid var(--line-strong);
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      line-height: 1.2;
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .site-nav a {
+      position: relative;
+      padding: 7px 0;
+      color: var(--ink-soft);
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .site-nav a::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 1px;
+      left: 0;
+      height: 1px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 180ms ease;
+    }
+    .site-nav a:hover::after,
+    .site-nav a:focus-visible::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .theme-toggle {
+      width: 36px;
+      height: 36px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      transition: border-color 180ms ease, background-color 180ms ease;
+    }
+    .theme-toggle:hover { border-color: var(--ink); background: var(--paper); }
+    .theme-toggle svg { width: 17px; height: 17px; }
+    .theme-toggle .icon-moon { display: none; }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: none; }
+      :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: block; }
+    }
+    :root[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+    :root[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+
+    /* Reading progress */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 120;
+      height: 2px;
+      pointer-events: none;
+    }
+    .reading-progress span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+    }
+
+    /* Article masthead */
+    .article-masthead {
+      padding: 42px 0 clamp(54px, 6vw, 76px);
+      border-bottom: 1px solid var(--line);
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 56px 56px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 46px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .breadcrumb a {
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb .sep { color: var(--line-strong); }
+
+    .article-header {
+      max-width: 700px;
+      margin-left: 246px;
+    }
+
+    .article-kicker {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px 15px;
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 11.5px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cat {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .cat::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      flex: none;
+      border-radius: 1px;
+      background: var(--cat-color, var(--muted));
+    }
+    .cat-tech { --cat-color: var(--accent); }
+    .cat-product { --cat-color: var(--rust); }
+    .cat-life { --cat-color: var(--green); }
+
+    .article-header h1 {
+      max-width: 11.6em;
+      margin: 0 0 24px;
+      font-family: var(--serif);
+      font-size: clamp(40px, 4.55vw, 64px);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.045em;
+      text-wrap: balance;
+    }
+
+    .article-dek {
+      max-width: 34em;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(15px, 1.4vw, 17.5px);
+      line-height: 1.85;
+    }
+
+    .byline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .byline-avatar {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      flex: none;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 15px;
+    }
+
+    .byline strong {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .byline span {
+      display: block;
+      margin-top: 1px;
+      color: var(--muted);
+      font-size: 10.5px;
+      line-height: 1.4;
+    }
+
+    /* Article layout */
+    .article-layout {
+      display: grid;
+      grid-template-columns: 170px minmax(0, 700px);
+      gap: 76px;
+      padding-top: clamp(50px, 6vw, 76px);
+      padding-bottom: clamp(70px, 8vw, 110px);
+      align-items: start;
+    }
+
+    .article-aside {
+      position: sticky;
+      top: 106px;
+      padding-top: 4px;
+    }
+
+    .toc-title {
+      margin: 0 0 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 10.5px;
+      letter-spacing: 0.07em;
+    }
+
+    .toc {
+      display: grid;
+      gap: 2px;
+    }
+
+    .toc a {
+      padding: 5px 0 5px 11px;
+      border-left: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.5;
+      text-decoration: none;
+      transition: border-color 160ms ease, color 160ms ease;
+    }
+    .toc a:hover { color: var(--ink); }
+    .toc a.is-active {
+      border-left-color: var(--accent);
+      color: var(--ink);
+    }
+
+    .article-aside-note {
+      margin: 30px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.7;
+    }
+
+    .prose {
+      min-width: 0;
+      max-width: 700px;
+      color: var(--ink-soft);
+      font-family: var(--serif);
+      font-size: 18.5px;
+      line-height: 1.95;
+      letter-spacing: 0.002em;
+    }
+
+    .prose > p {
+      margin: 0 0 27px;
+      text-wrap: pretty;
+    }
+
+    .prose .prose-lead {
+      margin-bottom: 24px;
+      color: var(--ink);
+      font-size: 21px;
+      line-height: 1.9;
+      letter-spacing: -0.01em;
+    }
+
+    .prose h2 {
+      margin: 66px 0 20px;
+      padding-top: 2px;
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 27px;
+      font-weight: 600;
+      line-height: 1.42;
+      letter-spacing: -0.025em;
+      text-wrap: balance;
+      scroll-margin-top: 104px;
+    }
+
+    .prose h2 + p { margin-top: 0; }
+
+    .prose strong { font-weight: 600; color: var(--ink); }
+
+    .prose a {
+      color: var(--accent);
+      text-decoration-color: color-mix(in srgb, var(--accent) 38%, transparent);
+      text-underline-offset: 3px;
+    }
+    .prose a:hover { text-decoration-color: currentColor; }
+
+    .prose mark {
+      background: linear-gradient(transparent 56%, var(--highlight) 56%);
+      color: inherit;
+      padding: 0 1px;
+    }
+
+    .prose ul,
+    .prose ol {
+      margin: 0 0 28px;
+      padding-left: 1.45em;
+    }
+
+    .prose li {
+      margin: 7px 0;
+      padding-left: 0.25em;
+    }
+
+    .prose li::marker {
+      color: var(--muted);
+      font-size: 0.8em;
+    }
+
+    .prose code {
+      padding: 0.12em 0.34em;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 0.84em;
+      overflow-wrap: anywhere;
+    }
+
+    .prose pre {
+      margin: 30px 0 34px;
+      padding: 20px 22px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--code-bg);
+      color: var(--code-ink);
+      font-family: var(--mono);
+      font-size: 13.5px;
+      line-height: 1.75;
+      tab-size: 2;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .prose pre code {
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: inherit;
+      font-size: inherit;
+      overflow-wrap: normal;
+      white-space: pre;
+    }
+
+    .prose blockquote {
+      position: relative;
+      margin: 44px 0 48px;
+      padding: 3px 0 3px 28px;
+      border-left: 2px solid var(--accent);
+    }
+
+    .prose blockquote p {
+      margin: 0;
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.72;
+      letter-spacing: -0.015em;
+      text-wrap: pretty;
+    }
+
+    .prose blockquote cite {
+      display: block;
+      margin-top: 14px;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 11.5px;
+      font-style: normal;
+      line-height: 1.6;
+    }
+
+    .prose sup {
+      line-height: 0;
+      font-family: var(--sans);
+      font-size: 0.62em;
+    }
+
+    .prose sup a {
+      padding: 0 1px;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* Diagram */
+    .article-figure {
+      margin: 42px 0 38px;
+    }
+
+    .figure-scroll {
+      overflow-x: auto;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .figure-scroll svg {
+      width: 100%;
+      min-width: 580px;
+      height: auto;
+    }
+
+    .article-figure figcaption {
+      margin-top: 11px;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+    .figure-hint { display: none; }
+
+    .d-node {
+      fill: var(--bg);
+      stroke: var(--line-strong);
+      stroke-width: 1.2;
+    }
+    .d-node-api {
+      fill: var(--paper);
+      stroke: var(--accent);
+      stroke-width: 1.5;
+    }
+    .d-node-old {
+      fill: none;
+      stroke: var(--line-strong);
+      stroke-width: 1.2;
+      stroke-dasharray: 4 5;
+    }
+    .d-line {
+      fill: none;
+      stroke: var(--line-strong);
+      stroke-width: 1.2;
+    }
+    .d-line-accent {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 1.2;
+      stroke-dasharray: 4 5;
+    }
+    .d-label {
+      fill: var(--ink);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .d-sub {
+      fill: var(--muted);
+      font-family: var(--mono);
+      font-size: 9.5px;
+    }
+    .d-tag {
+      fill: var(--muted);
+      font-family: var(--sans);
+      font-size: 9.5px;
+    }
+    .d-legend {
+      fill: var(--muted);
+      font-family: var(--sans);
+      font-size: 9.5px;
+    }
+
+    /* Footnotes */
+    .footnotes {
+      margin-top: 68px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line-strong);
+      scroll-margin-top: 104px;
+    }
+
+    .footnotes h2 {
+      margin: 0 0 14px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      font-family: var(--sans);
+    }
+
+    .footnotes ol {
+      margin: 0;
+      padding-left: 1.55em;
+    }
+
+    .footnotes li {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 11.5px;
+      line-height: 1.75;
+      padding-left: 0.2em;
+    }
+
+    .footnotes a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .article-signoff {
+      margin: 40px 0 0;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    /* Article footer navigation */
+    .post-nav {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 26px;
+      margin-top: 58px;
+      padding-top: 26px;
+      border-top: 1px solid var(--line-strong);
+    }
+
+    .post-link {
+      display: block;
+      padding: 16px 0;
+      text-decoration: none;
+    }
+    .post-link.next { text-align: right; }
+
+    .post-direction {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+    }
+
+    .post-title {
+      display: block;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.55;
+      letter-spacing: -0.012em;
+      transition: color 160ms ease;
+    }
+    .post-link:hover .post-title { color: var(--accent); }
+
+    .post-meta {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 10.5px;
+      line-height: 1.5;
+    }
+
+    .article-subscribe {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 44px;
+      padding: 22px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .article-subscribe p {
+      margin: 0;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .article-subscribe a {
+      flex: none;
+      padding-bottom: 3px;
+      border-bottom: 1px solid var(--line-strong);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 12px;
+      text-decoration: none;
+      transition: color 160ms ease, border-color 160ms ease;
+    }
+    .article-subscribe a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* Footer */
+    .site-footer {
+      padding: 54px 0 34px;
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      gap: 44px;
+      align-items: start;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .footer-brand .brand-mark { width: 30px; height: 30px; }
+    .footer-brand .brand-name { font-size: 27px; }
+
+    .footer-line {
+      max-width: 28em;
+      margin: 17px 0 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.8;
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 28px;
+      justify-self: end;
+      min-width: 300px;
+      padding-top: 6px;
+    }
+
+    .footer-links a {
+      padding: 4px 0;
+      color: var(--ink-soft);
+      font-size: 12.5px;
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 46px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 10.5px;
+      letter-spacing: 0.02em;
+    }
+
+    /* Responsive */
+    @media (max-width: 1180px) {
+      .wrap { width: calc(100% - 80px); }
+      .article-header { margin-left: 226px; }
+      .article-layout { grid-template-columns: 150px minmax(0, 700px); gap: 76px; }
+    }
+
+    @media (max-width: 980px) {
+      .article-header {
+        max-width: 760px;
+        margin-left: 0;
+      }
+      .article-layout {
+        display: block;
+        max-width: 760px;
+        padding-top: 50px;
+      }
+      .article-aside { display: none; }
+      .prose { max-width: 100%; }
+    }
+
+    @media (max-width: 900px) {
+      .brand-role { display: none; }
+      .header-inner { gap: 20px; }
+      .site-nav { gap: 20px; }
+      .footer-main { grid-template-columns: 1fr; gap: 34px; }
+      .footer-links { justify-self: start; min-width: 0; width: 100%; max-width: 390px; }
+    }
+
+    @media (max-width: 720px) {
+      .wrap { width: calc(100% - 40px); }
+
+      .header-inner {
+        flex-wrap: wrap;
+        gap: 0;
+        padding-top: 12px;
+      }
+      .brand { min-height: 38px; }
+      .theme-toggle { margin-left: 16px; }
+      .site-nav {
+        order: 3;
+        width: 100%;
+        gap: 22px;
+        margin-top: 6px;
+        padding: 7px 0 11px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .site-nav::-webkit-scrollbar { display: none; }
+      .site-nav a { padding: 3px 0; white-space: nowrap; }
+
+      .article-masthead { padding: 26px 0 48px; }
+      .breadcrumb { margin-bottom: 32px; }
+      .article-header h1 { font-size: clamp(37px, 10vw, 48px); line-height: 1.23; }
+      .article-header h1 .title-break { display: none; }
+      .article-dek { font-size: 14.5px; }
+      .byline { margin-top: 24px; }
+
+      .article-layout { padding-top: 38px; padding-bottom: 68px; }
+
+      .prose { font-size: 17.5px; line-height: 1.94; }
+      .prose .prose-lead { font-size: 19px; }
+      .prose h2 { margin-top: 52px; font-size: 24px; }
+      .prose blockquote { margin: 38px 0 40px; padding-left: 18px; }
+      .prose blockquote p { font-size: 20px; }
+      .prose pre { margin: 26px 0 30px; padding: 17px 16px; font-size: 12.5px; }
+
+      .figure-scroll { margin-right: -20px; margin-left: -20px; padding: 14px; border-right: 0; border-left: 0; border-radius: 0; }
+      .figure-scroll svg { min-width: 540px; }
+      .figure-hint { display: inline; }
+
+      .footnotes { margin-top: 54px; }
+
+      .post-nav { grid-template-columns: 1fr; gap: 6px; margin-top: 46px; }
+      .post-link.next { text-align: left; }
+      .post-link + .post-link { border-top: 1px solid var(--line); }
+
+      .article-subscribe { align-items: flex-start; flex-direction: column; gap: 12px; }
+
+      .site-footer { padding-top: 40px; }
+      .footer-line { font-size: 12px; }
+      .footer-links { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 18px; }
+      .footer-bottom { align-items: flex-start; flex-direction: column; gap: 8px; margin-top: 34px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress"></span></div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="周屿，返回首页">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M12 2.8c4.8 0 8 3.3 7.8 8-.2 4.5-3.2 7.4-7.8 7.6-4.7.2-7.8-3.1-7.6-7.6C4.6 6.1 7.2 2.8 12 2.8Z"/>
+            <circle cx="12" cy="10.3" r="1.2" fill="currentColor" stroke="none"/>
+            <path d="M8.6 20.2c1 .7 2.2 1 3.4 1s2.4-.3 3.4-1" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-name">周屿</span>
+        <span class="brand-role">独立开发者</span>
+      </a>
+
+      <nav class="site-nav" aria-label="主导航">
+        <a href="index.html#products">产品</a>
+        <a href="index.html#now">近况</a>
+        <a href="index.html#ledger">账本</a>
+        <a href="index.html#writing">文章</a>
+        <a href="index.html#subscribe">订阅</a>
+      </nav>
+
+      <button class="theme-toggle" type="button" aria-label="切换到深色模式" title="切换主题">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4" stroke-linecap="round"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M20.2 14.8A8.4 8.4 0 0 1 9.2 3.8 8.5 8.5 0 1 0 20.2 14.8Z" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="article-masthead">
+      <div class="wrap">
+        <nav class="breadcrumb" aria-label="面包屑">
+          <a href="index.html">首页</a>
+          <span class="sep">/</span>
+          <a href="index.html#writing">写作</a>
+          <span class="sep">/</span>
+          <span>技术</span>
+        </nav>
+
+        <header class="article-header">
+          <div class="article-kicker">
+            <span class="cat cat-tech">技术</span>
+            <time datetime="2026-09-18">2026 年 9 月 18 日</time>
+            <span>阅读 12 分钟</span>
+          </div>
+          <h1>把拾页的同步<br class="title-break">从 iCloud 迁到自建服务</h1>
+          <p class="article-dek">一次不浪漫但值得的迁移：从 CloudKit 容器，到杭州的一台 Postgres、一个对象存储和我自己写的同步服务。</p>
+          <div class="byline">
+            <span class="byline-avatar" aria-hidden="true">周</span>
+            <div>
+              <strong>周屿</strong>
+              <span>独立开发者，杭州</span>
+            </div>
+          </div>
+        </header>
+      </div>
+    </div>
+
+    <div class="wrap article-layout">
+      <aside class="article-aside" aria-label="文章目录">
+        <p class="toc-title">本文目录</p>
+        <nav class="toc">
+          <a href="#s1">先承认平台的好</a>
+          <a href="#s2">迁移的目标不是「搬完」</a>
+          <a href="#s3">表结构尽量让错误显形</a>
+          <a href="#s4">回填的 36 小时</a>
+          <a href="#s5">切换那天</a>
+          <a href="#s6">现在</a>
+          <a href="#footnotes">脚注</a>
+        </nav>
+        <p class="article-aside-note">拾页工程笔记<br>写于杭州，2026 年 9 月</p>
+      </aside>
+
+      <article class="prose">
+        <p class="prose-lead">拾页从 1.0 开始就把数据放在 iCloud 里。用户不用注册，换一台 Mac 登录同一个 Apple ID，收进来的文章和划过的线就会自己出现。对一个只有一个人的产品来说，这是当时最省事、也最体面的选择。</p>
+
+        <p>四年之后，它变成了<mark>边界</mark>。不是 CloudKit<sup><a href="#fn1" id="fnref1">1</a></sup> 坏了，而是我开始需要一些它不打算给我的东西：可查询的运营数据、可导出的用户数据、跨平台的余地，以及在同步出问题时能自己看到日志。</p>
+
+        <h2 id="s1">先承认平台的好</h2>
+
+        <p>我把这次迁移当成一次架构调整，而不是对 iCloud 的否定。前三年它替我省掉了账号体系、鉴权、推送和一部分运维。拾页早期的同步成功率一直在 99.7% 以上，这个数字不是白来的。</p>
+
+        <p>真正让我下决心的是三件小事：想做「一年内的高亮统计」，CloudKit 的查询能力不够，只能在客户端拉全量再算；有用户要求导出全部笔记，我得临时写一套脚本；一台旧 Mac 的时钟快了 11 分钟，产生了一批乱序记录，而我拿不到服务端日志。单看每一件都能绕过去，放在一起，就说明数据层已经不在我手里。</p>
+
+        <blockquote>
+          <p>“我不怕你们收费，我怕有一天我想把文章搬走，发现它们不在我这儿。”</p>
+          <cite>一位用户在迁移前的邮件</cite>
+        </blockquote>
+
+        <p>这封邮件我看了很久。它说的不是价格，是所有权。</p>
+
+        <p>在此之前，我一直把 CloudKit 当成房间里的承重墙：看不见，但默认它会在。决定迁移之后，我先花了两周确认这堵墙到底承什么重，哪些是我真的需要，哪些只是习惯了它的存在。</p>
+
+        <h2 id="s2">迁移的目标不是「搬完」，是「随时能回去」</h2>
+
+        <p>我没有一上来就停 CloudKit。方案写了三条约束：任何时刻都能切回 iCloud，最多丢 24 小时；用户不需要重新登录，旧数据自动出现；切换按用户分批，出问题只影响一小部分人。听起来保守，但一个人维护的服务，保守是最便宜的特性。</p>
+
+        <p>还有一条约束没有写进文档：不能占用我全部的工作时间。拾页还在卖，慢信还要回信，客服每周仍要处理四五十封邮件。因此每一步都必须能在半天内停手，并且第二天还能接上。</p>
+
+        <p>最终采用的是双写、回填和影子读。客户端先继续写 CloudKit，同时把变更写进新的 <code>/changes</code> 接口；服务端回填历史数据；读请求按开关比例走新库，但两边都返回时，比较结果的内容哈希。这样做多花大约六周，也让我在迁移期间同时维护两套同步逻辑。事后看，这六周买到了三次可以悄悄回滚的机会。</p>
+
+        <pre><code>type Change = {
+  id: string;               // 客户端生成的 UUID
+  recordId: string;         // 对应的高亮或文章
+  deviceId: string;
+  revision: number;         // 同一个 recordId 单调递增
+  payload: HighlightPatch;
+  idempotencyKey: string;   // 重试时保持不变
+};
+
+// 服务端只接受更高的 revision；相同 revision 视为重试。</code></pre>
+
+        <figure class="article-figure">
+          <div class="figure-scroll" tabindex="0" aria-label="迁移期间的架构示意图，可横向滚动">
+            <svg viewBox="0 0 710 330" role="img" aria-labelledby="diagram-title diagram-desc">
+              <title id="diagram-title">迁移期间的双写与回填架构</title>
+              <desc id="diagram-desc">Mac 与 iPhone 客户端同时写入同步 API；API 写入 Postgres 和对象存储。回填 worker 从只读的旧 CloudKit 读取历史数据，再通过同步 API 幂等写入新库。</desc>
+
+              <defs>
+                <marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                  <path d="M0 0L7 3.5L0 7Z" fill="var(--line-strong)"/>
+                </marker>
+                <marker id="arrow-accent" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                  <path d="M0 0L7 3.5L0 7Z" fill="var(--accent)"/>
+                </marker>
+              </defs>
+
+              <rect class="d-node" x="20" y="42" width="150" height="58" rx="8"/>
+              <text class="d-label" x="95" y="67" text-anchor="middle">Mac 客户端</text>
+              <text class="d-sub" x="95" y="84" text-anchor="middle">本地 outbox</text>
+
+              <rect class="d-node" x="20" y="122" width="150" height="58" rx="8"/>
+              <text class="d-label" x="95" y="147" text-anchor="middle">iPhone 客户端</text>
+              <text class="d-sub" x="95" y="164" text-anchor="middle">本地 outbox</text>
+
+              <rect class="d-node-api" x="235" y="82" width="160" height="58" rx="8"/>
+              <text class="d-label" x="315" y="105" text-anchor="middle">同步 API</text>
+              <text class="d-sub" x="315" y="122" text-anchor="middle">杭州 · 4C8G</text>
+
+              <rect class="d-node" x="500" y="42" width="180" height="58" rx="8"/>
+              <text class="d-label" x="590" y="67" text-anchor="middle">Postgres</text>
+              <text class="d-sub" x="590" y="84" text-anchor="middle">文章 · 高亮 · changes</text>
+
+              <rect class="d-node" x="500" y="122" width="180" height="58" rx="8"/>
+              <text class="d-label" x="590" y="147" text-anchor="middle">对象存储</text>
+              <text class="d-sub" x="590" y="164" text-anchor="middle">快照 · 附件</text>
+
+              <rect class="d-node" x="235" y="238" width="160" height="58" rx="8"/>
+              <text class="d-label" x="315" y="261" text-anchor="middle">回填 worker</text>
+              <text class="d-sub" x="315" y="278" text-anchor="middle">可重入 · 按用户游标</text>
+
+              <rect class="d-node-old" x="500" y="238" width="180" height="58" rx="8"/>
+              <text class="d-label" x="590" y="261" text-anchor="middle">CloudKit（旧）</text>
+              <text class="d-sub" x="590" y="278" text-anchor="middle">只读历史数据</text>
+
+              <path class="d-line" d="M170 71H205V111H232" marker-end="url(#arrow)"/>
+              <path class="d-line" d="M170 151H205V131H232" marker-end="url(#arrow)"/>
+              <text class="d-tag" x="198" y="104" text-anchor="middle">双写</text>
+
+              <path class="d-line" d="M395 104H446V71H497" marker-end="url(#arrow)"/>
+              <path class="d-line" d="M395 122H446V151H497" marker-end="url(#arrow)"/>
+
+              <path class="d-line-accent" d="M500 267H398" marker-end="url(#arrow-accent)"/>
+              <path class="d-line-accent" d="M315 238V143" marker-end="url(#arrow-accent)"/>
+              <text class="d-tag" x="450" y="258" text-anchor="middle">分页读取</text>
+              <text class="d-tag" x="326" y="203">幂等写入</text>
+
+              <line x1="20" y1="318" x2="56" y2="318" class="d-line-accent"/>
+              <text class="d-legend" x="64" y="321">迁移期一次性回填</text>
+              <line x1="200" y1="318" x2="236" y2="318" class="d-line"/>
+              <text class="d-legend" x="244" y="321">在线读写</text>
+            </svg>
+          </div>
+          <figcaption>示意图：迁移期间客户端保留 CloudKit 双写，旧数据由回填 worker 逐用户搬入新库，读路径再分批切过去。<span class="figure-hint">左右滑动可看全图。</span></figcaption>
+        </figure>
+
+        <h2 id="s3">表结构尽量让错误显形</h2>
+
+        <p>新库只有五张表：<code>users</code>、<code>documents</code>、<code>highlights</code>、<code>changes</code> 和 <code>devices</code>。最先写的是 <code>changes</code> 的约束。同步系统的大部分 bug 最后都会表现成重复、乱序或丢失，所以我想让这三件事在数据库层就写不进去。</p>
+
+        <pre><code>create table changes (
+  id              uuid primary key,
+  user_id         uuid not null references users(id),
+  record_id       uuid not null,
+  device_id       text not null,
+  revision        bigint not null,
+  payload         jsonb not null,
+  idempotency_key text not null,
+  received_at     timestamptz not null default now(),
+  unique (user_id, idempotency_key),
+  unique (record_id, revision)
+);</code></pre>
+
+        <p><code>unique (user_id, idempotency_key)</code> 负责让重试变成无害的重复请求；<code>unique (record_id, revision)</code> 把客户端乱序直接变成 409，而不是一条看起来正常、实际上更旧的记录。删除不物理删除，写 tombstone；高亮按字段合并，阅读进度取较新的值。产品里没有「合并冲突」这个词，冲突应该在后台安静地解决。</p>
+
+        <p>为了让回滚更简单，我没有同时删除 CloudKit 里的旧记录。新库的每条数据都保存了旧的 recordName 和 container 标识，回退时只需要反向同步最近 24 小时的增量。</p>
+
+        <h2 id="s4">回填的 36 小时</h2>
+
+        <p>历史数据比预估的多。1.2 万付费用户留下约 320 万条高亮、41 万篇文章和 90 万条笔记；CloudKit 的导出接口按用户游标翻页，平均每个用户要 2.4 秒。全部跑完用了 36 小时<sup><a href="#fn3" id="fnref3">3</a></sup>。</p>
+
+        <p>回填 worker 不追求快，只追求可重入。每个用户开始前写一条 <code>migration_jobs</code> 记录，成功后写入数据量和内容哈希；失败就停在该用户，下一轮从游标继续。回填过程最怕的是把「没读到」当成「没有数据」，所以每个游标页都记录了请求时间和返回数量，数量为 0 时不会直接结束，而是至少重复一次。</p>
+
+        <pre><code>for try await page in cloudKit.pages(of: .highlight, user: user.id) {
+    let rows = page.records.map(HighlightRow.init)
+    try await db.upsert(rows, onConflict: .ignore)
+    try await job.checkpoint(page.cursor, count: rows.count)
+}</code></pre>
+
+        <p>对每个用户的高亮正文和更新时间做一次哈希，再和源库比对，能发现「看起来成功、其实少了一页」的错误。36 小时里有 17 个用户对不上，原因分别是重复记录、空正文，以及一条 2019 年的时间戳被写成了 0001 年。回填脚本没有开源，原因是它和旧容器的字段映射绑得太紧<sup><a href="#fn2" id="fnref2">2</a></sup>。</p>
+
+        <h2 id="s5">切换那天</h2>
+
+        <p>10 月 2 日，第一批 1% 用户切到新读路径。开关在服务端，按 <code>user_id</code> 哈希，不依赖客户端版本。第一晚只看四个指标：读请求错误率、写请求 p95、冲突率、回退次数。</p>
+
+        <p>两小时后，回退次数升到 0.8%。原因很普通：一位用户在两台 Mac 上同时打开同一篇文章，旧客户端把 revision 从 8 写回 7。我们加了服务端单调 revision 校验，并把这类请求降级成一次客户端刷新。</p>
+
+        <p>当天下午扩到 10%，晚上 50%，第三天全量。CloudKit 双写保留 90 天。到第十天，回退按钮没有再被按过。</p>
+
+        <p>全量后一周，我们把客服模板里「同步冲突」的解释删掉了。以前用户看到这个提示会以为数据坏了，现在它多数时候只意味着另一台设备抢先保存了一次。</p>
+
+        <blockquote>
+          <p>迁移里最危险的不是技术，而是「应该没问题」的错觉。先让系统允许你后悔，再谈优雅。</p>
+        </blockquote>
+
+        <h2 id="s6">现在</h2>
+
+        <p>新的同步服务跑在杭州一台 4C8G 的机器上，Postgres 存结构化数据，对象存储放大纲和原始网页快照。每月成本约 1,600 元，比 CloudKit 贵，但换来了慢查询、导出任务和一条能看的日志。</p>
+
+        <p>今天拾页的同步成功率是 99.93%，比迁移前高一点。更重要的是，我终于可以在不改客户端的情况下修服务端。对一个第四年的独立开发者来说，这比「自建」两个字重要得多。</p>
+
+        <p>如果你也在维护一个靠某个平台长起来的小产品，我的建议不是尽早搬家，而是尽早准备一把能搬家的钥匙。平台没有错，依赖也没有错；把出口留在自己手里就好。</p>
+
+        <p>这件事做完之后，拾页没有变得更「高级」。它只是回到了一个普通软件该有的样子：数据有出处，故障有线索，明天想改的时候，不用先问平台同不同意。</p>
+
+        <p class="article-signoff">写于杭州，2026 年 9 月。感谢在迁移期间帮我压测、复现和校对的朋友。</p>
+
+        <section class="footnotes" id="footnotes" aria-labelledby="footnotes-title">
+          <h2 id="footnotes-title">脚注</h2>
+          <ol>
+            <li id="fn1">CloudKit 是 Apple 的云数据同步框架。本文不讨论它的公开定价，因为拾页的用量一直落在免费额度内。 <a href="#fnref1" aria-label="回到正文脚注 1">回到正文</a></li>
+            <li id="fn2">迁移期间的回填脚本没有开源，原因是它包含旧容器的字段映射；数据导出工具计划在拾页 2.0 公测时一起发布。 <a href="#fnref2" aria-label="回到正文脚注 2">回到正文</a></li>
+            <li id="fn3">文中用户数与数据量为便于阅读做了取整。收入相关数字不在本文讨论范围内。 <a href="#fnref3" aria-label="回到正文脚注 3">回到正文</a></li>
+          </ol>
+        </section>
+
+        <nav class="post-nav" aria-label="上一篇与下一篇">
+          <a class="post-link" href="index.html#archive">
+            <span class="post-direction">上一篇</span>
+            <span class="post-title">为什么我把买断制坚持了四年</span>
+            <span class="post-meta">产品，2026 年 8 月 2 日</span>
+          </a>
+          <a class="post-link next" href="index.html#archive">
+            <span class="post-direction">下一篇</span>
+            <span class="post-title">拾页 2.0 的第 43 周：向量时钟与一次回滚</span>
+            <span class="post-meta">独立开发生活，2026 年 10 月 9 日</span>
+          </a>
+        </nav>
+
+        <aside class="article-subscribe">
+          <p>每月一封，讲拾页的进展、踩过的坑和最近读到的东西。</p>
+          <a href="index.html#subscribe">订阅来信</a>
+        </aside>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-main">
+        <div>
+          <a class="footer-brand" href="index.html">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M12 2.8c4.8 0 8 3.3 7.8 8-.2 4.5-3.2 7.4-7.8 7.6-4.7.2-7.8-3.1-7.6-7.6C4.6 6.1 7.2 2.8 12 2.8Z"/>
+                <circle cx="12" cy="10.3" r="1.2" fill="currentColor" stroke="none"/>
+                <path d="M8.6 20.2c1 .7 2.2 1 3.4 1s2.4-.3 3.4-1" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="brand-name">周屿</span>
+          </a>
+          <p class="footer-line">住在杭州，一个人做软件。这里没有统计脚本，也没有广告。</p>
+        </div>
+
+        <nav class="footer-links" aria-label="联系与社交链接">
+          <a href="mailto:hi@zhouyu.dev">hi@zhouyu.dev</a>
+          <a href="https://github.com/zhouyu" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://okjike.com/users/zhouyu" target="_blank" rel="noopener">即刻</a>
+          <a href="https://x.com/zhouyu" target="_blank" rel="noopener">X</a>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 周屿，杭州</span>
+        <span>独立开发的第四年</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var toggle = document.querySelector('.theme-toggle');
+      var meta = document.querySelector('meta[name="theme-color"]');
+      var darkQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+      function isDark() {
+        if (root.getAttribute('data-theme') === 'dark') return true;
+        if (root.getAttribute('data-theme') === 'light') return false;
+        return !!(darkQuery && darkQuery.matches);
+      }
+
+      function syncThemeUI() {
+        var dark = isDark();
+        if (toggle) {
+          toggle.setAttribute('aria-label', dark ? '切换到浅色模式' : '切换到深色模式');
+          toggle.setAttribute('aria-pressed', String(dark));
+        }
+        if (meta) meta.setAttribute('content', dark ? '#0D1714' : '#E9EDE6');
+      }
+
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          var next = isDark() ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try { localStorage.setItem('zhouyu-theme', next); } catch (e) {}
+          syncThemeUI();
+        });
+      }
+
+      if (darkQuery) {
+        if (darkQuery.addEventListener) darkQuery.addEventListener('change', syncThemeUI);
+        else if (darkQuery.addListener) darkQuery.addListener(syncThemeUI);
+      }
+      syncThemeUI();
+
+      var progress = document.getElementById('reading-progress');
+      var ticking = false;
+
+      function updateReadingProgress() {
+        var doc = document.documentElement;
+        var max = doc.scrollHeight - doc.clientHeight;
+        var ratio = max > 0 ? Math.min(1, Math.max(0, doc.scrollTop / max)) : 0;
+        if (progress) progress.style.transform = 'scaleX(' + ratio + ')';
+        ticking = false;
+      }
+
+      function requestProgressUpdate() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(updateReadingProgress);
+      }
+
+      window.addEventListener('scroll', requestProgressUpdate, { passive: true });
+      window.addEventListener('resize', requestProgressUpdate);
+      updateReadingProgress();
+
+      var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a[href^="#"]'));
+      var sections = tocLinks.map(function (link) {
+        return document.querySelector(link.getAttribute('href'));
+      }).filter(Boolean);
+
+      function updateToc() {
+        if (!sections.length) return;
+        var current = sections[0];
+        var offset = 150;
+
+        sections.forEach(function (section) {
+          if (section.getBoundingClientRect().top <= offset) current = section;
+        });
+
+        tocLinks.forEach(function (link) {
+          var active = link.getAttribute('href') === '#' + current.id;
+          link.classList.toggle('is-active', active);
+          if (active) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      }
+
+      window.addEventListener('scroll', updateToc, { passive: true });
+      updateToc();
+    })();
+  </script>
+</body>
+</html>

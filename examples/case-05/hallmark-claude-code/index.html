@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>周屿｜独立开发第四年</title>
+<meta name="description" content="周屿，杭州独立开发者。拾页、慢信、slugify-zh 与周末菜单，三十篇文章，以及每月公开的产品收入。">
+<meta name="color-scheme" content="light dark">
+<script>
+(function () {
+  try {
+    var pref = localStorage.getItem('zhouyu-theme');
+    if (pref === 'light' || pref === 'dark') document.documentElement.dataset.theme = pref;
+  } catch (e) {}
+})();
+
+</script>
+<style>
+/* Hallmark · shape: Ledger Index · genre: editorial · theme: Specimen (deal 1/3, seed 1440-390-f8a1·610c0267·2026-11-08·r0) · job: read and subscribe · draw: 1440-390-f8a1
+ * hero: Stage, copy left, the public revenue ledger right · nav: edge-aligned wordmark, four anchors, a three-state theme switch · footer: mast · imagery: none, type and real data · signature: the twelve-month income ledger set as a table at the fold
+ * axes: light/high-contrast-serif/cool · posture: restrained · contrast: pass · fold: pass · modes: light+dark · v2.0.0 */
+/* Hallmark · pre-emit critique: P5 H4 E5 S5 R4 V4 · weakest: R, the ledger, product register and archive all use ruled rows; the ledger keeps the double rule, the product register gets display names, the archive gets a filter and tighter type. */
+/* Hallmark · dismissed 25 · the subscribe paragraph is a one-sentence lede, allowed from 28ch; the newsletter band keeps it short. */
+/* Hallmark · waived 1 · display stack begins with Songti SC and falls back to Noto Serif CJK SC and Georgia because the page ships with no external resources · the Chinese Song face carries the high-contrast serif role */
+:root {
+  color-scheme: light;
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1.0625rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
+  --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); --text-display: clamp(2.75rem, 5vw + 1rem, 5.25rem);
+  --text-section: clamp(2rem, 2.5vw + 1rem, 3.5rem); --text-title: clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem); --text-lead: clamp(1.125rem, 0.35vw + 1rem, 1.375rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --container: 1440px; --gutter: 64px; --gap-columns: 32px; --nav-h: 72px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+  --color-paper: oklch(96.5% 0.016 82); --color-paper-2: oklch(93.5% 0.02 80); --color-paper-3: oklch(89% 0.024 78);
+  --color-ink: oklch(17% 0.012 60); --color-ink-2: oklch(28% 0.014 60); --color-muted: oklch(47% 0.014 65);
+  --color-rule: oklch(80% 0.018 75); --color-rule-2: oklch(66% 0.02 72);
+  --color-accent: oklch(45% 0.18 262); --color-accent-ink: oklch(97% 0.012 82); --color-focus: oklch(50% 0.18 262);
+  --color-focus-on-ink: oklch(79% 0.14 262); --color-guide: oklch(55% 0.16 262 / 0.5);
+  --color-error: oklch(51% 0.19 27); --color-success: oklch(40% 0.12 150);
+  --color-error-on-ink: oklch(82% 0.11 27); --color-clear: transparent;
+  --font-display: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", Georgia, serif;
+  --font-body: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC", ui-sans-serif, system-ui, sans-serif;
+  --font-outlier: "SFMono-Regular", "SF Mono", "Cascadia Mono", "JetBrains Mono", ui-monospace, monospace;
+  --radius-card: 0; --radius-pill: 0; --rule-hair: 1px;
+  --shadow-card: none;
+  --tracking-display: -0.02em; --display-weight: 400; --display-optical: 96;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --color-paper: oklch(16.5% 0.012 60); --color-paper-2: oklch(20.5% 0.014 60); --color-paper-3: oklch(24.5% 0.016 60);
+  --color-ink: oklch(94% 0.012 82); --color-ink-2: oklch(82% 0.014 78); --color-muted: oklch(66% 0.014 70);
+  --color-rule: oklch(31% 0.014 65); --color-rule-2: oklch(43% 0.018 66);
+  --color-accent: oklch(70% 0.14 262); --color-accent-ink: oklch(18% 0.012 60); --color-focus: oklch(76% 0.16 262);
+  --color-focus-on-ink: oklch(45% 0.17 262); --color-guide: oklch(64% 0.14 262 / 0.55);
+  --color-error: oklch(70% 0.15 27); --color-success: oklch(70% 0.12 150);
+  --color-error-on-ink: oklch(42% 0.16 27);
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    color-scheme: dark;
+    --color-paper: oklch(16.5% 0.012 60); --color-paper-2: oklch(20.5% 0.014 60); --color-paper-3: oklch(24.5% 0.016 60);
+    --color-ink: oklch(94% 0.012 82); --color-ink-2: oklch(82% 0.014 78); --color-muted: oklch(66% 0.014 70);
+    --color-rule: oklch(31% 0.014 65); --color-rule-2: oklch(43% 0.018 66);
+    --color-accent: oklch(70% 0.14 262); --color-accent-ink: oklch(18% 0.012 60); --color-focus: oklch(76% 0.16 262);
+    --color-focus-on-ink: oklch(45% 0.17 262); --color-guide: oklch(64% 0.14 262 / 0.55);
+    --color-error: oklch(70% 0.15 27); --color-success: oklch(70% 0.12 150);
+    --color-error-on-ink: oklch(42% 0.16 27);
+  }
+}
+@media (max-width: 60rem) {
+  :root { --gutter: 24px; --gap-columns: 24px; --section-gap-s: 80px; --section-gap: 96px; --section-gap-l: 120px; --nav-h: 64px; }
+}
+@media (max-width: 40rem) {
+  :root { --gutter: 16px; --gap-columns: 16px; --section-gap-s: 56px; --section-gap: 72px; --section-gap-l: 96px; --text-md: 1rem; }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { background: var(--color-paper); scrollbar-color: var(--color-muted) var(--color-paper); scroll-padding-top: var(--space-3xl); }
+body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-md); font-weight: 400; line-height: 1.6; -webkit-font-smoothing: antialiased; caret-color: var(--color-accent); }
+::selection { background: color-mix(in oklab, var(--color-accent) 22%, var(--color-paper)); color: var(--color-ink); }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: var(--display-weight); font-synthesis: none; letter-spacing: var(--tracking-display); line-height: 1.04; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+h1 { max-width: 20ch; font-size: var(--text-display); }
+h2 { max-width: 30ch; font-size: var(--text-section); }
+h3 { max-width: 40ch; font-size: var(--text-title); line-height: 1.18; }
+p { margin: 0; text-wrap: pretty; }
+p:not([class]) { max-width: 65ch; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+figure { margin: 0; }
+button, input { font: inherit; }
+button { color: inherit; }
+img, svg { display: block; max-width: 100%; }
+[hidden] { display: none !important; }
+.container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+.num { font-variant-numeric: tabular-nums; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.nowrap { white-space: nowrap; }
+.skip-link { position: absolute; inset-inline-start: var(--space-md); top: calc(-1 * var(--space-4xl)); z-index: var(--z-toast); padding: var(--space-xs) var(--space-md); background: var(--color-ink); color: var(--color-paper); text-decoration: none; }
+.skip-link:focus-visible { top: var(--space-md); }
+.site-header { border-bottom: var(--rule-hair) solid var(--color-rule); background: var(--color-paper); }
+.nav { min-height: var(--nav-h); display: flex; align-items: center; gap: var(--space-xl); }
+.wordmark { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-display); font-size: var(--text-xl); line-height: 1; letter-spacing: 0; text-decoration: none; white-space: nowrap; }
+.wordmark:hover { text-decoration: underline; text-decoration-thickness: 1px; }
+.nav-links { display: flex; align-items: center; gap: var(--space-lg); margin-inline-start: auto; }
+.nav-links a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--text-sm); line-height: 1; text-decoration: none; white-space: nowrap; }
+.nav-links a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+.theme-switch { display: flex; border: var(--rule-hair) solid var(--color-rule-2); background: var(--color-paper); }
+.theme-switch button { min-height: 44px; min-width: 30px; padding-inline: var(--space-xs); border: 0; border-inline-start: var(--rule-hair) solid var(--color-rule); background: var(--color-clear); color: var(--color-muted); font-size: var(--text-xs); line-height: 1; cursor: pointer; }
+.theme-switch button:first-child { border-inline-start: 0; }
+.theme-switch button:hover { background: var(--color-paper-2); color: var(--color-ink); }
+.theme-switch button[aria-pressed="true"] { background: var(--color-paper-2); color: var(--color-ink); box-shadow: inset 0 -2px 0 var(--color-ink); }
+.theme-switch button:active { background: var(--color-ink-2); }
+.theme-switch button[aria-pressed="true"]:hover { background: var(--color-paper-2); color: var(--color-ink); }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--space-lg); border: var(--rule-hair) solid var(--color-ink); background: var(--color-clear); color: var(--color-ink); font-size: var(--text-md); font-weight: 500; line-height: 1; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out); }
+.btn:hover { background: var(--color-paper-2); }
+.btn:active { background: var(--color-paper-3); }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
+.btn--fill { background: var(--color-ink); color: var(--color-paper); }
+.btn--fill:hover { background: var(--color-ink-2); color: var(--color-paper); }
+.btn--fill:active { background: var(--color-ink-2); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-xl); }
+.section { padding-block: var(--section-gap); }
+.section--tight { padding-block: var(--section-gap-s); }
+.section--paper { background: var(--color-paper-2); color: var(--color-ink); border-block: var(--rule-hair) solid var(--color-rule); }
+.section-head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); row-gap: var(--space-md); align-items: end; margin-bottom: var(--space-2xl); }
+.section-head h2 { grid-column: 1 / span 6; }
+.section-head .section-note { grid-column: 8 / span 5; color: var(--color-muted); font-size: var(--text-md); max-width: 42ch; text-wrap: balance; }
+.section-head .section-link { grid-column: 11 / span 2; justify-self: end; font-size: var(--text-sm); white-space: nowrap; }
+@media (max-width: 60rem) {
+  .nav { gap: var(--space-md); }
+  .nav-links { gap: var(--space-md); }
+  .section-head h2 { grid-column: 1 / span 12; }
+  .section-head .section-note { grid-column: 1 / span 10; }
+  .section-head .section-link { grid-column: 1 / span 12; justify-self: start; }
+}
+@media (max-width: 40rem) {
+  .nav { gap: var(--space-sm); }
+  .nav-links { gap: var(--space-xs); }
+  .nav-links a { font-size: var(--text-xs); }
+  .section-head .section-note { grid-column: 1 / span 12; }
+  .theme-switch button { min-height: 44px; min-width: 26px; padding-inline: var(--space-2xs); }
+  .section-head { margin-bottom: var(--space-xl); }
+  .hero-actions .btn { flex: 1 1 auto; }
+}
+@media (max-width: 24rem) {
+  .nav { gap: var(--space-2xs); }
+  .nav-links { gap: var(--space-3xs); }
+  .nav-links a { font-size: 0.75rem; }
+  .wordmark { font-size: var(--text-lg); }
+  .theme-switch button { min-width: 24px; padding-inline: var(--space-3xs); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+.hero { border-bottom: var(--rule-hair) solid var(--color-rule); }
+.hero-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); align-items: center; min-height: calc(100svh - var(--nav-h)); padding-block: var(--space-3xl); }
+.hero-copy { grid-column: 1 / span 7; }
+.hero-copy h1 { max-width: 100%; font-size: clamp(2.75rem, 5.85vw, 5.5rem); line-height: 1.02; }
+.hero-copy .lead { margin-top: var(--space-lg); max-width: 30rem; }
+.hero-note { margin-top: var(--space-lg); color: var(--color-muted); font-size: var(--text-sm); }
+.hero-note a { text-underline-offset: 0.18em; }
+.hero-flag { display: inline-block; margin-top: var(--space-lg); padding-top: var(--space-xs); border-top: var(--rule-hair) solid var(--color-rule-2); color: var(--color-muted); font-size: var(--text-sm); }
+.ledger { grid-column: 8 / span 5; border-top: 3px double var(--color-rule-2); padding-top: var(--space-md); }
+.ledger-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); }
+.ledger-head h2 { font-size: var(--text-xl); line-height: 1.1; }
+.ledger-unit { color: var(--color-muted); font-size: var(--text-xs); white-space: nowrap; }
+.ledger-table { width: 100%; margin-top: var(--space-md); border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.ledger-table caption { text-align: start; }
+.ledger-table tr { border-top: var(--rule-hair) solid var(--color-rule); }
+.ledger-table tr:last-child { border-bottom: var(--rule-hair) solid var(--color-rule); }
+.ledger-table th, .ledger-table td { padding-block: var(--space-sm); vertical-align: middle; }
+.ledger-table th { width: 21%; color: var(--color-muted); font-family: var(--font-body); font-size: var(--text-xs); font-weight: 500; text-align: start; white-space: nowrap; }
+.ledger-table td { font-size: var(--text-xs); }
+.ledger-bar-cell { width: 47%; padding-inline: var(--space-sm); }
+.ledger-bar-track { display: block; width: 100%; height: 6px; background: color-mix(in oklab, var(--color-rule) 55%, var(--color-paper)); }
+.ledger-bar { display: block; width: var(--bar); height: 100%; background: var(--color-rule-2); }
+.ledger-table tr:last-child .ledger-bar { background: var(--color-accent); }
+.ledger-table tr:last-child th, .ledger-table tr:last-child .ledger-amount { color: var(--color-ink); font-weight: 500; }
+.ledger-amount { width: 32%; font-family: var(--font-outlier); text-align: end; white-space: nowrap; }
+.ledger-foot { margin-top: var(--space-sm); color: var(--color-muted); font-size: var(--text-xs); }
+.products { border-bottom: var(--rule-hair) solid var(--color-rule); }
+.product-list { border-bottom: var(--rule-hair) solid var(--color-rule); }
+.product-row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); align-items: start; padding-block: var(--space-xl); border-top: var(--rule-hair) solid var(--color-rule); }
+.product-row h3 { grid-column: 1 / span 3; font-size: clamp(1.75rem, 2.4vw, 2.5rem); line-height: 1.05; }
+.product-desc { grid-column: 4 / span 4; color: var(--color-ink-2); font-size: var(--text-md); max-width: 34ch; }
+.product-desc .stop-reason { display: block; margin-top: var(--space-xs); color: var(--color-muted); font-size: var(--text-sm); text-wrap: balance; }
+.product-facts { grid-column: 8 / span 3; display: flex; flex-direction: column; gap: var(--space-2xs); color: var(--color-muted); font-size: var(--text-sm); }
+.product-status { grid-column: 11 / span 2; display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-xs); font-size: var(--text-sm); }
+.status-word { font-weight: 500; }
+.status-word--live { color: var(--color-accent); }
+.status-word--quiet { color: var(--color-muted); }
+.product-status a { font-size: var(--text-sm); white-space: nowrap; }
+.now-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); row-gap: var(--space-2xl); align-items: start; }
+.now-copy { grid-column: 1 / span 7; }
+.now-date { margin-bottom: var(--space-md); color: var(--color-muted); font-size: var(--text-sm); }
+.now-copy h2 { max-width: 100%; }
+.now-body { margin-top: var(--space-lg); color: var(--color-ink-2); font-size: var(--text-md); line-height: 1.75; max-width: 40ch; }
+.now-body a { text-underline-offset: 0.18em; }
+.now-reading { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--space-xs) var(--space-md); margin-top: var(--space-xl); padding-top: var(--space-md); border-top: var(--rule-hair) solid var(--color-rule); font-size: var(--text-sm); }
+.now-reading dt { color: var(--color-muted); }
+.now-reading dd { margin: 0; color: var(--color-ink-2); }
+.devlog { margin-top: var(--space-xl); padding-top: var(--space-md); border-top: var(--rule-hair) solid var(--color-rule); }
+.devlog h3 { max-width: none; font-family: var(--font-body); font-size: var(--text-sm); font-weight: 500; letter-spacing: 0; line-height: 1.4; color: var(--color-muted); }
+.devlog-list { display: grid; gap: var(--space-xs); margin-top: var(--space-sm); }
+.devlog-list li { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: var(--space-sm); color: var(--color-ink-2); font-size: var(--text-sm); line-height: 1.5; }
+.devlog-list time { color: var(--color-muted); font-family: var(--font-outlier); font-size: var(--text-xs); line-height: 1.8; font-variant-numeric: tabular-nums; }
+.release { grid-column: 9 / span 4; }
+.release-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); padding-bottom: var(--space-sm); border-bottom: var(--rule-hair) solid var(--color-rule-2); }
+.release h3 { font-size: var(--text-xl); }
+.release-head span { color: var(--color-muted); font-family: var(--font-body); font-size: var(--text-xs); font-weight: 500; letter-spacing: 0; }
+.release-steps { border-bottom: var(--rule-hair) solid var(--color-rule); }
+.release-steps li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-md); align-items: baseline; padding-block: var(--space-md); border-top: var(--rule-hair) solid var(--color-rule); font-size: var(--text-sm); }
+.release-steps li:first-child { border-top: 0; }
+.release-steps b { color: var(--color-muted); font-weight: 400; white-space: nowrap; }
+.release-steps li:first-child b { color: var(--color-accent); }
+.release-note { margin-top: var(--space-md); color: var(--color-muted); font-size: var(--text-sm); }
+.writing { border-bottom: var(--rule-hair) solid var(--color-rule); }
+.writing-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); row-gap: var(--space-2xl); align-items: start; }
+.recent-list { grid-column: 1 / span 7; border-bottom: var(--rule-hair) solid var(--color-rule); }
+.recent-list li { border-top: var(--rule-hair) solid var(--color-rule); }
+.story-link { display: block; padding-block: var(--space-lg); text-decoration: none; }
+.story-link:hover h3, .story-link:hover .popular-title { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.12em; }
+.recent-list .story-link { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-lg); align-items: baseline; }
+.recent-list h3 { max-width: 32ch; font-size: var(--text-title); }
+.recent-list li:first-child h3 { font-size: var(--text-2xl); }
+.story-meta { display: flex; flex-wrap: wrap; gap: var(--space-sm); color: var(--color-muted); font-size: var(--text-sm); white-space: nowrap; }
+.recent-list .story-meta { justify-content: flex-end; }
+.popular { grid-column: 9 / span 4; border-top: var(--rule-hair) solid var(--color-rule-2); padding-top: var(--space-md); }
+.popular h3 { font-size: var(--text-xl); }
+.popular-list { margin-top: var(--space-sm); }
+.popular-list li { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); gap: var(--space-sm); padding-block: var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.popular-rank { color: var(--color-muted); font-family: var(--font-outlier); font-size: var(--text-xs); line-height: 2.1; }
+.popular-link { text-decoration: none; }
+.popular-title { display: block; font-family: var(--font-display); font-size: var(--text-lg); line-height: 1.3; text-wrap: balance; }
+.popular-link .story-meta { margin-top: var(--space-2xs); }
+.archive { padding-block: var(--section-gap) var(--section-gap-s); }
+.archive-head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); row-gap: var(--space-lg); align-items: end; margin-bottom: var(--space-xl); }
+.archive-head h2 { grid-column: 1 / span 5; }
+.filter-group { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+.archive-tools { grid-column: 7 / span 6; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: var(--space-xs); }
+.filter { min-height: 44px; padding: 0 var(--space-sm); border: var(--rule-hair) solid var(--color-rule-2); background: var(--color-clear); color: var(--color-ink-2); font-size: var(--text-sm); line-height: 1; white-space: nowrap; cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out); }
+.filter:hover { background: var(--color-paper-2); }
+.filter[aria-pressed="true"] { background: var(--color-paper-2); border-color: var(--color-ink); color: var(--color-ink); }
+.filter:active { background: var(--color-paper-3); }
+.filter-count { margin-inline-start: var(--space-sm); color: var(--color-muted); font-size: var(--text-sm); white-space: nowrap; }
+.archive-list { border-top: var(--rule-hair) solid var(--color-rule-2); }
+.archive-list li { border-bottom: var(--rule-hair) solid var(--color-rule); }
+.archive-link { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-lg); align-items: baseline; padding-block: var(--space-sm); text-decoration: none; }
+.archive-link:hover h3 { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.1em; }
+.archive-link h3 { max-width: 42ch; font-size: var(--text-lg); line-height: 1.3; }
+.archive-meta { display: grid; grid-template-columns: 5.5rem 7rem 4.5rem; gap: var(--space-md); justify-self: end; color: var(--color-muted); font-size: var(--text-sm); white-space: nowrap; }
+.archive-meta time { font-variant-numeric: tabular-nums; }
+.archive-meta span:last-child { text-align: end; }
+.archive-empty { padding-block: var(--space-xl); color: var(--color-muted); }
+.subscribe { background: var(--color-ink); color: var(--color-paper); }
+.subscribe a { color: var(--color-paper); }
+.subscribe .btn { border-color: var(--color-paper); color: var(--color-paper); background: var(--color-clear); }
+.subscribe .btn:hover { background: color-mix(in oklab, var(--color-paper) 12%, var(--color-ink)); }
+.subscribe .btn:active { background: color-mix(in oklab, var(--color-paper) 22%, var(--color-ink)); }
+.subscribe :focus-visible { outline-color: var(--color-focus-on-ink); }
+.subscribe-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); row-gap: var(--space-2xl); align-items: end; }
+.subscribe-copy { grid-column: 1 / span 5; }
+.subscribe-copy h2 { max-width: 100%; }
+.subscribe-copy p { margin-top: var(--space-md); max-width: 32rem; color: var(--color-paper); font-size: var(--text-md); line-height: 1.65; text-wrap: balance; }
+.subscriber-count { margin-top: var(--space-lg); padding-top: var(--space-xs); border-top: var(--rule-hair) solid color-mix(in oklab, var(--color-paper) 38%, var(--color-ink)); color: var(--color-paper); font-size: var(--text-sm); }
+.signup { grid-column: 7 / span 6; }
+.signup label { display: block; margin-bottom: var(--space-xs); color: var(--color-paper); font-size: var(--text-sm); }
+.signup-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-sm); align-items: start; }
+.signup input { width: 100%; min-width: 0; min-height: 48px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-paper); background: var(--color-paper); color: var(--color-ink); outline: 2px solid var(--color-clear); outline-offset: 2px; font-size: var(--text-md); }
+.signup input::placeholder { color: var(--color-muted); opacity: 1; }
+.signup input:hover { background: var(--color-paper-2); }
+.signup input:focus-visible { outline-color: var(--color-focus-on-ink); }
+.signup input[aria-invalid="true"] { border-color: var(--color-error-on-ink); }
+.signup-help { min-height: 1lh; margin-top: var(--space-xs); color: var(--color-paper); font-size: var(--text-sm); }
+.signup-help.is-error { color: var(--color-error-on-ink); }
+.signup-help.is-success { padding-inline-start: var(--space-xs); border-inline-start: 2px solid var(--color-paper); }
+.signup-note { margin-top: var(--space-md); color: color-mix(in oklab, var(--color-paper) 74%, var(--color-ink)); font-size: var(--text-sm); }
+.signup-note a { text-underline-offset: 0.18em; }
+.site-footer { padding-block: var(--space-2xl) var(--space-xl); }
+.footer-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); row-gap: var(--space-xl); align-items: end; }
+.footer-word { grid-column: 1 / span 5; font-family: var(--font-display); font-size: clamp(3rem, 5.5vw, 5rem); line-height: 0.95; letter-spacing: var(--tracking-display); }
+.footer-word a { text-decoration: none; }
+.footer-links { grid-column: 7 / span 6; display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-lg); justify-content: flex-end; font-size: var(--text-sm); }
+.footer-links a { white-space: nowrap; }
+.footer-bottom { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-lg); justify-content: space-between; margin-top: var(--space-2xl); padding-top: var(--space-md); border-top: var(--rule-hair) solid var(--color-rule); color: var(--color-muted); font-size: var(--text-xs); }
+@media (max-width: 60rem) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); row-gap: var(--space-2xl); min-height: 0; padding-block: var(--space-3xl) var(--space-2xl); }
+  .hero-copy, .ledger { grid-column: 1; }
+  .ledger { max-width: 34rem; }
+  .product-row { row-gap: var(--space-md); padding-block: var(--space-lg); }
+  .product-row h3 { grid-column: 1 / span 5; }
+  .product-desc { grid-column: 6 / span 7; }
+  .product-facts { grid-column: 1 / span 6; flex-direction: row; flex-wrap: wrap; gap: var(--space-xs) var(--space-md); }
+  .product-status { grid-column: 7 / span 6; flex-direction: row; justify-content: flex-end; align-items: baseline; flex-wrap: wrap; }
+  .now-copy { grid-column: 1 / span 8; }
+  .release { grid-column: 1 / span 8; }
+  .recent-list { grid-column: 1 / span 8; }
+  .popular { grid-column: 1 / span 8; }
+  .archive-head h2 { grid-column: 1 / span 12; }
+  .archive-tools { grid-column: 1 / span 12; justify-content: flex-start; }
+  .subscribe-copy { grid-column: 1 / span 6; }
+  .signup { grid-column: 7 / span 6; }
+  .footer-word { grid-column: 1 / span 12; }
+  .footer-links { grid-column: 1 / span 12; justify-content: flex-start; }
+}
+@media (max-width: 40rem) {
+  .hero-copy h1 { font-size: clamp(2.75rem, 12.2vw, 3.5rem); }
+  .hero-copy .lead { max-width: 28ch; }
+  .hero-grid { row-gap: var(--space-xl); }
+  .product-row { grid-template-columns: minmax(0, 1fr); }
+  .product-row h3, .product-desc, .product-facts, .product-status { grid-column: 1; }
+  .product-status { justify-content: flex-start; margin-top: var(--space-xs); }
+  .now-copy, .release { grid-column: 1 / span 12; }
+  .now-reading { grid-template-columns: 4.5rem minmax(0, 1fr); }
+  .recent-list, .popular { grid-column: 1 / span 12; }
+  .recent-list .story-link { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xs); }
+  .recent-list .story-meta { justify-content: flex-start; }
+  .recent-list li:first-child h3 { font-size: var(--text-xl); }
+  .archive-link { grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); padding-block: var(--space-md); }
+  .archive-meta { display: flex; flex-wrap: wrap; justify-self: start; gap: var(--space-sm); }
+  .archive-meta span:last-child { text-align: start; }
+  .filter-count { margin-inline-start: 0; width: 100%; }
+  .subscribe-copy, .signup { grid-column: 1 / span 12; }
+  .signup-row { grid-template-columns: minmax(0, 1fr); }
+  .signup .btn { width: 100%; }
+  .footer-bottom { flex-direction: column; gap: var(--space-xs); }
+}
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">跳到正文</a>
+<header class="site-header">
+  <div class="container nav">
+    <a class="wordmark" href="index.html" aria-label="周屿，回到首页">周屿</a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#products">产品</a><a href="#now">近况</a><a href="#writing">文章</a><a href="#income">收入</a>
+    </nav>
+    <div class="theme-switch" role="group" aria-label="配色">
+      <button type="button" data-theme-option="auto" aria-pressed="true">自动</button>
+      <button type="button" data-theme-option="light" aria-pressed="false">浅</button>
+      <button type="button" data-theme-option="dark" aria-pressed="false">深</button>
+    </div>
+  </div>
+</header>
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <h1 id="hero-title">第四年，<br>还在做小软件。</h1>
+        <p class="lead">周屿，杭州。做拾页和慢信，前后端与界面都自己写。</p>
+        <div class="hero-actions">
+          <a class="btn btn--fill" href="article.html">读一篇文章</a>
+          <a class="btn" href="#subscribe">订阅来信</a>
+        </div>
+      </div>
+      <figure class="ledger" id="income" aria-labelledby="ledger-title">
+        <figcaption>
+          <div class="ledger-head">
+            <h2 id="ledger-title">公开收入</h2>
+            <span class="ledger-unit">2025.11 至 2026.10，元</span>
+          </div>
+        </figcaption>
+        <table class="ledger-table">
+          <caption class="sr-only">2025 年 11 月至 2026 年 10 月的月收入，单位元。</caption>
+          <tbody>
+            <tr><th scope="row">2025.11</th><td class="ledger-bar-cell"><span class="ledger-bar-track"><span class="ledger-bar" style="--bar:59.35%"></span></span></td><td class="ledger-amount">18,400</td></tr>
+<tr><th scope="row">2025.12</th><td class="ledger-bar-cell"><span class="ledger-bar-track"><span class="ledger-bar" style="--bar:61.61%"></span></span></td><td class="ledger-amount">19,100</td></tr>
+<tr><th scope="row">2026.01</th><td class="ledger-bar-cell"><span class="ledger-bar-track"><span class="ledger-bar" style="--bar:70.00%"></span></span></td><td class="ledger-amount">21,700</td></tr>
+<tr><th scope="row">2026.02</th><td class="ledger-bar-cell"><span class="ledger-bar-track"><span class="ledger-bar" style="--bar:65.48%"></span></span></td><td class="ledger-amount">20,300</td></tr>
+<tr><th scope="row">2026.03</th><td class="ledger-bar-cell"><span class="ledger-bar-track"><span class="ledger-bar" style="--bar:73.55%"></span></span></td><td class="ledger-amount">22,800</td></tr>
+<tr><th scope="row">2026.04</th><td class="ledger-bar-cell"><span class="ledger-bar-track"><span class="ledger-bar" style="--bar:79.03%"></span></span></td><td class="ledger-amount">24,500</td></tr>
+<tr><th scope="row">2026.05</th><td class="ledger-bar-cell"><span class="ledger-bar-track"><span class="ledger-bar" style="--bar:77.10%"></span></span></td><td class="ledger-amount">23,900</td></tr>
+<tr><th scope="row">2026.06</th><td class="ledger-bar-cell"><span class="ledger-bar-track"><span class="ledger-bar" style="--bar:84.52%"></span></span></td><td class="ledger-amount">26,200</td></tr>
+<tr><th scope="row">2026.07</th><td class="ledger-bar-cell"><span class="ledger-bar-track"><span class="ledger-bar" style="--bar:89.68%"></span></span></td><td class="ledger-amount">27,800</td></tr>
+<tr><th scope="row">2026.08</th><td class="ledger-bar-cell"><span class="ledger-bar-track"><span class="ledger-bar" style="--bar:82.58%"></span></span></td><td class="ledger-amount">25,600</td></tr>
+<tr><th scope="row">2026.09</th><td class="ledger-bar-cell"><span class="ledger-bar-track"><span class="ledger-bar" style="--bar:94.52%"></span></span></td><td class="ledger-amount">29,300</td></tr>
+<tr><th scope="row">2026.10</th><td class="ledger-bar-cell"><span class="ledger-bar-track"><span class="ledger-bar" style="--bar:100.00%"></span></span></td><td class="ledger-amount">31,000</td></tr>
+          </tbody>
+        </table>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section products" id="products">
+    <div class="container">
+      <div class="section-head">
+        <h2>四个产品，四种状态</h2>
+        <p class="section-note">有的在卖，有的停更，链接和原因都留着。</p>
+      </div>
+      <div class="product-list">
+        <article class="product-row">
+          <h3>拾页</h3>
+          <p class="product-desc">Mac 上的稍后读与高亮笔记，买断 128 元。</p>
+          <div class="product-facts"><span>约 1.2 万付费用户</span><span>2.0 开发中</span></div>
+          <div class="product-status"><span class="status-word status-word--live">在售</span><a href="#now">看 2.0 进度</a></div>
+        </article>
+        <article class="product-row">
+          <h3>慢信</h3>
+          <p class="product-desc">给一年后的自己写信，iOS 订阅每年 30 元。</p>
+          <div class="product-facts"><span>iOS 应用</span><span>按年投递</span></div>
+          <div class="product-status"><span class="status-word status-word--live">在运营</span></div>
+        </article>
+        <article class="product-row">
+          <h3>slugify-zh</h3>
+          <p class="product-desc">把中文标题转成干净的网址片段，开源库。</p>
+          <div class="product-facts"><span>GitHub 2.3k stars</span><span>持续维护</span></div>
+          <div class="product-status"><span class="status-word">开源</span><a href="https://github.com/zhouyu/slugify-zh">GitHub</a></div>
+        </article>
+        <article class="product-row">
+          <h3>周末菜单</h3>
+          <p class="product-desc">按冰箱里剩下的食材推荐菜谱的小程序。<span class="stop-reason">停更原因：食材库需要持续人工维护，使用频率不足以支撑。</span></p>
+          <div class="product-facts"><span>微信小程序</span><span>2024 年停止维护</span></div>
+          <div class="product-status"><span class="status-word status-word--quiet">已停更</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight section--paper" id="now">
+    <div class="container">
+      <div class="now-grid">
+        <div class="now-copy">
+          <p class="now-date"><time datetime="2026-10">更新于 2026 年 10 月</time></p>
+          <h2>这个月在做的事</h2>
+          <p class="now-body">拾页 2.0 的本地索引层已经重写完，现在主要卡在同步和冲突合并：同一段高亮在两台 Mac 上被改了颜色、挪了位置，应该以谁为准。进度写在<a href="#devlog">开发日志</a>里，长一点的思考留在文章。</p>
+          <dl class="now-reading">
+            <dt>在读</dt><dd>《数据密集型应用系统设计》，复制与分区两章。</dd>
+            <dt>在学</dt><dd>SQLite 的 WAL，以及 SwiftUI 的 Observation。</dd>
+          </dl>
+        </div>
+        <aside class="release" aria-labelledby="release-title">
+          <div class="release-head"><h3 id="release-title">拾页 2.0</h3><span>开发中</span></div>
+          <ol class="release-steps">
+            <li><span>本地索引层</span><b>已完成</b></li>
+            <li><span>同步与冲突合并</span><b>进行中</b></li>
+            <li><span>阅读器重写</span><b>未开始</b></li>
+          </ol>
+          <p class="release-note">目标：先把同步做稳，再动阅读器。</p>
+          <div class="devlog" id="devlog">
+            <h3>开发日志</h3>
+            <ol class="devlog-list">
+              <li><time datetime="2026-10-26">10.26</time><span>本地索引层收尾，搜索改走新表。</span></li>
+              <li><time datetime="2026-10-19">10.19</time><span>冲突合并跑通，开始双写演练。</span></li>
+              <li><time datetime="2026-10-12">10.12</time><span>读路径接到新服务，回滚开关留着。</span></li>
+            </ol>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section writing" id="writing">
+    <div class="container">
+      <div class="section-head">
+        <h2>最近写的</h2>
+        <a class="section-link" href="#archive">全部文章</a>
+      </div>
+      <div class="writing-grid">
+        <ol class="recent-list">
+          <li>
+      <a class="story-link" href="article.html">
+        <h3>为什么拾页坚持买断，不做订阅</h3>
+        <p class="story-meta"><span>产品</span><time datetime="2026-10-21">2026.10.21</time><span>9 分钟</span></p>
+      </a>
+    </li>
+<li>
+      <a class="story-link" href="article.html">
+        <h3>把拾页的同步从&nbsp;iCloud 迁到自建服务</h3>
+        <p class="story-meta"><span>技术</span><time datetime="2026-10-12">2026.10.12</time><span>14 分钟</span></p>
+      </a>
+    </li>
+<li>
+      <a class="story-link" href="article.html">
+        <h3>用 SQLite 存下所有高亮</h3>
+        <p class="story-meta"><span>技术</span><time datetime="2026-09-02">2026.09.02</time><span>11 分钟</span></p>
+      </a>
+    </li>
+<li>
+      <a class="story-link" href="article.html">
+        <h3>2.0 之前，我先删掉了几个功能</h3>
+        <p class="story-meta"><span>产品</span><time datetime="2026-08-22">2026.08.22</time><span>7 分钟</span></p>
+      </a>
+    </li>
+        </ol>
+        <aside class="popular" aria-labelledby="popular-title">
+          <h3 id="popular-title">读得最多的</h3>
+          <ol class="popular-list">
+            <li>
+      <span class="popular-rank" aria-hidden="true">1</span>
+      <a class="popular-link" href="article.html">
+        <span class="sr-only">第 1 名，</span>
+        <span class="popular-title">为什么拾页坚持买断，不做订阅</span>
+        <span class="story-meta"><span>产品</span><time datetime="2026-10-21">2026.10.21</time><span>9 分钟</span></span>
+      </a>
+    </li>
+<li>
+      <span class="popular-rank" aria-hidden="true">2</span>
+      <a class="popular-link" href="article.html">
+        <span class="sr-only">第 2 名，</span>
+        <span class="popular-title">把拾页的同步从&nbsp;iCloud 迁到自建服务</span>
+        <span class="story-meta"><span>技术</span><time datetime="2026-10-12">2026.10.12</time><span>14 分钟</span></span>
+      </a>
+    </li>
+<li>
+      <span class="popular-rank" aria-hidden="true">3</span>
+      <a class="popular-link" href="article.html">
+        <span class="sr-only">第 3 名，</span>
+        <span class="popular-title">一个付费墙应该出现在哪里</span>
+        <span class="story-meta"><span>产品</span><time datetime="2024-11-15">2024.11.15</time><span>9 分钟</span></span>
+      </a>
+    </li>
+<li>
+      <span class="popular-rank" aria-hidden="true">4</span>
+      <a class="popular-link" href="article.html">
+        <span class="sr-only">第 4 名，</span>
+        <span class="popular-title">关于公开收入这件事</span>
+        <span class="story-meta"><span>生活</span><time datetime="2025-05-06">2025.05.06</time><span>6 分钟</span></span>
+      </a>
+    </li>
+          </ol>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section archive" id="archive">
+    <div class="container">
+      <div class="archive-head">
+        <h2>全部文章</h2>
+        <div class="archive-tools">
+          <div class="filter-group" role="group" aria-label="按类别筛选文章">
+            <button class="filter" type="button" data-filter="all" aria-pressed="true">全部</button>
+            <button class="filter" type="button" data-filter="product" aria-pressed="false">产品</button>
+            <button class="filter" type="button" data-filter="tech" aria-pressed="false">技术</button>
+            <button class="filter" type="button" data-filter="life" aria-pressed="false">生活</button>
+          </div>
+          <span class="filter-count" aria-live="polite" data-article-count>30 篇</span>
+        </div>
+      </div>
+      <ol class="archive-list">
+        <li data-article data-category="product">
+      <a class="archive-link" href="article.html">
+        <h3>为什么拾页坚持买断，不做订阅</h3>
+        <span class="archive-meta"><span>产品</span><time datetime="2026-10-21">2026.10.21</time><span>9 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="tech">
+      <a class="archive-link" href="article.html">
+        <h3>把拾页的同步从&nbsp;iCloud 迁到自建服务</h3>
+        <span class="archive-meta"><span>技术</span><time datetime="2026-10-12">2026.10.12</time><span>14 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="tech">
+      <a class="archive-link" href="article.html">
+        <h3>用 SQLite 存下所有高亮</h3>
+        <span class="archive-meta"><span>技术</span><time datetime="2026-09-02">2026.09.02</time><span>11 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="product">
+      <a class="archive-link" href="article.html">
+        <h3>2.0 之前，我先删掉了几个功能</h3>
+        <span class="archive-meta"><span>产品</span><time datetime="2026-08-22">2026.08.22</time><span>7 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="life">
+      <a class="archive-link" href="article.html">
+        <h3>独立开发第四年，我重新学会了休息</h3>
+        <span class="archive-meta"><span>生活</span><time datetime="2026-08-01">2026.08.01</time><span>6 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="tech">
+      <a class="archive-link" href="article.html">
+        <h3>中文 slugify 的边界比想象中多</h3>
+        <span class="archive-meta"><span>技术</span><time datetime="2026-07-14">2026.07.14</time><span>8 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="product">
+      <a class="archive-link" href="article.html">
+        <h3>一次涨价前后，我收到的邮件</h3>
+        <span class="archive-meta"><span>产品</span><time datetime="2026-06-11">2026.06.11</time><span>8 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="life">
+      <a class="archive-link" href="article.html">
+        <h3>在杭州做独立开发，钱花在哪里</h3>
+        <span class="archive-meta"><span>生活</span><time datetime="2026-05-29">2026.05.29</time><span>8 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="tech">
+      <a class="archive-link" href="article.html">
+        <h3>一次全文搜索的重写：从 LIKE 到 FTS5</h3>
+        <span class="archive-meta"><span>技术</span><time datetime="2026-05-08">2026.05.08</time><span>13 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="product">
+      <a class="archive-link" href="article.html">
+        <h3>慢信的第二年：一封年信如何留住人</h3>
+        <span class="archive-meta"><span>产品</span><time datetime="2026-04-03">2026.04.03</time><span>10 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="life">
+      <a class="archive-link" href="article.html">
+        <h3>我的一周：写作、发货和散步</h3>
+        <span class="archive-meta"><span>生活</span><time datetime="2026-03-27">2026.03.27</time><span>5 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="tech">
+      <a class="archive-link" href="article.html">
+        <h3>SwiftUI 的 Observation，一年后再看</h3>
+        <span class="archive-meta"><span>技术</span><time datetime="2026-03-11">2026.03.11</time><span>9 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="product">
+      <a class="archive-link" href="article.html">
+        <h3>一个人做产品，说明书比功能更难写</h3>
+        <span class="archive-meta"><span>产品</span><time datetime="2026-02-19">2026.02.19</time><span>6 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="life">
+      <a class="archive-link" href="article.html">
+        <h3>重新开始学素描</h3>
+        <span class="archive-meta"><span>生活</span><time datetime="2026-01-17">2026.01.17</time><span>4 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="tech">
+      <a class="archive-link" href="article.html">
+        <h3>给独立开发者的最小可观测性</h3>
+        <span class="archive-meta"><span>技术</span><time datetime="2026-01-06">2026.01.06</time><span>10 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="product">
+      <a class="archive-link" href="article.html">
+        <h3>周末菜单停更说明：不是没时间</h3>
+        <span class="archive-meta"><span>产品</span><time datetime="2025-12-07">2025.12.07</time><span>5 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="life">
+      <a class="archive-link" href="article.html">
+        <h3>一个人工作久了，会想念同事</h3>
+        <span class="archive-meta"><span>生活</span><time datetime="2025-11-20">2025.11.20</time><span>9 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="tech">
+      <a class="archive-link" href="article.html">
+        <h3>用 Cloudflare Workers 做一层薄网关</h3>
+        <span class="archive-meta"><span>技术</span><time datetime="2025-10-28">2025.10.28</time><span>11 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="product">
+      <a class="archive-link" href="article.html">
+        <h3>拾页的定价，我试过哪些办法</h3>
+        <span class="archive-meta"><span>产品</span><time datetime="2025-09-16">2025.09.16</time><span>11 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="life">
+      <a class="archive-link" href="article.html">
+        <h3>我把办公室搬回了家</h3>
+        <span class="archive-meta"><span>生活</span><time datetime="2025-08-12">2025.08.12</time><span>7 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="tech">
+      <a class="archive-link" href="article.html">
+        <h3>我为什么把 Postgres 换成了 SQLite</h3>
+        <span class="archive-meta"><span>技术</span><time datetime="2025-07-09">2025.07.09</time><span>12 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="product">
+      <a class="archive-link" href="article.html">
+        <h3>把设置页减到五个开关</h3>
+        <span class="archive-meta"><span>产品</span><time datetime="2025-06-24">2025.06.24</time><span>7 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="life">
+      <a class="archive-link" href="article.html">
+        <h3>关于公开收入这件事</h3>
+        <span class="archive-meta"><span>生活</span><time datetime="2025-05-06">2025.05.06</time><span>6 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="tech">
+      <a class="archive-link" href="article.html">
+        <h3>从零写一个 Markdown 高亮器</h3>
+        <span class="archive-meta"><span>技术</span><time datetime="2025-04-21">2025.04.21</time><span>14 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="product">
+      <a class="archive-link" href="article.html">
+        <h3>为什么我不做团队版</h3>
+        <span class="archive-meta"><span>产品</span><time datetime="2025-03-02">2025.03.02</time><span>8 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="life">
+      <a class="archive-link" href="article.html">
+        <h3>一个开发者的年度书单</h3>
+        <span class="archive-meta"><span>生活</span><time datetime="2024-12-28">2024.12.28</time><span>10 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="tech">
+      <a class="archive-link" href="article.html">
+        <h3>一次 DNS 故障教会我的事</h3>
+        <span class="archive-meta"><span>技术</span><time datetime="2024-12-03">2024.12.03</time><span>6 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="product">
+      <a class="archive-link" href="article.html">
+        <h3>一个付费墙应该出现在哪里</h3>
+        <span class="archive-meta"><span>产品</span><time datetime="2024-11-15">2024.11.15</time><span>9 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="life">
+      <a class="archive-link" href="article.html">
+        <h3>不融资的日子，焦虑还在</h3>
+        <span class="archive-meta"><span>生活</span><time datetime="2024-09-09">2024.09.09</time><span>8 分钟</span></span>
+      </a>
+    </li>
+<li data-article data-category="tech">
+      <a class="archive-link" href="article.html">
+        <h3>把构建时间压下来之后</h3>
+        <span class="archive-meta"><span>技术</span><time datetime="2024-08-19">2024.08.19</time><span>7 分钟</span></span>
+      </a>
+    </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section subscribe" id="subscribe" aria-labelledby="subscribe-title">
+    <div class="container">
+      <div class="subscribe-grid">
+        <div class="subscribe-copy">
+          <h2 id="subscribe-title">每月一封信</h2>
+          <p>写下正在做的事、刚踩过的坑，以及新文章。只用来寄信。</p>
+          <p class="subscriber-count">约 4,000 位订阅者</p>
+        </div>
+        <form class="signup" data-signup data-endpoint="" novalidate>
+          <label for="email-home">邮箱</label>
+          <div class="signup-row">
+            <input id="email-home" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" required aria-describedby="email-home-help">
+            <button class="btn" type="submit">订阅</button>
+          </div>
+          <p class="signup-help" id="email-home-help" aria-live="polite"></p>
+          <p class="signup-note">不想订阅，也可以直接<a href="mailto:hi@zhouyu.dev">写信给我</a>。</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <p class="footer-word"><a href="index.html">周屿</a></p>
+      <div class="footer-links">
+        <a href="mailto:hi@zhouyu.dev">hi@zhouyu.dev</a>
+        <a href="https://github.com/zhouyu" rel="me">GitHub</a>
+        <a href="https://okjike.com/u/zhouyu" rel="me">即刻</a>
+        <a href="https://x.com/zhouyu" rel="me">X</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>杭州，中国</span>
+      <span>更新于 2026 年 10 月</span>
+    </div>
+  </div>
+</footer>
+<script>
+(function () {
+  var root = document.documentElement;
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-theme-option]'));
+
+  function readPref() {
+    try {
+      var pref = localStorage.getItem('zhouyu-theme');
+      return pref === 'light' || pref === 'dark' ? pref : 'auto';
+    } catch (e) {
+      return 'auto';
+    }
+  }
+
+  function paint(pref) {
+    if (pref === 'auto') {
+      root.removeAttribute('data-theme');
+    } else {
+      root.dataset.theme = pref;
+    }
+    buttons.forEach(function (button) {
+      button.setAttribute('aria-pressed', button.dataset.themeOption === pref ? 'true' : 'false');
+    });
+  }
+
+  buttons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var pref = button.dataset.themeOption;
+      try {
+        if (pref === 'auto') localStorage.removeItem('zhouyu-theme');
+        else localStorage.setItem('zhouyu-theme', pref);
+      } catch (e) {}
+      paint(pref);
+    });
+  });
+  paint(readPref());
+
+  document.querySelectorAll('form[data-signup]').forEach(function (form) {
+    var input = form.querySelector('input[type="email"]');
+    var help = form.querySelector('.signup-help');
+    var touched = false;
+    if (!input || !help) return;
+
+    function validEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+    }
+
+    function setState(kind, message) {
+      form.classList.toggle('is-success', kind === 'success');
+      form.classList.toggle('is-error', kind === 'error');
+      help.classList.toggle('is-success', kind === 'success');
+      help.classList.toggle('is-error', kind === 'error');
+      help.textContent = message;
+      if (kind === 'error') input.setAttribute('aria-invalid', 'true');
+      else input.removeAttribute('aria-invalid');
+    }
+
+    function check(showError) {
+      var value = input.value.trim();
+      if (!value) {
+        if (showError) setState('error', '请填写邮箱地址。');
+        return false;
+      }
+      if (!validEmail(value)) {
+        if (showError) setState('error', '邮箱格式不对，请写成 name@example.com。');
+        return false;
+      }
+      if (showError) setState('', '');
+      return true;
+    }
+
+    input.addEventListener('blur', function () {
+      touched = true;
+      check(true);
+    });
+
+    input.addEventListener('input', function () {
+      if (touched) check(false);
+    });
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      touched = true;
+      if (!check(true)) {
+        input.focus();
+        return;
+      }
+      var email = input.value.trim();
+      var saved = false;
+      try {
+        localStorage.setItem('zhouyu-subscriber', email);
+        saved = true;
+      } catch (e) {}
+      if (saved) {
+        setState('success', '已记录你的邮箱。这是前端演示，邮件还没有真正寄出。');
+      } else {
+        setState('error', '邮箱格式正确，但这个浏览器不允许本地保存。');
+      }
+    });
+  });
+
+  var filters = Array.prototype.slice.call(document.querySelectorAll('[data-filter]'));
+  var items = Array.prototype.slice.call(document.querySelectorAll('[data-article]'));
+  var counter = document.querySelector('[data-article-count]');
+  if (filters.length && items.length) {
+    filters.forEach(function (button) {
+      button.addEventListener('click', function () {
+        var filter = button.dataset.filter;
+        filters.forEach(function (other) {
+          other.setAttribute('aria-pressed', other === button ? 'true' : 'false');
+        });
+        var shown = 0;
+        items.forEach(function (item) {
+          var visible = filter === 'all' || item.dataset.category === filter;
+          item.hidden = !visible;
+          if (visible) shown += 1;
+        });
+        if (counter) counter.textContent = shown + ' 篇';
+      });
+    });
+  }
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f1e8">
+<meta name="description" content="拾页 1.x 的同步从 iCloud 迁到自建服务的完整记录：服务端设计、客户端协议、冲突处理、双写迁移与代价。">
+<title>把拾页的同步从 iCloud 迁到自建服务 · 周屿</title>
+<script>
+(function () {
+  var root = document.documentElement;
+  var media = window.matchMedia('(prefers-color-scheme: dark)');
+  function saved() {
+    try { return localStorage.getItem('zy-theme'); }
+    catch (error) { return null; }
+  }
+  function apply(theme) {
+    root.setAttribute('data-theme', theme);
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#131310' : '#f5f1e8');
+  }
+  var preference = saved();
+  apply(preference === 'light' || preference === 'dark' ? preference : (media.matches ? 'dark' : 'light'));
+  root.classList.add('js');
+  window.__theme = { media: media, apply: apply, saved: saved };
+  function onSystemChange(event) {
+    var preference = saved();
+    if (preference !== 'light' && preference !== 'dark') {
+      apply(event.matches ? 'dark' : 'light');
+    }
+  }
+  if (media.addEventListener) media.addEventListener('change', onSystemChange);
+  else if (media.addListener) media.addListener(onSystemChange);
+})();
+</script>
+<style>
+/* ============ tokens ============ */
+:root {
+  color-scheme: light;
+  --bg: #f5f1e8;
+  --bg-deep: #eee9dd;
+  --surface: #fffdf7;
+  --surface-2: #ebe5d8;
+  --text: #1b1915;
+  --muted: #6c675d;
+  --faint: #918a7d;
+  --line: rgba(27, 25, 21, .13);
+  --line-strong: rgba(27, 25, 21, .24);
+  --accent: #b94a2e;
+  --accent-text: #9c3c23;
+  --accent-soft: #f0d6c8;
+  --accent-ink: #fff8f2;
+  --green: #3f6b4d;
+  --green-soft: #dfe8df;
+  --gold: #b9872f;
+  --panel: #1c1b17;
+  --panel-text: #f2ece0;
+  --panel-muted: #aaa294;
+  --panel-line: rgba(242, 236, 224, .14);
+  --shadow: 0 20px 70px rgba(58, 47, 30, .10);
+  --shadow-soft: 0 10px 32px rgba(58, 47, 30, .06);
+  --font-serif: "Iowan Old Style", "Palatino Linotype", "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: "SFMono-Regular", "Cascadia Code", "Roboto Mono", Menlo, Consolas, monospace;
+  --max: 1240px;
+  --gutter: clamp(20px, 4vw, 80px);
+  --ease: cubic-bezier(.22, .68, .25, 1);
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #131310;
+  --bg-deep: #0e0e0c;
+  --surface: #1c1c17;
+  --surface-2: #25231d;
+  --text: #eee9dd;
+  --muted: #aaa396;
+  --faint: #7d776c;
+  --line: rgba(238, 233, 221, .13);
+  --line-strong: rgba(238, 233, 221, .25);
+  --accent: #ef916c;
+  --accent-text: #f2a180;
+  --accent-soft: #3a241b;
+  --accent-ink: #1c110d;
+  --green: #8dbf9d;
+  --green-soft: #203127;
+  --gold: #d7ad5f;
+  --panel: #1d1d18;
+  --panel-text: #f0eadf;
+  --panel-muted: #aaa294;
+  --panel-line: rgba(240, 234, 223, .14);
+  --shadow: 0 24px 80px rgba(0,0,0,.30);
+  --shadow-soft: 0 12px 34px rgba(0,0,0,.22);
+}
+/* ============ base ============ */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 104px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color .35s ease, color .35s ease;
+}
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background:
+    radial-gradient(circle at 84% 3%, rgba(185, 74, 46, .065), transparent 32rem),
+    radial-gradient(circle at 2% 45%, rgba(63, 107, 77, .045), transparent 28rem);
+}
+:root[data-theme="dark"] body::before {
+  background:
+    radial-gradient(circle at 84% 3%, rgba(239, 145, 108, .06), transparent 32rem),
+    radial-gradient(circle at 2% 45%, rgba(141, 191, 157, .04), transparent 28rem);
+}
+::selection { color: var(--accent-ink); background: var(--accent); }
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+img, svg { display: block; max-width: 100%; }
+h1, h2, h3, h4, p, figure, blockquote { margin-top: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.shell { width: min(var(--max), calc(100% - var(--gutter) * 2)); margin-inline: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.skip-link { position: fixed; top: 10px; left: 10px; z-index: 300; padding: 10px 16px; border-radius: 999px; background: var(--text); color: var(--bg); transform: translateY(-150%); transition: transform .2s ease; }
+.skip-link:focus { transform: translateY(0); }
+[hidden] { display: none !important; }
+/* ============ header ============ */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid transparent;
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  backdrop-filter: blur(18px) saturate(130%);
+  transition: background-color .35s ease, border-color .25s ease;
+}
+.site-header.is-scrolled { border-bottom-color: var(--line); }
+.header-inner { min-height: 78px; display: flex; align-items: center; gap: 30px; }
+.brand { display: inline-flex; align-items: center; gap: 12px; flex: 0 0 auto; }
+.brand-mark {
+  width: 39px; height: 39px; display: grid; place-items: center;
+  border-radius: 4px; background: var(--text); color: var(--bg);
+  font-family: var(--font-serif); font-size: 22px; line-height: 1; position: relative;
+  transition: transform .35s var(--ease), background-color .25s ease;
+}
+.brand-mark::after { content: ""; position: absolute; inset: 4px; border: 1px solid color-mix(in srgb, var(--bg) 55%, transparent); border-radius: 2px; }
+.brand:hover .brand-mark { transform: rotate(-5deg); }
+.brand-copy { display: grid; line-height: 1.2; }
+.brand-copy strong { font-family: var(--font-serif); font-size: 18px; letter-spacing: .08em; }
+.brand-copy small { margin-top: 3px; color: var(--faint); font-family: var(--font-mono); font-size: 8.5px; letter-spacing: .12em; text-transform: uppercase; }
+.main-nav { display: flex; align-items: center; gap: clamp(15px, 2.2vw, 29px); margin-left: auto; }
+.main-nav a { position: relative; padding: 7px 0; color: var(--muted); font-size: 13.5px; letter-spacing: .02em; transition: color .2s ease; }
+.main-nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 1px; height: 1px; background: var(--accent); transition: right .28s var(--ease); }
+.main-nav a:hover, .main-nav a[aria-current="page"] { color: var(--text); }
+.main-nav a:hover::after, .main-nav a[aria-current="page"]::after { right: 0; }
+.header-tools { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+.theme-toggle { width: 38px; height: 38px; padding: 0; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--text); transition: border-color .2s ease, background-color .2s ease, transform .2s ease; }
+.theme-toggle:hover { border-color: var(--line-strong); background: var(--surface); transform: rotate(8deg); }
+.theme-toggle svg { width: 17px; height: 17px; }
+.theme-toggle .icon-moon { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+.nav-cta { display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 17px; border-radius: 999px; background: var(--text); color: var(--bg); font-size: 13px; font-weight: 600; letter-spacing: .02em; transition: transform .2s var(--ease); }
+.nav-cta:hover { transform: translateY(-1px); }
+.progress-track { position: fixed; top: 0; left: 0; right: 0; z-index: 220; height: 2px; background: transparent; pointer-events: none; }
+.progress-track span { display: block; height: 100%; width: 100%; transform: scaleX(0); transform-origin: left; background: var(--accent); }
+/* ============ article hero ============ */
+.article-hero { padding-top: clamp(24px, 3.5vw, 42px); }
+.breadcrumb { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; color: var(--faint); font-family: var(--font-mono); font-size: 9px; letter-spacing: .05em; }
+.breadcrumb a { transition: color .2s ease; }
+.breadcrumb a:hover { color: var(--accent-text); }
+.breadcrumb .slash { color: var(--line-strong); }
+.article-header { max-width: 970px; margin-inline: auto; padding: clamp(44px, 6vw, 83px) 0 clamp(38px, 5vw, 62px); text-align: center; }
+.article-kicker { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 9px 14px; color: var(--faint); font-family: var(--font-mono); font-size: 8.5px; letter-spacing: .06em; text-transform: uppercase; }
+.article-kicker .cat { padding: 5px 9px; border: 1px solid var(--line-strong); border-radius: 3px; color: var(--accent-text); font-size: 8px; }
+.article-kicker .dot { width: 2px; height: 2px; border-radius: 50%; background: var(--faint); }
+.article-header h1 { margin: 26px 0 24px; font-family: var(--font-serif); font-size: clamp(43px, 6.1vw, 82px); font-weight: 600; line-height: 1.08; letter-spacing: -.055em; text-wrap: balance; }
+.article-header h1 .mono { font-family: var(--font-mono); font-size: .76em; letter-spacing: -.04em; }
+.article-header h1 em { color: var(--accent-text); font-style: normal; white-space: nowrap; }
+.article-dek { max-width: 780px; margin: 0 auto; color: var(--muted); font-size: clamp(16px, 1.55vw, 19px); line-height: 1.75; }
+.article-byline { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px 14px; margin-top: 30px; color: var(--faint); font-size: 10.5px; }
+.byline-avatar { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: var(--text); color: var(--bg); font-family: var(--font-serif); font-size: 15px; }
+.byline-person { display: grid; text-align: left; line-height: 1.3; }
+.byline-person strong { color: var(--text); font-size: 11.5px; font-weight: 600; }
+.byline-person span { color: var(--faint); font-size: 9.5px; }
+.byline-rule { width: 1px; height: 23px; background: var(--line); margin-inline: 5px; }
+/* ============ article layout / toc ============ */
+.article-layout { display: grid; grid-template-columns: 188px minmax(0, 700px); gap: clamp(38px, 6vw, 86px); justify-content: center; align-items: start; padding-top: 38px; border-top: 1px solid var(--line); }
+.article-rail { position: sticky; top: 112px; align-self: start; }
+.toc-title { margin: 0 0 14px; color: var(--faint); font-family: var(--font-mono); font-size: 8px; letter-spacing: .1em; text-transform: uppercase; }
+.toc-title span { display: block; margin-top: 2px; color: var(--line-strong); font-size: 7px; }
+.toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+.toc li { border-top: 1px solid var(--line); }
+.toc li:last-child { border-bottom: 1px solid var(--line); }
+.toc a { display: flex; gap: 10px; padding: 10px 0; color: var(--muted); font-size: 10.5px; line-height: 1.55; transition: color .2s ease; }
+.toc a span { flex: 0 0 auto; color: var(--faint); font-family: var(--font-mono); font-size: 7.5px; padding-top: 2px; }
+.toc a:hover, .toc a.is-active { color: var(--text); }
+.toc a.is-active span { color: var(--accent-text); }
+.article-rail .rail-note { margin-top: 24px; padding: 13px 0 0; border-top: 1px solid var(--line); color: var(--faint); font-family: var(--font-mono); font-size: 7.5px; line-height: 1.7; letter-spacing: .03em; }
+.mobile-toc { display: none; margin: 0 0 34px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.mobile-toc summary { cursor: pointer; color: var(--muted); font-family: var(--font-mono); font-size: 9px; letter-spacing: .06em; }
+.mobile-toc ol { margin: 13px 0 0; padding: 0 0 0 17px; color: var(--muted); font-size: 12px; line-height: 2; }
+.mobile-toc a:hover { color: var(--accent-text); }
+/* ============ article body ============ */
+.article-body { min-width: 0; padding-bottom: 24px; }
+.article-body p {
+  margin: 0 0 1.62em;
+  font-family: var(--font-serif);
+  font-size: 19px; line-height: 1.95; letter-spacing: .005em;
+  text-wrap: pretty;
+}
+.article-body .lead { font-size: 21px; line-height: 1.9; }
+.article-body h2 {
+  margin: 2.35em 0 .86em;
+  font-family: var(--font-sans);
+  font-size: clamp(24px, 2.5vw, 30px); font-weight: 600;
+  line-height: 1.42; letter-spacing: -.035em;
+  scroll-margin-top: 112px;
+}
+.article-body h2 .h-no {
+  display: block; margin-bottom: 8px;
+  color: var(--accent-text); font-family: var(--font-mono);
+  font-size: 8.5px; font-weight: 500; letter-spacing: .13em;
+}
+.article-body strong { color: var(--text); font-weight: 600; }
+.article-body a:not(.footnote-back) {
+  text-decoration: underline; text-decoration-thickness: 1px;
+  text-underline-offset: 4px; text-decoration-color: var(--accent);
+  transition: color .2s ease;
+}
+.article-body a:not(.footnote-back):hover { color: var(--accent-text); }
+.article-body em { font-style: normal; color: var(--accent-text); }
+.article-body ul, .article-body ol {
+  margin: 1.3em 0 1.8em; padding-left: 1.25em;
+  font-family: var(--font-serif); font-size: 18px; line-height: 1.92;
+}
+.article-body li { margin-bottom: .35em; padding-left: .25em; }
+.article-body li::marker { color: var(--accent-text); }
+.article-body code {
+  padding: .15em .35em; border: 1px solid var(--line);
+  border-radius: 4px; background: var(--surface-2);
+  font-family: var(--font-mono); font-size: .79em;
+  letter-spacing: -.02em;
+}
+.article-body sup { line-height: 0; }
+.article-body sup a {
+  padding: 0 2px; color: var(--accent-text);
+  font-family: var(--font-mono); font-size: 10px; text-decoration: none;
+}
+.pullquote {
+  position: relative;
+  margin: 2.6em 0 2.7em; padding: 27px 0 26px 31px;
+  border-left: 2px solid var(--accent);
+}
+.pullquote::before {
+  content: "“"; position: absolute; left: 9px; top: 2px;
+  color: var(--accent); font-family: var(--font-serif); font-size: 34px; line-height: 1;
+}
+.pullquote p {
+  max-width: 600px; margin: 0;
+  color: var(--text); font-family: var(--font-serif);
+  font-size: clamp(23px, 2.35vw, 30px); line-height: 1.6; letter-spacing: -.025em;
+}
+.pullquote cite {
+  display: block; margin-top: 12px;
+  color: var(--faint); font-family: var(--font-mono);
+  font-size: 8.5px; font-style: normal; letter-spacing: .06em;
+}
+.code-figure {
+  margin: 2.4em 0 2.7em;
+  border: 1px solid var(--line-strong); border-radius: 12px;
+  background: var(--bg-deep); overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+.code-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 15px;
+  min-height: 38px; padding: 7px 13px 7px 16px;
+  border-bottom: 1px solid var(--line); background: var(--surface);
+}
+.code-head span { color: var(--faint); font-family: var(--font-mono); font-size: 8.5px; letter-spacing: .07em; }
+.copy-code {
+  min-height: 24px; padding: 3px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: transparent; color: var(--muted);
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: .04em;
+  transition: color .2s ease, border-color .2s ease, background-color .2s ease;
+}
+.copy-code:hover { color: var(--text); border-color: var(--line-strong); background: var(--surface-2); }
+.copy-code.is-copied { color: var(--green); border-color: color-mix(in srgb, var(--green) 38%, transparent); }
+.code-figure pre { margin: 0; padding: 20px 21px 22px; overflow-x: auto; }
+.code-figure code { padding: 0; border: 0; background: transparent; font-size: 12.5px; line-height: 1.85; color: var(--text); }
+.tok-key { color: var(--accent-text); }
+.tok-type { color: var(--green); }
+.tok-str { color: var(--gold); }
+.tok-com { color: var(--faint); font-style: italic; }
+.article-figure { margin: 2.7em 0 2.9em; }
+.diagram-wrap {
+  padding: clamp(10px, 2vw, 22px);
+  border: 1px solid var(--line); border-radius: 14px;
+  background: var(--surface);
+}
+.diagram { width: 100%; height: auto; display: block; }
+.diagram-hint { display: none; margin: 8px 0 0; color: var(--faint); font-family: var(--font-mono); font-size: 9px; letter-spacing: .06em; }
+.diagram text { font-family: var(--font-mono); fill: var(--muted); font-size: 9.5px; }
+.diagram .dg-title { font-family: var(--font-sans); fill: var(--text); font-size: 12px; font-weight: 600; }
+.diagram .dg-small { fill: var(--faint); font-size: 7.5px; letter-spacing: .04em; }
+.diagram .dg-device { fill: var(--bg); stroke: var(--line-strong); }
+.diagram .dg-api { fill: var(--accent-soft); stroke: var(--accent); }
+.diagram .dg-line { stroke: var(--line-strong); }
+.diagram .dg-arrow { stroke: var(--line-strong); stroke-dasharray: 4 4; fill: none; }
+.diagram .dg-accent-arrow { stroke: var(--accent); stroke-dasharray: 4 4; fill: none; }
+.diagram .dg-accent-fill { fill: var(--accent); }
+.article-figure figcaption {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 20px;
+  padding: 11px 3px 0; color: var(--faint); font-size: 10px; line-height: 1.55;
+}
+.article-figure figcaption span:last-child { flex: 0 0 auto; font-family: var(--font-mono); font-size: 7.5px; letter-spacing: .04em; }
+.footnotes { margin-top: 3.4em; padding-top: 21px; border-top: 1px solid var(--line-strong); }
+.footnotes h3 { margin: 0 0 12px; color: var(--muted); font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
+.footnotes ol { margin: 0; padding-left: 1.3em; }
+.footnotes li { margin-bottom: .55em; color: var(--muted); font-family: var(--font-sans); font-size: 12.5px; line-height: 1.78; }
+.footnotes li::marker { color: var(--faint); font-family: var(--font-mono); font-size: 8px; }
+.footnote-back { margin-left: 3px; color: var(--accent-text); font-family: var(--font-mono); font-size: 9px; }
+.article-end { display: flex; align-items: center; gap: 12px; margin: 2.8em 0 .9em; color: var(--faint); font-family: var(--font-mono); font-size: 8px; letter-spacing: .1em; text-transform: uppercase; }
+.end-mark { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 3px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-serif); font-size: 12px; letter-spacing: 0; }
+.article-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 2.4em; }
+.article-tags span { padding: 4px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--faint); font-family: var(--font-mono); font-size: 8px; letter-spacing: .03em; }
+.author-card {
+  display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; align-items: start;
+  margin-top: 2.2em; padding: 20px;
+  border: 1px solid var(--line); border-radius: 13px;
+  background: var(--surface);
+}
+.author-avatar { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; background: var(--text); color: var(--bg); font-family: var(--font-serif); font-size: 21px; }
+.author-card h3 { margin: 1px 0 4px; font-family: var(--font-serif); font-size: 17px; font-weight: 600; }
+.author-card p { margin: 0; color: var(--muted); font-family: var(--font-sans); font-size: 12.5px; line-height: 1.72; }
+.author-card p a { color: var(--accent-text); text-decoration: none; white-space: nowrap; }
+/* ============ post nav ============ */
+.post-nav-wrap { max-width: 930px; margin: clamp(58px, 7vw, 90px) auto 0; }
+.post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.post-link {
+  display: flex; flex-direction: column; min-height: 134px; padding: 21px 22px;
+  border: 1px solid var(--line); border-radius: 13px; background: var(--surface);
+  transition: border-color .25s ease, transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.post-link:hover { border-color: var(--line-strong); transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+.post-link--next { text-align: right; align-items: flex-end; }
+.post-label { color: var(--faint); font-family: var(--font-mono); font-size: 8px; letter-spacing: .09em; text-transform: uppercase; }
+.post-link strong { max-width: 370px; margin: 15px 0 9px; font-family: var(--font-serif); font-size: clamp(18px, 2vw, 22px); font-weight: 500; line-height: 1.45; letter-spacing: -.02em; transition: color .2s ease; }
+.post-link:hover strong { color: var(--accent-text); }
+.post-link small { margin-top: auto; color: var(--faint); font-family: var(--font-mono); font-size: 8px; letter-spacing: .02em; }
+/* ============ newsletter strip ============ */
+.article-newsletter {
+  position: relative; overflow: hidden;
+  max-width: 930px; margin: clamp(55px, 7vw, 86px) auto 0;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 410px);
+  gap: clamp(26px, 4vw, 52px); align-items: center;
+  padding: clamp(26px, 4vw, 42px);
+  border-radius: 19px; background: var(--accent); color: var(--accent-ink);
+  box-shadow: 0 20px 60px rgba(122, 43, 22, .16);
+}
+.article-newsletter::after { content: "✉"; position: absolute; right: 42%; top: -40px; color: color-mix(in srgb, var(--accent-ink) 7%, transparent); font-family: var(--font-serif); font-size: 150px; line-height: 1; transform: rotate(8deg); pointer-events: none; }
+.article-newsletter > * { position: relative; z-index: 1; }
+.article-newsletter .kicker { color: color-mix(in srgb, var(--accent-ink) 72%, transparent); }
+.article-newsletter .kicker .num { color: var(--accent-ink); }
+.article-newsletter h2 { margin: 9px 0 8px; font-family: var(--font-serif); font-size: clamp(25px, 3vw, 35px); font-weight: 500; line-height: 1.25; letter-spacing: -.035em; }
+.article-newsletter p { margin: 0; color: color-mix(in srgb, var(--accent-ink) 76%, transparent); font-size: 12px; line-height: 1.75; }
+.newsletter-form-card { padding: 18px; border-radius: 11px; background: var(--surface); color: var(--text); }
+.newsletter-form-card .field-row { display: flex; align-items: center; gap: 6px; padding: 4px 4px 4px 14px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--bg); transition: border-color .2s ease, box-shadow .2s ease; }
+.newsletter-form-card .field-row:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.newsletter-form-card input { min-width: 0; flex: 1; height: 35px; padding: 0; border: 0; outline: 0; background: transparent; color: var(--text); font-size: 12px; }
+.newsletter-form-card input::placeholder { color: var(--faint); }
+.newsletter-form-card button { flex: 0 0 auto; height: 35px; padding: 0 14px; border: 0; border-radius: 999px; background: var(--text); color: var(--bg); font-size: 11px; font-weight: 600; white-space: nowrap; }
+.newsletter-form-card .form-note { margin: 9px 2px 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
+.newsletter-form-card .form-error { margin: 8px 2px 0; color: var(--accent-text); font-size: 9.5px; line-height: 1.5; }
+.newsletter-form-card .field-row.is-invalid { border-color: var(--accent); }
+.newsletter-success { display: flex; gap: 10px; align-items: flex-start; padding: 13px; border: 1px solid color-mix(in srgb, var(--green) 34%, transparent); border-radius: 9px; background: var(--green-soft); }
+.newsletter-success .success-mark { flex: 0 0 auto; width: 29px; height: 29px; display: grid; place-items: center; border-radius: 50%; background: var(--green); color: var(--bg); font-size: 13px; }
+.newsletter-success strong { display: block; font-family: var(--font-serif); font-size: 13px; font-weight: 600; }
+.newsletter-success p { margin: 2px 0 0; color: var(--muted); font-family: var(--font-sans); font-size: 9.5px; line-height: 1.55; }
+/* ============ footer ============ */
+.site-footer { position: relative; overflow: hidden; margin-top: clamp(70px, 9vw, 120px); border-top: 1px solid var(--line); }
+.site-footer::before { content: "屿"; position: absolute; right: 2%; bottom: -130px; color: var(--text); opacity: .032; font-family: var(--font-serif); font-size: 430px; line-height: 1; pointer-events: none; }
+.footer-top { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .68fr); gap: 48px; padding-block: clamp(48px, 6.5vw, 79px); }
+.kicker { display: flex; align-items: center; gap: 11px; margin: 0; color: var(--muted); font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .13em; text-transform: uppercase; }
+.kicker .num { color: var(--accent-text); }
+.kicker .rule { display: inline-block; width: 25px; height: 1px; background: var(--line-strong); }
+.footer-kicker { margin-bottom: 17px; }
+.footer-top h2 { margin: 0; font-family: var(--font-serif); font-size: clamp(45px, 6vw, 80px); font-weight: 500; line-height: 1.03; letter-spacing: -.06em; }
+.footer-top h2 em { color: var(--accent-text); font-style: normal; }
+.footer-contact { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; }
+.footer-note { max-width: 360px; margin: 0 0 20px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+.footer-mail { display: inline-flex; align-items: center; gap: 9px; padding-bottom: 5px; border-bottom: 1px solid var(--line-strong); font-family: var(--font-serif); font-size: clamp(22px, 2.4vw, 30px); letter-spacing: -.025em; transition: color .2s ease, border-color .2s ease; }
+.footer-mail span { color: var(--accent-text); font-family: var(--font-sans); font-size: 16px; transition: transform .2s var(--ease); }
+.footer-mail:hover { color: var(--accent-text); border-color: var(--accent); }
+.footer-mail:hover span { transform: translate(3px, -3px); }
+.social-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 24px; }
+.social-link { display: inline-flex; align-items: center; gap: 6px; min-height: 31px; padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-family: var(--font-mono); font-size: 9px; letter-spacing: .03em; transition: color .2s ease, border-color .2s ease, background-color .2s ease; }
+.social-link span { color: var(--faint); font-family: var(--font-sans); font-size: 10px; }
+.social-link:hover { color: var(--text); border-color: var(--line-strong); background: var(--surface); }
+.footer-bottom { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 28px; padding-block: 21px; border-top: 1px solid var(--line); color: var(--faint); font-family: var(--font-mono); font-size: 8.5px; letter-spacing: .02em; }
+.footer-bottom a:hover { color: var(--accent-text); }
+.footer-bottom .back-top { display: inline-flex; align-items: center; gap: 6px; }
+/* ============ responsive ============ */
+@media (max-width: 1120px) {
+  .article-layout { grid-template-columns: 165px minmax(0, 680px); gap: 42px; }
+  .article-header h1 { font-size: clamp(43px, 6.3vw, 73px); }
+}
+@media (max-width: 1024px) {
+  .article-layout { grid-template-columns: minmax(0, 700px); padding-top: 32px; }
+  .article-rail { display: none; }
+  .mobile-toc { display: block; }
+  .post-nav-wrap, .article-newsletter { max-width: 700px; }
+  .article-header { max-width: 780px; }
+}
+@media (max-width: 860px) {
+  html { scroll-padding-top: 25px; }
+  .site-header { position: relative; }
+  .header-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; padding-top: 13px; }
+  .main-nav {
+    grid-column: 1 / -1; order: 3;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter);
+    gap: 25px; overflow-x: auto; border-top: 1px solid var(--line);
+    scrollbar-width: none;
+  }
+  .main-nav::-webkit-scrollbar { display: none; }
+  .main-nav a { padding: 11px 0; white-space: nowrap; font-size: 12.5px; }
+  .article-header { padding-top: 46px; }
+  .article-header h1 { font-size: clamp(42px, 8.4vw, 66px); }
+  .article-body h2 { scroll-margin-top: 28px; }
+  .footer-top { grid-template-columns: 1fr; gap: 32px; }
+}
+@media (max-width: 720px) {
+  :root { --gutter: 20px; }
+  .article-hero { padding-top: 20px; }
+  .article-header { padding: 41px 0 35px; }
+  .article-kicker { font-size: 7.5px; }
+  .article-header h1 { margin: 19px 0 20px; font-size: clamp(39px, 11.2vw, 60px); line-height: 1.12; }
+  .article-header h1 .mono { font-size: .7em; }
+  .article-dek { font-size: 15.5px; }
+  .article-byline { margin-top: 23px; gap: 8px 10px; }
+  .byline-rule { display: none; }
+  .article-layout { padding-top: 25px; }
+  .mobile-toc { margin-bottom: 29px; padding: 14px 15px; }
+  .article-body p { font-size: 18px; line-height: 1.93; }
+  .article-body .lead { font-size: 19.5px; }
+  .article-body h2 { margin-top: 2.2em; font-size: 24px; }
+  .article-body ul, .article-body ol { font-size: 17px; }
+  .pullquote { margin: 2.1em 0; padding: 22px 0 21px 24px; }
+  .pullquote p { font-size: 23px; }
+  .code-figure { margin-inline: -7px; border-radius: 10px; }
+  .code-figure pre { padding: 17px 15px 19px; }
+  .code-figure code { font-size: 11px; line-height: 1.8; }
+  .article-figure { margin-inline: -7px; }
+  .article-figure figcaption { flex-direction: column; gap: 3px; padding-inline: 1px; }
+  .diagram-wrap { padding: 7px; border-radius: 10px; overflow-x: auto; overscroll-behavior-x: contain; }
+  .diagram { min-width: 600px; }
+  .diagram-hint { display: block; }
+  .post-nav-wrap { margin-top: 50px; }
+  .post-nav { grid-template-columns: 1fr; gap: 9px; }
+  .post-link { min-height: 119px; padding: 18px; }
+  .post-link--next { text-align: left; align-items: flex-start; }
+  .post-link strong { margin-top: 11px; }
+  .article-newsletter { grid-template-columns: 1fr; gap: 21px; padding: 24px 20px; border-radius: 16px; }
+  .article-newsletter::after { font-size: 120px; right: 7%; }
+  .newsletter-form-card { padding: 14px; }
+  .footer-top { padding-block: 48px 42px; }
+  .footer-top h2 { font-size: clamp(44px, 13.5vw, 67px); }
+  .footer-bottom { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .site-footer::before { font-size: 300px; bottom: -68px; }
+}
+@media (max-width: 430px) {
+  .brand-copy small { display: none; }
+  .brand-copy strong { font-size: 16px; }
+  .brand-mark { width: 35px; height: 35px; font-size: 19px; }
+  .nav-cta { height: 35px; padding-inline: 13px; font-size: 12px; }
+  .theme-toggle { width: 35px; height: 35px; }
+  .header-inner { gap: 8px 12px; }
+  .article-header h1 { font-size: 39px; letter-spacing: -.06em; }
+  .article-kicker { gap: 7px 9px; }
+  .byline-person strong { font-size: 10.5px; }
+  .article-byline { font-size: 9.5px; }
+  .article-body p { font-size: 17.5px; }
+  .article-body .lead { font-size: 18.5px; }
+  .article-body h2 { font-size: 23px; }
+  .pullquote p { font-size: 21px; }
+  .footnotes li { font-size: 11.5px; }
+  .author-card { grid-template-columns: 40px minmax(0, 1fr); gap: 12px; padding: 17px; }
+  .author-avatar { width: 40px; height: 40px; font-size: 18px; }
+  .newsletter-form-card .field-row { flex-wrap: wrap; padding: 4px; border-radius: 11px; }
+  .newsletter-form-card input { flex-basis: 100%; padding-inline: 10px; }
+  .newsletter-form-card button { width: 100%; border-radius: 7px; }
+  .footer-mail { font-size: 21px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .post-link:hover, .theme-toggle:hover { transform: none; }
+}
+@media print {
+  .site-header, .article-rail, .mobile-toc, .post-nav-wrap, .article-newsletter, .site-footer, .skip-link { display: none !important; }
+  body { background: #fff; color: #111; }
+  body::before { display: none; }
+  .article-header { padding-top: 20px; text-align: left; }
+  .article-layout { display: block; padding-top: 20px; }
+  .article-body { max-width: 100%; }
+  .article-body a { color: inherit; }
+  .code-figure { break-inside: avoid; }
+  .article-figure { break-inside: avoid; }
+}
+</style>
+</head>
+<body class="article-page" id="top">
+<a class="skip-link" href="#main">跳到正文</a>
+<header class="site-header" data-header>
+  <div class="shell header-inner">
+    <a class="brand" href="index.html" aria-label="周屿的个人主页">
+      <span class="brand-mark" aria-hidden="true">屿</span>
+      <span class="brand-copy"><strong>周屿</strong><small>Independent maker</small></span>
+    </a>
+    <nav class="main-nav" aria-label="主要导航">
+      <a href="index.html#work">产品</a>
+      <a href="index.html#now">近况</a>
+      <a href="index.html#income">收入</a>
+      <a href="index.html#writing" aria-current="page">写作</a>
+      <a href="index.html#contact">联系</a>
+    </nav>
+    <div class="header-tools">
+      <button class="theme-toggle" type="button" aria-label="切换到深色模式" title="切换主题" data-theme-toggle>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="3.6"/><path d="M12 2.2v2.1M12 19.7v2.1M21.8 12h-2.1M4.3 12H2.2M18.9 5.1l-1.5 1.5M6.6 17.4l-1.5 1.5M18.9 18.9l-1.5-1.5M6.6 6.6 5.1 5.1"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20.5 15.1A8.8 8.8 0 0 1 8.9 3.5 8.8 8.8 0 1 0 20.5 15.1Z"/></svg>
+      </button>
+      <a class="nav-cta" href="#subscribe">订阅 <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+  <div class="progress-track" aria-hidden="true"><span data-progress></span></div>
+</header>
+<main id="main">
+<div class="article-hero">
+  <div class="shell">
+    <nav class="breadcrumb" aria-label="面包屑">
+      <a href="index.html">首页</a><span class="slash">/</span><a href="index.html#writing">写作</a><span class="slash">/</span><span>技术</span>
+    </nav>
+    <header class="article-header">
+      <div class="article-kicker">
+        <span class="cat">技术</span><span class="dot" aria-hidden="true"></span><time datetime="2026-10-16">2026.10.16</time><span class="dot" aria-hidden="true"></span><span>14 分钟阅读</span><span class="dot" aria-hidden="true"></span><span>约 2,300 字</span>
+      </div>
+      <h1>把拾页的同步<br>从 <span class="mono">iCloud</span> 迁到<em>自建服务</em></h1>
+      <p class="article-dek">一次并不浪漫的基础设施迁移：从三天两头的同步冲突，到自己掌控每一份变更。</p>
+      <div class="article-byline">
+        <span class="byline-avatar" aria-hidden="true">屿</span>
+        <span class="byline-person"><strong>周屿</strong><span>独立开发者 · 杭州</span></span>
+        <span class="byline-rule" aria-hidden="true"></span>
+        <time datetime="2026-10-18">更新于 2026.10.18</time>
+      </div>
+    </header>
+  </div>
+</div>
+
+<div class="article-layout shell">
+  <aside class="article-rail">
+    <nav class="toc" aria-label="本文目录">
+      <p class="toc-title">本文目录<span>Contents</span></p>
+      <ol>
+        <li><a href="#why"><span>01</span>为什么要离开 iCloud</a></li>
+        <li><a href="#boundary"><span>02</span>先画清楚边界</a></li>
+        <li><a href="#server"><span>03</span>一台 2C4G 的机器</a></li>
+        <li><a href="#protocol"><span>04</span>客户端只做三件事</a></li>
+        <li><a href="#conflict"><span>05</span>能解释比先进重要</a></li>
+        <li><a href="#migration"><span>06</span>双写、灰度与旧钥匙</a></li>
+        <li><a href="#cost"><span>07</span>代价与收获</a></li>
+      </ol>
+    </nav>
+    <div class="rail-note">写于杭州<br>2026.10<br>约 2,300 字</div>
+  </aside>
+
+  <article class="article-body">
+    <details class="mobile-toc">
+      <summary>本文目录 / Contents</summary>
+      <ol>
+        <li><a href="#why">为什么要离开 iCloud</a></li>
+        <li><a href="#boundary">先画清楚边界</a></li>
+        <li><a href="#server">一台 2C4G 的机器</a></li>
+        <li><a href="#protocol">客户端只做三件事</a></li>
+        <li><a href="#conflict">能解释比先进重要</a></li>
+        <li><a href="#migration">双写、灰度与旧钥匙</a></li>
+        <li><a href="#cost">代价与收获</a></li>
+      </ol>
+    </details>
+
+    <p class="lead">拾页 1.x 的同步一直跑在 iCloud 上。对只有一个人的团队来说，这几乎是最省事的选择：不用注册账号，不用维护服务器，用户打开应用，数据就在那里。直到去年夏天，一位用户写信给我：她在 Mac 上标了 47 处高亮，回到 iPhone，只剩下 12 处。</p>
+    <p>那不是一个靠「再同步一次」能解决的下午。也是从那天起，我开始认真考虑，把同步迁到自己手里。</p>
+
+    <h2 id="why"><span class="h-no">01 / WHY</span>为什么要离开 iCloud</h2>
+    <p>iCloud 并没有坏。对大多数用户，它仍然工作得很好。问题在于，当它不工作时，我看不见发生了什么。</p>
+    <p>CloudKit 给我的是一层被精心封装过的接口：记录、变更令牌、冲突回调。它不给我完整的服务端日志，也不允许我按自己的方式重放一次同步。用户说「丢了」，我只能让对方退出账号、重装、再把设备寄来——最后这一项是玩笑，但前面两项不是。更多时候，我只是在客户端加日志、猜、再试。</p>
+    <p>第二个原因是边界。拾页迟早要有 Windows 版和可分享的网页，而 iCloud 的私有数据库只在苹果生态里。第三个原因更私人：我想把「数据放在哪里、保留多久、出问题怎么修」写进自己的隐私页，而不是指向一份我无法修改的协议。</p>
+    <p>所以这不是一次技术炫技。它只解决一个问题：<strong>让同步从黑盒变成我能负责的系统。</strong></p>
+
+    <blockquote class="pullquote">
+      <p>同步不是把文件搬来搬去，而是让两台设备对同一段时间达成一致。</p>
+      <cite>— 迁移文档第一页</cite>
+    </blockquote>
+
+    <h2 id="boundary"><span class="h-no">02 / BOUNDARY</span>先画清楚边界</h2>
+    <p>动手前，我先不写代码，只画边界。拾页的数据其实只有三类：</p>
+    <ul>
+      <li>文档结构和高亮：小、变化频繁，必须强一致；</li>
+      <li>附件：大、变化少，可以晚一点到；</li>
+      <li>搜索索引：完全可重建，不需要同步。</li>
+    </ul>
+    <p>对应地，元数据放进 PostgreSQL，附件放进兼容 S3 的对象存储，索引留在本地 SQLite。设备仍然以本地数据库为准，联网只是把本地变更推上去、把别人的变更拉下来。断网时，拾页和以前一样能用。</p>
+    <p>我也做了一个不太讨喜的决定：不做端到端加密。2.0 需要跨设备全文搜索和公开分享页，端到端加密会让这两件事变得昂贵。传输走 TLS，服务端磁盘加密，权限按用户隔离；这些会明确写进隐私说明。取舍不漂亮，但至少诚实。</p>
+
+    <h2 id="server"><span class="h-no">03 / SERVER</span>一台 2C4G 的机器</h2>
+    <p>服务端没有微服务。一台 2 核 4GB 的云主机<sup><a href="#fn1" id="fnref1">1</a></sup>，Caddy 处理 TLS，Go 写一个单体 API，PostgreSQL 存变更，对象存储放附件。每天凌晨做一次全量备份，再把备份同步到另一家对象存储。听起来朴素，但它撑住了目前约 2,800 位日活用户。</p>
+    <p>核心表只有一张：每次客户端提交的不是「最新文档」，而是一串带版本号的变更。这样服务端不需要理解编辑器结构，只负责顺序、幂等和保留历史。表里记录 <code>doc_id</code>、<code>device_id</code>、<code>revision</code>、<code>base_revision</code>、<code>payload</code> 和幂等键；主键是「文档 + 设备 + 版本」，幂等键唯一。它不存「正确答案」，只存发生过什么。</p>
+
+    <h2 id="protocol"><span class="h-no">04 / PROTOCOL</span>客户端只做三件事</h2>
+    <p>客户端这边延续拾页原来的本地优先模型。所有编辑先写本地 SQLite，同时追加到一张 outbox 表。同步器每两秒检查一次 outbox，把变更打包成下面这个结构发出去。</p>
+
+    <figure class="code-figure">
+      <figcaption class="code-head"><span>SyncClient.swift · PushEnvelope</span><button class="copy-code" type="button" data-copy-code>复制</button></figcaption>
+      <pre><code><span class="tok-key">struct</span> <span class="tok-type">PushEnvelope</span>: <span class="tok-type">Codable</span> {
+    <span class="tok-key">let</span> docID: UUID
+    <span class="tok-key">let</span> baseRevision: Int64
+    <span class="tok-key">let</span> changes: [Change]
+    <span class="tok-com">// 同一次重试复用同一个 key</span>
+    <span class="tok-key">let</span> idempotencyKey: UUID
+}</code></pre>
+    </figure>
+
+    <p>服务端只做两件事：如果 <code>baseRevision</code> 与当前一致，接受并返回新的 revision；如果不一致，返回 409 和当前版本。客户端收到 409 不直接覆盖，而是拉下完整文档，用 base、local、remote 做一次三方合并。如果同一个段落被两边同时改写，保留服务端版本，把本地版本放进「版本历史」，30 天内可恢复<sup><a href="#fn2" id="fnref2">2</a></sup>。</p>
+    <p>附件走预签名 URL 直传对象存储。网络失败时不重试整个文档，只重试那一个请求；指数退避到 30 秒，幂等键保证重复请求不会写出两份。</p>
+
+    <h2 id="conflict"><span class="h-no">05 / CONFLICT</span>能解释比先进重要</h2>
+    <p>我一开始想上 CRDT。读了几天论文，写了一个原型，然后放弃了：拾页的核心对象是文章、段落和高亮，不是多人实时协作文档。为一个低频冲突引入一套难以调试的数据结构，不划算。</p>
+    <p>最后采用的是「块级最后写入 + 墓碑」：</p>
+    <ul>
+      <li>新增高亮是幂等加法，两台设备各标一句，两边都保留；</li>
+      <li>同一段落被两边修改，以服务端 revision 较新的为准；</li>
+      <li>删除保留墓碑，避免旧设备一上线又把内容复活。</li>
+    </ul>
+    <p>它不完美，但每一种行为都能用一句话解释给用户听。这比「理论上更先进」重要。</p>
+
+    <figure class="article-figure">
+      <div class="diagram-wrap" tabindex="0" aria-label="同步架构示意图，窄屏下可横向滚动查看">
+        <svg class="diagram" viewBox="0 0 700 330" role="img" aria-labelledby="diagram-title diagram-desc">
+          <title id="diagram-title">迁移后的拾页同步架构示意图</title>
+          <desc id="diagram-desc">Mac 与 iPhone 先把编辑写入本地 SQLite，再通过 Sync API 推送到 PostgreSQL 中的版本记录；附件由设备直传对象存储。</desc>
+          <defs>
+            <marker id="dg-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 7 3.5 0 7Z" style="fill: var(--line-strong)"/></marker>
+            <marker id="dg-accent-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 7 3.5 0 7Z" style="fill: var(--accent)"/></marker>
+          </defs>
+          <text x="34" y="32" class="dg-small">01 / DEVICES</text>
+          <text x="307" y="72" class="dg-small">02 / CONTROL PLANE</text>
+          <text x="525" y="32" class="dg-small">03 / DATA PLANE</text>
+
+          <rect x="34" y="62" width="176" height="112" rx="8" class="dg-device"/>
+          <path d="M34 86h176" class="dg-line"/>
+          <circle cx="48" cy="74" r="2" style="fill: var(--faint)"/><circle cx="55" cy="74" r="2" style="fill: var(--faint)"/><circle cx="62" cy="74" r="2" style="fill: var(--faint)"/>
+          <text x="49" y="110" class="dg-title">Mac</text>
+          <text x="49" y="127" class="dg-small">local SQLite · outbox</text>
+          <path d="M49 145h139M49 153h95" class="dg-line"/>
+
+          <rect x="69" y="207" width="70" height="94" rx="10" class="dg-device"/>
+          <path d="M92 217h24" style="stroke: var(--line-strong); stroke-width: 1.2"/>
+          <text x="83" y="241" class="dg-title">iPhone</text>
+          <text x="83" y="257" class="dg-small">offline ready</text>
+          <circle cx="104" cy="284" r="3" class="dg-line" style="fill:none"/>
+
+          <rect x="307" y="119" width="140" height="104" rx="10" class="dg-api"/>
+          <circle cx="429" cy="138" r="4.5" class="dg-accent-fill"/>
+          <text x="325" y="146" class="dg-title">Sync API</text>
+          <text x="325" y="164" class="dg-small">Go · single binary</text>
+          <text x="325" y="180" class="dg-small">push / pull</text>
+          <text x="325" y="196" class="dg-small">idempotent writes</text>
+
+          <rect x="525" y="51" width="137" height="84" rx="8" class="dg-device"/>
+          <text x="540" y="79" class="dg-title">PostgreSQL</text>
+          <text x="540" y="96" class="dg-small">revisions · cursors</text>
+          <text x="540" y="111" class="dg-small">daily backup</text>
+
+          <rect x="525" y="196" width="137" height="84" rx="8" class="dg-device"/>
+          <text x="540" y="224" class="dg-title">Object storage</text>
+          <text x="540" y="241" class="dg-small">attachments</text>
+          <text x="540" y="256" class="dg-small">presigned URLs</text>
+
+          <path d="M210 112C250 112 267 145 307 152" class="dg-accent-arrow" marker-end="url(#dg-accent-arrow)"/>
+          <path d="M139 228C205 228 250 208 307 197" class="dg-accent-arrow" marker-end="url(#dg-accent-arrow)"/>
+          <path d="M447 158C480 158 490 111 525 96" class="dg-arrow" marker-end="url(#dg-arrow)"/>
+          <path d="M447 190C480 190 490 225 525 234" class="dg-arrow" marker-end="url(#dg-arrow)"/>
+          <text x="231" y="143" class="dg-small">changes</text>
+          <text x="469" y="140" class="dg-small">commit</text>
+          <text x="463" y="220" class="dg-small">upload</text>
+
+          <path d="M34 313h628" class="dg-line"/>
+          <text x="34" y="326" class="dg-small">TLS 1.3 · 每台设备一枚独立 token · 失败重试上限 30 秒</text>
+          <text x="595" y="326" class="dg-small">FIG. 01</text>
+        </svg>
+      </div>
+      <p class="diagram-hint" aria-hidden="true">← 横向滑动查看完整示意图 →</p>
+      <figcaption><span>图 1：迁移后的同步链路。设备先写本地，再推到自己的 API；附件单独走对象存储，不再经过 iCloud。</span><span>SCALE / SCHEMATIC</span></figcaption>
+    </figure>
+
+    <h2 id="migration"><span class="h-no">06 / MIGRATION</span>双写、灰度与旧钥匙</h2>
+    <p>真正的迁移从今年 7 月开始，用了三个周末。</p>
+    <p>第一周，所有新变更双写：iCloud 和自建服务各写一份。读取仍然来自 iCloud，自建服务只收不读。这样即使新服务坏了，用户也感知不到。</p>
+    <p>第二周，写迁移工具。CloudKit 没有给我一个批量导出的按钮，我让每台设备把本地数据库完整推送一次。12,000 位付费用户里，首周有 67% 的设备完成上传，剩下的是长期不联网的 Mac。对这部分数据，我保留了一年的 iCloud 导入入口。</p>
+    <p>第三周，灰度读取。按用户 ID 的哈希分 5%、20%、50%、100% 四批切流。每一批观察 48 小时，看三个指标：同步失败率、409 比例、附件的 P95 延迟。100% 之后，旧的 iCloud 写入继续保留了一个月，像一把没有立刻扔掉的旧钥匙<sup><a href="#fn3" id="fnref3">3</a></sup>。</p>
+    <p>最难的不是代码，是决定什么时候停。迁移期间，我每天最想做的事是「再修一个边缘情况」。但再修下去，发布永远不会发生。</p>
+
+    <h2 id="cost"><span class="h-no">07 / THE BILL</span>代价与收获</h2>
+    <p>成本从每月 0 元变成了大约 32 美元：主机、备份、对象存储，加上一点点监控。还有看不见的部分：凌晨两点的报警，升级 PostgreSQL 前要读 release notes，以及「服务器是不是又挂了」的幻觉。</p>
+    <p>收获也很具体。上线六周后，同步失败率从 1.8% 降到 0.3%，关于「高亮不见了」的邮件从每周三四封变成零。更重要的是，现在用户说同步有问题，我可以打开日志，看到是哪台设备、哪个 revision、在哪一步停住。那种「终于知道该去哪里找」的感觉，比任何漂亮架构图都值。</p>
+    <p>如果重来一次，我会更早做三件事：第一天就加结构化日志；先写迁移工具，再写新功能；把重试策略写成文档，而不是留在脑子里。</p>
+    <p><strong>基础设施的意义不是更酷。是当它坏掉的时候，你知道该去哪里。</strong></p>
+    <p>拾页 2.0 的公测定在明年一月。同步不会是发布会上最亮的那一页，但它是底下那块地板。地板铺好之后，我终于可以把注意力放回更小的事情：一个更安静的阅读模式，一组更好的快捷键，和一段读起来不费力的文字。</p>
+
+    <section class="footnotes" aria-labelledby="footnotes-title">
+      <h3 id="footnotes-title">注释 / Footnotes</h3>
+      <ol>
+        <li id="fn1">2C4G 指 2 核 CPU、4GB 内存。实际配置会随版本升级，但到现在还没有换过机器。<a class="footnote-back" href="#fnref1" aria-label="返回正文中的第一个注释">↩</a></li>
+        <li id="fn2">冲突版本保留 30 天，超过之后随快照一起清理。<a class="footnote-back" href="#fnref2" aria-label="返回正文中的第二个注释">↩</a></li>
+        <li id="fn3">iCloud 写入在 2026 年 9 月底彻底关闭；旧数据导入入口至少保留到 2027 年 10 月。<a class="footnote-back" href="#fnref3" aria-label="返回正文中的第三个注释">↩</a></li>
+      </ol>
+    </section>
+
+    <div class="article-end"><span class="end-mark" aria-hidden="true">完</span><span>Thanks for reading</span></div>
+    <div class="article-tags" aria-label="文章标签"><span># 技术</span><span># 同步</span><span># 基础设施</span><span># Swift</span><span># 独立开发</span></div>
+
+    <div class="author-card">
+      <span class="author-avatar" aria-hidden="true">屿</span>
+      <div>
+        <h3>周屿</h3>
+        <p>独立开发者，在杭州做拾页和慢信。相信小工具也能有长久的生命。目前大部分时间在准备拾页 2.0。<a href="index.html"> 关于我 ↗</a></p>
+      </div>
+    </div>
+  </article>
+</div>
+
+<div class="post-nav-wrap">
+  <nav class="post-nav" aria-label="文章导航">
+    <a class="post-link post-link--prev" href="article.html">
+      <span class="post-label">← 上一篇</span>
+      <strong>一次 iCloud 同步冲突的复盘</strong>
+      <small>技术 · 2025.05.07 · 13 分钟</small>
+    </a>
+    <a class="post-link post-link--next" href="article.html">
+      <span class="post-label">下一篇 →</span>
+      <strong>Swift 并发：从 completion handler 到 async/await 的一次大扫除</strong>
+      <small>技术 · 2026.09.08 · 16 分钟</small>
+    </a>
+  </nav>
+</div>
+
+<section class="article-newsletter" id="subscribe" aria-labelledby="article-subscribe-title">
+  <div>
+    <p class="kicker"><span class="num">✳</span><span class="rule" aria-hidden="true"></span><span>Newsletter / 每月一封</span></p>
+    <h2 id="article-subscribe-title">读到这里，<br>要不要订阅下一封？</h2>
+    <p>新文章、产品近况和一些没放进正文的念头。约四千位订阅者，没有算法，随时退订。</p>
+  </div>
+  <div class="newsletter-form-card">
+    <form data-subscribe-form novalidate>
+      <label class="sr-only" for="article-subscribe-email">电子邮箱</label>
+      <div class="field-row">
+        <input id="article-subscribe-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" aria-describedby="article-subscribe-note article-subscribe-error" required>
+        <button type="submit">订阅</button>
+      </div>
+      <p class="form-note" id="article-subscribe-note">只寄新文章与产品近况。随时退订。</p>
+      <p class="form-error" id="article-subscribe-error" role="alert" hidden></p>
+    </form>
+    <div class="newsletter-success" data-subscribe-success role="status" tabindex="-1" hidden>
+      <span class="success-mark" aria-hidden="true">✓</span>
+      <div><strong>订阅成功，记下了。</strong><p>下一封信会在月底前寄到。</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer" id="contact">
+  <div class="shell">
+    <div class="footer-top">
+      <div>
+        <p class="kicker footer-kicker"><span class="num">07</span><span class="rule" aria-hidden="true"></span><span>Contact / 联系</span></p>
+        <h2>下次见，<br>或写<em>信</em>来。</h2>
+      </div>
+      <div class="footer-contact">
+        <p class="footer-note">接受少量独立产品咨询、设计合作与编辑约稿。通常两天内回信；如果没回，大概是在修同步。</p>
+        <a class="footer-mail" href="mailto:hi@zhouyu.dev">hi@zhouyu.dev <span aria-hidden="true">↗</span></a>
+        <div class="social-row" aria-label="社交账号">
+          <a class="social-link" href="https://github.com/zhouyu" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+          <a class="social-link" href="https://okjike.com/users/zhouyu" target="_blank" rel="noopener noreferrer">即刻 <span aria-hidden="true">↗</span></a>
+          <a class="social-link" href="https://x.com/zhouyu" target="_blank" rel="noopener noreferrer">X <span aria-hidden="true">↗</span></a>
+          <a class="social-link" href="mailto:hi@zhouyu.dev">Email <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 周屿 · 杭州 · 30.27°N 120.15°E</span>
+      <span>本页没有统计脚本，也没有 Cookie。</span>
+      <a class="back-top" href="#top">回到顶部 ↑</a>
+    </div>
+  </div>
+</footer>
+<script>
+(function () {
+  'use strict';
+  var root = document.documentElement;
+
+  /* theme */
+  var themeToggle = document.querySelector('[data-theme-toggle]');
+  function updateThemeButton() {
+    if (!themeToggle) return;
+    var dark = root.getAttribute('data-theme') === 'dark';
+    themeToggle.setAttribute('aria-label', '切换到' + (dark ? '浅色' : '深色') + '模式');
+    themeToggle.setAttribute('title', '当前是' + (dark ? '深色' : '浅色') + '模式，点击切换');
+  }
+  updateThemeButton();
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      try { localStorage.setItem('zy-theme', next); } catch (error) {}
+      window.__theme.apply(next);
+      updateThemeButton();
+    });
+  }
+  if (window.__theme && window.__theme.media) {
+    var media = window.__theme.media;
+    var onThemeSystemChange = function () { setTimeout(updateThemeButton, 0); };
+    if (media.addEventListener) media.addEventListener('change', onThemeSystemChange);
+    else if (media.addListener) media.addListener(onThemeSystemChange);
+  }
+
+  /* header state */
+  var header = document.querySelector('[data-header]');
+  function onScrollHeader() {
+    if (!header) return;
+    header.classList.toggle('is-scrolled', window.scrollY > 8);
+  }
+  onScrollHeader();
+  window.addEventListener('scroll', onScrollHeader, { passive: true });
+
+  /* reading progress */
+  var articleBody = document.querySelector('.article-body');
+  var progress = document.querySelector('[data-progress]');
+  function updateProgress() {
+    if (!articleBody || !progress) return;
+    var rect = articleBody.getBoundingClientRect();
+    var start = rect.top + window.scrollY - 120;
+    var end = start + articleBody.offsetHeight - window.innerHeight * 0.72;
+    var ratio = (window.scrollY - start) / Math.max(1, end - start);
+    ratio = Math.min(1, Math.max(0, ratio));
+    progress.style.transform = 'scaleX(' + ratio + ')';
+  }
+  updateProgress();
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+
+  /* toc active state */
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var headings = tocLinks.map(function (link) {
+    var id = link.getAttribute('href').slice(1);
+    return document.getElementById(id);
+  }).filter(Boolean);
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (tocLinks.length && headings.length) {
+    if ('IntersectionObserver' in window) {
+      var activeId = '';
+      var tocObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) activeId = entry.target.id;
+        });
+        tocLinks.forEach(function (link) {
+          link.classList.toggle('is-active', link.getAttribute('href') === '#' + activeId);
+        });
+      }, { rootMargin: '-16% 0px -68% 0px', threshold: 0 });
+      headings.forEach(function (heading) { tocObserver.observe(heading); });
+    }
+  }
+  var mobileToc = document.querySelector('.mobile-toc');
+  if (mobileToc) {
+    mobileToc.addEventListener('click', function (event) {
+      if (event.target.closest('a')) mobileToc.removeAttribute('open');
+    });
+  }
+
+  /* copy code */
+  Array.prototype.slice.call(document.querySelectorAll('[data-copy-code]')).forEach(function (button) {
+    button.addEventListener('click', function () {
+      var figure = button.closest('.code-figure');
+      var code = figure ? figure.querySelector('code') : null;
+      if (!code) return;
+      var text = code.textContent;
+      function copied() {
+        var original = button.textContent;
+        button.textContent = '已复制';
+        button.classList.add('is-copied');
+        window.setTimeout(function () {
+          button.textContent = original;
+          button.classList.remove('is-copied');
+        }, 1800);
+      }
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(copied).catch(function () { fallbackCopy(text, copied); });
+      } else {
+        fallbackCopy(text, copied);
+      }
+    });
+  });
+  function fallbackCopy(text, done) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try { document.execCommand('copy'); done(); } catch (error) {}
+    document.body.removeChild(textarea);
+  }
+
+  /* subscribe */
+  function isValidEmail(value) {
+    return value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+  }
+  Array.prototype.slice.call(document.querySelectorAll('[data-subscribe-form]')).forEach(function (form) {
+    var input = form.querySelector('input[type="email"]');
+    var row = form.querySelector('.field-row');
+    var error = form.querySelector('.form-error');
+    var success = form.parentElement.querySelector('[data-subscribe-success]');
+    if (!input || !row || !error || !success) return;
+
+    function showError(message) {
+      error.textContent = message;
+      error.hidden = false;
+      input.setAttribute('aria-invalid', 'true');
+      row.classList.add('is-invalid');
+      input.focus();
+    }
+    function clearError() {
+      error.hidden = true;
+      error.textContent = '';
+      input.removeAttribute('aria-invalid');
+      row.classList.remove('is-invalid');
+    }
+    input.addEventListener('input', function () {
+      if (!error.hidden) clearError();
+    });
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var value = input.value.trim();
+      if (!value) {
+        showError('先留一个邮箱吧，我不会寄别的。');
+        return;
+      }
+      if (!isValidEmail(value)) {
+        showError('这个邮箱看起来不太对，再检查一下？');
+        return;
+      }
+      clearError();
+      form.hidden = true;
+      success.hidden = false;
+      try { success.focus({ preventScroll: true }); } catch (error) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,3126 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>周屿 · 独立开发者</title>
+<meta name="description" content="周屿，住在杭州的独立开发者。一个人做拾页、慢信、slugify-zh 和周末菜单。公开产品收入，写开发日志。">
+<meta name="theme-color" content="#f6f2e9">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23b3402a'/%3E%3Ctext x='16' y='23' font-family='serif' font-size='20' fill='%23f8f3e8' text-anchor='middle'%3E%E5%B1%BF%3C/text%3E%3C/svg%3E">
+<script>
+(function () {
+  try {
+    var k = "zy-theme", s = localStorage.getItem(k);
+    var dark = s === "dark" || (s !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", dark ? "#15130f" : "#f6f2e9");
+  } catch (e) {}
+})();
+</script>
+<style>
+/* ============================================================
+   周屿 · 独立开发者 — 共享样式
+   方向：一个人的工作台 / 印刷体年报
+   ============================================================ */
+
+:root {
+  --paper: #f6f2e9;
+  --paper-2: #efe9dc;
+  --paper-3: #e7dfcf;
+  --ink: #1d1a15;
+  --ink-2: #3b372e;
+  --muted: #625b4d;
+  --faint: #6f6859;
+  --line: #dcd3c1;
+  --line-strong: #c2b7a1;
+  --bar: #91846b;
+  --accent: #b3402a;
+  --accent-ink: #8e2f1d;
+  --accent-soft: #f0dcd4;
+  --celadon: #3e6a5d;
+  --code-bg: #211d17;
+  --code-ink: #ece5d6;
+  --selection: #e8c6b9;
+  --grain-opacity: .05;
+
+  --band-bg: #1d1a15;
+  --band-ink: #f6f2e9;
+  --band-muted: #b7ad9b;
+  --band-line: #4a4336;
+  --band-btn: #b3402a;
+  --band-btn-ink: #fff8ee;
+  --band-error: #f0a78f;
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Songti SC",
+    "STSong", "Source Han Serif SC", "Noto Serif CJK SC", "SimSun", Georgia, serif;
+  --sans: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC",
+    "Source Han Sans SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  --pad: clamp(20px, 4.5vw, 56px);
+  --max: 1240px;
+  --ease: cubic-bezier(.2, .7, .3, 1);
+}
+
+[data-theme="dark"] {
+  --paper: #15130f;
+  --paper-2: #1c1914;
+  --paper-3: #242019;
+  --ink: #ede6d7;
+  --ink-2: #d5ccba;
+  --muted: #b3a996;
+  --faint: #a19885;
+  --line: #332e25;
+  --line-strong: #4a4336;
+  --bar: #756a56;
+  --accent: #e07052;
+  --accent-ink: #f08a6e;
+  --accent-soft: #3a211a;
+  --celadon: #8cb4a4;
+  --code-bg: #0e0c09;
+  --code-ink: #e8e0d1;
+  --selection: #5a2c20;
+
+  --band-bg: #1c1914;
+  --band-ink: #ede6d7;
+  --band-muted: #a89e8b;
+  --band-line: #3b3529;
+  --band-btn: #c95034;
+  --band-btn-ink: #fff8ee;
+  --band-error: #f0a78f;
+
+  --grain-opacity: .045;
+}
+
+/* 跟随系统：脚本未启用时也成立 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --paper: #15130f;
+    --paper-2: #1c1914;
+    --paper-3: #242019;
+    --ink: #ede6d7;
+    --ink-2: #d5ccba;
+    --muted: #b3a996;
+    --faint: #a19885;
+    --line: #332e25;
+    --line-strong: #4a4336;
+    --bar: #756a56;
+    --accent: #e07052;
+    --accent-ink: #f08a6e;
+    --accent-soft: #3a211a;
+    --celadon: #8cb4a4;
+    --code-bg: #0e0c09;
+    --code-ink: #e8e0d1;
+    --selection: #5a2c20;
+    --band-bg: #1c1914;
+    --band-ink: #ede6d7;
+    --band-muted: #a89e8b;
+    --band-line: #3b3529;
+    --band-btn: #c95034;
+    --band-btn-ink: #fff8ee;
+    --band-error: #f0a78f;
+    --grain-opacity: .045;
+  }
+}
+
+/* ---------- 基础 ---------- */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  font-feature-settings: "kern" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color .22s linear, color .22s linear;
+}
+
+::selection {
+  background: var(--selection);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 3px;
+}
+
+img, svg { max-width: 100%; }
+
+button { font: inherit; color: inherit; }
+
+h1, h2, h3, h4, p, ul, ol, figure, blockquote { margin: 0; }
+
+[hidden] { display: none !important; }
+
+.container {
+  width: min(calc(100% - var(--pad) * 2), var(--max));
+  margin-inline: auto;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 100;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13px;
+  text-decoration: none;
+  border-radius: 2px;
+}
+.skip-link:focus { top: 12px; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.nowrap { white-space: nowrap; }
+
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.serif { font-family: var(--serif); }
+
+/* ---------- 页头 ---------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  transition: background-color .22s linear;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  min-height: 68px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex: none;
+}
+
+.seal {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  background: var(--accent);
+  color: #f8f3e8;
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 1;
+  padding-top: 1px;
+  border-radius: 1px;
+  flex: none;
+}
+
+.brand-name {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+.brand-role {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  color: var(--muted);
+  padding-left: 16px;
+  border-left: 1px solid var(--line);
+  line-height: 1.2;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
+}
+
+.site-nav a {
+  position: relative;
+  font-size: 13.5px;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 6px 0;
+  transition: color .18s linear;
+}
+.site-nav a:hover { color: var(--ink); }
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .24s var(--ease);
+}
+.site-nav a:hover::after,
+.site-nav a[aria-current="page"]::after { transform: scaleX(1); }
+.site-nav a[aria-current="page"] { color: var(--ink); }
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: none;
+}
+
+.header-sub {
+  font-size: 12px;
+  letter-spacing: .02em;
+  color: var(--ink);
+  text-decoration: none;
+  border: 1px solid var(--line-strong);
+  padding: 5px 10px 4px;
+  transition: color .16s linear, border-color .16s linear;
+}
+.header-sub:hover { color: var(--accent); border-color: var(--accent); }
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color .18s linear, background-color .18s linear;
+}
+.theme-toggle:hover { border-color: var(--line-strong); background: var(--paper-2); }
+.theme-toggle svg { width: 16px; height: 16px; display: block; }
+.theme-toggle .icon-moon { display: none; }
+[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+
+/* ---------- 首屏 ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.52fr) minmax(290px, .72fr);
+  gap: clamp(36px, 6vw, 88px);
+  padding-top: clamp(44px, 6.4vw, 88px);
+  padding-bottom: clamp(44px, 6vw, 76px);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.eyebrow::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  flex: none;
+}
+
+.hero h1 {
+  margin: 20px 0 24px;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(46px, 6.1vw, 84px);
+  line-height: 1.07;
+  letter-spacing: -.015em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.hero h1 .dot { color: var(--accent); }
+
+.hero-sub {
+  max-width: 33em;
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.hero-sub strong { font-weight: 600; color: var(--ink); }
+
+.hero-now {
+  display: flex;
+  align-items: baseline;
+  gap: 13px;
+  flex-wrap: wrap;
+  margin-top: 26px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  max-width: 35em;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.hero-now .tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  color: var(--accent);
+  flex: none;
+}
+.hero-now a { color: var(--ink); text-decoration-color: var(--line-strong); white-space: nowrap; }
+.hero-now a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 18px;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color .2s linear, border-color .2s linear,
+    color .2s linear, transform .12s ease;
+}
+.btn:hover { background: var(--accent); border-color: var(--accent); color: #fff8ee; }
+.btn:active { transform: translateY(1px); }
+.btn .arrow { transition: transform .22s var(--ease); }
+.btn:hover .arrow { transform: translateX(3px); }
+
+.link-quiet {
+  font-size: 13.5px;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 2px;
+}
+.link-quiet:hover { color: var(--ink); border-color: var(--ink); }
+.link-quiet .num { font-family: var(--mono); color: var(--faint); font-size: 12px; }
+
+/* 首屏右侧：四年四行 */
+.hero-aside {
+  align-self: start;
+  padding-top: 8px;
+}
+
+.hero-aside-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ink);
+}
+.hero-aside-head h2 {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: .01em;
+}
+.hero-aside-head span {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline li {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.timeline .year {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+  letter-spacing: .04em;
+  padding-top: 2px;
+}
+.timeline .what {
+  font-size: 13.5px;
+  line-height: 1.62;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.timeline li.is-now .year { color: var(--accent); }
+.timeline li.is-now .what { color: var(--ink); }
+.timeline .what em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.hero-aside-foot {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.7;
+  color: var(--faint);
+}
+
+/* ---------- 区块 ---------- */
+
+.section {
+  border-top: 1px solid var(--line-strong);
+  padding-block: clamp(54px, 6.6vw, 92px);
+}
+
+.sec-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(26px, 3.4vw, 44px);
+}
+
+.sec-kicker {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .16em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.sec-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 3.3vw, 40px);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -.01em;
+}
+
+.sec-note {
+  max-width: 30ch;
+  text-align: right;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+  padding-bottom: 5px;
+}
+.sec-note .stamp {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .06em;
+  color: var(--faint);
+  margin-top: 4px;
+}
+
+/* ---------- 产品 ---------- */
+
+.product-list { border-top: 1px solid var(--line); }
+
+.product {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) 210px 168px;
+  gap: 20px;
+  align-items: baseline;
+  padding: 22px 0 21px;
+  border-bottom: 1px solid var(--line);
+}
+
+.product-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+  letter-spacing: .04em;
+}
+
+.product-name {
+  font-family: var(--serif);
+  font-size: clamp(22px, 2.1vw, 27px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -.005em;
+}
+.product-name .latin {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: .08em;
+  color: var(--faint);
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+.product-desc {
+  margin-top: 4px;
+  max-width: 50ch;
+  font-size: 13.8px;
+  line-height: 1.72;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.product-reason {
+  margin-top: 10px;
+  max-width: 56ch;
+  padding-left: 13px;
+  border-left: 2px solid var(--line-strong);
+  font-size: 12.8px;
+  line-height: 1.75;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+.product-reason b {
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.product-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  letter-spacing: .03em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--line-strong);
+}
+.product-status.is-live { color: var(--accent); }
+.product-status.is-live .status-dot { background: var(--accent); }
+.product-status.is-on { color: var(--celadon); }
+.product-status.is-on .status-dot { background: var(--celadon); }
+.product-status.is-hold { color: var(--faint); }
+.product-status.is-hold .status-dot {
+  background: transparent;
+  border: 1px solid var(--faint);
+  width: 7px;
+  height: 7px;
+}
+
+.product-metric {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.product-metric span { display: block; font-size: 10.5px; color: var(--faint); }
+
+/* ---------- 近况 ---------- */
+
+.now-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, .68fr);
+  gap: clamp(36px, 6vw, 84px);
+  align-items: start;
+}
+
+.now-lead {
+  font-family: var(--serif);
+  font-size: clamp(23px, 2.5vw, 30px);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -.005em;
+  max-width: 24em;
+  text-wrap: pretty;
+}
+.now-lead em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.steps {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.step {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  gap: 13px;
+  align-items: baseline;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+}
+.step-mark {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  margin-top: 7px;
+  justify-self: center;
+}
+.step-title { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+.step-meta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .03em;
+  color: var(--faint);
+  white-space: nowrap;
+  text-align: right;
+}
+.step.is-done .step-mark { background: var(--accent); border-color: var(--accent); }
+.step.is-current .step-mark {
+  background: var(--paper);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.step.is-current .step-title { color: var(--ink); font-weight: 500; }
+.step.is-current .step-meta { color: var(--accent); }
+
+.devlog { margin-top: 30px; }
+.devlog-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--ink);
+}
+.devlog-head h3 {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  font-weight: 400;
+  color: var(--muted);
+}
+.devlog-head span {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--accent);
+}
+.devlog ol { list-style: none; margin: 0; padding: 0; }
+.devlog li {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: 14px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.devlog li span:first-child {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--faint);
+  padding-top: 2px;
+}
+
+.now-side { border-top: 1px solid var(--line); }
+.side-block { padding: 16px 0 18px; border-bottom: 1px solid var(--line); }
+.side-block h3 {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  font-weight: 400;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.side-block h3 .mark { color: var(--accent); }
+.side-item { padding: 7px 0; }
+.side-item .name {
+  font-family: var(--serif);
+  font-size: 16.5px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.side-item .note {
+  margin-top: 2px;
+  font-size: 12.8px;
+  line-height: 1.72;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* ---------- 收入 ---------- */
+
+.rev-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.rev-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .13em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.rev-total {
+  font-family: var(--serif);
+  font-size: clamp(50px, 7.2vw, 92px);
+  font-weight: 500;
+  line-height: .98;
+  letter-spacing: -.025em;
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+.rev-total .cur {
+  font-size: .38em;
+  vertical-align: .62em;
+  color: var(--muted);
+  margin-right: 6px;
+  letter-spacing: 0;
+}
+.rev-aside {
+  text-align: right;
+  padding-bottom: 8px;
+  max-width: 32ch;
+}
+.rev-gain {
+  font-family: var(--serif);
+  font-size: clamp(24px, 2.4vw, 32px);
+  line-height: 1.2;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.rev-gain small {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--muted);
+  display: block;
+  margin-top: 5px;
+  line-height: 1.6;
+}
+
+.chart-wrap { margin-top: clamp(30px, 4vw, 48px); }
+.chart-readout {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  margin-bottom: 6px;
+}
+.chart-month {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+.chart-value {
+  font-family: var(--serif);
+  font-size: clamp(26px, 2.8vw, 36px);
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.chart-value .unit { font-size: .5em; color: var(--muted); margin-right: 3px; }
+.chart-delta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--celadon);
+  margin-left: 12px;
+  letter-spacing: .02em;
+}
+.chart-delta.is-down { color: var(--accent); }
+
+.chart { position: relative; border-bottom: 1px solid var(--line-strong); }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart .grid-line { stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 5; }
+.chart .grid-label { font-family: var(--mono); font-size: 10px; fill: var(--faint); }
+.chart .baseline { stroke: var(--line-strong); stroke-width: 1; }
+.chart .col-hi { fill: var(--paper-2); }
+.chart .bar-rect {
+  fill: var(--bar);
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  transition: fill .16s linear;
+}
+.chart.is-in .bar-rect {
+  animation: grow-bar .72s var(--ease) var(--d, 0ms) both;
+}
+.chart .bar.is-active .bar-rect { fill: var(--accent); }
+.chart .bar:hover .bar-rect { fill: var(--accent); }
+.chart .hit { fill: transparent; }
+.chart .m-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  fill: var(--faint);
+  letter-spacing: .04em;
+}
+.chart .y-label { font-family: var(--mono); font-size: 10px; fill: var(--faint); }
+.chart-note {
+  margin-top: 14px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--muted);
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+.chart-note b { font-weight: 500; color: var(--ink-2); }
+
+.rev-data {
+  margin-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.rev-data summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 0;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--muted);
+  list-style: none;
+}
+.rev-data summary::-webkit-details-marker { display: none; }
+.rev-data summary::before {
+  content: "+";
+  display: inline-block;
+  width: 12px;
+  color: var(--accent);
+  font-size: 13px;
+}
+.rev-data[open] summary::before { content: "−"; }
+.rev-data summary:hover { color: var(--ink); }
+.rev-data table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 8px;
+}
+.rev-data th, .rev-data td {
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-weight: 400;
+}
+.rev-data th { color: var(--faint); font-size: 10px; letter-spacing: .08em; }
+.rev-data td:last-child, .rev-data th:last-child { text-align: right; }
+.rev-data tr:last-child td { border-bottom: 0; }
+.rev-data .total-row td { color: var(--accent); }
+
+.rev-note {
+  margin-top: 26px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 18px;
+  font-size: 11.5px;
+  color: var(--faint);
+  line-height: 1.75;
+  max-width: 88ch;
+}
+.rev-note .k {
+  font-family: var(--mono);
+  letter-spacing: .1em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.rev-note p { color: var(--muted); }
+
+/* ---------- 文章 ---------- */
+
+.writing-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 290px;
+  gap: clamp(36px, 5vw, 72px);
+  align-items: start;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 22px;
+  align-items: baseline;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line-strong);
+}
+.filter {
+  position: relative;
+  border: 0;
+  background: none;
+  padding: 5px 0 6px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .16s linear;
+}
+.filter:hover { color: var(--ink); }
+.filter .count {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--faint);
+  margin-left: 5px;
+}
+.filter[aria-pressed="true"] { color: var(--ink); }
+.filter[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.post-list { border-bottom: 1px solid var(--line); }
+
+.post {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr) 58px;
+  gap: 18px;
+  align-items: baseline;
+  padding: 16px 0 15px;
+  border-top: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+  transition: background-color .16s linear;
+}
+.post:first-child { border-top: 0; }
+.post:hover { background: var(--paper-2); }
+.post-date {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .02em;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.post-body { min-width: 0; }
+.post-title {
+  display: inline;
+  font-family: var(--serif);
+  font-size: 18.5px;
+  line-height: 1.55;
+  font-weight: 500;
+  color: var(--ink);
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-size: 0 1px;
+  background-position: 0 100%;
+  transition: background-size .3s var(--ease), color .16s linear;
+  text-wrap: pretty;
+}
+.post:hover .post-title { background-size: 100% 1px; }
+.post-cat {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  letter-spacing: .03em;
+  color: var(--faint);
+}
+.post-cat .new {
+  color: var(--accent);
+  margin-left: 8px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .08em;
+}
+.post-time {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--faint);
+  text-align: right;
+  white-space: nowrap;
+}
+.post:hover .post-time { color: var(--muted); }
+
+.list-more {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 9px;
+  width: 100%;
+  margin-top: 0;
+  padding: 14px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: none;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--muted);
+  text-align: left;
+}
+.list-more:hover { color: var(--ink); }
+.list-more .chev { color: var(--accent); transition: transform .2s var(--ease); }
+.list-more[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+.most {
+  position: sticky;
+  top: 92px;
+  border-top: 1px solid var(--ink);
+}
+.most h3 {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 11px 0 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .15em;
+  font-weight: 400;
+  color: var(--muted);
+}
+.most h3 span { color: var(--faint); letter-spacing: .04em; }
+.most ol { list-style: none; margin: 0; padding: 0; }
+.most li { border-bottom: 1px solid var(--line); }
+.most a {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 10px;
+  padding: 14px 0;
+  text-decoration: none;
+}
+.most .rank {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  padding-top: 4px;
+}
+.most .m-title {
+  display: block;
+  font-family: var(--serif);
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+.most a:hover .m-title { color: var(--accent); }
+.most .m-meta {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--faint);
+  letter-spacing: .02em;
+}
+
+/* ---------- 订阅 ---------- */
+
+.subscribe {
+  background: var(--band-bg);
+  color: var(--band-ink);
+  border-top: 1px solid var(--band-line);
+  padding-block: clamp(54px, 6.8vw, 88px);
+  transition: background-color .22s linear;
+}
+.sub-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
+  gap: clamp(34px, 6vw, 88px);
+  align-items: start;
+}
+.sub-kicker {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  color: var(--band-muted);
+  margin-bottom: 12px;
+}
+.subscribe h2 {
+  font-family: var(--serif);
+  font-size: clamp(32px, 3.8vw, 48px);
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: -.01em;
+  color: var(--band-ink);
+  text-wrap: balance;
+}
+.subscribe h2 em { font-style: normal; color: #e07052; }
+.sub-desc {
+  margin-top: 16px;
+  max-width: 34em;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--band-muted);
+  text-wrap: pretty;
+}
+.sub-count {
+  margin-top: 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .04em;
+  color: var(--band-muted);
+}
+.sub-count b {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--band-ink);
+  margin-right: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+.sub-form-wrap { padding-top: 4px; }
+.sub-form { display: block; }
+.sub-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 10px;
+  align-items: start;
+}
+.sub-input {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--band-line);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--band-ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  transition: border-color .18s linear, box-shadow .18s linear;
+}
+.sub-input::placeholder { color: #968d7c; }
+.sub-input:hover { border-color: #6a6252; }
+.sub-input:focus {
+  outline: none;
+  border-color: var(--band-ink);
+  box-shadow: 0 0 0 3px rgba(246, 242, 233, .16);
+}
+.sub-input[aria-invalid="true"] { border-color: var(--band-error); }
+.sub-input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(240, 167, 143, .16);
+}
+.sub-btn {
+  grid-column: 2;
+  grid-row: 1;
+  height: 48px;
+  padding: 0 22px;
+  border: 1px solid var(--band-btn);
+  border-radius: 2px;
+  background: var(--band-btn);
+  color: var(--band-btn-ink);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color .18s linear, border-color .18s linear,
+    transform .12s ease;
+}
+.sub-btn:hover { background: #d15a3e; border-color: #d15a3e; }
+.sub-btn:active { transform: translateY(1px); }
+.sub-error {
+  grid-column: 1;
+  grid-row: 2;
+  min-height: 20px;
+  margin-top: 1px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--band-error);
+}
+.sub-error:empty { display: none; }
+.sub-error:not(:empty)::before {
+  content: "!";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  margin-right: 6px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  vertical-align: 1px;
+}
+.sub-privacy {
+  margin-top: 4px;
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: var(--band-muted);
+}
+.sub-privacy .lock {
+  font-family: var(--mono);
+  color: #cbbfae;
+  margin-right: 5px;
+}
+
+.sub-success {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding-top: 4px;
+}
+.check-ring {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(224, 112, 82, .55);
+  display: grid;
+  place-items: center;
+  color: #e07052;
+}
+.check-ring svg { width: 22px; height: 22px; }
+.check-ring path {
+  stroke-dasharray: 26;
+  stroke-dashoffset: 26;
+  animation: draw-check .55s .08s var(--ease) forwards;
+}
+.sub-success h3 {
+  font-family: var(--serif);
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--band-ink);
+}
+.sub-success p {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--band-muted);
+}
+.sub-success p b { color: var(--band-ink); font-weight: 500; }
+.sub-reset {
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--band-line);
+  background: none;
+  color: var(--band-muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+.sub-reset:hover { color: var(--band-ink); border-color: var(--band-muted); }
+
+/* ---------- 页脚 ---------- */
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding-block: 34px 26px;
+}
+.foot-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+  padding-bottom: 26px;
+}
+.foot-id { display: flex; align-items: center; gap: 11px; }
+.foot-id .seal { width: 22px; height: 22px; font-size: 12px; }
+.foot-id p { font-size: 13px; line-height: 1.6; color: var(--muted); }
+.foot-id strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.foot-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  align-items: center;
+}
+.foot-links a {
+  font-size: 12.5px;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: color .16s linear, border-color .16s linear;
+}
+.foot-links a:hover { color: var(--ink); border-color: var(--line-strong); }
+.foot-links .ext { font-family: var(--mono); font-size: 9px; color: var(--faint); margin-left: 3px; }
+.foot-note {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.8;
+  letter-spacing: .02em;
+  color: var(--faint);
+}
+.foot-note a { color: var(--muted); text-decoration: none; }
+.foot-note a:hover { color: var(--ink); }
+
+/* ---------- 文章页 ---------- */
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  width: 0%;
+  height: 2px;
+  background: var(--accent);
+  transition: width .08s linear;
+}
+
+.article-head {
+  padding-top: clamp(38px, 5vw, 68px);
+  padding-bottom: clamp(26px, 3.4vw, 40px);
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+.breadcrumb a { color: var(--muted); text-decoration: none; }
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb .sep { color: var(--line-strong); }
+
+.article-title {
+  margin-top: 20px;
+  max-width: 15em;
+  font-family: var(--serif);
+  font-size: clamp(34px, 4.8vw, 56px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -.015em;
+  text-wrap: balance;
+}
+
+.article-dek {
+  margin-top: 18px;
+  max-width: 34em;
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.article-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.author { display: flex; align-items: center; gap: 11px; }
+.author .seal { width: 30px; height: 30px; font-size: 15px; }
+.author .who { font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+.author .who b { font-weight: 500; color: var(--ink); font-size: 13px; display: block; }
+.article-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .04em;
+  color: var(--faint);
+}
+
+.article-layout {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 700px);
+  gap: clamp(40px, 6vw, 84px);
+  justify-content: center;
+  padding-bottom: clamp(48px, 6vw, 80px);
+}
+.toc { position: sticky; top: 96px; align-self: start; }
+.toc-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .16em;
+  color: var(--faint);
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--line);
+}
+.toc ol { list-style: none; margin: 0; padding: 0; }
+.toc li { border-left: 1px solid var(--line); }
+.toc a {
+  display: block;
+  padding: 7px 0 7px 13px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--muted);
+  text-decoration: none;
+  border-left: 1px solid transparent;
+  margin-left: -1px;
+  transition: color .16s linear, border-color .16s linear;
+}
+.toc a:hover { color: var(--ink); }
+.toc a.is-active { color: var(--ink); border-left-color: var(--accent); }
+.toc-foot {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  line-height: 1.7;
+  color: var(--faint);
+}
+
+.toc-mobile { display: none; }
+
+.prose {
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.96;
+  color: var(--ink-2);
+  max-width: 700px;
+}
+.prose > p { margin: 0 0 1.35em; text-wrap: pretty; }
+.prose strong { font-weight: 600; color: var(--ink); }
+.prose em { font-style: italic; }
+.prose a {
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+.prose a:hover { color: var(--accent); }
+
+.prose h2 {
+  position: relative;
+  margin: 2.1em 0 .72em;
+  font-family: var(--serif);
+  font-size: clamp(23px, 2.3vw, 27px);
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: -.005em;
+  color: var(--ink);
+}
+.prose h2 .num {
+  display: inline-block;
+  margin-right: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .08em;
+  color: var(--accent);
+  vertical-align: .55em;
+}
+.prose h2:first-child { margin-top: 0; }
+
+.prose ul, .prose ol { margin: 0 0 1.4em; padding-left: 1.3em; }
+.prose li { margin-bottom: .45em; text-wrap: pretty; }
+.prose li::marker { color: var(--accent); }
+
+.fnref { font-family: var(--mono); font-size: 10px; line-height: 0; vertical-align: super; }
+.fnref a {
+  color: var(--accent);
+  text-decoration: none;
+  padding: 0 2px;
+}
+.fnref a:hover { text-decoration: underline; }
+
+.figure {
+  margin: 2.2em 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+  border-radius: 2px;
+  font-family: var(--sans);
+  position: relative;
+  overflow: hidden;
+}
+.figure::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: .5;
+  pointer-events: none;
+}
+.figure > * { position: relative; z-index: 1; }
+
+.flow {
+  display: grid;
+  grid-template-columns: 1fr 38px 1fr 38px 1fr 38px 1fr;
+  align-items: stretch;
+  gap: 0;
+}
+.node {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 112px;
+  padding: 12px 12px 11px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  border-radius: 2px;
+}
+.node.is-primary {
+  border-color: var(--accent);
+  box-shadow: inset 0 2px 0 var(--accent);
+}
+.node-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .13em;
+  color: var(--faint);
+}
+.node-name {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.node-detail {
+  margin-top: auto;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  line-height: 1.55;
+  color: var(--muted);
+  letter-spacing: .01em;
+}
+.node .device-glyph {
+  color: var(--line-strong);
+  width: 92px;
+  height: auto;
+  margin: 2px 0 4px;
+}
+.flow-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--faint);
+}
+.flow-arrow span {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: .02em;
+  text-align: center;
+  line-height: 1.3;
+  max-width: 52px;
+}
+.flow-arrow i {
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 15px;
+  color: var(--line-strong);
+  line-height: 1;
+}
+.old-path {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 13px;
+  border-top: 1px dashed var(--line-strong);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--faint);
+}
+.old-path .old-label { letter-spacing: .1em; color: var(--accent); }
+.old-path .old-box {
+  padding: 3px 8px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 2px;
+  color: var(--muted);
+}
+.old-path .old-note { margin-left: auto; }
+
+.figcap {
+  margin-top: 11px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.65;
+  color: var(--faint);
+  letter-spacing: .02em;
+}
+
+.prose blockquote {
+  margin: 2.1em 0;
+  padding: 2px 0 2px 24px;
+  border-left: 2px solid var(--accent);
+  font-family: var(--serif);
+  font-size: 20px;
+  line-height: 1.8;
+  color: var(--ink);
+}
+.prose blockquote p { margin: 0; }
+.prose blockquote cite {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 10.5px;
+  letter-spacing: .04em;
+  color: var(--faint);
+}
+
+.code-block {
+  margin: 2.1em 0;
+  border-radius: 3px;
+  background: var(--code-bg);
+  color: var(--code-ink);
+  overflow: hidden;
+  font-family: var(--mono);
+}
+.code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 38px;
+  padding: 0 12px 0 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  font-size: 10px;
+  letter-spacing: .06em;
+  color: #9b917f;
+}
+.code-copy {
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 2px;
+  background: transparent;
+  color: #bdb3a1;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: color .16s linear, border-color .16s linear;
+}
+.code-copy:hover { color: #f3ecde; border-color: rgba(255, 255, 255, .3); }
+.code-copy.is-done { color: #a8c9a2; border-color: rgba(168, 201, 162, .55); }
+.code-block pre {
+  margin: 0;
+  padding: 16px 18px 18px;
+  overflow-x: auto;
+  font-size: 12.5px;
+  line-height: 1.8;
+  tab-size: 2;
+}
+.code-block code { font-family: inherit; }
+.tok-com { color: #877e6d; }
+.tok-key { color: #e59b7c; }
+.tok-str { color: #a9c4a1; }
+.tok-fn { color: #dcc79a; }
+.tok-num { color: #c9b6d9; }
+
+.footnotes {
+  margin-top: 4.2em;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-strong);
+  font-family: var(--sans);
+}
+.footnotes h2 {
+  margin: 0 0 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  font-weight: 400;
+  color: var(--faint);
+}
+.footnotes ol {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.footnotes li { margin-bottom: 8px; padding-left: 4px; }
+.footnotes li::marker { font-family: var(--mono); font-size: 10px; color: var(--accent); }
+.footnotes a.back {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  text-decoration: none;
+  margin-left: 5px;
+}
+.footnotes a.back:hover { text-decoration: underline; }
+
+.article-end {
+  margin-top: 2.6em;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.article-end b { color: var(--ink); font-weight: 500; }
+
+.prevnext {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-top: 42px;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+}
+.prevnext a {
+  display: block;
+  padding: 18px 20px 20px 0;
+  text-decoration: none;
+}
+.prevnext a + a {
+  border-left: 1px solid var(--line);
+  padding-left: 22px;
+  padding-right: 0;
+  text-align: right;
+}
+.prevnext .pn-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .12em;
+  color: var(--faint);
+  margin-bottom: 6px;
+}
+.prevnext .pn-title {
+  display: block;
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.prevnext a:hover .pn-title { color: var(--accent); }
+
+.article-foot-space { padding-bottom: clamp(40px, 5vw, 64px); }
+
+/* ---------- 动效 ---------- */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes draw-check {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes grow-bar {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+.anim { animation: rise .75s var(--ease) both; animation-delay: var(--delay, 0ms); }
+
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .chart.is-in .bar-rect { animation: none; }
+  .check-ring path { stroke-dashoffset: 0; }
+}
+
+/* ---------- 响应式 ---------- */
+
+@media (max-width: 1120px) {
+  .hero { grid-template-columns: minmax(0, 1.45fr) minmax(270px, .72fr); gap: 48px; }
+  .product { grid-template-columns: 40px minmax(0, 1fr) 180px 150px; }
+  .article-layout { grid-template-columns: 170px minmax(0, 680px); gap: 48px; }
+}
+
+@media (max-width: 1000px) {
+  .writing-grid { grid-template-columns: minmax(0, 1fr); }
+  .most { position: static; margin-top: 34px; }
+  .most ol { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 24px; }
+  .most li { border-bottom: 1px solid var(--line); }
+  .article-layout { grid-template-columns: minmax(0, 700px); justify-content: stretch; }
+  .toc { display: none; }
+  .toc-mobile {
+    display: block;
+    margin-bottom: 28px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .toc-mobile summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    color: var(--muted);
+  }
+  .toc-mobile summary::-webkit-details-marker { display: none; }
+  .toc-mobile summary::after { content: "＋"; color: var(--accent); }
+  .toc-mobile[open] summary::after { content: "−"; }
+  .toc-mobile ol { list-style: none; margin: 0; padding: 0 0 10px; }
+  .toc-mobile a {
+    display: block;
+    padding: 7px 0;
+    font-size: 12.5px;
+    color: var(--muted);
+    text-decoration: none;
+    border-top: 1px solid var(--line);
+  }
+  .toc-mobile a:hover { color: var(--ink); }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 42px;
+    padding-top: 44px;
+  }
+  .hero h1 { font-size: clamp(44px, 8vw, 66px); }
+  .hero-aside { max-width: 560px; }
+  .now-grid { grid-template-columns: minmax(0, 1fr); }
+  .now-side { margin-top: 8px; }
+  .sub-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  .product {
+    grid-template-columns: 34px minmax(0, 1fr);
+    grid-template-areas:
+      "num main"
+      ". meta";
+    gap: 0 14px;
+    padding: 20px 0;
+  }
+  .product-num { grid-area: num; }
+  .product-main { grid-area: main; }
+  .product-status {
+    grid-area: meta;
+    justify-self: start;
+    margin-top: 9px;
+  }
+  .product-metric {
+    grid-area: meta;
+    justify-self: end;
+    text-align: right;
+    margin-top: 9px;
+    font-size: 11px;
+  }
+  .product-metric span { display: inline; margin-left: 5px; }
+  .old-path .old-note { margin-left: 0; width: 100%; }
+}
+
+@media (max-width: 760px) {
+  .brand-role { display: none; }
+  .header-sub { display: none; }
+  .header-inner { gap: 16px; min-height: 62px; }
+  .site-nav { gap: 18px; }
+  .site-nav a { font-size: 12.5px; }
+  .sec-head { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .sec-note { text-align: left; max-width: 34ch; padding-bottom: 0; }
+  .rev-aside { text-align: left; max-width: none; }
+  .rev-top { align-items: flex-start; }
+  .most ol { grid-template-columns: 1fr; }
+  .most li { border-bottom: 1px solid var(--line); }
+  .foot-top { flex-direction: column; gap: 22px; }
+  .article-head { padding-top: 34px; }
+  .article-title { font-size: clamp(32px, 9vw, 42px); }
+  .article-dek { font-size: 16px; }
+  .article-meta { align-items: flex-start; flex-direction: column; gap: 14px; }
+}
+
+@media (max-width: 620px) {
+  .header-inner { gap: 10px; }
+  .brand { gap: 8px; }
+  .brand-name { font-size: 17px; }
+  .seal { width: 24px; height: 24px; font-size: 13px; }
+  .site-nav { gap: 13px; }
+  .site-nav a { font-size: 12px; }
+  .header-tools { gap: 8px; }
+  .theme-toggle { width: 32px; height: 32px; }
+
+  .hero h1 { font-size: clamp(40px, 11vw, 56px); margin: 16px 0 20px; }
+  .hero-sub { font-size: 15.5px; line-height: 1.85; }
+  .hero-now { font-size: 12.5px; }
+  .hero-actions { gap: 16px; margin-top: 26px; }
+
+  .product-name { font-size: 21px; }
+  .product-desc { font-size: 13.2px; }
+  .product-status { font-size: 11px; }
+  .product-metric { font-size: 10.5px; }
+  .product-metric span { display: block; margin-left: 0; }
+
+  .now-lead { font-size: 22px; }
+  .step { grid-template-columns: 16px minmax(0, 1fr); }
+  .step-meta { grid-column: 2; text-align: left; margin-top: 2px; }
+  .devlog li { grid-template-columns: 54px minmax(0, 1fr); }
+
+  .rev-total { font-size: clamp(44px, 13vw, 62px); }
+  .chart .m-label { font-size: 24px; }
+  .chart .grid-label { font-size: 22px; }
+  .chart .y-label { font-size: 21px; }
+  .chart .m-label.is-odd:not(.is-last) { display: none; }
+  .chart-readout { flex-wrap: wrap; gap: 4px 12px; }
+
+  .post {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 3px 14px;
+    padding: 14px 0;
+  }
+  .post-date { grid-column: 1; grid-row: 1; order: 1; }
+  .post-time { grid-column: 2; grid-row: 1; order: 2; }
+  .post-body { grid-column: 1 / -1; grid-row: 2; order: 3; }
+  .post-body { text-wrap: balance; }
+  .post-title { font-size: 17.5px; }
+  .post-cat { margin-top: 2px; }
+
+  .sub-row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .sub-input { grid-column: 1; grid-row: 1; height: 50px; }
+  .sub-error { grid-column: 1; grid-row: 2; }
+  .sub-btn { grid-column: 1; grid-row: 3; width: 100%; height: 46px; }
+
+  .prevnext { grid-template-columns: 1fr; }
+  .prevnext a { padding: 16px 0 18px; }
+  .prevnext a + a {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    padding-left: 0;
+    text-align: left;
+  }
+
+  .prose { font-size: 17px; line-height: 1.92; }
+  .prose h2 { font-size: 22px; }
+  .prose blockquote { font-size: 18.5px; padding-left: 18px; }
+  .figure { padding: 12px; margin-inline: -4px; }
+  .flow { grid-template-columns: 1fr; gap: 0; }
+  .flow-arrow {
+    flex-direction: row;
+    gap: 8px;
+    min-height: 30px;
+    padding: 3px 0;
+  }
+  .flow-arrow span { max-width: none; }
+  .flow-arrow i { transform: rotate(90deg); }
+  .node { min-height: 0; }
+  .code-block pre { font-size: 11.5px; padding: 14px 14px 16px; }
+  .node-name { font-size: 15px; }
+}
+
+@media (max-width: 400px) {
+  :root { --pad: 18px; }
+  .site-nav { gap: 11px; }
+  .site-nav a { font-size: 11.5px; }
+  .theme-toggle { width: 30px; height: 30px; }
+  .brand-name { font-size: 16px; }
+  .header-inner { min-height: 58px; }
+  .hero h1 { font-size: 40px; }
+  .rev-total { font-size: 43px; }
+}
+
+</style>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="周屿，回到首页">
+      <span class="seal" aria-hidden="true">屿</span>
+      <span class="brand-name">周屿</span>
+    </a>
+    <span class="brand-role">独立开发者 / 杭州</span>
+    <nav class="site-nav" aria-label="页面导航">
+      <a href="#products">产品</a>
+      <a href="#now">近况</a>
+      <a href="#revenue">收入</a>
+      <a href="#writing">文章</a>
+    </nav>
+    <div class="header-tools">
+      <a class="header-sub" href="#subscribe">订阅</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到深色模式" aria-pressed="false">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.1"></circle>
+          <path d="M12 2.8v2.1M12 19.1v2.1M2.8 12h2.1M19.1 12h2.1M5.5 5.5l1.5 1.5M17 17l1.5 1.5M18.5 5.5L17 7M7 17l-1.5 1.5"></path>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20.1 14.2A8.2 8.2 0 0 1 9.8 3.9 8.2 8.2 0 1 0 20.1 14.2Z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero container" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="eyebrow anim">杭州 · 独立开发第四年</p>
+      <h1 id="hero-title" class="anim">第四年，<br>还是一个人<br>做软件<span class="dot">。</span></h1>
+      <p class="hero-sub anim">我是周屿。写代码、画界面、回用户邮件，都是我自己。做得不快，但每一件都做完了。</p>
+      <p class="hero-now anim">
+        <span class="tag">现在</span>
+        <span>拾页 2.0 的同步刚换成自建服务，正在收尾冲突合并。<a href="article.html">读这次迁移的记录 →</a></span>
+      </p>
+      <div class="hero-actions anim">
+        <a class="btn" href="article.html">读一篇近作 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="link-quiet" href="#subscribe">订阅近况 <span class="num">· 4,012 人</span></a>
+      </div>
+    </div>
+
+    <aside class="hero-aside anim" aria-labelledby="timeline-title">
+      <div class="hero-aside-head">
+        <h2 id="timeline-title">这四年</h2>
+        <span>2023 — 2026</span>
+      </div>
+      <ol class="timeline">
+        <li>
+          <span class="year">2023</span>
+          <span class="what">从公司辞职。夏天开始写拾页，第一个版本只有保存和搜索。</span>
+        </li>
+        <li>
+          <span class="year">2024</span>
+          <span class="what">拾页 1.0 上架。周末菜单停更，第一次承认有些事做不完。</span>
+        </li>
+        <li>
+          <span class="year">2025</span>
+          <span class="what">慢信上线。月收入第一次过两万，开始公开每个月的数字。</span>
+        </li>
+        <li class="is-now">
+          <span class="year">2026</span>
+          <span class="what">拾页 2.0。把同步从 iCloud 搬到<span class="nowrap">自建服务</span>，<span class="nowrap"><em>还在收尾</em>。</span></span>
+        </li>
+      </ol>
+      <p class="hero-aside-foot">※ 更细的都在文章里，按年份翻得到。</p>
+    </aside>
+  </section>
+
+  <section class="section" id="products" aria-labelledby="products-title">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <p class="sec-kicker">01</p>
+          <h2 class="sec-title" id="products-title">产品</h2>
+        </div>
+        <p class="sec-note">四个。有的在卖，有的还在长，有一个已经停更。<span class="stamp">STATUS · 2026.10</span></p>
+      </div>
+
+      <div class="product-list">
+        <article class="product">
+          <span class="product-num">01</span>
+          <div class="product-main">
+            <h3 class="product-name">拾页<span class="latin">SHIYE</span></h3>
+            <p class="product-desc">Mac 上的稍后读与高亮笔记。存网页、划线、写想法，数据留在本地，同步可选。买断制，不做订阅。</p>
+          </div>
+          <p class="product-status is-live"><span class="status-dot" aria-hidden="true"></span>在售 · 2.0 开发中</p>
+          <p class="product-metric">12,000 位付费用户<span>买断 128 元</span></p>
+        </article>
+
+        <article class="product">
+          <span class="product-num">02</span>
+          <div class="product-main">
+            <h3 class="product-name">慢信<span class="latin">SLOW LETTER</span></h3>
+            <p class="product-desc">给一年后的自己写信。写完封存，到期那天才打开。没有提醒、没有社交，只有时间。</p>
+          </div>
+          <p class="product-status is-on"><span class="status-dot" aria-hidden="true"></span>运营中</p>
+          <p class="product-metric">2025 年上线<span>订阅 30 元 / 年</span></p>
+        </article>
+
+        <article class="product">
+          <span class="product-num">03</span>
+          <div class="product-main">
+            <h3 class="product-name">slugify-zh<span class="latin">OPEN SOURCE</span></h3>
+            <p class="product-desc">把中文标题转成网址片段的开源库。处理多音字、标点和长度截断，压缩后 4 KB，没有依赖。</p>
+          </div>
+          <p class="product-status"><span class="status-dot" aria-hidden="true"></span>持续维护</p>
+          <p class="product-metric">GitHub 2.3k 星<span>MIT 许可</span></p>
+        </article>
+
+        <article class="product">
+          <span class="product-num">04</span>
+          <div class="product-main">
+            <h3 class="product-name">周末菜单<span class="latin">WEEKEND MENU</span></h3>
+            <p class="product-desc">按冰箱里剩下的食材推荐菜谱的小程序。做过一万八千个用户，2024 年停止维护。</p>
+            <p class="product-reason"><b>停更原因：</b>食材库要一直人工校对，维护成本高于它能带来的收入；小程序类目审核也越来越难。代码留在 GitHub，没有删。</p>
+          </div>
+          <p class="product-status is-hold"><span class="status-dot" aria-hidden="true"></span>2024 年停更</p>
+          <p class="product-metric">已归档<span>代码公开</span></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="now" aria-labelledby="now-title">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <p class="sec-kicker">02</p>
+          <h2 class="sec-title" id="now-title">近况</h2>
+        </div>
+        <p class="sec-note">在做什么，读什么，学什么。<span class="stamp">更新于 2026 年 10 月</span></p>
+      </div>
+
+      <div class="now-grid">
+        <div>
+          <p class="now-lead">拾页 2.0 的同步层写完了，现在在收尾<em>冲突合并</em>。每周日发一篇开发日志，已经写到第 31 篇。</p>
+
+          <ol class="steps" aria-label="拾页 2.0 进度">
+            <li class="step is-done">
+              <span class="step-mark" aria-hidden="true"></span>
+              <span class="step-title">同步协议与字段级合并</span>
+              <span class="step-meta">完成 · 2026.08</span>
+            </li>
+            <li class="step is-done">
+              <span class="step-mark" aria-hidden="true"></span>
+              <span class="step-title">自建服务与双写迁移</span>
+              <span class="step-meta">完成 · 2026.10</span>
+            </li>
+            <li class="step is-current">
+              <span class="step-mark" aria-hidden="true"></span>
+              <span class="step-title">冲突合并的界面与边界用例</span>
+              <span class="step-meta">进行中 · 预计 11 月</span>
+            </li>
+            <li class="step">
+              <span class="step-mark" aria-hidden="true"></span>
+              <span class="step-title">2.0 公开发布</span>
+              <span class="step-meta">排期 · 12 月</span>
+            </li>
+          </ol>
+
+          <div class="devlog">
+            <div class="devlog-head">
+              <h3>开发日志 / DEVLOG</h3>
+              <span>第 31 篇</span>
+            </div>
+            <ol>
+              <li><span>10.25</span><span>第 31 篇 · 把冲突合并的用例补到 42 个</span></li>
+              <li><span>10.18</span><span>第 30 篇 · 迁移后的第一周：延迟、报警和两封用户邮件</span></li>
+              <li><span>10.11</span><span>第 29 篇 · 双写四个月，我学到了什么</span></li>
+            </ol>
+          </div>
+        </div>
+
+        <aside class="now-side" aria-label="最近在读和在学">
+          <div class="side-block">
+            <h3>最近在读 <span class="mark">READING</span></h3>
+            <div class="side-item">
+              <p class="name">《Designing Data-Intensive Applications》</p>
+              <p class="note">第二遍，重读第 5 章。为了给同步协议找反例，不是为了读完。</p>
+            </div>
+            <div class="side-item">
+              <p class="name">《张枣的诗》</p>
+              <p class="note">睡前一首一首地读。有的读不懂，就先放着。</p>
+            </div>
+          </div>
+          <div class="side-block">
+            <h3>在学 <span class="mark">LEARNING</span></h3>
+            <div class="side-item">
+              <p class="name">Rust 的异步运行时</p>
+              <p class="note">还在抄示例、改示例的阶段。暂时没打算用它写产品。</p>
+            </div>
+            <div class="side-item">
+              <p class="name">SQLite 的 WAL 与检查点</p>
+              <p class="note">为了把备份做得更稳。读文档比读博客有用。</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="revenue" aria-labelledby="revenue-title">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <p class="sec-kicker">03</p>
+          <h2 class="sec-title" id="revenue-title">收入</h2>
+        </div>
+        <p class="sec-note">近 12 个月，全部产品。税前。<span class="stamp">2025.11 — 2026.10</span></p>
+      </div>
+
+      <div class="rev-top">
+        <div>
+          <p class="rev-label">近 12 个月总收入 / CNY</p>
+          <p class="rev-total"><span class="cur">¥</span>290,600</p>
+        </div>
+        <div class="rev-aside">
+          <p class="rev-gain">+68%<small>从 2025 年 11 月的 18,400 到 2026 年 10 月的 31,000。没有融资，没有广告，也没有涨价。</small></p>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="chart-readout" aria-live="polite">
+          <span class="chart-month" data-chart-month>2026 年 10 月</span>
+          <span>
+            <span class="chart-value"><span class="unit">¥</span><span data-chart-value>31,000</span></span>
+            <span class="chart-delta" data-chart-delta>+1,700 · +5.8%</span>
+          </span>
+        </div>
+
+        <div class="chart" data-chart>
+          <svg viewBox="0 0 720 262" role="img" aria-label="2025 年 11 月到 2026 年 10 月的月收入柱状图，从 18,400 元增长到 31,000 元，中间有小幅波动。">
+            <line class="grid-line" x1="48" y1="38" x2="720" y2="38"></line>
+            <line class="grid-line" x1="48" y1="88" x2="720" y2="88"></line>
+            <text class="grid-label" x="42" y="41" text-anchor="end">3万</text>
+            <text class="grid-label" x="42" y="91" text-anchor="end">2万</text>
+            <line class="baseline" x1="48" y1="188" x2="720" y2="188"></line>
+
+            <g class="bar" data-month="2025 年 11 月" data-value="18400" style="--d:0ms">
+              <title>2025 年 11 月：18,400 元</title>
+              <rect class="col-hi" x="48" y="22" width="56" height="166"></rect>
+              <rect class="hit" x="48" y="22" width="56" height="166"></rect>
+              <rect class="bar-rect" x="61" y="96" width="30" height="92"></rect>
+            </g>
+            <g class="bar" data-month="2025 年 12 月" data-value="19100" style="--d:45ms">
+              <title>2025 年 12 月：19,100 元</title>
+              <rect class="col-hi" x="104" y="22" width="56" height="166"></rect>
+              <rect class="hit" x="104" y="22" width="56" height="166"></rect>
+              <rect class="bar-rect" x="117" y="92.5" width="30" height="95.5"></rect>
+            </g>
+            <g class="bar" data-month="2026 年 1 月" data-value="21700" style="--d:90ms">
+              <title>2026 年 1 月：21,700 元</title>
+              <rect class="col-hi" x="160" y="22" width="56" height="166"></rect>
+              <rect class="hit" x="160" y="22" width="56" height="166"></rect>
+              <rect class="bar-rect" x="173" y="79.5" width="30" height="108.5"></rect>
+            </g>
+            <g class="bar" data-month="2026 年 2 月" data-value="20300" style="--d:135ms">
+              <title>2026 年 2 月：20,300 元</title>
+              <rect class="col-hi" x="216" y="22" width="56" height="166"></rect>
+              <rect class="hit" x="216" y="22" width="56" height="166"></rect>
+              <rect class="bar-rect" x="229" y="86.5" width="30" height="101.5"></rect>
+            </g>
+            <g class="bar" data-month="2026 年 3 月" data-value="22800" style="--d:180ms">
+              <title>2026 年 3 月：22,800 元</title>
+              <rect class="col-hi" x="272" y="22" width="56" height="166"></rect>
+              <rect class="hit" x="272" y="22" width="56" height="166"></rect>
+              <rect class="bar-rect" x="285" y="74" width="30" height="114"></rect>
+            </g>
+            <g class="bar" data-month="2026 年 4 月" data-value="24500" style="--d:225ms">
+              <title>2026 年 4 月：24,500 元</title>
+              <rect class="col-hi" x="328" y="22" width="56" height="166"></rect>
+              <rect class="hit" x="328" y="22" width="56" height="166"></rect>
+              <rect class="bar-rect" x="341" y="65.5" width="30" height="122.5"></rect>
+            </g>
+            <g class="bar" data-month="2026 年 5 月" data-value="23900" style="--d:270ms">
+              <title>2026 年 5 月：23,900 元</title>
+              <rect class="col-hi" x="384" y="22" width="56" height="166"></rect>
+              <rect class="hit" x="384" y="22" width="56" height="166"></rect>
+              <rect class="bar-rect" x="397" y="68.5" width="30" height="119.5"></rect>
+            </g>
+            <g class="bar" data-month="2026 年 6 月" data-value="26200" style="--d:315ms">
+              <title>2026 年 6 月：26,200 元</title>
+              <rect class="col-hi" x="440" y="22" width="56" height="166"></rect>
+              <rect class="hit" x="440" y="22" width="56" height="166"></rect>
+              <rect class="bar-rect" x="453" y="57" width="30" height="131"></rect>
+            </g>
+            <g class="bar" data-month="2026 年 7 月" data-value="27800" style="--d:360ms">
+              <title>2026 年 7 月：27,800 元</title>
+              <rect class="col-hi" x="496" y="22" width="56" height="166"></rect>
+              <rect class="hit" x="496" y="22" width="56" height="166"></rect>
+              <rect class="bar-rect" x="509" y="49" width="30" height="139"></rect>
+            </g>
+            <g class="bar" data-month="2026 年 8 月" data-value="25600" style="--d:405ms">
+              <title>2026 年 8 月：25,600 元</title>
+              <rect class="col-hi" x="552" y="22" width="56" height="166"></rect>
+              <rect class="hit" x="552" y="22" width="56" height="166"></rect>
+              <rect class="bar-rect" x="565" y="60" width="30" height="128"></rect>
+            </g>
+            <g class="bar" data-month="2026 年 9 月" data-value="29300" style="--d:450ms">
+              <title>2026 年 9 月：29,300 元</title>
+              <rect class="col-hi" x="608" y="22" width="56" height="166"></rect>
+              <rect class="hit" x="608" y="22" width="56" height="166"></rect>
+              <rect class="bar-rect" x="621" y="41.5" width="30" height="146.5"></rect>
+            </g>
+            <g class="bar" data-month="2026 年 10 月" data-value="31000" style="--d:495ms">
+              <title>2026 年 10 月：31,000 元</title>
+              <rect class="col-hi" x="664" y="22" width="56" height="166"></rect>
+              <rect class="hit" x="664" y="22" width="56" height="166"></rect>
+              <rect class="bar-rect" x="677" y="33" width="30" height="155"></rect>
+            </g>
+
+            <text class="m-label" x="76" y="214" text-anchor="middle">11</text>
+            <text class="m-label is-odd" x="132" y="214" text-anchor="middle">12</text>
+            <text class="m-label" x="188" y="214" text-anchor="middle">01</text>
+            <text class="m-label is-odd" x="244" y="214" text-anchor="middle">02</text>
+            <text class="m-label" x="300" y="214" text-anchor="middle">03</text>
+            <text class="m-label is-odd" x="356" y="214" text-anchor="middle">04</text>
+            <text class="m-label" x="412" y="214" text-anchor="middle">05</text>
+            <text class="m-label is-odd" x="468" y="214" text-anchor="middle">06</text>
+            <text class="m-label" x="524" y="214" text-anchor="middle">07</text>
+            <text class="m-label is-odd" x="580" y="214" text-anchor="middle">08</text>
+            <text class="m-label" x="636" y="214" text-anchor="middle">09</text>
+            <text class="m-label is-odd is-last" x="692" y="214" text-anchor="middle">10</text>
+            <text class="y-label" x="76" y="248" text-anchor="middle">2025</text>
+            <text class="y-label" x="188" y="248" text-anchor="middle">2026</text>
+          </svg>
+        </div>
+
+        <p class="chart-note"><b>※ 数字是扣除渠道分成前的全部收入，未扣税。</b>拾页占七成左右，慢信两成多，剩下的来自 slugify-zh 的赞助和以前的买断尾款。每月 1 日更新。</p>
+
+        <details class="rev-data">
+          <summary>每月数字</summary>
+          <table>
+            <caption class="visually-hidden">2025 年 11 月至 2026 年 10 月的月收入</caption>
+            <thead>
+              <tr><th scope="col">月份</th><th scope="col">收入（元）</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>2025.11</td><td>18,400</td></tr>
+              <tr><td>2025.12</td><td>19,100</td></tr>
+              <tr><td>2026.01</td><td>21,700</td></tr>
+              <tr><td>2026.02</td><td>20,300</td></tr>
+              <tr><td>2026.03</td><td>22,800</td></tr>
+              <tr><td>2026.04</td><td>24,500</td></tr>
+              <tr><td>2026.05</td><td>23,900</td></tr>
+              <tr><td>2026.06</td><td>26,200</td></tr>
+              <tr><td>2026.07</td><td>27,800</td></tr>
+              <tr><td>2026.08</td><td>25,600</td></tr>
+              <tr><td>2026.09</td><td>29,300</td></tr>
+              <tr><td>2026.10</td><td>31,000</td></tr>
+              <tr class="total-row"><td>合计</td><td>290,600</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <div class="rev-note">
+          <span class="k">说明</span>
+          <p>从 2023 年开始公开月收入，这是第四年。数字不好看的时候也照发，因为它比任何增长故事都更有用。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="writing" aria-labelledby="writing-title">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <p class="sec-kicker">04</p>
+          <h2 class="sec-title" id="writing-title">文章</h2>
+        </div>
+        <p class="sec-note">三十篇，写在做事之后。可以按类别筛，也可以从读得最多的开始。<span class="stamp">30 篇 · 2023 — 2026</span></p>
+      </div>
+
+      <div class="writing-grid">
+        <div>
+          <div class="filters" role="group" aria-label="按类别筛选文章">
+            <button class="filter" type="button" data-filter="all" aria-pressed="true">全部<span class="count">30</span></button>
+            <button class="filter" type="button" data-filter="product" aria-pressed="false">产品<span class="count">10</span></button>
+            <button class="filter" type="button" data-filter="tech" aria-pressed="false">技术<span class="count">12</span></button>
+            <button class="filter" type="button" data-filter="life" aria-pressed="false">独立开发生活<span class="count">8</span></button>
+          </div>
+
+          <div class="post-list" id="post-list-region" data-post-list>
+            <a class="post" href="article.html" data-cat="product">
+              <span class="post-date">2026.11.02</span>
+              <span class="post-body">
+                <span class="post-title">拾页 2.0 开发日志 #32：把同步的失败重试做完</span>
+                <span class="post-cat">产品<span class="new">新</span></span>
+              </span>
+              <span class="post-time">5 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="tech">
+              <span class="post-date">2026.10.27</span>
+              <span class="post-body">
+                <span class="post-title">把拾页的同步从 iCloud 迁到自建服务</span>
+                <span class="post-cat">技术</span>
+              </span>
+              <span class="post-time">11 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="product">
+              <span class="post-date">2026.09.18</span>
+              <span class="post-body">
+                <span class="post-title">拾页 2.0 的定价：为什么还是买断制</span>
+                <span class="post-cat">产品</span>
+              </span>
+              <span class="post-time">9 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="life">
+              <span class="post-date">2026.09.02</span>
+              <span class="post-body">
+                <span class="post-title">独立开发第四年，我给自己打 7 分</span>
+                <span class="post-cat">独立开发生活</span>
+              </span>
+              <span class="post-time">10 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="tech">
+              <span class="post-date">2026.08.11</span>
+              <span class="post-body">
+                <span class="post-title">SQLite 的 WAL 模式救我一次</span>
+                <span class="post-cat">技术</span>
+              </span>
+              <span class="post-time">12 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="product">
+              <span class="post-date">2026.07.02</span>
+              <span class="post-body">
+                <span class="post-title">把用户反馈分成四类，再决定做不做</span>
+                <span class="post-cat">产品</span>
+              </span>
+              <span class="post-time">7 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="tech">
+              <span class="post-date">2026.06.24</span>
+              <span class="post-body">
+                <span class="post-title">用 300 行 Swift 写一个 Markdown 渲染器</span>
+                <span class="post-cat">技术</span>
+              </span>
+              <span class="post-time">15 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="product">
+              <span class="post-date">2026.05.21</span>
+              <span class="post-body">
+                <span class="post-title">一个小功能上线前，我删掉了它三次</span>
+                <span class="post-cat">产品</span>
+              </span>
+              <span class="post-time">8 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="life">
+              <span class="post-date">2026.04.16</span>
+              <span class="post-body">
+                <span class="post-title">在杭州租一间办公室要多少钱</span>
+                <span class="post-cat">独立开发生活</span>
+              </span>
+              <span class="post-time">8 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="product">
+              <span class="post-date">2026.03.12</span>
+              <span class="post-body">
+                <span class="post-title">128 元买断，第四年还能撑住吗</span>
+                <span class="post-cat">产品</span>
+              </span>
+              <span class="post-time">11 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="tech">
+              <span class="post-date">2026.02.19</span>
+              <span class="post-body">
+                <span class="post-title">中文 slug 的边界情况：从 47 个 issue 说起</span>
+                <span class="post-cat">技术</span>
+              </span>
+              <span class="post-time">13 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="life">
+              <span class="post-date">2026.02.03</span>
+              <span class="post-body">
+                <span class="post-title">一个人做客服的第三年</span>
+                <span class="post-cat">独立开发生活</span>
+              </span>
+              <span class="post-time">7 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="product">
+              <span class="post-date">2026.01.08</span>
+              <span class="post-body">
+                <span class="post-title">慢信的订阅留存：第 12 个月的数据</span>
+                <span class="post-cat">产品</span>
+              </span>
+              <span class="post-time">10 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="life">
+              <span class="post-date">2025.12.10</span>
+              <span class="post-body">
+                <span class="post-title">我的一周：没有会议，也没有下班</span>
+                <span class="post-cat">独立开发生活</span>
+              </span>
+              <span class="post-time">9 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="tech">
+              <span class="post-date">2025.11.06</span>
+              <span class="post-body">
+                <span class="post-title">我为什么把后端从 Go 换回 Node</span>
+                <span class="post-cat">技术</span>
+              </span>
+              <span class="post-time">11 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="product">
+              <span class="post-date">2025.10.15</span>
+              <span class="post-body">
+                <span class="post-title">我怎样写产品更新日志</span>
+                <span class="post-cat">产品</span>
+              </span>
+              <span class="post-time">6 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="life">
+              <span class="post-date">2025.09.11</span>
+              <span class="post-body">
+                <span class="post-title">收入公开这件事，我后悔过吗</span>
+                <span class="post-cat">独立开发生活</span>
+              </span>
+              <span class="post-time">8 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="tech">
+              <span class="post-date">2025.08.22</span>
+              <span class="post-body">
+                <span class="post-title">一个同步协议需要哪些字段</span>
+                <span class="post-cat">技术</span>
+              </span>
+              <span class="post-time">16 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="product">
+              <span class="post-date">2025.06.04</span>
+              <span class="post-body">
+                <span class="post-title">不做免费版之后</span>
+                <span class="post-cat">产品</span>
+              </span>
+              <span class="post-time">9 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="tech">
+              <span class="post-date">2025.04.30</span>
+              <span class="post-body">
+                <span class="post-title">在 Mac 上做全局快捷键：踩过的坑</span>
+                <span class="post-cat">技术</span>
+              </span>
+              <span class="post-time">10 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="life">
+              <span class="post-date">2025.03.26</span>
+              <span class="post-body">
+                <span class="post-title">辞职前存了多少钱</span>
+                <span class="post-cat">独立开发生活</span>
+              </span>
+              <span class="post-time">10 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="tech">
+              <span class="post-date">2024.12.05</span>
+              <span class="post-body">
+                <span class="post-title">全文搜索：先别上 Elasticsearch</span>
+                <span class="post-cat">技术</span>
+              </span>
+              <span class="post-time">9 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="product">
+              <span class="post-date">2024.11.20</span>
+              <span class="post-body">
+                <span class="post-title">拾页的定价页改版记录</span>
+                <span class="post-cat">产品</span>
+              </span>
+              <span class="post-time">7 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="life">
+              <span class="post-date">2024.09.19</span>
+              <span class="post-body">
+                <span class="post-title">第三年，第一次想回去上班</span>
+                <span class="post-cat">独立开发生活</span>
+              </span>
+              <span class="post-time">13 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="tech">
+              <span class="post-date">2024.07.18</span>
+              <span class="post-body">
+                <span class="post-title">用 Cloudflare Workers 做图片代理省了多少钱</span>
+                <span class="post-cat">技术</span>
+              </span>
+              <span class="post-time">8 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="life">
+              <span class="post-date">2024.05.07</span>
+              <span class="post-body">
+                <span class="post-title">一个人工作的孤独感</span>
+                <span class="post-cat">独立开发生活</span>
+              </span>
+              <span class="post-time">9 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="tech">
+              <span class="post-date">2024.02.14</span>
+              <span class="post-body">
+                <span class="post-title">写给独立开发者的备份方案</span>
+                <span class="post-cat">技术</span>
+              </span>
+              <span class="post-time">12 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="tech">
+              <span class="post-date">2023.11.08</span>
+              <span class="post-body">
+                <span class="post-title">一次数据库迁移的完整记录</span>
+                <span class="post-cat">技术</span>
+              </span>
+              <span class="post-time">17 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="product">
+              <span class="post-date">2023.09.27</span>
+              <span class="post-body">
+                <span class="post-title">从 0 到 1000 个付费用户</span>
+                <span class="post-cat">产品</span>
+              </span>
+              <span class="post-time">14 分钟</span>
+            </a>
+            <a class="post" href="article.html" data-cat="tech">
+              <span class="post-date">2023.06.21</span>
+              <span class="post-body">
+                <span class="post-title">Git 提交信息我写了六年，只留下三条规则</span>
+                <span class="post-cat">技术</span>
+              </span>
+              <span class="post-time">6 分钟</span>
+            </a>
+          </div>
+
+          <button class="list-more" type="button" data-more aria-expanded="false" aria-controls="post-list-region">
+            <span data-more-label>展开其余 24 篇</span>
+            <span class="chev" aria-hidden="true">↓</span>
+          </button>
+          <p class="visually-hidden" aria-live="polite" data-list-live></p>
+        </div>
+
+        <aside class="most" aria-labelledby="most-title">
+          <h3 id="most-title">读者最多 <span>TOP 3</span></h3>
+          <ol>
+            <li>
+              <a href="article.html">
+                <span class="rank">01</span>
+                <span>
+                  <span class="m-title">从 0 到 1000 个付费用户</span>
+                  <span class="m-meta">2023.09.27 · 18,400 次阅读</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="article.html">
+                <span class="rank">02</span>
+                <span>
+                  <span class="m-title">辞职前存了多少钱</span>
+                  <span class="m-meta">2025.03.26 · 15,200 次阅读</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="article.html">
+                <span class="rank">03</span>
+                <span>
+                  <span class="m-title">一个人做客服的第三年</span>
+                  <span class="m-meta">2026.02.03 · 12,700 次阅读</span>
+                </span>
+              </a>
+            </li>
+          </ol>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="subscribe" id="subscribe" aria-labelledby="sub-title">
+    <div class="container sub-grid" data-subscribe>
+      <div>
+        <p class="sub-kicker">MONTHLY LETTER · 每月 1 日</p>
+        <h2 id="sub-title">每月一封，<br>写<em>做完的事</em>。</h2>
+        <p class="sub-desc">拾页的开发进度、收入数字，和这个月读到的书。不写“干货”，也不替谁总结行业。</p>
+        <p class="sub-count"><b data-sub-count>4,012</b> 位订阅者 · 随时可以退订</p>
+      </div>
+
+      <div class="sub-form-wrap">
+        <form class="sub-form" data-sub-form novalidate>
+          <div class="sub-row">
+            <label class="visually-hidden" for="sub-email">邮箱地址</label>
+            <input class="sub-input" id="sub-email" data-sub-input type="email" name="email" inputmode="email" autocomplete="email" placeholder="you@example.com" aria-describedby="sub-error sub-privacy">
+            <button class="sub-btn" type="submit">订阅</button>
+            <p class="sub-error" id="sub-error" data-sub-error role="alert" aria-live="polite"></p>
+          </div>
+          <p class="sub-privacy" id="sub-privacy"><span class="lock">※</span>每月 1 日发一封。不转发，不投放，随时退订。</p>
+        </form>
+
+        <div class="sub-success" data-sub-success hidden>
+          <span class="check-ring" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          <div>
+            <h3>已订阅。</h3>
+            <p>你是第 <b data-sub-you>4,013</b> 位。下一封在 12 月 1 日，会先写拾页 2.0 的发布计划。</p>
+            <button class="sub-reset" type="button" data-sub-reset>换一个邮箱</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="foot-top">
+      <div class="foot-id">
+        <span class="seal" aria-hidden="true">屿</span>
+        <p><strong>周屿</strong>独立开发者 · 杭州<br>约稿与产品问题，写信给我。</p>
+      </div>
+      <nav class="foot-links" aria-label="联系与社交">
+        <a href="mailto:hi@zhouyu.dev">hi@zhouyu.dev</a>
+        <a href="https://github.com/zhouyu" target="_blank" rel="noopener">GitHub<span class="ext" aria-hidden="true">↗</span></a>
+        <a href="https://okjike.com/u/zhouyu" target="_blank" rel="noopener">即刻<span class="ext" aria-hidden="true">↗</span></a>
+        <a href="https://x.com/zhouyu" target="_blank" rel="noopener">X<span class="ext" aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+    <div class="foot-note">
+      <span>© 2026 周屿 · 本站不追踪，不投放广告。</span>
+      <a href="#top">回到顶部 ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* 周屿 · 独立开发者 — 共享脚本（无依赖） */
+(function () {
+  "use strict";
+
+  var root = document.documentElement;
+  var KEY = "zy-theme";
+  var mq = window.matchMedia("(prefers-color-scheme: dark)");
+
+  var stored = null;
+  try { stored = localStorage.getItem(KEY); } catch (e) {}
+  var manual = stored === "light" || stored === "dark";
+
+  function applyTheme(theme) {
+    root.setAttribute("data-theme", theme);
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", theme === "dark" ? "#15130f" : "#f6f2e9");
+    var toggles = document.querySelectorAll("[data-theme-toggle]");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", theme === "dark" ? "切换到浅色模式" : "切换到深色模式");
+      toggles[i].setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+    }
+  }
+
+  if (!root.getAttribute("data-theme")) {
+    applyTheme(manual ? stored : (mq.matches ? "dark" : "light"));
+  } else {
+    applyTheme(root.getAttribute("data-theme"));
+  }
+
+  var themeToggles = document.querySelectorAll("[data-theme-toggle]");
+  for (var t = 0; t < themeToggles.length; t++) {
+    themeToggles[t].addEventListener("click", function () {
+      var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      manual = true;
+      try { localStorage.setItem(KEY, next); } catch (e) {}
+      applyTheme(next);
+    });
+  }
+
+  function onSystemChange() {
+    if (!manual) applyTheme(mq.matches ? "dark" : "light");
+  }
+  if (mq.addEventListener) mq.addEventListener("change", onSystemChange);
+  else if (mq.addListener) mq.addListener(onSystemChange);
+
+  /* ---------- 首次加载与滚动出场 ---------- */
+
+  /* ---------- 收入图表 ---------- */
+
+  var chart = document.querySelector("[data-chart]");
+  if (chart) {
+    var bars = Array.prototype.slice.call(chart.querySelectorAll(".bar"));
+    var monthEl = chart.parentNode.querySelector("[data-chart-month]");
+    var valueEl = chart.parentNode.querySelector("[data-chart-value]");
+    var deltaEl = chart.parentNode.querySelector("[data-chart-delta]");
+    var nf = new Intl.NumberFormat("en-US");
+
+    function setActive(index) {
+      var bar = bars[index];
+      if (!bar) return;
+      for (var i = 0; i < bars.length; i++) bars[i].classList.remove("is-active");
+      bar.classList.add("is-active");
+
+      var value = parseInt(bar.getAttribute("data-value"), 10);
+      if (monthEl) monthEl.textContent = bar.getAttribute("data-month");
+      if (valueEl) valueEl.textContent = nf.format(value);
+
+      if (deltaEl) {
+        if (index === 0) {
+          deltaEl.textContent = "起点";
+          deltaEl.classList.remove("is-down");
+        } else {
+          var prev = parseInt(bars[index - 1].getAttribute("data-value"), 10);
+          var diff = value - prev;
+          var pct = prev ? (diff / prev) * 100 : 0;
+          var sign = diff >= 0 ? "+" : "−";
+          deltaEl.textContent = sign + nf.format(Math.abs(diff)) + " · " + sign + Math.abs(pct).toFixed(1) + "%";
+          deltaEl.classList.toggle("is-down", diff < 0);
+        }
+      }
+    }
+
+    for (var b = 0; b < bars.length; b++) {
+      (function (index, bar) {
+        bar.addEventListener("mouseenter", function () { setActive(index); });
+        bar.addEventListener("focus", function () { setActive(index); });
+        bar.addEventListener("click", function () { setActive(index); });
+      })(b, bars[b]);
+    }
+    setActive(bars.length - 1);
+
+    var chartObserver = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) {
+          chart.classList.add("is-in");
+          chartObserver.unobserve(chart);
+        }
+      }
+    }, { threshold: 0.18 });
+    chartObserver.observe(chart);
+  }
+
+  /* ---------- 文章筛选 ---------- */
+
+  var postList = document.querySelector("[data-post-list]");
+  if (postList) {
+    var posts = Array.prototype.slice.call(postList.querySelectorAll(".post"));
+    var filterButtons = Array.prototype.slice.call(document.querySelectorAll(".filter[data-filter]"));
+    var moreBtn = document.querySelector("[data-more]");
+    var moreLabel = moreBtn ? moreBtn.querySelector("[data-more-label]") : null;
+    var listLive = document.querySelector("[data-list-live]");
+    var activeCat = "all";
+    var expanded = false;
+    var LIMIT = 6;
+
+    function renderPosts() {
+      var matches = [];
+      for (var i = 0; i < posts.length; i++) {
+        if (activeCat === "all" || posts[i].getAttribute("data-cat") === activeCat) matches.push(posts[i]);
+      }
+      for (var j = 0; j < posts.length; j++) posts[j].hidden = true;
+      var shown = 0;
+      for (var k = 0; k < matches.length; k++) {
+        if (expanded || k < LIMIT) {
+          matches[k].hidden = false;
+          shown++;
+        }
+      }
+      if (moreBtn) {
+        var rest = Math.max(0, matches.length - LIMIT);
+        moreBtn.hidden = rest === 0;
+        moreBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
+        if (moreLabel) moreLabel.textContent = expanded ? "收起列表" : "展开其余 " + rest + " 篇";
+      }
+      if (listLive) listLive.textContent = "当前显示 " + shown + " 篇文章";
+    }
+
+    for (var f = 0; f < filterButtons.length; f++) {
+      (function (btn) {
+        btn.addEventListener("click", function () {
+          activeCat = btn.getAttribute("data-filter");
+          expanded = false;
+          for (var i = 0; i < filterButtons.length; i++) {
+            filterButtons[i].setAttribute("aria-pressed", filterButtons[i] === btn ? "true" : "false");
+          }
+          renderPosts();
+        });
+      })(filterButtons[f]);
+    }
+
+    if (moreBtn) {
+      moreBtn.addEventListener("click", function () {
+        expanded = !expanded;
+        renderPosts();
+      });
+    }
+    renderPosts();
+  }
+
+  /* ---------- 邮件订阅 ---------- */
+
+  var forms = document.querySelectorAll("[data-subscribe]");
+  for (var s = 0; s < forms.length; s++) {
+    (function (scope) {
+      var form = scope.querySelector("form[data-sub-form]");
+      var input = scope.querySelector("input[data-sub-input]");
+      var error = scope.querySelector("[data-sub-error]");
+      var success = scope.querySelector("[data-sub-success]");
+      var reset = scope.querySelector("[data-sub-reset]");
+      var you = scope.querySelector("[data-sub-you]");
+      var counts = scope.querySelectorAll("[data-sub-count]");
+      var baseCount = 4012;
+      var emailRe = /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i;
+      if (!form || !input) return;
+
+      function showError(message) {
+        if (error) error.textContent = message;
+        input.setAttribute("aria-invalid", "true");
+        input.focus();
+      }
+
+      function clearError() {
+        if (error) error.textContent = "";
+        input.removeAttribute("aria-invalid");
+      }
+
+      input.addEventListener("input", function () {
+        if (input.getAttribute("aria-invalid") === "true") clearError();
+      });
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var value = input.value.trim();
+        if (!value) { showError("还没填邮箱。"); return; }
+        if (value.length > 254 || !emailRe.test(value)) {
+          showError("这个邮箱看起来不对，再检查一下。");
+          return;
+        }
+        clearError();
+        form.hidden = true;
+        if (success) {
+          success.hidden = false;
+          var next = baseCount + 1;
+          for (var c = 0; c < counts.length; c++) counts[c].textContent = next.toLocaleString("en-US");
+          if (you) you.textContent = next.toLocaleString("en-US");
+          var heading = success.querySelector("h3");
+          if (heading) {
+            heading.setAttribute("tabindex", "-1");
+            heading.focus({ preventScroll: true });
+          }
+        }
+      });
+
+      if (reset) {
+        reset.addEventListener("click", function () {
+          if (success) success.hidden = true;
+          form.hidden = false;
+          input.value = "";
+          clearError();
+          input.focus();
+        });
+      }
+    })(forms[s]);
+  }
+
+  /* ---------- 代码复制 ---------- */
+
+  var copyButtons = document.querySelectorAll("[data-copy]");
+  for (var cp = 0; cp < copyButtons.length; cp++) {
+    (function (btn) {
+      btn.addEventListener("click", function () {
+        var target = document.getElementById(btn.getAttribute("data-copy"));
+        if (!target) return;
+        var text = target.innerText;
+        var original = btn.textContent;
+        var done = function (label) {
+          btn.textContent = label;
+          btn.classList.toggle("is-done", label === "已复制");
+          window.clearTimeout(btn._copyTimer);
+          btn._copyTimer = window.setTimeout(function () {
+            btn.textContent = original;
+            btn.classList.remove("is-done");
+          }, 2200);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            done("已复制");
+          }).catch(function () {
+            fallbackCopy(target, done);
+          });
+        } else {
+          fallbackCopy(target, done);
+        }
+      });
+    })(copyButtons[cp]);
+  }
+
+  function fallbackCopy(target, done) {
+    try {
+      var range = document.createRange();
+      range.selectNodeContents(target);
+      var selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      if (document.execCommand("copy")) done("已复制");
+      else done("已全选，按 ⌘C");
+    } catch (e) {
+      done("已全选，按 ⌘C");
+    }
+  }
+
+  /* ---------- 阅读进度与目录高亮 ---------- */
+
+  var progress = document.querySelector("[data-progress]");
+  var prose = document.querySelector("[data-prose]");
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll(".toc a, .toc-mobile a"));
+  var headings = prose ? Array.prototype.slice.call(prose.querySelectorAll("h2[id]")) : [];
+
+  if (progress || tocLinks.length) {
+    var ticking = false;
+    var update = function () {
+      ticking = false;
+      if (progress) {
+        var doc = document.documentElement;
+        var max = doc.scrollHeight - doc.clientHeight;
+        var pct = max > 0 ? Math.min(1, Math.max(0, doc.scrollTop / max)) : 0;
+        progress.style.width = (pct * 100).toFixed(2) + "%";
+      }
+      if (tocLinks.length && headings.length) {
+        var current = headings[0].id;
+        for (var h = 0; h < headings.length; h++) {
+          if (headings[h].getBoundingClientRect().top <= 150) current = headings[h].id;
+        }
+        for (var l = 0; l < tocLinks.length; l++) {
+          var on = tocLinks[l].getAttribute("href") === "#" + current;
+          tocLinks[l].classList.toggle("is-active", on);
+          if (on) tocLinks[l].setAttribute("aria-current", "location");
+          else tocLinks[l].removeAttribute("aria-current");
+        }
+      }
+    };
+    var onScroll = function () {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+  }
+})();
+
+</script>
+</body>
+</html>
