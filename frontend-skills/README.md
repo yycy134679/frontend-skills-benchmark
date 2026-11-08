@@ -4,7 +4,7 @@
 
 | 目录 | 技能名 | 来源 | 提交 | 许可 | 大小 |
 | --- | --- | --- | --- | --- | --- |
-| `oil-ui` | `oil-ui` | [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui) | `65dee4e5262635651712c338ad7dbfe0929e318c` | MIT | 2.1 MB |
+| `oil-ui` | `oil-ui` | [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui) | `98187634fc45c934d36f71d050e8773d6bdea83b` | MIT | 2.1 MB |
 | `frontend-design` | `frontend-design` | [anthropics/skills · skills/frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | `ca45fc496a3436251f191354091d557da31c15b5` | Apache 2.0 | 24 KB |
 | `impeccable` | `impeccable` | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | `c3bb418ee38ee49a6b999b7752c1368f3123a2bd` | Apache 2.0 | 2.2 MB |
 | `taste-skill` | `design-taste-frontend` | [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill) | `f6b76575f949707b4e3c37cd86cb44b0b98643e8` | MIT | 39 MB |
