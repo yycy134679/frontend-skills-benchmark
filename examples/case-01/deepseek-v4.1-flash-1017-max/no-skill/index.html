@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F1E8D8">
+<title>TerraBrew — 埃尔帕拉伊索庄园 · 本季微批次</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23231A13'/%3E%3Cpath d='M20 42c0-13 9-22 24-24-1 15-10 24-24 24Z' fill='%23F1E8D8'/%3E%3Cpath d='M22 40c6-7 12-12 20-18' stroke='%23231A13' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+/* ============ Foundations ============ */
+:root{
+  --cream:#F1E8D8;
+  --cream-soft:#F7F0E4;
+  --paper:#FAF4E8;
+  --ink:#241A13;
+  --brown:#3A2518;
+  --espresso:#1B130F;
+  --deep:#120C09;
+  --clay:#B86646;
+  --cherry:#8E2E2B;
+  --moss:#606B4B;
+  --gold:#B58D5A;
+  --line:rgba(36,26,19,.16);
+  --line-light:rgba(247,240,228,.17);
+  --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC",serif;
+  --sans:"Avenir Next","Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --container:min(1320px, calc(100vw - 112px));
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{
+  content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.045;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection{background:var(--cherry);color:var(--paper)}
+img,svg{display:block;max-width:100%}
+button,input{font:inherit}
+button{color:inherit}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4,p,blockquote,figure{margin:0}
+button,a{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--clay);outline-offset:4px}
+.skip{position:fixed;left:20px;top:-80px;z-index:10001;background:var(--ink);color:var(--cream);padding:10px 18px;border-radius:2px;transition:top .3s}
+.skip:focus{top:16px}
+.wrap{width:var(--container);margin-inline:auto}
+.serif{font-family:var(--serif)}
+.eyebrow{display:flex;align-items:center;gap:14px;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;line-height:1.4}
+.eyebrow .rule{display:inline-block;width:36px;height:1px;background:currentColor;opacity:.5}
+.eyebrow .num{font-family:var(--serif);font-size:12px;letter-spacing:.06em}
+.section-kicker{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-bottom:22px;border-bottom:1px solid var(--line);font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.section-kicker .dot-label{display:flex;align-items:center;gap:10px}
+.section-kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--clay)}
+.section-title{font-family:var(--serif);font-weight:400;font-size:clamp(38px,4.4vw,66px);line-height:1.13;letter-spacing:-.035em}
+.section-title em{font-style:italic;color:var(--clay);font-weight:400}
+.reveal{opacity:1;transform:translateY(24px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+section[id]{scroll-margin-top:80px}
+.reveal-d1{transition-delay:.08s}.reveal-d2{transition-delay:.16s}.reveal-d3{transition-delay:.24s}.reveal-d4{transition-delay:.32s}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+}
+
+/* ============ Header ============ */
+.site-header{position:sticky;top:0;z-index:1000;background:rgba(241,232,216,.86);backdrop-filter:blur(16px) saturate(110%);-webkit-backdrop-filter:blur(16px) saturate(110%);border-bottom:1px solid rgba(36,26,19,.11)}
+.nav-inner{width:var(--container);margin-inline:auto;height:80px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+.brand{display:inline-flex;align-items:center;gap:11px;flex:none}
+.brand-mark{width:32px;height:32px;color:var(--ink);flex:none}
+.brand-word{display:flex;flex-direction:column;line-height:1}
+.brand-word b{font-family:var(--serif);font-size:23px;font-weight:500;letter-spacing:-.025em}
+.brand-word small{font-size:8px;letter-spacing:.28em;margin-top:5px;color:rgba(36,26,19,.58)}
+.desktop-nav{display:flex;align-items:center;gap:34px;margin-left:auto}
+.desktop-nav a{position:relative;font-size:12px;letter-spacing:.1em;color:rgba(36,26,19,.72);padding:9px 0;transition:color .3s}
+.desktop-nav a::after{content:"";position:absolute;left:0;right:100%;bottom:3px;height:1px;background:var(--cherry);transition:right .4s var(--ease)}
+.desktop-nav a:hover{color:var(--ink)}
+.desktop-nav a:hover::after{right:0}
+.nav-right{display:flex;align-items:center;gap:22px;flex:none}
+.season-note{display:flex;align-items:center;gap:8px;font-size:9px;letter-spacing:.13em;color:rgba(36,26,19,.6);text-transform:uppercase}
+.season-note i{width:6px;height:6px;border-radius:50%;background:var(--moss);box-shadow:0 0 0 4px rgba(96,107,75,.13);animation:seasonPulse 3s ease-in-out infinite}
+@keyframes seasonPulse{50%{box-shadow:0 0 0 7px rgba(96,107,75,.04)}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;border:1px solid transparent;border-radius:999px;cursor:pointer;transition:background .35s var(--ease),color .35s var(--ease),border-color .35s,transform .35s var(--ease)}
+.btn:hover{transform:translateY(-2px)}
+.btn-dark{background:var(--ink);color:var(--paper);padding:12px 22px;font-size:11px;letter-spacing:.12em}
+.btn-dark:hover{background:var(--cherry)}
+.btn-dark svg{width:13px;height:13px}
+.btn-line{border-color:rgba(36,26,19,.28);color:var(--ink);padding:14px 26px;font-size:11px;letter-spacing:.12em}
+.btn-line:hover{border-color:var(--ink);background:var(--ink);color:var(--cream)}
+.btn-cream{background:var(--cream);color:var(--ink);padding:16px 26px;font-size:11px;letter-spacing:.12em;border-color:var(--cream)}
+.btn-cream:hover{background:var(--clay);border-color:var(--clay);color:var(--paper)}
+.menu-btn{display:none;width:42px;height:42px;border:1px solid rgba(36,26,19,.22);border-radius:50%;background:transparent;align-items:center;justify-content:center;cursor:pointer}
+.menu-btn span{display:block;width:16px;height:1px;background:var(--ink);position:relative;transition:transform .35s var(--ease)}
+.menu-btn span::before,.menu-btn span::after{content:"";position:absolute;left:0;width:16px;height:1px;background:var(--ink);transition:transform .35s var(--ease),top .35s}
+.menu-btn span::before{top:-5px}.menu-btn span::after{top:5px}
+.menu-btn[aria-expanded="true"] span{background:transparent}
+.menu-btn[aria-expanded="true"] span::before{top:0;transform:rotate(45deg)}
+.menu-btn[aria-expanded="true"] span::after{top:0;transform:rotate(-45deg)}
+.mobile-panel{display:none;position:fixed;inset:80px 0 auto;z-index:999;background:var(--cream);border-bottom:1px solid var(--line);padding:20px 24px 32px;transform:translateY(-12px);opacity:0;visibility:hidden;transition:.35s var(--ease)}
+.mobile-panel.open{transform:none;opacity:1;visibility:visible}
+.mobile-panel a{display:flex;justify-content:space-between;align-items:center;font-family:var(--serif);font-size:31px;padding:13px 0;border-bottom:1px solid var(--line)}
+.mobile-panel a span{font-family:var(--sans);font-size:9px;letter-spacing:.16em;color:rgba(36,26,19,.45)}
+.mobile-panel .btn{margin-top:24px;width:100%;font-family:var(--sans);font-size:11px;letter-spacing:.13em;padding:15px 20px;justify-content:center;border-bottom:none}
+.mobile-panel .btn span{font:inherit;letter-spacing:inherit;color:inherit}
+
+/* ============ Hero ============ */
+.hero{position:relative;min-height:calc(100svh - 80px);display:flex;flex-direction:column;justify-content:center;overflow:hidden;background:
+  radial-gradient(900px 520px at 78% 34%,rgba(184,102,70,.10),transparent 67%),
+  radial-gradient(700px 420px at 18% 80%,rgba(96,107,75,.07),transparent 70%);}
+.hero::before{content:"";position:absolute;width:520px;height:520px;border:1px solid rgba(36,26,19,.075);border-radius:50%;left:-260px;bottom:-170px;pointer-events:none}
+.hero::after{content:"";position:absolute;width:320px;height:320px;border:1px solid rgba(36,26,19,.06);border-radius:50%;left:-150px;bottom:-60px;pointer-events:none}
+.hero-inner{width:var(--container);margin-inline:auto;display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(36px,5.4vw,92px);align-items:center;padding:38px 0 46px;position:relative;z-index:2}
+.hero-copy{padding-bottom:10px}
+.hero .eyebrow{color:rgba(36,26,19,.7);margin-bottom:30px}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(48px,5.25vw,82px);line-height:1.09;letter-spacing:-.045em;text-wrap:balance}
+.hero h1 em{font-style:italic;color:var(--cherry);position:relative;white-space:nowrap}
+.hero h1 em::after{content:"";position:absolute;left:3%;right:0;bottom:4px;height:7px;border-top:1px solid rgba(142,46,43,.55);border-radius:50%;transform:rotate(-2deg)}
+.hero-lede{max-width:470px;margin-top:28px;font-size:15px;line-height:1.95;color:rgba(36,26,19,.68)}
+.hero-lede strong{font-weight:500;color:rgba(36,26,19,.9)}
+.lot-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:44px;margin-top:30px;border-top:1px solid var(--line);max-width:485px}
+.lot-item{padding:13px 0 12px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.lot-item span{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(36,26,19,.48);white-space:nowrap}
+.lot-item strong{font-family:var(--serif);font-size:15px;font-weight:500;letter-spacing:.01em;text-align:right}
+.hero-actions{display:flex;align-items:center;gap:26px;margin-top:32px}
+.hero-actions .arrow-link{display:inline-flex;align-items:center;gap:9px;font-size:11px;letter-spacing:.1em;color:rgba(36,26,19,.72);border-bottom:1px solid rgba(36,26,19,.28);padding-bottom:4px;transition:color .3s,border-color .3s}
+.hero-actions .arrow-link:hover{color:var(--cherry);border-color:var(--cherry)}
+.hero-actions svg{width:14px;height:14px;transition:transform .35s var(--ease)}
+.hero-actions a:hover svg{transform:translateX(4px)}
+
+.hero-visual{position:relative;padding:0 14px 18px 0}
+.hero-arch{position:relative;height:clamp(500px,65vh,660px);border-radius:300px 300px 4px 4px;overflow:hidden;background:#A96249;isolation:isolate;box-shadow:0 30px 80px -34px rgba(57,33,22,.45)}
+.hero-arch::after{content:"";position:absolute;inset:0;z-index:2;box-shadow:inset 0 0 0 1px rgba(250,244,232,.26),inset 0 -120px 100px -50px rgba(32,18,11,.4);border-radius:inherit;pointer-events:none}
+.hero-arch .scene{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero-arch .grain{position:absolute;inset:0;z-index:1;opacity:.11;mix-blend-mode:overlay;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.arch-caption{position:absolute;z-index:3;top:31px;left:50%;transform:translateX(-50%);font-size:8px;letter-spacing:.27em;color:rgba(250,244,232,.7);text-transform:uppercase;white-space:nowrap}
+.arch-caption::before,.arch-caption::after{content:"";position:absolute;top:50%;width:22px;height:1px;background:rgba(250,244,232,.35)}
+.arch-caption::before{right:calc(100% + 12px)}.arch-caption::after{left:calc(100% + 12px)}
+.harvest-tag{position:absolute;right:-2px;top:122px;z-index:4;display:flex;align-items:center;gap:13px;writing-mode:vertical-rl;background:var(--paper);border:1px solid rgba(36,26,19,.12);padding:14px 9px;box-shadow:0 14px 32px rgba(57,33,22,.13)}
+.harvest-tag span{font-size:8px;letter-spacing:.18em;color:rgba(36,26,19,.48);text-transform:uppercase}
+.harvest-tag b{font-family:var(--serif);font-size:14px;font-weight:500;letter-spacing:.05em}
+.tasting-card{position:absolute;left:-38px;bottom:-12px;z-index:5;width:252px;background:var(--paper);padding:20px 21px 18px;border:1px solid rgba(36,26,19,.13);box-shadow:0 22px 50px -22px rgba(57,33,22,.4)}
+.tasting-card::before{content:"";position:absolute;inset:5px;border:1px solid rgba(36,26,19,.08);pointer-events:none}
+.tasting-top{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative}
+.tasting-top span{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(36,26,19,.48)}
+.tasting-score{font-family:var(--serif);font-size:27px;line-height:1;letter-spacing:-.03em}
+.tasting-score small{font-family:var(--sans);font-size:8px;letter-spacing:.08em;color:rgba(36,26,19,.42);margin-left:3px}
+.tasting-note{font-family:var(--serif);font-size:18px;line-height:1.55;margin-top:12px;position:relative;letter-spacing:.01em}
+.tasting-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:11px;position:relative}
+.tasting-tags i{font-style:normal;font-size:8px;letter-spacing:.08em;padding:4px 7px;border:1px solid rgba(36,26,19,.16);border-radius:999px;color:rgba(36,26,19,.62)}
+.hero-foot{width:var(--container);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 0 22px;border-top:1px solid rgba(36,26,19,.11);position:relative;z-index:3}
+.scroll-cue{display:flex;align-items:center;gap:12px;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(36,26,19,.48)}
+.scroll-cue .track{width:42px;height:1px;background:rgba(36,26,19,.2);position:relative;overflow:hidden}
+.scroll-cue .track::after{content:"";position:absolute;inset:0;background:var(--cherry);transform:translateX(-100%);animation:scrollLine 2.8s ease-in-out infinite}
+@keyframes scrollLine{45%,55%{transform:translateX(0)}100%{transform:translateX(100%)}}
+.coords{font-family:var(--serif);font-size:10px;letter-spacing:.12em;color:rgba(36,26,19,.48)}
+.est-note{display:flex;align-items:center;gap:9px;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(36,26,19,.48)}
+.est-note b{font-family:var(--serif);font-size:11px;font-weight:500;letter-spacing:.08em}
+
+/* ============ Marquee ============ */
+.marquee{background:var(--espresso);color:rgba(247,240,228,.72);overflow:hidden;border-top:1px solid rgba(247,240,228,.07);border-bottom:1px solid rgba(247,240,228,.07)}
+.marquee-track{display:flex;width:max-content;animation:marquee 32s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-group{display:flex;align-items:center;flex:none}
+.marquee-item{display:flex;align-items:center;gap:26px;padding:14px 26px;font-size:9px;letter-spacing:.24em;text-transform:uppercase;white-space:nowrap}
+.marquee-item::after{content:"";width:5px;height:5px;border:1px solid rgba(247,240,228,.45);border-radius:50%;transform:rotate(45deg)}
+.marquee-item b{font-family:var(--serif);font-weight:400;font-size:12px;letter-spacing:.08em;color:rgba(247,240,228,.95)}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ============ Flavor wheel ============ */
+.flavor{background:var(--espresso);color:var(--cream);padding:clamp(80px,9vw,132px) 0 clamp(72px,8vw,116px);position:relative;overflow:hidden}
+.flavor::before{content:"";position:absolute;width:760px;height:760px;border-radius:50%;background:radial-gradient(circle,rgba(184,102,70,.13),transparent 66%);right:-260px;top:-120px;pointer-events:none}
+.flavor::after{content:"";position:absolute;width:440px;height:440px;border:1px solid rgba(247,240,228,.055);border-radius:50%;left:-190px;bottom:70px;pointer-events:none}
+.flavor .section-kicker{border-color:var(--line-light);color:rgba(247,240,228,.5)}
+.flavor .section-kicker .dot{background:var(--clay)}
+.flavor-head{display:grid;grid-template-columns:1fr 390px;gap:48px;align-items:end;margin-top:54px;position:relative;z-index:1}
+.flavor-head .section-title{color:var(--cream)}
+.flavor-head .section-title em{color:#D99A79}
+.flavor-intro{font-size:13px;line-height:1.9;color:rgba(247,240,228,.56);padding-bottom:8px}
+.flavor-intro b{color:rgba(247,240,228,.9);font-weight:500}
+.flavor-layout{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.82fr);gap:clamp(30px,5vw,90px);align-items:center;margin-top:38px;position:relative;z-index:1}
+.wheel-stage{position:relative;width:100%;max-width:690px;margin-inline:auto;aspect-ratio:1}
+.wheel-stage::before{content:"";position:absolute;inset:8%;border-radius:50%;border:1px solid rgba(247,240,228,.055);pointer-events:none}
+.wheel-svg{width:100%;height:100%;overflow:visible}
+.wheel-svg .seg{cursor:pointer;transform-box:view-box;transform-origin:50% 50%;transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.wheel-svg .seg path{transition:filter .35s,opacity .35s;stroke:rgba(27,19,15,.55);stroke-width:1}
+.wheel-svg .seg .seg-label{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:.04em;fill:rgba(247,240,228,.78);transition:fill .3s,opacity .3s}
+.wheel-svg .seg .seg-score{font-family:var(--serif);font-size:10.5px;letter-spacing:.04em;fill:rgba(247,240,228,.32);transition:fill .3s}
+.wheel-svg .seg .seg-num{font-family:var(--serif);font-size:9px;fill:rgba(27,19,15,.55);letter-spacing:.02em}
+.wheel-svg .seg:hover path,.wheel-svg .seg:focus-visible path{filter:brightness(1.14) saturate(1.04)}
+.wheel-svg .seg:hover .seg-label,.wheel-svg .seg:focus-visible .seg-label{fill:var(--cream)}
+.wheel-svg .seg.is-dim{opacity:.56}
+.wheel-svg .seg.is-active{opacity:1}
+.wheel-svg .seg.is-active path{filter:brightness(1.16) saturate(1.05);stroke:rgba(250,244,232,.88);stroke-width:1.4}
+.wheel-svg .seg.is-active .seg-label{fill:#FFF9ED}
+.wheel-svg .seg.is-active .seg-score{fill:rgba(247,240,228,.7)}
+.wheel-svg .seg:focus:not(:focus-visible){outline:none}
+.wheel-svg .seg:focus-visible{outline:none}
+.wheel-svg .seg:focus-visible path{stroke:#FFF9ED;stroke-width:2}
+.wheel-svg .seg:focus-visible .seg-label{fill:#FFF9ED}
+.wheel-svg .guide{fill:none;stroke:rgba(247,240,228,.15);stroke-width:.8}
+.wheel-svg .guide.dash{stroke-dasharray:1 6;stroke-linecap:round}
+.wheel-svg .tick{stroke:rgba(247,240,228,.22);stroke-width:.8}
+.wheel-svg .tick.major{stroke:rgba(247,240,228,.42)}
+.wheel-svg .wheel-center-ring{fill:#201711;stroke:rgba(247,240,228,.16);stroke-width:1}
+.wheel-svg .center-eyebrow{font-family:var(--sans);font-size:8px;letter-spacing:.22em;fill:rgba(247,240,228,.4);text-transform:uppercase}
+.wheel-svg .center-name{font-family:var(--serif);font-size:28px;fill:var(--cream);letter-spacing:.03em}
+.wheel-svg .center-score{font-family:var(--serif);font-size:34px;fill:#D99A79;letter-spacing:-.02em}
+.wheel-svg .center-unit{font-family:var(--sans);font-size:8px;fill:rgba(247,240,228,.36);letter-spacing:.1em}
+.wheel-svg .center-note{font-family:var(--sans);font-size:7px;letter-spacing:.18em;fill:rgba(247,240,228,.3)}
+.wheel-note{position:absolute;left:50%;bottom:0;transform:translate(-50%,50%);background:var(--espresso);border:1px solid rgba(247,240,228,.13);padding:9px 16px;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(247,240,228,.5);white-space:nowrap;z-index:2}
+.wheel-note b{color:rgba(247,240,228,.88);font-weight:500}
+.wheel-help{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:34px;font-size:9px;letter-spacing:.14em;color:rgba(247,240,228,.34)}
+.wheel-help svg{width:13px;height:13px}
+.flavor-panel{border-top:1px solid var(--line-light);padding-top:26px;min-height:440px;display:flex;flex-direction:column;justify-content:center}
+.flavor-panel-inner{transition:opacity .25s ease,transform .35s var(--ease)}
+.flavor-panel.is-switching .flavor-panel-inner{opacity:0;transform:translateY(8px)}
+.panel-top{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:22px}
+.panel-index{font-family:var(--serif);font-size:13px;letter-spacing:.08em;color:rgba(247,240,228,.4)}
+.panel-index b{font-size:39px;font-weight:400;color:var(--cream);line-height:1;margin-right:4px}
+.flavor-tag{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(247,240,228,.2);border-radius:999px;padding:6px 12px;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(247,240,228,.55)}
+.flavor-tag i{width:5px;height:5px;border-radius:50%;background:var(--clay)}
+#flavorTitle{font-family:var(--serif);font-weight:400;font-size:clamp(44px,4.2vw,62px);line-height:1;letter-spacing:-.02em;color:var(--cream)}
+.flavor-en{margin-top:11px;font-size:9px;letter-spacing:.23em;text-transform:uppercase;color:rgba(247,240,228,.38)}
+#flavorQuote{font-family:var(--serif);font-size:clamp(19px,1.8vw,24px);line-height:1.62;letter-spacing:.01em;margin-top:24px;color:rgba(247,240,228,.92);max-width:480px}
+#flavorDesc{font-size:12.5px;line-height:1.9;color:rgba(247,240,228,.52);margin-top:16px;max-width:455px}
+.flavor-meta{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;margin-top:26px;padding-top:20px;border-top:1px solid var(--line-light)}
+.flavor-meta span{display:block;font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:rgba(247,240,228,.34);margin-bottom:6px}
+.flavor-meta strong{font-family:var(--serif);font-size:14px;font-weight:400;letter-spacing:.02em;color:rgba(247,240,228,.8)}
+.flavor-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+.flavor-bar span{display:flex;justify-content:space-between;font-size:8px;letter-spacing:.1em;color:rgba(247,240,228,.4);margin-bottom:7px}
+.flavor-bar span b{font-weight:400;color:rgba(247,240,228,.72)}
+.flavor-bar i{display:block;height:2px;background:rgba(247,240,228,.13);position:relative;overflow:hidden}
+.flavor-bar i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--clay),#D99A79);transform-origin:left;transform:scaleX(var(--v,.7));transition:transform .6s var(--ease)}
+.panel-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:26px;font-size:9px;letter-spacing:.12em;color:rgba(247,240,228,.3)}
+.panel-foot .brew{display:flex;align-items:center;gap:8px;color:rgba(247,240,228,.5)}
+.panel-foot svg{width:14px;height:14px;color:var(--clay)}
+
+/* ============ Timeline ============ */
+.timeline-section{background:var(--cream-soft);padding:clamp(80px,9vw,132px) 0 clamp(72px,8vw,110px);position:relative;overflow:hidden}
+.timeline-section::after{content:"05";position:absolute;right:-24px;top:100px;font-family:var(--serif);font-size:clamp(200px,26vw,380px);line-height:.7;color:rgba(36,26,19,.035);pointer-events:none}
+.timeline-head{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:end;margin-top:48px}
+.timeline-head .section-title{max-width:700px}
+.timeline-intro{max-width:430px;justify-self:end;padding-bottom:8px;font-size:13.5px;line-height:1.9;color:rgba(36,26,19,.58)}
+.timeline-intro b{font-weight:500;color:var(--ink)}
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:relative;margin-top:58px}
+.steps::before{content:"";position:absolute;left:31px;right:31px;top:31px;height:1px;background:rgba(36,26,19,.18)}
+.steps::after{content:"";position:absolute;left:31px;top:31px;height:1px;width:calc(100% - 62px);background:linear-gradient(90deg,var(--clay),rgba(184,102,70,.16));transform:scaleX(0);transform-origin:left;transition:transform 1.8s var(--ease) .2s}
+.steps.in::after{transform:scaleX(1)}
+.step{position:relative;padding-right:clamp(12px,2.2vw,30px)}
+.step:last-child{padding-right:0}
+.step-node{position:relative;z-index:1;width:62px;height:62px;border:1px solid rgba(36,26,19,.24);border-radius:50%;background:var(--cream-soft);display:flex;align-items:center;justify-content:center;transition:background .4s,border-color .4s,color .4s,transform .5s var(--ease)}
+.step-node span{font-family:var(--serif);font-size:16px;letter-spacing:.02em;transition:color .4s}
+.step-node svg{position:absolute;width:17px;height:17px;opacity:.55;transition:opacity .3s}
+.step-node span{z-index:1}
+.step:hover .step-node{background:var(--ink);border-color:var(--ink);color:var(--cream);transform:translateY(-4px)}
+.step:hover .step-node span{color:var(--cream)}
+.step:hover .step-node svg{opacity:.9;color:var(--cream)}
+.step-body{padding-top:22px}
+.step-season{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(36,26,19,.42);display:flex;align-items:center;gap:7px}
+.step-season::before{content:"";width:13px;height:1px;background:var(--clay);opacity:.7}
+.step h3{font-family:var(--serif);font-weight:400;font-size:clamp(20px,1.65vw,25px);line-height:1.35;letter-spacing:-.015em;margin-top:9px}
+.step p{font-size:11.5px;line-height:1.85;color:rgba(36,26,19,.54);margin-top:12px;max-width:205px}
+.step-icon{width:17px;height:17px;margin-top:18px;color:var(--clay);opacity:0;transform:translateY(4px);transition:.35s var(--ease)}
+.step:hover .step-icon{opacity:1;transform:none}
+.estate-stats{display:grid;grid-template-columns:repeat(4,1fr);margin-top:64px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat{padding:25px 28px 24px;border-right:1px solid var(--line);display:flex;align-items:baseline;gap:10px;justify-content:center}
+.stat:first-child{padding-left:0;justify-content:flex-start}
+.stat:last-child{border-right:0;padding-right:0;justify-content:flex-end}
+.stat b{font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.2vw,48px);line-height:1;letter-spacing:-.03em}
+.stat span{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:rgba(36,26,19,.44)}
+.stat em{font-style:normal;font-family:var(--serif);font-size:14px;color:var(--clay);margin-left:-5px}
+
+/* ============ Certificate ============ */
+.certificate{background:#A65C3F;color:var(--paper);padding:clamp(80px,9vw,130px) 0;position:relative;overflow:hidden}
+.certificate::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(740px 560px at 20% 35%,rgba(255,218,177,.15),transparent 66%),
+  radial-gradient(700px 700px at 92% 90%,rgba(64,29,18,.38),transparent 70%);}
+.certificate::after{content:"";position:absolute;width:560px;height:560px;border:1px solid rgba(250,244,232,.1);border-radius:50%;right:-270px;top:-180px;pointer-events:none}
+.certificate .section-kicker{border-color:rgba(250,244,232,.25);color:rgba(250,244,232,.54);position:relative;z-index:1}
+.certificate .section-kicker .dot{background:#F3D8C0}
+.cert-layout{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(46px,7vw,110px);align-items:center;margin-top:54px;position:relative;z-index:1}
+.cert-stage{position:relative;padding:24px 26px 30px 8px}
+.cert-stage::before{content:"";position:absolute;right:-28px;bottom:-30px;width:74%;height:80%;border:1px solid rgba(250,244,232,.2)}
+.cert-stage::after{content:"024";position:absolute;left:-34px;top:-64px;font-family:var(--serif);font-size:120px;line-height:1;color:rgba(250,244,232,.075);pointer-events:none}
+.cert-card{position:relative;background:var(--paper);color:var(--ink);width:100%;max-width:545px;padding:17px;transform:rotate(-2.2deg);box-shadow:0 36px 80px -24px rgba(45,20,11,.46);transition:transform .7s var(--ease)}
+.cert-card:hover{transform:rotate(-.8deg) translateY(-4px)}
+.cert-inner{border:1px solid rgba(36,26,19,.29);padding:26px 25px 23px;position:relative;min-height:590px;display:flex;flex-direction:column}
+.cert-inner::before{content:"";position:absolute;inset:5px;border:1px solid rgba(36,26,19,.08);pointer-events:none}
+.cert-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding-bottom:16px;border-bottom:1px solid rgba(36,26,19,.16);position:relative;z-index:1}
+.cert-brand{display:flex;align-items:center;gap:9px}
+.cert-brand svg{width:25px;height:25px}
+.cert-brand b{font-family:var(--serif);font-size:16px;font-weight:500;letter-spacing:-.02em}
+.cert-brand small{display:block;font-family:var(--sans);font-size:6px;letter-spacing:.24em;color:rgba(36,26,19,.46);margin-top:2px}
+.cert-code{text-align:right;font-size:6.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(36,26,19,.46);line-height:1.8}
+.cert-code b{display:block;font-family:var(--serif);font-size:12px;font-weight:500;letter-spacing:.05em;color:var(--ink)}
+.cert-title-row{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:22px 0 18px;position:relative;z-index:1}
+.cert-title{font-family:var(--serif);font-size:clamp(27px,2.35vw,35px);font-weight:400;line-height:1.12;letter-spacing:-.02em}
+.cert-title small{display:block;font-family:var(--sans);font-size:6.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(36,26,19,.46);margin-top:7px;font-weight:500}
+.cert-lot{text-align:right;flex:none}
+.cert-lot span{font-size:6.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(36,26,19,.42);display:block}
+.cert-lot b{font-family:var(--serif);font-size:34px;line-height:1;font-weight:400;letter-spacing:-.03em}
+.cert-lot b i{font-style:normal;font-size:13px;color:rgba(36,26,19,.4);letter-spacing:.04em}
+.cert-data{display:grid;grid-template-columns:1fr 1fr;column-gap:22px;position:relative;z-index:1}
+.cert-row{padding:9px 0;border-bottom:1px solid rgba(36,26,19,.1)}
+.cert-row span{display:block;font-size:6.5px;letter-spacing:.17em;text-transform:uppercase;color:rgba(36,26,19,.42);margin-bottom:2px}
+.cert-row strong{font-family:var(--serif);font-size:12.5px;font-weight:500;letter-spacing:.015em}
+.cert-score{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:17px 0 13px;border-bottom:1px solid rgba(36,26,19,.16);position:relative;z-index:3}
+.cert-score-label{font-size:6.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(36,26,19,.46)}
+.cert-score-label b{display:block;font-family:var(--serif);font-size:12px;font-weight:500;letter-spacing:.02em;color:var(--ink);margin-top:2px}
+.cert-score-value{font-family:var(--serif);font-size:37px;line-height:1;letter-spacing:-.03em}
+.cert-score-value small{font-family:var(--sans);font-size:7px;letter-spacing:.1em;color:rgba(36,26,19,.4)}
+.cert-autograph{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;padding-top:20px;position:relative;z-index:1}
+.signature small{display:block;font-size:6.5px;letter-spacing:.17em;text-transform:uppercase;color:rgba(36,26,19,.42);margin-bottom:4px}
+.signature b{font-family:var(--serif);font-style:italic;font-size:24px;line-height:1;font-weight:400;letter-spacing:.02em}
+.barcode{display:flex;align-items:flex-end;gap:2px;height:28px;opacity:.5}
+.barcode i{display:block;width:1px;height:100%;background:var(--ink)}
+.barcode i:nth-child(3n){width:2px}.barcode i:nth-child(4n){height:72%}.barcode i:nth-child(5n){height:88%}.barcode i:nth-child(7n){height:58%}
+.cert-stamp{position:absolute;right:17px;bottom:120px;width:140px;height:140px;color:rgba(116,40,37,.76);transform:rotate(-13deg);z-index:2;mix-blend-mode:multiply;pointer-events:none}
+.cert-stamp svg{width:100%;height:100%}
+.cert-stamp .stamp-center{font-family:var(--sans);font-size:8px;letter-spacing:.15em;fill:currentColor}
+.cert-stamp .stamp-small{font-family:var(--sans);font-size:5.8px;letter-spacing:.13em;fill:currentColor}
+.cert-stamp .stamp-serif{font-family:var(--serif);font-size:18px;letter-spacing:.03em;fill:currentColor}
+.cert-copy h2{font-family:var(--serif);font-weight:400;font-size:clamp(42px,4.4vw,66px);line-height:1.13;letter-spacing:-.04em;max-width:530px;margin-top:26px}
+.cert-copy h2 em{font-style:italic;color:#F3D8C0}
+.cert-copy>p{max-width:445px;font-size:13px;line-height:1.95;color:rgba(250,244,232,.68);margin-top:25px}
+.cert-points{list-style:none;margin:30px 0 0;padding:0;border-top:1px solid rgba(250,244,232,.2);max-width:440px}
+.cert-points li{display:flex;align-items:center;gap:15px;padding:14px 0;border-bottom:1px solid rgba(250,244,232,.2)}
+.cert-points li>i{width:30px;height:30px;border:1px solid rgba(250,244,232,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;font-style:normal;font-family:var(--serif);font-size:10px;color:#F3D8C0}
+.cert-points div{display:flex;flex:1;align-items:baseline;justify-content:space-between;gap:12px}
+.cert-points strong{font-family:var(--serif);font-size:14.5px;font-weight:400;letter-spacing:.02em}
+.cert-points span{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(250,244,232,.42)}
+.verify-box{margin-top:26px;padding:15px 17px;background:rgba(45,20,11,.2);border:1px solid rgba(250,244,232,.2);display:flex;align-items:center;justify-content:space-between;gap:15px;max-width:440px}
+.verify-box .v-label{font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,244,232,.42);display:block;margin-bottom:3px}
+.verify-box b{font-family:var(--serif);font-size:14px;font-weight:400;letter-spacing:.04em}
+.verify-status{display:flex;align-items:center;gap:7px;font-size:8px;letter-spacing:.1em;color:#F3D8C0}
+.verify-status i{width:7px;height:7px;background:#F3D8C0;border-radius:50%;box-shadow:0 0 0 4px rgba(243,216,192,.12)}
+
+/* ============ Subscription ============ */
+.subscribe{background:var(--deep);color:var(--cream);padding:clamp(80px,9vw,132px) 0 clamp(72px,8vw,112px);position:relative;overflow:hidden}
+.subscribe::before{content:"";position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(184,102,70,.12),transparent 64%);left:-390px;top:20px;pointer-events:none}
+.subscribe::after{content:"";position:absolute;right:-240px;bottom:-260px;width:640px;height:640px;border:1px solid rgba(247,240,228,.06);border-radius:50%;pointer-events:none}
+.subscribe .section-kicker{border-color:var(--line-light);color:rgba(247,240,228,.48);position:relative;z-index:1}
+.subscribe .section-kicker .dot{background:var(--clay)}
+.sub-head{display:grid;grid-template-columns:1.08fr .92fr;gap:60px;align-items:end;margin-top:50px;position:relative;z-index:1}
+.sub-head .section-title{color:var(--cream)}
+.sub-head .section-title em{color:#D99A79}
+.sub-head p{max-width:385px;justify-self:end;padding-bottom:7px;font-size:13px;line-height:1.9;color:rgba(247,240,228,.5)}
+.sub-layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(360px,.82fr);gap:clamp(38px,5vw,76px);align-items:start;margin-top:52px;position:relative;z-index:1}
+.configurator{border-top:1px solid var(--line-light)}
+.option-group{padding:25px 0 27px;border-bottom:1px solid var(--line-light)}
+.option-head{display:flex;align-items:center;gap:13px;margin-bottom:15px}
+.option-head .option-num{font-family:var(--serif);font-size:11px;color:rgba(247,240,228,.35);letter-spacing:.05em}
+.option-head h3{font-size:11px;font-weight:500;letter-spacing:.14em;color:rgba(247,240,228,.8);text-transform:uppercase}
+.option-head .option-aside{margin-left:auto;font-size:8px;letter-spacing:.12em;color:rgba(247,240,228,.3);text-transform:uppercase}
+.option-grid{display:grid;gap:8px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.choice{position:relative;text-align:left;background:rgba(247,240,228,.025);border:1px solid rgba(247,240,228,.13);border-radius:2px;padding:14px 14px 13px;cursor:pointer;transition:background .35s var(--ease),border-color .35s,transform .35s var(--ease);overflow:hidden}
+.choice:hover{border-color:rgba(247,240,228,.35);background:rgba(247,240,228,.055);transform:translateY(-2px)}
+.choice[aria-pressed="true"]{background:var(--cream);border-color:var(--cream);color:var(--ink)}
+.choice .c-main{display:flex;align-items:baseline;gap:4px}
+.choice strong{font-family:var(--serif);font-size:21px;font-weight:400;letter-spacing:-.02em;line-height:1.2;display:block}
+.choice .c-unit{font-size:9px;letter-spacing:.06em;color:rgba(247,240,228,.4)}
+.choice[aria-pressed="true"] .c-unit{color:rgba(36,26,19,.45)}
+.choice .c-note{display:block;font-size:8.5px;letter-spacing:.05em;color:rgba(247,240,228,.35);margin-top:4px}
+.choice[aria-pressed="true"] .c-note{color:rgba(36,26,19,.5)}
+.choice .c-badge{position:absolute;right:8px;top:8px;font-size:6.5px;letter-spacing:.08em;color:rgba(247,240,228,.5);border:1px solid rgba(247,240,228,.18);padding:2px 5px;border-radius:999px}
+.choice[aria-pressed="true"] .c-badge{color:var(--cherry);border-color:rgba(142,46,43,.28)}
+.choice .c-check{position:absolute;right:10px;bottom:9px;width:12px;height:12px;color:var(--cherry);opacity:0;transform:scale(.6);transition:.25s}
+.choice[aria-pressed="true"] .c-check{opacity:1;transform:none}
+.grid-4 .choice{padding:12px 11px 11px}
+.grid-4 .choice strong{font-size:14.5px;letter-spacing:.01em}
+.grid-4 .choice .c-note{font-size:7.5px}
+.option-note{font-size:8.5px;letter-spacing:.04em;color:rgba(247,240,228,.3);margin-top:12px;display:flex;align-items:center;gap:6px}
+.option-note svg{width:11px;height:11px;flex:none;color:rgba(247,240,228,.35)}
+.sub-summary{position:sticky;top:104px;background:#261810;border:1px solid rgba(247,240,228,.18);padding:29px 28px 25px;box-shadow:0 28px 70px -35px rgba(0,0,0,.7)}
+.sub-summary::before{content:"";position:absolute;inset:6px;border:1px solid rgba(247,240,228,.055);pointer-events:none}
+.summary-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:13px;border-bottom:1px solid var(--line-light);position:relative}
+.summary-top span{font-size:8px;letter-spacing:.19em;text-transform:uppercase;color:rgba(247,240,228,.4)}
+.summary-top b{font-size:8px;letter-spacing:.13em;color:rgba(247,240,228,.55);font-weight:500;display:flex;align-items:center;gap:6px}
+.summary-top b i{width:5px;height:5px;border-radius:50%;background:var(--moss);box-shadow:0 0 0 3px rgba(96,107,75,.18)}
+.price-block{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:23px 0 2px;position:relative}
+.price-label{font-size:8px;letter-spacing:.16em;color:rgba(247,240,228,.37);text-transform:uppercase;margin-bottom:5px}
+.price-main{display:flex;align-items:flex-start;gap:3px;line-height:1}
+.currency{font-family:var(--serif);font-size:22px;color:#D99A79;padding-top:5px}
+#priceValue{font-family:var(--serif);font-size:clamp(56px,5.4vw,74px);font-weight:400;letter-spacing:-.045em;line-height:.85;color:var(--cream);display:inline-block;transition:transform .3s var(--ease),opacity .3s}
+#priceValue.bump{transform:translateY(-3px);opacity:.5}
+.price-per{align-self:flex-end;margin-bottom:7px;font-size:9px;letter-spacing:.08em;color:rgba(247,240,228,.38)}
+.price-side{text-align:right;padding-bottom:7px}
+.price-side span{display:block;font-size:7.5px;letter-spacing:.1em;color:rgba(247,240,228,.33)}
+.price-side b{font-family:var(--serif);font-size:13.5px;font-weight:400;color:rgba(247,240,228,.75);letter-spacing:.03em}
+.summary-desc{font-size:10px;line-height:1.7;color:rgba(247,240,228,.4);margin-top:15px;position:relative}
+.summary-desc b{color:rgba(247,240,228,.78);font-weight:500}
+.summary-list{list-style:none;margin:18px 0 0;padding:14px 0 0;border-top:1px solid var(--line-light);position:relative}
+.summary-list li{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:6px 0;font-size:9.5px;color:rgba(247,240,228,.4)}
+.summary-list li b{font-family:var(--serif);font-size:12.5px;font-weight:400;color:rgba(247,240,228,.8);letter-spacing:.02em}
+.summary-list li .save{color:#D99A79;font-size:9px}
+.summary-cta{width:100%;margin-top:16px;background:var(--cream);color:var(--ink);border:none;border-radius:0;padding:15.5px 18px;font-size:10px;letter-spacing:.14em;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .35s,color .35s}
+.summary-cta:hover{background:var(--clay);color:var(--paper)}
+.summary-cta svg{width:15px;height:15px;transition:transform .35s var(--ease)}
+.summary-cta:hover svg{transform:translateX(4px)}
+.summary-foot{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:12px;font-size:7.5px;letter-spacing:.08em;color:rgba(247,240,228,.28);position:relative}
+.summary-foot svg{width:11px;height:11px}
+
+/* ============ Footer ============ */
+.site-footer{background:#0C0806;color:var(--cream);padding:60px 0 0;position:relative;overflow:hidden;border-top:1px solid rgba(247,240,228,.08)}
+.footer-top{display:grid;grid-template-columns:1.4fr .65fr .65fr 1fr;gap:48px;padding-bottom:56px;position:relative;z-index:1}
+.footer-brand .brand-mark{width:38px;height:38px;color:var(--cream)}
+.footer-brand .brand-line{display:flex;align-items:center;gap:13px}
+.footer-brand .brand-line b{font-family:var(--serif);font-size:28px;font-weight:400;letter-spacing:-.03em}
+.footer-brand p{font-family:var(--serif);font-size:16px;line-height:1.8;color:rgba(247,240,228,.48);max-width:235px;margin-top:18px}
+.footer-col h4{font-size:8px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(247,240,228,.34);margin-bottom:16px}
+.footer-col a{display:block;font-size:11px;letter-spacing:.06em;color:rgba(247,240,228,.62);padding:5px 0;transition:color .3s,transform .3s}
+.footer-col a:hover{color:var(--cream);transform:translateX(3px)}
+.newsletter h4{font-size:8px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(247,240,228,.34);margin-bottom:14px}
+.newsletter p{font-size:10px;line-height:1.8;color:rgba(247,240,228,.4);max-width:260px}
+.newsletter form{display:flex;border-bottom:1px solid rgba(247,240,228,.3);margin-top:15px;max-width:280px}
+.newsletter input{flex:1;background:transparent;border:none;color:var(--cream);font-size:11px;letter-spacing:.03em;padding:9px 0;min-width:0;outline:none}
+.newsletter input::placeholder{color:rgba(247,240,228,.25)}
+.newsletter button{background:transparent;border:none;color:rgba(247,240,228,.55);cursor:pointer;padding:8px 0 8px 12px;transition:color .3s,transform .3s}
+.newsletter button:hover{color:var(--cream);transform:translateX(3px)}
+.newsletter button svg{width:15px;height:15px}
+.newsletter-status{font-size:8px;letter-spacing:.1em;color:#D99A79;margin-top:9px;min-height:12px}
+.footer-word{font-family:var(--serif);font-size:clamp(84px,14.6vw,218px);line-height:.72;letter-spacing:-.06em;color:rgba(247,240,228,.09);text-align:center;white-space:nowrap;user-select:none;margin:0 -20px -1vw;position:relative}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:21px 0 24px;border-top:1px solid rgba(247,240,228,.1);position:relative;z-index:1;font-size:8px;letter-spacing:.1em;color:rgba(247,240,228,.3)}
+.footer-bottom .fb-left{display:flex;align-items:center;gap:17px}
+.footer-bottom .fb-left span{display:flex;align-items:center;gap:6px}
+.footer-bottom .fb-left i{width:4px;height:4px;border-radius:50%;background:rgba(247,240,228,.28)}
+.footer-bottom a:hover{color:rgba(247,240,228,.65)}
+.footer-coords{font-family:var(--serif);font-size:9px;letter-spacing:.12em}
+
+/* ============ Toast ============ */
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);z-index:10000;background:var(--paper);color:var(--ink);border:1px solid rgba(36,26,19,.16);padding:13px 20px;box-shadow:0 20px 50px -18px rgba(0,0,0,.4);display:flex;align-items:center;gap:12px;font-size:10px;letter-spacing:.05em;opacity:0;visibility:hidden;transition:.4s var(--ease);max-width:calc(100vw - 40px)}
+.toast.show{transform:translate(-50%,0);opacity:1;visibility:visible}
+.toast svg{width:16px;height:16px;color:var(--moss);flex:none}
+.toast b{font-family:var(--serif);font-size:13px;font-weight:500;letter-spacing:.02em;margin-right:2px}
+
+/* ============ Responsive ============ */
+@media (max-width:1180px){
+  :root{--container:calc(100vw - 80px)}
+  .desktop-nav{gap:24px}
+  .season-note{display:none}
+  .hero h1{font-size:clamp(46px,5.4vw,72px)}
+  .flavor-layout{gap:36px}
+  .flavor-panel{min-height:410px}
+  .stat{padding-inline:17px}
+}
+@media (max-width:1020px){
+  .hero-inner{grid-template-columns:1fr .9fr;gap:34px}
+  .hero h1{font-size:clamp(42px,5.2vw,62px)}
+  .hero-lede{font-size:14px}
+  .lot-grid{column-gap:26px}
+  .hero-arch{height:clamp(460px,58vh,580px)}
+  .tasting-card{left:-16px;width:226px;padding:17px 17px 15px}
+  .tasting-note{font-size:16px}
+  .flavor-layout{grid-template-columns:1fr;gap:42px}
+  .wheel-stage{max-width:580px}
+  .flavor-panel{max-width:620px;margin-inline:auto;width:100%;min-height:0;border-top:1px solid var(--line-light);padding-top:36px}
+  .flavor-head{grid-template-columns:1fr 330px;gap:32px}
+  .cert-layout{gap:46px;grid-template-columns:.95fr 1.05fr}
+  .cert-inner{min-height:550px;padding:22px 21px 20px}
+  .cert-stamp{width:118px;height:118px;bottom:105px}
+  .sub-layout{grid-template-columns:1fr 350px;gap:34px}
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .footer-top{grid-template-columns:1.3fr .7fr .7fr;gap:34px}
+  .newsletter{grid-column:1/-1;max-width:380px}
+}
+@media (max-width:900px){
+  :root{--container:calc(100vw - 56px)}
+  .nav-inner{height:72px}
+  .desktop-nav{display:none}
+  .menu-btn{display:flex}
+  .mobile-panel{inset:72px 0 auto;display:block}
+  .nav-right .btn-dark{display:none}
+  .hero{min-height:auto}
+  .hero-inner{grid-template-columns:1fr;gap:48px;padding:52px 0 50px}
+  .hero-copy{max-width:640px}
+  .hero h1{font-size:clamp(46px,8.2vw,70px)}
+  .hero-lede{max-width:520px;font-size:15px}
+  .lot-grid{max-width:520px}
+  .hero-visual{max-width:590px;width:100%;margin-inline:auto;padding-right:18px}
+  .hero-arch{height:min(660px,78vw)}
+  .tasting-card{left:-12px;bottom:-18px}
+  .harvest-tag{right:-7px;top:96px}
+  .hero-foot{padding-top:14px}
+  .flavor-head{grid-template-columns:1fr;gap:20px}
+  .flavor-intro{max-width:500px}
+  .timeline-head{grid-template-columns:1fr;gap:22px}
+  .timeline-intro{justify-self:start}
+  .steps{grid-template-columns:1fr;gap:0;margin-top:44px}
+  .steps::before,.steps::after{left:30px;right:auto;top:31px;bottom:31px;width:1px;height:auto}
+  .steps::after{width:1px;height:calc(100% - 62px);transform:scaleY(0);transform-origin:top;background:linear-gradient(180deg,var(--clay),rgba(184,102,70,.16))}
+  .steps.in::after{transform:scaleY(1)}
+  .step{display:grid;grid-template-columns:62px 1fr;gap:24px;padding:0 0 37px}
+  .step:last-child{padding-bottom:0}
+  .step-body{padding-top:0;padding-bottom:0}
+  .step p{max-width:420px}
+  .step h3{font-size:24px}
+  .step-node{width:62px;height:62px}
+  .estate-stats{margin-top:48px}
+  .stat{flex-direction:column;align-items:center;gap:4px;padding:20px 8px;text-align:center}
+  .stat:first-child{justify-content:center;padding-left:8px}
+  .stat:last-child{justify-content:center;padding-right:8px}
+  .cert-layout{grid-template-columns:1fr;gap:58px}
+  .cert-stage{max-width:590px;margin-inline:auto;width:100%;padding:18px 24px 22px 4px}
+  .cert-copy{max-width:590px;margin-inline:auto;width:100%}
+  .cert-copy h2{max-width:560px}
+  .sub-layout{grid-template-columns:1fr;gap:42px}
+  .sub-summary{position:relative;top:auto;width:100%;max-width:560px;justify-self:center}
+  .sub-head{grid-template-columns:1fr;gap:20px}
+  .sub-head p{justify-self:start}
+  .footer-top{grid-template-columns:1.2fr .8fr .8fr;gap:28px}
+}
+@media (max-width:680px){
+  :root{--container:calc(100vw - 40px)}
+  .nav-inner{height:64px}
+  .brand-mark{width:28px;height:28px}
+  .brand-word b{font-size:20px}
+  .brand-word small{font-size:7px}
+  .mobile-panel{inset:64px 0 auto;padding-top:12px}
+  .mobile-panel a{font-size:27px}
+  .hero-inner{display:flex;flex-direction:column;padding:36px 0 42px;gap:0}
+  .hero-copy{display:contents}
+  .hero h1{order:2;font-size:clamp(40px,10.8vw,54px);letter-spacing:-.04em}
+  .hero .eyebrow{order:1;margin-bottom:22px;font-size:8.5px;letter-spacing:.15em;gap:10px}
+  .hero .eyebrow .rule{width:25px}
+  .hero-lede{order:3;font-size:13.5px;margin-top:22px;line-height:1.9}
+  .lot-grid{order:5;grid-template-columns:1fr 1fr;column-gap:20px;margin-top:26px}
+  .lot-item{display:block;padding:10px 0}
+  .lot-item span{display:block;font-size:7.5px;margin-bottom:2px}
+  .lot-item strong{display:block;text-align:left;font-size:13px}
+  .hero-actions{order:6;margin-top:25px;gap:18px;flex-wrap:wrap}
+  .hero-actions .btn{padding:13px 20px}
+  .hero-arch{height:min(620px,116vw)}
+  .hero-visual{order:4;max-width:100%;padding-right:10px;margin-top:32px}
+  .tasting-card{left:8px;bottom:-22px;width:218px;padding:15px 15px 14px}
+  .tasting-note{font-size:15.5px;margin-top:9px}
+  .tasting-tags{margin-top:8px}
+  .harvest-tag{right:-5px;top:82px;padding:10px 7px;gap:9px}
+  .arch-caption{top:24px;font-size:6.5px}
+  .hero-foot{padding:16px 0 18px;flex-wrap:wrap;gap:10px}
+  .coords{display:none}
+  .est-note{font-size:7px}
+  .marquee-item{padding:11px 18px;font-size:8px;gap:18px}
+  .flavor{padding-top:70px}
+  .flavor-head{margin-top:34px}
+  .flavor-layout{margin-top:22px}
+  .flavor-panel{padding-top:28px}
+  .wheel-help{margin-top:28px}
+  .flavor-meta{grid-template-columns:1fr 1fr;gap:14px}
+  .flavor-bars{gap:12px}
+  .flavor-bar span{font-size:7px}
+  .panel-foot{flex-wrap:wrap}
+  .section-title{font-size:clamp(34px,9.5vw,48px)}
+  .section-kicker{font-size:8px;letter-spacing:.16em;gap:12px}
+  .section-kicker>span:last-child{display:none}
+  .timeline-section,.certificate,.subscribe{padding-top:70px;padding-bottom:64px}
+  .timeline-head{margin-top:34px}
+  .steps{margin-top:36px}
+  .estate-stats{grid-template-columns:1fr 1fr;margin-top:40px}
+  .stat{border-bottom:1px solid var(--line);padding:18px 6px}
+  .stat:nth-child(2n){border-right:0}
+  .stat:nth-last-child(-n+2){border-bottom:0}
+  .stat:first-child{padding-left:6px}
+  .stat b{font-size:37px}
+  .cert-layout{margin-top:36px;gap:46px}
+  .cert-stage{padding:10px 18px 18px 0}
+  .cert-stage::before{right:-12px;bottom:-20px}
+  .cert-card{padding:11px}
+  .cert-inner{padding:18px 16px 18px;min-height:500px}
+  .cert-brand b{font-size:14px}
+  .cert-brand svg{width:21px;height:21px}
+  .cert-title{font-size:27px}
+  .cert-lot b{font-size:29px}
+  .cert-data{column-gap:14px}
+  .cert-row strong{font-size:11.5px}
+  .cert-score{padding:13px 0 11px}
+  .cert-score-value{font-size:32px}
+  .cert-stamp{width:94px;height:94px;right:9px;bottom:100px}
+  .cert-autograph{padding-top:14px}
+  .signature b{font-size:20px}
+  .barcode{height:22px}
+  .cert-copy h2{margin-top:20px}
+  .cert-copy>p{margin-top:18px;font-size:12px}
+  .cert-points{margin-top:22px}
+  .verify-box{margin-top:20px}
+  .sub-head{margin-top:34px}
+  .sub-layout{margin-top:34px}
+  .option-group{padding:21px 0 23px}
+  .grid-3{grid-template-columns:1fr 1fr}
+  .grid-3 .choice:last-child{grid-column:span 2}
+  .choice{padding:12px 12px 11px}
+  .choice strong{font-size:19px}
+  .grid-4{grid-template-columns:1fr 1fr}
+  .sub-summary{padding:24px 20px 21px}
+  .footer-top{grid-template-columns:1fr 1fr;gap:30px 24px;padding-bottom:40px}
+  .footer-brand{grid-column:1/-1}
+  .newsletter{grid-column:1/-1}
+  .footer-word{font-size:clamp(54px,16.2vw,100px)}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:10px;padding:17px 0 20px}
+  .footer-bottom .fb-left{flex-wrap:wrap;gap:8px 16px}
+  .footer-bottom .fb-left i{display:none}
+  .footer-coords{display:none}
+  .toast{bottom:18px;padding:12px 15px;font-size:9px;width:calc(100vw - 32px)}
+}
+@media (max-width:390px){
+  :root{--container:calc(100vw - 32px)}
+  .hero h1{font-size:39px}
+  .hero-arch{height:440px}
+  .lot-item strong{font-size:12px}
+  .tasting-card{width:204px;left:6px}
+  .tasting-score{font-size:24px}
+  .flavor-bars{grid-template-columns:1fr 1fr;}
+  .flavor-bars .flavor-bar:last-child{display:none}
+  .cert-inner{min-height:470px;padding:15px 13px}
+  .cert-title-row{padding:16px 0 14px}
+  .cert-title{font-size:23px}
+  .cert-code b{font-size:10px}
+  .cert-row{padding:7px 0}
+  .cert-stamp{width:82px;height:82px;bottom:92px}
+  .cert-points div{display:block}
+  .cert-points span{display:block;margin-top:2px}
+  .choice{padding:10px 10px}
+  .grid-4 .choice strong{font-size:13px}
+  #priceValue{font-size:56px}
+}
+@media (max-width:900px){section[id]{scroll-margin-top:72px}}
+@media (max-width:680px){section[id]{scroll-margin-top:64px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳至主要内容</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="TerraBrew 首页">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1"/>
+        <path d="M8.8 22.6c.8-7.7 6.1-12.3 14.4-13.4-1.1 8.4-6.4 13.1-14.4 13.4Z" fill="currentColor" opacity=".92"/>
+        <path d="M10.6 21.2c3.1-4 6.8-7.1 11.1-9.5" stroke="#F1E8D8" stroke-width="1.15" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-word"><b>TerraBrew</b><small>MICRO-LOT COFFEE</small></span>
+    </a>
+    <nav class="desktop-nav" aria-label="主导航">
+      <a href="#flavor">风味图谱</a>
+      <a href="#origin">庄园溯源</a>
+      <a href="#certificate">批次凭证</a>
+      <a href="#subscribe">订阅计划</a>
+    </nav>
+    <div class="nav-right">
+      <span class="season-note"><i></i>2026 春季批次 · 024</span>
+      <a class="btn btn-dark" href="#subscribe">订阅本季
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-label="打开菜单" aria-expanded="false" aria-controls="mobilePanel"><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="#flavor">风味图谱 <span>01 / FLAVOR</span></a>
+    <a href="#origin">庄园溯源 <span>02 / ORIGIN</span></a>
+    <a href="#certificate">批次凭证 <span>03 / BATCH</span></a>
+    <a href="#subscribe">订阅计划 <span>04 / SUBSCRIBE</span></a>
+    <a class="btn btn-dark" href="#subscribe">订阅本季 <span style="color:inherit;font-family:inherit;font-size:inherit;letter-spacing:inherit">2026 春季批次</span></a>
+  </div>
+</header>
+
+<main id="main">
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="rule"></span>Colombia · Huila · El Paraíso</p>
+        <h1>在云雾退去之前，<br>我们等一颗<br><em>完熟</em>的咖啡樱桃。</h1>
+        <p class="hero-lede">海拔 <strong>1,850 米</strong>的火山坡地，午后云雾与夜间冷风替我们放慢成熟。埃尔帕拉伊索庄园本季仅保留 <strong>260 个微批次</strong>，每一袋，都能回到某一棵树下。</p>
+        <div class="lot-grid" aria-label="本季批次信息">
+          <div class="lot-item"><span>庄园 / Farm</span><strong>埃尔帕拉伊索</strong></div>
+          <div class="lot-item"><span>海拔 / Altitude</span><strong>1,850 m</strong></div>
+          <div class="lot-item"><span>品种 / Variety</span><strong>粉红波旁 · 卡杜拉</strong></div>
+          <div class="lot-item"><span>处理 / Process</span><strong>72h 厌氧日晒</strong></div>
+          <div class="lot-item"><span>采收 / Harvest</span><strong>2026 春季</strong></div>
+          <div class="lot-item"><span>批次 / Lot</span><strong>TB-EP-024 / 260</strong></div>
+        </div>
+        <div class="hero-actions">
+          <a class="btn btn-dark" href="#flavor">探索本季风味
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="arrow-link" href="#origin">阅读庄园故事
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-arch">
+          <svg class="scene" viewBox="0 0 720 920" preserveAspectRatio="xMidYMid slice" role="img" aria-label="埃尔帕拉伊索庄园山坡上结满红色咖啡樱桃的枝条">
+            <defs>
+              <linearGradient id="sky" x1="0" y1="0" x2=".25" y2="1">
+                <stop offset="0" stop-color="#E8C49D"/>
+                <stop offset=".38" stop-color="#DDA47B"/>
+                <stop offset=".7" stop-color="#C17B5C"/>
+                <stop offset="1" stop-color="#7E4938"/>
+              </linearGradient>
+              <radialGradient id="sunGlow" cx=".5" cy=".5" r=".5">
+                <stop offset="0" stop-color="#FFF7DE" stop-opacity=".95"/>
+                <stop offset=".22" stop-color="#FFE6B5" stop-opacity=".7"/>
+                <stop offset=".55" stop-color="#F5C58A" stop-opacity=".22"/>
+                <stop offset="1" stop-color="#F5C58A" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="farHill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#B07A5E"/><stop offset="1" stop-color="#8A5B47"/>
+              </linearGradient>
+              <linearGradient id="nearHill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#75503C"/><stop offset="1" stop-color="#4A3025"/>
+              </linearGradient>
+              <linearGradient id="foreHill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#4B3526"/><stop offset="1" stop-color="#2B1C14"/>
+              </linearGradient>
+              <linearGradient id="branch" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#3A2719"/><stop offset=".55" stop-color="#5C402A"/><stop offset="1" stop-color="#39261A"/>
+              </linearGradient>
+              <linearGradient id="leaf" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" stop-color="#3F4E35"/><stop offset=".5" stop-color="#697153"/><stop offset="1" stop-color="#909064"/>
+              </linearGradient>
+              <linearGradient id="leafLight" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" stop-color="#55603F"/><stop offset=".55" stop-color="#7F855D"/><stop offset="1" stop-color="#A6A274"/>
+              </linearGradient>
+              <linearGradient id="leafDark" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#37422E"/><stop offset="1" stop-color="#566041"/>
+              </linearGradient>
+              <radialGradient id="cherry" cx=".34" cy=".28" r=".78">
+                <stop offset="0" stop-color="#D96A55"/>
+                <stop offset=".3" stop-color="#B33E36"/>
+                <stop offset=".72" stop-color="#852927"/>
+                <stop offset="1" stop-color="#4D1718"/>
+              </radialGradient>
+              <radialGradient id="cherryDark" cx=".35" cy=".28" r=".8">
+                <stop offset="0" stop-color="#A9453B"/>
+                <stop offset=".55" stop-color="#762624"/>
+                <stop offset="1" stop-color="#3F1314"/>
+              </radialGradient>
+              <radialGradient id="cherryGreen" cx=".35" cy=".3" r=".8">
+                <stop offset="0" stop-color="#C4BE77"/><stop offset=".6" stop-color="#969758"/><stop offset="1" stop-color="#5E643E"/>
+              </radialGradient>
+              <linearGradient id="vignette" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#2A1710" stop-opacity="0"/><stop offset=".72" stop-color="#2A1710" stop-opacity=".08"/><stop offset="1" stop-color="#2A1710" stop-opacity=".5"/>
+              </linearGradient>
+              <filter id="blurMist" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="18"/></filter>
+              <filter id="blurSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="4"/></filter>
+              <filter id="grainy"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" result="noise"/><feBlend in="SourceGraphic" in2="noise" mode="soft-light"/></filter>
+            </defs>
+
+            <rect width="720" height="920" fill="url(#sky)"/>
+            <circle cx="505" cy="235" r="245" fill="url(#sunGlow)"/>
+            <circle cx="505" cy="235" r="83" fill="#FBE9BF" opacity=".78"/>
+            <circle cx="505" cy="235" r="108" fill="none" stroke="#FFEDC8" stroke-opacity=".28"/>
+
+            <path d="M0 620C64 586 120 552 188 571c68 20 105 47 166 22 56-23 105-57 170-35 56 19 96 48 196 19v363H0Z" fill="url(#farHill)" opacity=".52"/>
+            <path d="M0 677c80-33 127-8 196-32 79-28 117 16 196-4 84-21 133-53 208-25 50 19 83 13 120 7v297H0Z" fill="url(#nearHill)" opacity=".68"/>
+            <path d="M0 770c98-40 172-16 264-39 85-22 143 12 222-10 87-24 154-45 234-15v214H0Z" fill="url(#foreHill)" opacity=".88"/>
+
+            <ellipse cx="250" cy="588" rx="280" ry="31" fill="#F7DCC0" opacity=".22" filter="url(#blurMist)"/>
+            <ellipse cx="540" cy="640" rx="290" ry="25" fill="#F4D8BA" opacity=".2" filter="url(#blurMist)"/>
+            <ellipse cx="330" cy="718" rx="330" ry="28" fill="#EFD0B1" opacity=".13" filter="url(#blurMist)"/>
+
+            <g opacity=".3" stroke="#F6D9B2" stroke-width="1.1" fill="none">
+              <path d="M83 0c54 186 6 345-3 520"/>
+              <path d="M129 0c-20 163 38 290 17 461"/>
+              <path d="M655 0c-87 124-83 263-143 419"/>
+            </g>
+
+            <!-- Main branch -->
+            <g fill="none" stroke-linecap="round">
+              <path d="M60 862c89-92 166-179 260-260 82-71 167-156 242-252" stroke="url(#branch)" stroke-width="13"/>
+              <path d="M75 850c44-74 113-150 193-219" stroke="#2F1F15" stroke-width="3" opacity=".5"/>
+              <path d="M302 609c24-57 34-114 47-177 8-38 20-71 38-102" stroke="url(#branch)" stroke-width="6.5"/>
+              <path d="M438 500c45-32 91-54 139-73" stroke="url(#branch)" stroke-width="6"/>
+              <path d="M476 466c29 9 57 32 88 71 22 28 41 53 62 72" stroke="url(#branch)" stroke-width="4.2"/>
+              <path d="M357 563c-51-18-100-35-147-77" stroke="url(#branch)" stroke-width="4.5"/>
+              <path d="M232 703c-41-22-72-51-100-91" stroke="url(#branch)" stroke-width="4"/>
+              <path d="M541 417c12-40 31-71 57-99" stroke="url(#branch)" stroke-width="3.2"/>
+              <path d="M589 323c24 31 35 65 45 106" stroke="url(#branch)" stroke-width="3"/>
+              <path d="M350 714c47-25 94-41 148-48" stroke="url(#branch)" stroke-width="4.5"/>
+              <path d="M498 666c52 5 94 20 131 48" stroke="url(#branch)" stroke-width="3.4"/>
+            </g>
+
+            <!-- Leaves -->
+            <g>
+              <g transform="translate(620 268) rotate(-26) scale(.94)">
+                <path d="M0 0C29-34 90-40 128-4 97 34 33 31 0 0Z" fill="url(#leaf)"/>
+                <path d="M5 0c42-1 80-3 118-4M49 0 68-23M79 0 95-20M79 0 91 21" stroke="#39452F" stroke-width="1.1" opacity=".65" fill="none"/>
+              </g>
+              <g transform="translate(527 300) rotate(158) scale(.82)">
+                <path d="M0 0C29-34 90-40 128-4 97 34 33 31 0 0Z" fill="url(#leafDark)"/>
+                <path d="M5 0c42-1 80-3 118-4M49 0 68-23M79 0 95-20M79 0 91 21" stroke="#2F3B28" stroke-width="1.1" opacity=".6" fill="none"/>
+              </g>
+              <g transform="translate(455 382) rotate(-16) scale(1.06)">
+                <path d="M0 0C29-34 90-40 128-4 97 34 33 31 0 0Z" fill="url(#leafLight)"/>
+                <path d="M5 0c42-1 80-3 118-4M49 0 68-23M79 0 95-20M79 0 91 21" stroke="#4A5338" stroke-width="1.1" opacity=".65" fill="none"/>
+              </g>
+              <g transform="translate(390 460) rotate(-169) scale(.86)">
+                <path d="M0 0C29-34 90-40 128-4 97 34 33 31 0 0Z" fill="url(#leaf)"/>
+                <path d="M5 0c42-1 80-3 118-4M49 0 68-23M79 0 95-20M79 0 91 21" stroke="#38452F" stroke-width="1.1" opacity=".6" fill="none"/>
+              </g>
+              <g transform="translate(334 534) rotate(-20) scale(1.05)">
+                <path d="M0 0C29-34 90-40 128-4 97 34 33 31 0 0Z" fill="url(#leafLight)"/>
+                <path d="M5 0c42-1 80-3 118-4M49 0 68-23M79 0 95-20M79 0 91 21" stroke="#4E573A" stroke-width="1.1" opacity=".62" fill="none"/>
+              </g>
+              <g transform="translate(248 592) rotate(158) scale(.9)">
+                <path d="M0 0C29-34 90-40 128-4 97 34 33 31 0 0Z" fill="url(#leafDark)"/>
+                <path d="M5 0c42-1 80-3 118-4M49 0 68-23M79 0 95-20M79 0 91 21" stroke="#2E3A28" stroke-width="1.1" opacity=".6" fill="none"/>
+              </g>
+              <g transform="translate(180 673) rotate(-20) scale(1.03)">
+                <path d="M0 0C29-34 90-40 128-4 97 34 33 31 0 0Z" fill="url(#leaf)"/>
+                <path d="M5 0c42-1 80-3 118-4M49 0 68-23M79 0 95-20M79 0 91 21" stroke="#39462F" stroke-width="1.1" opacity=".65" fill="none"/>
+              </g>
+              <g transform="translate(562 430) rotate(58) scale(.76)">
+                <path d="M0 0C29-34 90-40 128-4 97 34 33 31 0 0Z" fill="url(#leafDark)"/>
+                <path d="M5 0c42-1 80-3 118-4M49 0 68-23M79 0 95-20M79 0 91 21" stroke="#2F3B28" stroke-width="1.1" opacity=".6" fill="none"/>
+              </g>
+              <g transform="translate(638 486) rotate(32) scale(.8)">
+                <path d="M0 0C29-34 90-40 128-4 97 34 33 31 0 0Z" fill="url(#leaf)"/>
+                <path d="M5 0c42-1 80-3 118-4M49 0 68-23M79 0 95-20M79 0 91 21" stroke="#38452F" stroke-width="1.1" opacity=".6" fill="none"/>
+              </g>
+              <g transform="translate(99 752) rotate(-32) scale(1.05)">
+                <path d="M0 0C29-34 90-40 128-4 97 34 33 31 0 0Z" fill="url(#leafLight)"/>
+                <path d="M5 0c42-1 80-3 118-4M49 0 68-23M79 0 95-20M79 0 91 21" stroke="#4A5338" stroke-width="1.1" opacity=".6" fill="none"/>
+              </g>
+              <g transform="translate(540 615) rotate(20) scale(1.15)">
+                <path d="M0 0C29-34 90-40 128-4 97 34 33 31 0 0Z" fill="url(#leafDark)"/>
+                <path d="M5 0c42-1 80-3 118-4M49 0 68-23M79 0 95-20M79 0 91 21" stroke="#2E3A28" stroke-width="1.1" opacity=".55" fill="none"/>
+              </g>
+              <g transform="translate(300 770) rotate(-170) scale(1.18)">
+                <path d="M0 0C29-34 90-40 128-4 97 34 33 31 0 0Z" fill="url(#leafDark)"/>
+                <path d="M5 0c42-1 80-3 118-4M49 0 68-23M79 0 95-20M79 0 91 21" stroke="#2D3826" stroke-width="1.1" opacity=".5" fill="none"/>
+              </g>
+            </g>
+
+            <!-- Coffee cherry clusters -->
+            <g>
+              <g transform="translate(492 260)">
+                <path d="M15 62C13 36 18 19 33 2M33 2C23 15 7 25-11 31M33 2c8 12 23 18 38 20" stroke="#4A2E1C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <g transform="translate(-14 34)"><circle r="22" fill="url(#cherry)"/><ellipse cx="-7" cy="-8" rx="6" ry="3.4" fill="#F2A38E" opacity=".45" transform="rotate(-32)"/><path d="M-4-21c3 4 6 7 12 8M-4-21c-4-1-8-4-10-8" stroke="#6C3426" stroke-width="1.2" fill="none"/></g>
+                <g transform="translate(31 30)"><circle r="25" fill="url(#cherryDark)"/><ellipse cx="-8" cy="-9" rx="7" ry="3.8" fill="#E89480" opacity=".32" transform="rotate(-32)"/><path d="M6-24c3 4 6 7 12 8M6-24c-4-1-8-4-10-8" stroke="#5B2A20" stroke-width="1.2" fill="none"/></g>
+                <g transform="translate(5 56)"><circle r="19" fill="url(#cherryGreen)"/><ellipse cx="-6" cy="-6" rx="5" ry="2.8" fill="#E4DFA1" opacity=".4" transform="rotate(-32)"/></g>
+              </g>
+              <g transform="translate(382 372)">
+                <path d="M10 76C12 48 16 28 28 8M28 8C17 26 2 36-18 42M28 8c10 4 22 5 34 2" stroke="#4A2E1C" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+                <g transform="translate(-9 41)"><circle r="26" fill="url(#cherry)"/><ellipse cx="-8" cy="-10" rx="7" ry="4" fill="#F4A690" opacity=".44" transform="rotate(-32)"/><path d="M0-26c4 4 7 7 13 8M0-26c-4-1-8-4-10-8" stroke="#6C3426" stroke-width="1.2" fill="none"/></g>
+                <g transform="translate(45 32)"><circle r="22" fill="url(#cherryDark)"/><ellipse cx="-7" cy="-8" rx="6" ry="3.4" fill="#E89480" opacity=".28" transform="rotate(-32)"/><path d="M0-22c3 4 6 7 12 8M0-22c-4-1-8-4-10-8" stroke="#5B2A20" stroke-width="1.2" fill="none"/></g>
+                <g transform="translate(21 70)"><circle r="20" fill="url(#cherry)"/><ellipse cx="-6" cy="-7" rx="5" ry="3" fill="#F2A38E" opacity=".35" transform="rotate(-32)"/></g>
+              </g>
+              <g transform="translate(320 462)">
+                <path d="M5 50C11 30 15 18 26 2M26 2C17 14 6 23-10 28" stroke="#4A2E1C" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+                <g transform="translate(-4 26)"><circle r="23" fill="url(#cherry)"/><ellipse cx="-7" cy="-8" rx="6" ry="3.5" fill="#F2A38E" opacity=".42" transform="rotate(-32)"/><path d="M-2-23c3 4 6 7 12 8M-2-23c-4-1-8-4-10-8" stroke="#6C3426" stroke-width="1.2" fill="none"/></g>
+                <g transform="translate(31 41)"><circle r="18" fill="url(#cherryDark)"/><ellipse cx="-5" cy="-6" rx="5" ry="2.8" fill="#E89480" opacity=".3" transform="rotate(-32)"/></g>
+              </g>
+              <g transform="translate(574 488)">
+                <path d="M6 70C9 45 15 27 28 8M28 8C18 22 4 31-13 36M28 8c9 11 22 15 35 16" stroke="#4A2E1C" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+                <g transform="translate(-2 36)"><circle r="24" fill="url(#cherryDark)"/><ellipse cx="-7" cy="-9" rx="6" ry="3.8" fill="#E89480" opacity=".32" transform="rotate(-32)"/><path d="M0-24c3 4 6 7 12 8M0-24c-4-1-8-4-10-8" stroke="#5B2A20" stroke-width="1.2" fill="none"/></g>
+                <g transform="translate(44 32)"><circle r="21" fill="url(#cherry)"/><ellipse cx="-6" cy="-7" rx="5" ry="3" fill="#F2A38E" opacity=".4" transform="rotate(-32)"/></g>
+                <g transform="translate(34 65)"><circle r="18" fill="url(#cherryGreen)"/></g>
+              </g>
+              <g transform="translate(205 598)">
+                <path d="M15 85C15 58 18 35 30 12M30 12C18 27 1 38-20 44M30 12c13 8 27 10 41 8" stroke="#4A2E1C" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+                <g transform="translate(-14 46)"><circle r="27" fill="url(#cherry)"/><ellipse cx="-8" cy="-10" rx="7" ry="4" fill="#F2A38E" opacity=".42" transform="rotate(-32)"/><path d="M-2-27c4 4 7 7 13 8M-2-27c-4-1-8-4-10-8" stroke="#6C3426" stroke-width="1.2" fill="none"/></g>
+                <g transform="translate(47 40)"><circle r="23" fill="url(#cherryDark)"/><ellipse cx="-7" cy="-8" rx="6" ry="3.4" fill="#E89480" opacity=".28" transform="rotate(-32)"/></g>
+                <g transform="translate(31 80)"><circle r="20" fill="url(#cherry)"/><ellipse cx="-6" cy="-7" rx="5" ry="3" fill="#F2A38E" opacity=".34" transform="rotate(-32)"/></g>
+              </g>
+              <g transform="translate(598 614)">
+                <path d="M6 46C9 30 15 18 25 5M25 5C18 16 8 22-7 26" stroke="#3E2519" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <g transform="translate(-2 22)"><circle r="26" fill="url(#cherryDark)"/><ellipse cx="-8" cy="-9" rx="7" ry="3.8" fill="#E89480" opacity=".32" transform="rotate(-32)"/></g>
+                <g transform="translate(34 35)"><circle r="20" fill="url(#cherry)"/><ellipse cx="-6" cy="-7" rx="5" ry="3" fill="#F2A38E" opacity=".38" transform="rotate(-32)"/></g>
+              </g>
+              <g transform="translate(410 642)">
+                <path d="M4 45C8 28 13 17 24 5M24 5C16 17 5 24-10 28" stroke="#3E2519" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                <g transform="translate(-3 24)"><circle r="21" fill="url(#cherry)"/><ellipse cx="-6" cy="-7" rx="5" ry="3" fill="#F2A38E" opacity=".4" transform="rotate(-32)"/></g>
+                <g transform="translate(28 36)"><circle r="16" fill="url(#cherryGreen)"/></g>
+              </g>
+            </g>
+
+            <!-- Blossoms -->
+            <g fill="#FBF1DD">
+              <g transform="translate(354 343)">
+                <path d="M0 0C-3-12 5-18 10-8 15-19 24-14 18-3 29-5 31 5 20 8 27 17 18 23 10 14 7 26-4 24-4 13-14 18-20 9-12 3-21-4-14-13-3-8Z" opacity=".9"/>
+                <circle r="3" fill="#C1944E"/>
+              </g>
+              <g transform="translate(580 356) scale(.85)">
+                <path d="M0 0C-3-12 5-18 10-8 15-19 24-14 18-3 29-5 31 5 20 8 27 17 18 23 10 14 7 26-4 24-4 13-14 18-20 9-12 3-21-4-14-13-3-8Z" opacity=".8"/>
+                <circle r="3" fill="#C1944E"/>
+              </g>
+              <g transform="translate(456 530) scale(.7)" opacity=".76">
+                <path d="M0 0C-3-12 5-18 10-8 15-19 24-14 18-3 29-5 31 5 20 8 27 17 18 23 10 14 7 26-4 24-4 13-14 18-20 9-12 3-21-4-14-13-3-8Z"/>
+                <circle r="3" fill="#C1944E"/>
+              </g>
+            </g>
+
+            <rect width="720" height="920" fill="url(#vignette)"/>
+          </svg>
+          <div class="grain"></div>
+          <span class="arch-caption">Finca El Paraíso · Huila · 1,850 M</span>
+        </div>
+        <div class="harvest-tag" aria-hidden="true">
+          <span>Harvest 2026</span><b>批次 024 / 260</b>
+        </div>
+        <div class="tasting-card">
+          <div class="tasting-top">
+            <span>杯测笔记 · Cupping</span>
+            <div class="tasting-score">89.5<small>/100</small></div>
+          </div>
+          <p class="tasting-note">血橙、黑糖与一层<br>很轻的茉莉花香。</p>
+          <div class="tasting-tags"><i>血橙</i><i>黑糖</i><i>茉莉</i><i>红李</i></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-foot">
+      <div class="scroll-cue"><span class="track"></span>向下探索本季风味</div>
+      <span class="coords">2°41′N · 75°19′W</span>
+      <span class="est-note">Single origin since <b>2014</b></span>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <div class="marquee-group">
+        <span class="marquee-item"><b>EL PARAÍSO</b> 单一庄园</span>
+        <span class="marquee-item"><b>1,850 M</b> 火山坡地</span>
+        <span class="marquee-item"><b>72 H</b> 厌氧发酵</span>
+        <span class="marquee-item"><b>260</b> 微批次</span>
+        <span class="marquee-item"><b>89.5</b> 杯测分数</span>
+        <span class="marquee-item"><b>HAND-PICKED</b> 手工采摘</span>
+      </div>
+      <div class="marquee-group">
+        <span class="marquee-item"><b>EL PARAÍSO</b> 单一庄园</span>
+        <span class="marquee-item"><b>1,850 M</b> 火山坡地</span>
+        <span class="marquee-item"><b>72 H</b> 厌氧发酵</span>
+        <span class="marquee-item"><b>260</b> 微批次</span>
+        <span class="marquee-item"><b>89.5</b> 杯测分数</span>
+        <span class="marquee-item"><b>HAND-PICKED</b> 手工采摘</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flavor wheel -->
+  <section class="flavor" id="flavor">
+    <div class="wrap">
+      <div class="section-kicker reveal">
+        <span class="dot-label"><i class="dot"></i>02 / Flavor profile</span>
+        <span>八维风味图谱 · 点击扇区切换笔记</span>
+      </div>
+      <div class="flavor-head">
+        <h2 class="section-title reveal">风味不是形容词，<br>是这座山的<em>坐标</em>。</h2>
+        <p class="flavor-intro reveal reveal-d1">我们把本季 024 批次拆成八个维度。每一次点击，都是杯测师在庄园长桌上写下的 <b>一行原始笔记</b>。从花香到香料，顺着你的味觉走。</p>
+      </div>
+      <div class="flavor-layout">
+        <div class="wheel-stage reveal">
+          <svg class="wheel-svg" id="flavorWheel" viewBox="0 0 660 660" role="group" aria-label="八维咖啡风味轮">
+            <circle class="guide" cx="330" cy="330" r="252"/>
+            <circle class="guide dash" cx="330" cy="330" r="240"/>
+            <circle class="guide" cx="330" cy="330" r="102"/>
+            <g id="wheelTicks" aria-hidden="true"></g>
+            <g id="wheelSegments"></g>
+            <g id="wheelCenter" aria-hidden="true">
+              <circle class="wheel-center-ring" cx="330" cy="330" r="94"/>
+              <circle cx="330" cy="330" r="88" fill="none" stroke="rgba(247,240,228,.07)" stroke-width="1"/>
+              <text class="center-eyebrow" x="330" y="302" text-anchor="middle">CUP DESCRIPTOR</text>
+              <text class="center-name" id="wheelName" x="330" y="332" text-anchor="middle">果香</text>
+              <text class="center-score" id="wheelScore" x="330" y="369" text-anchor="middle">9.2</text>
+              <text class="center-unit" x="418" y="367" text-anchor="middle">/ 10</text>
+              <text class="center-note" x="330" y="391" text-anchor="middle">FRUIT · ESTATE NOTE</text>
+            </g>
+          </svg>
+          <div class="wheel-note">本季主导风味 · <b>果香 / Fruit</b></div>
+        </div>
+        <div class="flavor-panel reveal reveal-d1" id="flavorPanel" aria-live="polite">
+          <div class="flavor-panel-inner">
+            <div class="panel-top">
+              <div class="panel-index"><b id="flavorIndex">02</b>/ 08</div>
+              <div class="flavor-tag"><i></i><span id="flavorFamily">Estate note</span></div>
+            </div>
+            <h3 id="flavorTitle">果香</h3>
+            <p class="flavor-en" id="flavorEn">Fruit · 9.2 / 10</p>
+            <blockquote id="flavorQuote">“血橙、红李与熟透黑樱桃，明亮的酸甜像清晨第一口山雾。”</blockquote>
+            <p id="flavorDesc">来自庄园东南坡的 12 行粉红波旁。昼夜温差把果糖留在果实里，72 小时厌氧发酵又让酸质变得圆润。它是本季杯测中得分最高的一维。</p>
+            <div class="flavor-meta">
+              <div><span>杯中表现 / In cup</span><strong id="flavorTags">血橙 / 红李 / 黑樱桃</strong></div>
+              <div><span>建议冲煮 / Brew</span><strong id="flavorBrew">V60 · 92°C · 1:16</strong></div>
+            </div>
+            <div class="flavor-bars">
+              <div class="flavor-bar"><span>强度 <b id="bar1v">92</b></span><i id="bar1" style="--v:.92"></i></div>
+              <div class="flavor-bar"><span>甜感 <b id="bar2v">88</b></span><i id="bar2" style="--v:.88"></i></div>
+              <div class="flavor-bar"><span>余韵 <b id="bar3v">90</b></span><i id="bar3" style="--v:.9"></i></div>
+            </div>
+            <div class="panel-foot">
+              <span class="brew"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 7h10l-1.3 6H4.3L3 7Z" stroke="currentColor" stroke-width="1.2"/><path d="M5 7V4.8A3 3 0 0 1 11 4.8V7M2 14h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>杯测师 Elena V. 记录</span>
+              <span>Lot 024 · 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wheel-help"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1"/><path d="M8 7v4M8 4.8v.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>点击任一扇区，或使用 Tab 与方向键切换风味笔记</div>
+    </div>
+  </section>
+
+  <!-- Origin timeline -->
+  <section class="timeline-section" id="origin">
+    <div class="wrap">
+      <div class="section-kicker reveal">
+        <span class="dot-label"><i class="dot"></i>03 / From tree to cup</span>
+        <span>五步庄园溯源 · 2026 春季批次</span>
+      </div>
+      <div class="timeline-head">
+        <h2 class="section-title reveal">从枝条到杯沿，<br>每一步都留有<em>名字</em>。</h2>
+        <p class="timeline-intro reveal reveal-d1">不是一条抽象的供应链。是 <b>Elena 的采摘篮</b>、发酵罐上的温度计、晒床边的山风，以及杯测桌上被反复划掉的分数。五步之后，才是你手里的这一袋。</p>
+      </div>
+      <div class="steps" id="timelineSteps">
+        <article class="step reveal">
+          <div class="step-node"><span>01</span></div>
+          <div class="step-body">
+            <span class="step-season">2019 · Nursery</span>
+            <h3>在遮阴树之间，<br>先学会慢</h3>
+            <p>从 3 个候选品种中选出粉红波旁与卡杜拉，种进原生遮阴树下。土壤每年只翻动一次。</p>
+            <svg class="step-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21v-8M12 13c-5 0-8-3-8-8 5 0 8 3 8 8ZM12 13c5 0 8-3 8-8-5 0-8 3-8 8Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </article>
+        <article class="step reveal reveal-d1">
+          <div class="step-node"><span>02</span></div>
+          <div class="step-body">
+            <span class="step-season">2026.03 · Harvest</span>
+            <h3>只摘下糖度<br>21° 的那一颗</h3>
+            <p>每棵树每天巡两遍，只采全红果。一公斤精品果，来自约 400 颗完熟樱桃。</p>
+            <svg class="step-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="15" r="5.2" stroke="currentColor" stroke-width="1.3"/><path d="M12 10V6M12 6c-2.5 0-4-1.5-4-3.5 2.3 0 3.8 1.2 4 3.5ZM12 6c2.5 0 4-1.5 4-3.5-2.3 0-3.8 1.2-4 3.5Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </article>
+        <article class="step reveal reveal-d2">
+          <div class="step-node"><span>03</span></div>
+          <div class="step-body">
+            <span class="step-season">2026.03 · Fermentation</span>
+            <h3>72 小时，<br>把果香留下</h3>
+            <p>去果皮后整果入罐，15°C 厌氧发酵 72 小时。每 6 小时记录一次糖度与 pH。</p>
+            <svg class="step-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 3h8M9 3v5l-3 8a4 4 0 0 0 3.8 5h4.4A4 4 0 0 0 18 16l-3-8V3M7 14h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </article>
+        <article class="step reveal reveal-d3">
+          <div class="step-node"><span>04</span></div>
+          <div class="step-body">
+            <span class="step-season">2026.04 · Drying</span>
+            <h3>21 天，<br>交给山风</h3>
+            <p>高架床慢速日晒 21 天，每 2 小时翻动一次，直到含水率稳定在 10.5%。</p>
+            <svg class="step-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </div>
+        </article>
+        <article class="step reveal reveal-d4">
+          <div class="step-node"><span>05</span></div>
+          <div class="step-body">
+            <span class="step-season">2026.05 · Cupping</span>
+            <h3>89.5 分，<br>封进 260 袋</h3>
+            <p>庄园与独立杯测师双重盲测，仅 260 袋通过。每袋附单一批次编号，可回溯到地块。</p>
+            <svg class="step-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9h13v5.5A5.5 5.5 0 0 1 11.5 20h-2A5.5 5.5 0 0 1 4 14.5V9ZM17 10h1.5a2.5 2.5 0 0 1 0 5H17M3 22h15" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </article>
+      </div>
+      <div class="estate-stats reveal">
+        <div class="stat"><b>1,850</b><span>m 海拔</span></div>
+        <div class="stat"><b>21</b><span>天慢速日晒</span></div>
+        <div class="stat"><b>260</b><span>个微批次</span></div>
+        <div class="stat"><b>89.5</b><span>SCA 杯测</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certificate -->
+  <section class="certificate" id="certificate">
+    <div class="wrap">
+      <div class="section-kicker reveal">
+        <span class="dot-label"><i class="dot"></i>04 / Batch certificate</span>
+        <span>单一批次产地凭证 · 随袋附赠</span>
+      </div>
+      <div class="cert-layout">
+        <div class="cert-stage reveal">
+          <div class="cert-card">
+            <div class="cert-inner">
+              <div class="cert-card-top">
+                <div class="cert-brand">
+                  <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                    <circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1"/>
+                    <path d="M8.8 22.6c.8-7.7 6.1-12.3 14.4-13.4-1.1 8.4-6.4 13.1-14.4 13.4Z" fill="currentColor" opacity=".92"/>
+                    <path d="M10.6 21.2c3.1-4 6.8-7.1 11.1-9.5" stroke="#FAF4E8" stroke-width="1.15" stroke-linecap="round"/>
+                  </svg>
+                  <div><b>TerraBrew</b><small>MICRO-LOT COFFEE</small></div>
+                </div>
+                <div class="cert-code">Certificate No.<b>TB-EP-024260</b></div>
+              </div>
+              <div class="cert-title-row">
+                <div class="cert-title">单一批次<br>产地凭证<small>Certificate of single origin</small></div>
+                <div class="cert-lot"><span>Lot</span><b>024<i>/260</i></b></div>
+              </div>
+              <div class="cert-data">
+                <div class="cert-row"><span>庄园 / Estate</span><strong>Finca El Paraíso</strong></div>
+                <div class="cert-row"><span>产区 / Region</span><strong>Pitalito, Huila</strong></div>
+                <div class="cert-row"><span>海拔 / Altitude</span><strong>1,850 m.a.s.l.</strong></div>
+                <div class="cert-row"><span>品种 / Variety</span><strong>Pink Bourbon · Caturra</strong></div>
+                <div class="cert-row"><span>处理 / Process</span><strong>72h Anaerobic Natural</strong></div>
+                <div class="cert-row"><span>采收 / Harvest</span><strong>Mar — May 2026</strong></div>
+                <div class="cert-row"><span>烘焙 / Roast</span><strong>Light Omni · 11.12</strong></div>
+                <div class="cert-row"><span>净重 / Net</span><strong>500 g</strong></div>
+              </div>
+              <div class="cert-score">
+                <div class="cert-score-label">SCA Cupping Score<b>双重盲测 · 独立杯测师</b></div>
+                <div class="cert-score-value">89.5<small> / 100</small></div>
+              </div>
+              <div class="cert-autograph">
+                <div class="signature"><small>Estate owner / 庄园主</small><b>Elena Vargas</b></div>
+                <div class="barcode" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+              </div>
+              <div class="cert-stamp" aria-hidden="true">
+                <svg viewBox="0 0 160 160">
+                  <defs><path id="stampArc" d="M80,80 m-65,0 a65,65 0 1,1 130,0 a65,65 0 1,1 -130,0"/></defs>
+                  <circle cx="80" cy="80" r="76" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                  <circle cx="80" cy="80" r="72" fill="none" stroke="currentColor" stroke-width=".6" stroke-dasharray="1 3"/>
+                  <circle cx="80" cy="80" r="50" fill="none" stroke="currentColor" stroke-width=".8"/>
+                  <text class="stamp-small" fill="currentColor"><textPath href="#stampArc" startOffset="2%">TERRA BREW · SINGLE ORIGIN · EL PARAÍSO · HUILA ·</textPath></text>
+                  <g fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M61 112c10-16 20-28 34-42"/>
+                    <path d="M77 88c-8-1-13-6-14-14 8 0 13 4 14 14Z"/>
+                    <path d="M84 80c1-9 6-15 14-17 1 9-4 15-14 17Z"/>
+                    <path d="M70 101c-6-1-11-5-13-11 6-1 11 2 13 11Z"/>
+                    <path d="M88 70c-3-7-1-13 4-18 4 6 3 12-4 18Z"/>
+                    <circle cx="62" cy="67" r="7.2"/><circle cx="72" cy="61" r="6.2"/>
+                    <path d="M64 60c1-4 4-7 7-9M71 55c2-3 5-5 7-6"/>
+                  </g>
+                  <text class="stamp-serif" x="80" y="132" text-anchor="middle">024</text>
+                  <text class="stamp-center" x="80" y="142" text-anchor="middle">EL PARAÍSO · 2026</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cert-copy">
+          <p class="eyebrow reveal" style="color:rgba(250,244,232,.6)"><span class="rule"></span>Traceable by nature</p>
+          <h2 class="reveal reveal-d1">一袋咖啡的<em>来处</em>，<br>写得清楚。</h2>
+          <p class="reveal reveal-d2">这张凭证不为了好看。它记录了这一袋咖啡从哪一棵树、哪一天、哪一个发酵罐里来。撕下袋底的编号，你能在庄园档案里找到它的全部生长记录。</p>
+          <ul class="cert-points reveal reveal-d3">
+            <li><i>01</i><div><strong>单一庄园，不拼配</strong><span>Single estate</span></div></li>
+            <li><i>02</i><div><strong>批次编号，可完整回溯</strong><span>Full traceability</span></div></li>
+            <li><i>03</i><div><strong>接单后 48 小时内烘焙</strong><span>Roasted to order</span></div></li>
+          </ul>
+          <div class="verify-box reveal reveal-d4">
+            <div><span class="v-label">Batch verification</span><b>TB-EP-024260</b></div>
+            <div class="verify-status"><i></i>庄园档案已验证</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Subscription configurator -->
+  <section class="subscribe" id="subscribe">
+    <div class="wrap">
+      <div class="section-kicker reveal">
+        <span class="dot-label"><i class="dot"></i>05 / Subscription</span>
+        <span>本季 024 批次 · 仅余 112 份</span>
+      </div>
+      <div class="sub-head">
+        <h2 class="section-title reveal">让下一季，<br>准时<em>抵达</em>。</h2>
+        <p class="reveal reveal-d1">选择重量、节奏与研磨方式。我们把当季微批次按你的生活频率烘焙、分装，在风味最好的窗口寄出。没有仓储货架，只有刚刚好的新鲜。</p>
+      </div>
+      <div class="sub-layout">
+        <div class="configurator reveal">
+          <div class="option-group">
+            <div class="option-head">
+              <span class="option-num">01</span>
+              <h3>选择重量</h3>
+              <span class="option-aside">每次配送</span>
+            </div>
+            <div class="option-grid grid-3" role="group" aria-label="选择咖啡重量">
+              <button class="choice" data-group="weight" data-value="200" data-label="200 g" data-short="200g" data-price="128" aria-pressed="false">
+                <span class="c-main"><strong>200</strong><span class="c-unit">g</span></span>
+                <span class="c-note">约 8–12 杯 · 尝鲜装</span>
+                <svg class="c-check" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.2 5.7 10.4 11.8 3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="choice" data-group="weight" data-value="500" data-label="500 g" data-short="500g" data-price="288" aria-pressed="true">
+                <span class="c-badge">最受欢迎</span>
+                <span class="c-main"><strong>500</strong><span class="c-unit">g</span></span>
+                <span class="c-note">约 22–28 杯 · 日常装</span>
+                <svg class="c-check" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.2 5.7 10.4 11.8 3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="choice" data-group="weight" data-value="1000" data-label="1 kg" data-short="1kg" data-price="528" aria-pressed="false">
+                <span class="c-main"><strong>1,000</strong><span class="c-unit">g</span></span>
+                <span class="c-note">约 45–55 杯 · 分享装</span>
+                <svg class="c-check" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.2 5.7 10.4 11.8 3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="option-head">
+              <span class="option-num">02</span>
+              <h3>配送周期</h3>
+              <span class="option-aside">可随时暂停</span>
+            </div>
+            <div class="option-grid grid-3" role="group" aria-label="选择配送周期">
+              <button class="choice" data-group="frequency" data-value="weekly" data-label="每周配送" data-short="每周" data-discount="0.92" data-days="7" aria-pressed="false">
+                <span class="c-main"><strong>每周</strong></span>
+                <span class="c-note">最鲜活 · 节省 8%</span>
+                <svg class="c-check" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.2 5.7 10.4 11.8 3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="choice" data-group="frequency" data-value="biweekly" data-label="每两周配送" data-short="每两周" data-discount="0.95" data-days="14" aria-pressed="true">
+                <span class="c-main"><strong>每两周</strong></span>
+                <span class="c-note">刚刚好 · 节省 5%</span>
+                <svg class="c-check" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.2 5.7 10.4 11.8 3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="choice" data-group="frequency" data-value="monthly" data-label="每月配送" data-short="每月" data-discount="1" data-days="30" aria-pressed="false">
+                <span class="c-main"><strong>每月</strong></span>
+                <span class="c-note">慢慢喝 · 标准价</span>
+                <svg class="c-check" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.2 5.7 10.4 11.8 3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="option-head">
+              <span class="option-num">03</span>
+              <h3>研磨方式</h3>
+              <span class="option-aside">下单后现磨</span>
+            </div>
+            <div class="option-grid grid-4" role="group" aria-label="选择研磨方式">
+              <button class="choice" data-group="grind" data-value="whole" data-label="整豆" data-short="整豆" aria-pressed="false">
+                <span class="c-main"><strong>整豆</strong></span>
+                <span class="c-note">保留最长赏味期</span>
+                <svg class="c-check" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.2 5.7 10.4 11.8 3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="choice" data-group="grind" data-value="pourover" data-label="手冲研磨" data-short="手冲" aria-pressed="true">
+                <span class="c-main"><strong>手冲</strong></span>
+                <span class="c-note">V60 / 中细</span>
+                <svg class="c-check" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.2 5.7 10.4 11.8 3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="choice" data-group="grind" data-value="espresso" data-label="意式研磨" data-short="意式" aria-pressed="false">
+                <span class="c-main"><strong>意式</strong></span>
+                <span class="c-note">9 bar / 极细</span>
+                <svg class="c-check" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.2 5.7 10.4 11.8 3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="choice" data-group="grind" data-value="french" data-label="法压研磨" data-short="法压" aria-pressed="false">
+                <span class="c-main"><strong>法压</strong></span>
+                <span class="c-note">浸泡 / 粗研磨</span>
+                <svg class="c-check" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.2 5.7 10.4 11.8 3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <p class="option-note"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.1"/><path d="M8 7v4M8 4.8v.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>建议整豆保存，冲煮前再研磨；我们也会按所选方式现磨后充氮封装。</p>
+          </div>
+        </div>
+
+        <aside class="sub-summary reveal reveal-d1" aria-label="订阅配置摘要">
+          <div class="summary-top">
+            <span>Your subscription</span>
+            <b><i></i>可随时暂停</b>
+          </div>
+          <div class="price-block">
+            <div>
+              <div class="price-label">每次配送价格 / per delivery</div>
+              <div class="price-main"><span class="currency">¥</span><span id="priceValue">274</span><span class="price-per">/ 次</span></div>
+            </div>
+            <div class="price-side"><span>折合每克</span><b id="perGram">¥0.55</b></div>
+          </div>
+          <p class="summary-desc" id="summaryDesc"><b>500 g</b> · 每两周配送 · 手冲研磨</p>
+          <ul class="summary-list">
+            <li><span>单次原价</span><b id="basePrice">¥ 288</b></li>
+            <li><span>订阅节省</span><b class="save" id="savedPrice">− ¥ 14 / 次</b></li>
+            <li><span>折合每月</span><b id="monthlyPrice">约 ¥ 587</b></li>
+            <li><span>下次烘焙</span><b>11 月 12 日</b></li>
+          </ul>
+          <button class="summary-cta" id="subscribeBtn">
+            <span id="ctaText">确认订阅 · ¥274 / 次</span>
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="summary-foot"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.8 13.4 4v4.2c0 3.1-2.2 5.1-5.4 6-3.2-.9-5.4-2.9-5.4-6V4L8 1.8Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><path d="m5.8 8 1.5 1.5 3-3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>含顺丰冷链运费 · 自动续订，可随时跳过或取消</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" id="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand-line">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1"/>
+            <path d="M8.8 22.6c.8-7.7 6.1-12.3 14.4-13.4-1.1 8.4-6.4 13.1-14.4 13.4Z" fill="currentColor" opacity=".92"/>
+            <path d="M10.6 21.2c3.1-4 6.8-7.1 11.1-9.5" stroke="#0C0806" stroke-width="1.15" stroke-linecap="round"/>
+          </svg>
+          <b>TerraBrew</b>
+        </div>
+        <p>一座庄园，一个批次，<br>一杯有来处的咖啡。</p>
+      </div>
+      <div class="footer-col">
+        <h4>探索 / Explore</h4>
+        <a href="#flavor">风味图谱</a>
+        <a href="#origin">庄园溯源</a>
+        <a href="#certificate">批次凭证</a>
+        <a href="#subscribe">订阅计划</a>
+      </div>
+      <div class="footer-col">
+        <h4>服务 / Service</h4>
+        <a href="#subscribe">配送与周期</a>
+        <a href="#certificate">批次验证</a>
+        <a href="#origin">冲煮建议</a>
+        <a href="mailto:hello@terrabrew.coffee">联系我们</a>
+      </div>
+      <div class="newsletter">
+        <h4>烘焙信号 / Dispatch</h4>
+        <p>每季开仓前，我们会先给名单里的人写一封信。只谈新批次与冲煮，不打扰。</p>
+        <form id="newsletterForm" novalidate>
+          <input type="email" id="newsletterEmail" name="email" placeholder="你的邮箱地址" aria-label="邮箱地址" autocomplete="email">
+          <button type="submit" aria-label="订阅烘焙通知">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+        <div class="newsletter-status" id="newsletterStatus" role="status"></div>
+      </div>
+    </div>
+    <div class="footer-word" aria-hidden="true">TERRABREW</div>
+    <div class="footer-bottom">
+      <div class="fb-left">
+        <span>© 2026 TerraBrew Coffee</span><i></i>
+        <span>Finca El Paraíso · Huila, Colombia</span><i></i>
+        <a href="#top">隐私与条款</a>
+      </div>
+      <span class="footer-coords">2°41′N · 75°19′W · 1,850 M</span>
+      <a href="#top">回到顶部 ↑</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.4" stroke="currentColor" stroke-width="1.2"/><path d="m5.2 8 1.8 1.8 3.8-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <span><b>已预留本季批次</b><span id="toastText">500 g · 每两周 · 手冲研磨</span></span>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (sel, ctx) { return (ctx || document).querySelector(sel); };
+  var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
+
+  /* ---------- Mobile menu ---------- */
+  var menuBtn = $('#menuBtn');
+  var mobilePanel = $('#mobilePanel');
+  function closeMenu() {
+    if (!menuBtn) return;
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', '打开菜单');
+    mobilePanel.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  if (menuBtn) {
+    menuBtn.addEventListener('click', function () {
+      var open = menuBtn.getAttribute('aria-expanded') === 'true';
+      if (open) {
+        closeMenu();
+      } else {
+        menuBtn.setAttribute('aria-expanded', 'true');
+        menuBtn.setAttribute('aria-label', '关闭菜单');
+        mobilePanel.classList.add('open');
+        if (window.innerWidth <= 900) document.body.style.overflow = 'hidden';
+      }
+    });
+    $$('#mobilePanel a').forEach(function (a) { a.addEventListener('click', closeMenu); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
+    window.addEventListener('resize', function () { if (window.innerWidth > 900) closeMenu(); });
+  }
+
+  /* ---------- Scroll reveals ---------- */
+  var revealEls = $$('.reveal');
+  var stepsEl = $('#timelineSteps');
+  if ('IntersectionObserver' in window) {
+    var revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.13, rootMargin: '0px 0px -6% 0px' });
+    revealEls.forEach(function (el) { revealObs.observe(el); });
+
+    if (stepsEl) {
+      var stepsObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            stepsEl.classList.add('in');
+            stepsObs.unobserve(stepsEl);
+          }
+        });
+      }, { threshold: 0.16 });
+      stepsObs.observe(stepsEl);
+    }
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+    if (stepsEl) stepsEl.classList.add('in');
+  }
+
+  /* ---------- Flavor wheel ---------- */
+  var flavors = [
+    {
+      name: '花香', en: 'Floral', score: 8.6, color: '#D9B6BE',
+      quote: '“白花、橙花与一杯刚好的晨雾，轻得几乎像错觉。”',
+      desc: '来自庄园北坡遮阴最深的几行粉红波旁。较低夜温保留了芳香酯，入口不是浓烈的花香，而是一层薄薄的、持续很久的白花气息。',
+      tags: '茉莉 / 橙花 / 白桃', brew: 'V60 · 92°C · 1:16', bars: [78, 72, 84]
+    },
+    {
+      name: '果香', en: 'Fruit', score: 9.2, color: '#BE574E',
+      quote: '“血橙、红李与熟透黑樱桃，明亮的酸甜像清晨第一口山雾。”',
+      desc: '来自庄园东南坡的 12 行粉红波旁。昼夜温差把果糖留在果实里，72 小时厌氧发酵又让酸质变得圆润。它是本季杯测中得分最高的一维。',
+      tags: '血橙 / 红李 / 黑樱桃', brew: 'V60 · 92°C · 1:16', bars: [92, 88, 90]
+    },
+    {
+      name: '酸质', en: 'Acidity', score: 8.4, color: '#D4AC54',
+      quote: '“柑橘皮与青梅的酸，干净、直立，让整杯咖啡亮起来。”',
+      desc: '不是尖锐的酸。它更像剥开一颗血橙时溅出的汁水，有方向、有体积，并在温度下降后转为柔和的苹果酸。',
+      tags: '血橙皮 / 青梅 / 青苹果', brew: 'Chemex · 93°C · 1:17', bars: [86, 64, 82]
+    },
+    {
+      name: '甜感', en: 'Sweetness', score: 8.8, color: '#D28A5A',
+      quote: '“黑糖、甘蔗汁与烤布蕾的尾韵，甜得克制而长久。”',
+      desc: '发酵过程中保留的果胶带来天然甜度，没有添加、没有增味。它在杯中后段出现，与果酸交织，让余韵显得厚实而干净。',
+      tags: '黑糖 / 甘蔗汁 / 烤布蕾', brew: 'Kalita · 91°C · 1:16', bars: [80, 92, 86]
+    },
+    {
+      name: '醇厚', en: 'Body', score: 8.1, color: '#97684A',
+      quote: '“丝绒般的触感，像一块温热、没有负担的可可奶油。”',
+      desc: '1,850 米的高海拔让豆体更紧实，风味物质密度也更高。入口的重量感来自细腻脂质，而非苦涩或过度萃取。',
+      tags: '可可脂 / 奶油 / 糖浆', brew: '聪明杯 · 91°C · 1:15', bars: [81, 74, 85]
+    },
+    {
+      name: '坚果', en: 'Nutty', score: 6.9, color: '#B69C74',
+      quote: '“烤杏仁与榛子，藏在果香背后，安静地托住余韵。”',
+      desc: '不是主导风味，更像背景里的和声。中浅烘焙保留了杏仁皮的微苦，与黑糖甜感一起，让整杯更有骨架。',
+      tags: '烤杏仁 / 榛子 / 杏仁皮', brew: 'V60 · 92°C · 1:16', bars: [69, 70, 76]
+    },
+    {
+      name: '巧克力', en: 'Chocolate', score: 7.6, color: '#6C4832',
+      quote: '“70% 黑巧克力、可可碎与一点点烟熏，深邃但不沉重。”',
+      desc: '在杯温降到 55°C 左右时最明显。它来自豆子本身的烘焙反应，与厌氧发酵产生的果香形成深浅两层。',
+      tags: '黑巧克力 / 可可碎 / 淡烟熏', brew: '爱乐压 · 90°C · 1:14', bars: [76, 82, 88]
+    },
+    {
+      name: '香料', en: 'Spice', score: 6.4, color: '#907A5E',
+      quote: '“肉桂、豆蔻与丁香，在温度降下来之后才慢慢出现。”',
+      desc: '最后才现身的一维。它不属于强烈的香料感，更像庄园厨房里打开一只旧木香料罐时，飘出来的一小段气息。',
+      tags: '肉桂 / 豆蔻 / 丁香', brew: '法压 · 92°C · 1:15', bars: [64, 60, 72]
+    }
+  ];
+
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  var wheel = $('#flavorWheel');
+  var segLayer = $('#wheelSegments');
+  var tickLayer = $('#wheelTicks');
+  var flavorPanel = $('#flavorPanel');
+  var flavorIndexEl = $('#flavorIndex');
+  var flavorFamilyEl = $('#flavorFamily');
+  var flavorTitleEl = $('#flavorTitle');
+  var flavorEnEl = $('#flavorEn');
+  var flavorQuoteEl = $('#flavorQuote');
+  var flavorDescEl = $('#flavorDesc');
+  var flavorTagsEl = $('#flavorTags');
+  var flavorBrewEl = $('#flavorBrew');
+  var wheelNameEl = $('#wheelName');
+  var wheelScoreEl = $('#wheelScore');
+  var wheelCenterNote = $('.center-note');
+  var wheelNote = $('.wheel-note b');
+  var segGroups = [];
+  var activeFlavor = 1;
+  var switchTimer = null;
+
+  function svgEl(tag, attrs) {
+    var el = document.createElementNS(SVG_NS, tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+    return el;
+  }
+  function polar(radius, angleDeg) {
+    var a = angleDeg * Math.PI / 180;
+    return { x: 330 + radius * Math.cos(a), y: 330 + radius * Math.sin(a) };
+  }
+  function annularPath(a0, a1, rOuter, rInner) {
+    var p1 = polar(rOuter, a0), p2 = polar(rOuter, a1);
+    var p3 = polar(rInner, a1), p4 = polar(rInner, a0);
+    var large = (a1 - a0) > 180 ? 1 : 0;
+    return 'M' + p1.x.toFixed(2) + ' ' + p1.y.toFixed(2) +
+      ' A' + rOuter + ' ' + rOuter + ' 0 ' + large + ' 1 ' + p2.x.toFixed(2) + ' ' + p2.y.toFixed(2) +
+      ' L' + p3.x.toFixed(2) + ' ' + p3.y.toFixed(2) +
+      ' A' + rInner + ' ' + rInner + ' 0 ' + large + ' 0 ' + p4.x.toFixed(2) + ' ' + p4.y.toFixed(2) + ' Z';
+  }
+
+  function buildWheel() {
+    if (!segLayer) return;
+    var count = flavors.length;
+    var step = 360 / count;
+    var gap = 2.8;
+    var outerR = 232;
+    var innerR = 103;
+    flavors.forEach(function (data, i) {
+      var start = -90 + i * step + gap / 2;
+      var end = -90 + (i + 1) * step - gap / 2;
+      var mid = -90 + (i + 0.5) * step;
+      var g = svgEl('g', {
+        'class': 'seg',
+        'data-index': i,
+        'role': 'button',
+        'tabindex': '0',
+        'aria-label': data.name + '，' + data.score + ' 分',
+        'aria-pressed': 'false'
+      });
+      var path = svgEl('path', { d: annularPath(start, end, outerR, innerR), fill: data.color });
+      g.appendChild(path);
+
+      var labelPoint = polar(268, mid);
+      var anchor = 'middle';
+      var label = svgEl('text', {
+        x: labelPoint.x.toFixed(2), y: (labelPoint.y - 2).toFixed(2),
+        'text-anchor': anchor, 'class': 'seg-label'
+      });
+      label.textContent = data.name;
+      var score = svgEl('text', {
+        x: labelPoint.x.toFixed(2), y: (labelPoint.y + 15).toFixed(2),
+        'text-anchor': anchor, 'class': 'seg-score'
+      });
+      score.textContent = data.score.toFixed(1) + ' / 10';
+      g.appendChild(label);
+      g.appendChild(score);
+      g._mid = mid;
+
+      g.addEventListener('click', function () { selectFlavor(i); });
+      g.addEventListener('keydown', function (e) {
+        var next = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % count;
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (i - 1 + count) % count;
+        if (e.key === 'Home') next = 0;
+        if (e.key === 'End') next = count - 1;
+        if (next !== null) {
+          e.preventDefault();
+          selectFlavor(next);
+          segGroups[next].focus();
+        } else if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectFlavor(i);
+        }
+      });
+      segLayer.appendChild(g);
+      segGroups.push(g);
+    });
+
+    // Fine measuring ticks around the rim
+    for (var t = 0; t < 48; t++) {
+      var angle = t * 7.5;
+      var major = t % 6 === 0;
+      var p1 = polar(major ? 240 : 244.5, angle);
+      var p2 = polar(251, angle);
+      tickLayer.appendChild(svgEl('line', {
+        x1: p1.x.toFixed(2), y1: p1.y.toFixed(2), x2: p2.x.toFixed(2), y2: p2.y.toFixed(2),
+        'class': major ? 'tick major' : 'tick'
+      }));
+    }
+  }
+
+  function applyFlavor(index) {
+    var data = flavors[index];
+    flavorIndexEl.textContent = ('0' + (index + 1)).slice(-2);
+    flavorFamilyEl.textContent = data.en + ' · Estate note';
+    flavorTitleEl.textContent = data.name;
+    flavorEnEl.textContent = data.en.toUpperCase() + ' · ' + data.score.toFixed(1) + ' / 10';
+    flavorQuoteEl.textContent = data.quote;
+    flavorDescEl.textContent = data.desc;
+    flavorTagsEl.textContent = data.tags;
+    flavorBrewEl.textContent = data.brew;
+    for (var b = 0; b < 3; b++) {
+      var val = data.bars[b];
+      $('#bar' + (b + 1) + 'v').textContent = val;
+      $('#bar' + (b + 1)).style.setProperty('--v', (val / 100).toFixed(2));
+    }
+    wheelNameEl.textContent = data.name;
+    wheelScoreEl.textContent = data.score.toFixed(1);
+    wheelCenterNote.textContent = data.en.toUpperCase() + ' · ESTATE NOTE';
+    wheelNote.innerHTML = data.name + ' / ' + data.en;
+  }
+
+  function selectFlavor(index, initial) {
+    if (!segGroups.length) return;
+    activeFlavor = index;
+    segGroups.forEach(function (g, j) {
+      var on = j === index;
+      g.classList.toggle('is-active', on);
+      g.classList.toggle('is-dim', !on);
+      g.setAttribute('aria-pressed', on ? 'true' : 'false');
+      var rad = g._mid * Math.PI / 180;
+      g.style.transform = on ? 'translate(' + (Math.cos(rad) * 4.5).toFixed(2) + 'px,' + (Math.sin(rad) * 4.5).toFixed(2) + 'px)' : 'translate(0,0)';
+    });
+    if (initial) {
+      applyFlavor(index);
+      return;
+    }
+    flavorPanel.classList.add('is-switching');
+    clearTimeout(switchTimer);
+    switchTimer = setTimeout(function () {
+      applyFlavor(index);
+      flavorPanel.classList.remove('is-switching');
+    }, 180);
+  }
+
+  if (wheel) {
+    buildWheel();
+    selectFlavor(activeFlavor, true);
+  }
+
+  /* ---------- Subscription configurator ---------- */
+  var configurator = $('.configurator');
+  var priceValue = $('#priceValue');
+  var perGram = $('#perGram');
+  var summaryDesc = $('#summaryDesc');
+  var basePriceEl = $('#basePrice');
+  var savedPriceEl = $('#savedPrice');
+  var monthlyPriceEl = $('#monthlyPrice');
+  var ctaText = $('#ctaText');
+  var toastText = $('#toastText');
+  var toastEl = $('#toast');
+  var toastTimer = null;
+  var lastPrice = 274;
+
+  function choices(group) {
+    return $$('.choice[data-group="' + group + '"]', configurator);
+  }
+  function selected(group) {
+    return $('.choice[data-group="' + group + '"][aria-pressed="true"]', configurator);
+  }
+  function fmt(n) { return n.toLocaleString('zh-CN'); }
+  function money(n) { return '¥' + fmt(n); }
+
+  function renderConfig(pulse) {
+    if (!configurator) return;
+    var w = selected('weight');
+    var f = selected('frequency');
+    var g = selected('grind');
+    if (!w || !f || !g) return;
+    var base = Number(w.getAttribute('data-price'));
+    var discount = Number(f.getAttribute('data-discount'));
+    var days = Number(f.getAttribute('data-days'));
+    var grams = Number(w.getAttribute('data-value'));
+    var price = Math.round(base * discount);
+    var saved = base - price;
+    var monthly = Math.round(price * (30 / days));
+    var gramPrice = price / grams;
+
+    if (pulse && price !== lastPrice) {
+      priceValue.classList.add('bump');
+      setTimeout(function () { priceValue.classList.remove('bump'); }, 220);
+    }
+    lastPrice = price;
+
+    priceValue.textContent = fmt(price);
+    perGram.textContent = '¥' + gramPrice.toFixed(2);
+    summaryDesc.innerHTML = '<b>' + w.getAttribute('data-label') + '</b> · ' + f.getAttribute('data-label') + ' · ' + g.getAttribute('data-label');
+    basePriceEl.textContent = '¥ ' + fmt(base);
+    savedPriceEl.textContent = saved > 0 ? '− ¥ ' + fmt(saved) + ' / 次' : '标准价格';
+    monthlyPriceEl.textContent = '约 ¥ ' + fmt(monthly);
+    ctaText.textContent = '确认订阅 · ¥' + fmt(price) + ' / 次';
+    toastText.textContent = w.getAttribute('data-label') + ' · ' + f.getAttribute('data-short') + ' · ' + g.getAttribute('data-label');
+  }
+
+  if (configurator) {
+    configurator.addEventListener('click', function (e) {
+      var btn = e.target.closest('.choice');
+      if (!btn) return;
+      var group = btn.getAttribute('data-group');
+      choices(group).forEach(function (item) { item.setAttribute('aria-pressed', item === btn ? 'true' : 'false'); });
+      renderConfig(true);
+    });
+    renderConfig(false);
+  }
+
+  function showToast(message) {
+    if (!toastEl) return;
+    if (message) toastText.textContent = message;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 4600);
+  }
+
+  var subscribeBtn = $('#subscribeBtn');
+  if (subscribeBtn) {
+    subscribeBtn.addEventListener('click', function () {
+      var w = selected('weight');
+      var f = selected('frequency');
+      var g = selected('grind');
+      if (!w || !f || !g) return;
+      showToast(w.getAttribute('data-label') + ' · ' + f.getAttribute('data-short') + ' · ' + g.getAttribute('data-label') + '，已为你保留 24 小时。');
+    });
+  }
+
+  /* ---------- Newsletter ---------- */
+  var newsletterForm = $('#newsletterForm');
+  var newsletterEmail = $('#newsletterEmail');
+  var newsletterStatus = $('#newsletterStatus');
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var value = newsletterEmail.value.trim();
+      var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+      if (!valid) {
+        newsletterStatus.textContent = '请填写一个有效的邮箱地址。';
+        newsletterEmail.focus();
+        return;
+      }
+      newsletterStatus.textContent = '已加入名单，下一封烘焙信号会先寄给你。';
+      newsletterForm.reset();
+    });
+  }
+
+  /* ---------- Smooth anchor offset for sticky header ---------- */
+  $$('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      var id = link.getAttribute('href');
+      if (!id || id === '#') return;
+      var target = document.querySelector(id);
+      if (!target) return;
+      // Let native smooth scrolling handle it; the offset comes from scroll-margin-top in CSS.
+      closeMenu();
+    });
+  });
+})();
+</script>
+</body>
+</html>

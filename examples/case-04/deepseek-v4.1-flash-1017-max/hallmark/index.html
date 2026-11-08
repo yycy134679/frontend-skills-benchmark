@@ -1,0 +1,1005 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Orvo：把想法做成能上线的产品</title>
+<meta name="description" content="Orvo 用对话生成网站、Web 应用和移动应用，专家陪你从第一版改到上线，按月订阅，修改次数不设上限。">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · shape: Marquee Hero · genre: modern-minimal · theme: Coral (deal 3/3, seed orvo-11e7) · job: sign up · draw: orvo-11e7
+ * hero: Settled · nav: banner over a retracting bar · footer: statement · imagery: product built in hero and process sheet · signature: one sentence becomes a live site sheet on the desk
+ * axes: light/grotesk-sans/warm · posture: restrained · type: PingFang SC (single file, no webfont) · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P5 H4 E4 S5 R4 V4 · weakest: E, the desk collage could read busy; reduced it to two sheets and one pressed stamp */
+/* Hallmark · waive 1 · the single-file Orvo page cannot load General Sans, so the OS Chinese grotesk PingFang SC carries display and body · the constraint is no webfont at all */
+/* Hallmark · dismissed F4 · the cotton surfaces are Coral's neutral card controls, not a second primary: ink is the only filled primary, and the hero's two actions read apart by fill, cast and label weight */
+/* Hallmark · hero-review: none · hero settled in thread (card visibility, mobile stacking) · finish-review: subagent · 4 findings · 4 resolved · gap: real product captures; the desk mock stands in */
+:root {
+  color-scheme: light;
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
+  --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); --text-display: clamp(2.75rem, 5.2vw + 0.3rem, 5.125rem);
+  --text-section: clamp(2rem, 2.5vw + 1rem, 3.5rem); --text-title: clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem); --text-lead: clamp(1.125rem, 0.35vw + 1rem, 1.375rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --color-error: oklch(52% 0.19 27); --color-success: oklch(50% 0.12 150);
+  --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
+  --banner-height: 32px; --nav-height: 74px; --head-height: 106px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+  --color-paper: oklch(97% 0.006 55); --color-paper-2: oklch(94.5% 0.007 55); --color-paper-3: oklch(91.5% 0.009 55);
+  --color-ink: oklch(21% 0.012 38); --color-ink-2: oklch(29% 0.013 40); --color-muted: oklch(47% 0.013 45);
+  --color-rule: oklch(87% 0.009 55); --color-rule-2: oklch(81% 0.011 55);
+  --color-accent: oklch(74% 0.125 30); --color-accent-ink: oklch(21% 0.012 38); --color-accent-2: oklch(54% 0.165 29); --color-focus: oklch(54% 0.17 30);
+  --color-cotton: oklch(98.8% 0.0045 80); --color-desk: oklch(94.3% 0.008 64); --color-print: oklch(23% 0.012 38);
+  --color-board: oklch(22% 0.011 40); --color-board-type: oklch(96.5% 0.006 70); --color-board-muted: oklch(76% 0.012 60); --color-paid: oklch(55.5% 0.15 33); --color-scrim: oklch(21% 0.012 38 / 0.4);
+  --shade: 32% 0.03 50; --lit: 100% 0.005 80; --deep: 7% 0.01 40;
+  --font-display: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", ui-sans-serif, sans-serif;
+  --font-body: var(--font-display);
+  --font-outlier: ui-monospace, "SFMono-Regular", "Cascadia Mono", "Roboto Mono", monospace;
+  --radius-card: 8px; --radius-input: 6px; --radius-pill: 999px; --radius-stock: 8px; --rule-hair: 1px;
+  --shadow-card: 0 1px 2px oklch(20% 0.01 35 / 0.05);
+  --edge-stock: inset 0 1px 0 oklch(var(--lit) / 0.9), inset 0 -1px 0 oklch(var(--shade) / 0.07), 0 0 0 0.5px oklch(var(--shade) / 0.22), 0 1px 0 oklch(var(--shade) / 0.12);
+  --cast-stock: 6px 5px 10px -6px oklch(var(--shade) / 0.3); --cast-stock-lift: 12px 10px 18px -8px oklch(var(--shade) / 0.3);
+  --press-groove: inset 1px 1.5px 2px oklch(var(--shade) / 0.16), inset -1px -1px 0 oklch(var(--lit) / 0.9), 0 0 0 0.5px oklch(var(--shade) / 0.2);
+  --tracking-display: -0.03em; --display-weight: 600;
+  --tex-cotton: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.021' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23c)' opacity='.055'/%3E%3C/svg%3E");
+  --tex-desk: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.014' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23d)' opacity='.12'/%3E%3C/svg%3E");
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { scrollbar-color: var(--color-muted) var(--color-paper); scroll-padding-top: calc(var(--nav-height) + var(--space-lg)); }
+body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-md); line-height: 1.55; -webkit-font-smoothing: antialiased; caret-color: var(--color-accent); }
+::selection { background: color-mix(in oklab, var(--color-accent) 22%, transparent); color: var(--color-ink); }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.16em; }
+h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: var(--display-weight); font-synthesis: none; letter-spacing: var(--tracking-display); line-height: 1.05; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+h1 { max-width: 20ch; font-size: var(--text-display); }
+h2 { max-width: 30ch; font-size: var(--text-section); }
+h3 { max-width: 40ch; font-size: var(--text-title); line-height: 1.2; }
+.lead { font-size: var(--text-lead); line-height: 1.45; max-width: 52ch; }
+p { margin: 0; text-wrap: pretty; }
+p:not([class]) { max-width: 65ch; }
+img, video { max-width: 100%; height: auto; display: block; }
+svg { display: block; }
+[hidden] { display: none !important; }
+button, input, select, textarea { font: inherit; }
+.container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); box-sizing: border-box; }
+.num, .figure, td.num, .price__amount, .case__figure, .proof__value { font-variant-numeric: tabular-nums; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.ink-filter { position: absolute; width: 0; height: 0; overflow: hidden; }
+.skip { position: absolute; left: var(--space-md); top: calc(-1 * var(--space-3xl)); z-index: var(--z-toast); padding: var(--space-xs) var(--space-md); background: var(--color-ink); color: var(--color-paper); }
+.skip:focus { top: var(--space-md); }
+.stock { background-color: var(--color-cotton); background-image: linear-gradient(100deg, var(--color-cotton), transparent 45%), var(--tex-cotton); color: var(--color-print); border-radius: var(--radius-card); box-shadow: var(--edge-stock), var(--cast-stock); }
+.stamp { display: inline-block; color: var(--color-paid); border: 1.5px solid currentColor; border-radius: 2px; padding: var(--space-3xs) var(--space-xs); font-size: var(--text-xs); font-weight: 600; line-height: 1.2; transform: rotate(-1.5deg); opacity: 0.94; filter: url(#pressed-ink); }
+.tag { display: inline-block; padding: var(--space-3xs) var(--space-xs); border: 1px solid var(--color-rule-2); border-radius: 3px; font-size: var(--text-xs); color: var(--color-muted); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs); min-height: 48px; padding: 0 var(--space-lg); border: 0; border-radius: var(--radius-stock); font: 500 var(--text-md)/1 var(--font-body); white-space: nowrap; text-decoration: none; cursor: pointer; transition: transform var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out); }
+.btn--primary { background-color: var(--color-board); color: var(--color-board-type); text-shadow: 0 -0.75px 0 var(--color-ink); box-shadow: var(--cast-stock); }
+.btn--primary:hover { background-color: var(--color-ink); transform: translateY(-1px); box-shadow: var(--cast-stock-lift); }
+.btn--primary:active { transform: translateY(1px); }
+.btn--quiet { background-color: var(--color-cotton); background-image: var(--tex-cotton); color: var(--color-ink); border: 1px solid color-mix(in oklab, var(--color-ink) 14%, transparent); text-shadow: none; box-shadow: var(--edge-stock), var(--cast-stock); }
+.btn--quiet:hover { background-color: var(--color-paper); transform: translateY(-1px); box-shadow: var(--edge-stock), var(--cast-stock-lift); }
+.btn--quiet:active { transform: translateY(1px); }
+.btn--nav { min-height: 40px; padding-inline: var(--space-md); background-color: var(--color-cotton); background-image: var(--tex-cotton); color: var(--color-ink); border: 1px solid color-mix(in oklab, var(--color-ink) 14%, transparent); text-shadow: none; box-shadow: var(--edge-stock), var(--cast-stock); }
+.btn--nav:hover { background-color: var(--color-paper); box-shadow: var(--edge-stock), var(--cast-stock-lift); }
+.btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; transform: none; }
+.btn[aria-busy="true"] { cursor: progress; }
+.text-button { padding: 0; border: 0; background: none; color: var(--color-ink-2); font: 500 var(--text-sm)/1.4 var(--font-body); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; cursor: pointer; }
+.text-button:hover { color: var(--color-accent-2); }
+.text-button:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.banner { min-height: var(--banner-height); background: var(--color-paper-2); border-bottom: 1px solid var(--color-rule); color: var(--color-ink-2); }
+.banner__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); min-height: var(--banner-height); font-size: var(--text-xs); }
+.banner__inner a { color: var(--color-ink); text-decoration-color: var(--color-accent-2); }
+.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: var(--color-paper); border-bottom: 1px solid var(--color-rule); }
+.nav__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); min-height: var(--nav-height); }
+.brand { display: inline-flex; align-items: baseline; gap: var(--space-sm); color: var(--color-ink); text-decoration: none; }
+.brand__mark { font-size: var(--text-xl); font-weight: 600; letter-spacing: -0.04em; line-height: 1; }
+.brand__sub { font-size: var(--text-xs); color: var(--color-muted); }
+.nav__links { display: flex; align-items: center; gap: var(--space-lg); }
+.nav__links a { font-size: var(--text-sm); color: var(--color-ink-2); text-decoration: none; }
+.nav__links a:hover { color: var(--color-accent-2); text-decoration: underline; }
+.nav__actions { display: flex; align-items: center; gap: var(--space-sm); }
+.nav__toggle { display: none; }
+.nav__panel { display: none; position: absolute; left: 0; right: 0; top: 100%; z-index: var(--z-dropdown); background: var(--color-paper); border-bottom: 1px solid var(--color-rule); padding: var(--space-md) var(--gutter) var(--space-lg); }
+.nav__panel.is-open { display: block; }
+.nav__panel a { display: block; padding-block: var(--space-sm); font-size: var(--text-md); text-decoration: none; }
+.nav__panel button { display: block; margin-top: var(--space-sm); }
+.hero { position: relative; }
+.hero__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap-columns); align-items: center; min-height: calc(100svh - var(--head-height)); padding-block: var(--space-2xl); }
+.hero__copy { grid-column: 1 / span 6; align-self: center; }
+.hero h1 { font-size: var(--text-display); line-height: 1.02; }
+.hero__copy .lead { margin-top: var(--space-lg); max-width: 28ch; color: var(--color-ink-2); }
+.hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm); margin-top: var(--space-xl); }
+.hero__art { grid-column: 7 / span 6; position: relative; height: clamp(460px, 66svh, 610px); border-radius: var(--radius-card); background-color: var(--color-desk); background-image: radial-gradient(90% 120% at 0% 30%, var(--color-cotton), transparent 62%), var(--tex-desk); outline: 1px solid color-mix(in oklab, var(--color-ink) 8%, transparent); outline-offset: -1px; overflow: hidden; }
+.hero__art[data-slot] { background-color: var(--color-desk); }
+.hero-card { position: absolute; will-change: auto; }
+.hero-prompt { top: 3%; right: 4%; width: 48%; padding: var(--space-lg); transform: rotate(-2.5deg); z-index: 2; }
+.hero-site { right: 6%; bottom: 6%; width: 78%; padding: var(--space-lg); transform: rotate(1.4deg); z-index: 1; }
+.hero__art .sample-note { position: absolute; left: 6%; bottom: 4%; z-index: 3; font-size: var(--text-xs); color: var(--color-ink-2); }
+.prompt-card__top, .site-sheet__foot, .prompt-card__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); }
+.prompt-card__top { font-size: var(--text-xs); color: var(--color-muted); }
+.prompt-card__label { margin-top: var(--space-lg); font-size: var(--text-xs); color: var(--color-muted); }
+.prompt-card__text { margin-top: var(--space-xs); font-size: var(--text-sm); line-height: 1.55; }
+.prompt-card__foot { margin-top: var(--space-lg); font-size: var(--text-xs); color: var(--color-muted); }
+.mock-press { display: inline-flex; align-items: center; justify-content: center; min-height: 32px; padding: 0 var(--space-md); border-radius: var(--radius-input); background: var(--color-board); color: var(--color-board-type); font-size: var(--text-xs); font-weight: 500; }
+.site-sheet__top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-sm); }
+.site-sheet__name { font-size: var(--text-md); font-weight: 600; letter-spacing: -0.02em; }
+.site-sheet__url { font-family: var(--font-outlier); font-size: var(--text-xs); color: var(--color-muted); }
+.site-sheet__kicker { margin-top: var(--space-lg); font-size: var(--text-xs); color: var(--color-muted); }
+.site-title { margin-top: var(--space-xs); font-size: clamp(1.6rem, 2.2vw, 2.15rem); font-weight: 600; letter-spacing: -0.04em; line-height: 1.02; }
+.site-sheet__cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); gap: var(--space-md); margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid var(--color-rule); }
+.mini-label { font-size: var(--text-xs); color: var(--color-muted); }
+.site-list { list-style: none; margin: var(--space-xs) 0 0; padding: 0; font-size: var(--text-xs); }
+.site-list li { display: flex; justify-content: space-between; gap: var(--space-xs); padding-block: var(--space-3xs); border-bottom: 1px solid var(--color-rule); }
+.site-list li span { color: var(--color-muted); }
+.mini-strong { margin-top: var(--space-xs); font-size: var(--text-sm); font-weight: 600; }
+.mini-text { font-size: var(--text-xs); color: var(--color-muted); }
+.mini-book { display: inline-block; margin-top: var(--space-sm); padding: var(--space-2xs) var(--space-sm); border: 1px solid var(--color-ink); border-radius: var(--radius-input); font-size: var(--text-xs); }
+.site-sheet__foot { margin-top: var(--space-lg); padding-top: var(--space-sm); border-top: 1px solid var(--color-rule); font-size: var(--text-xs); color: var(--color-muted); }
+@keyframes settle { from { transform: translateY(14px) rotate(var(--rot, 0deg)); } to { transform: translateY(0) rotate(var(--rot, 0deg)); } }
+.js .hero-card { animation: settle var(--dur-long) var(--ease-out) forwards; }
+.js .hero-prompt { animation-delay: 60ms; }
+.js .hero-site { animation-delay: 140ms; }
+.section { padding-block: var(--section-gap); }
+.section--tight { padding-block: var(--section-gap-s); }
+.section--paper { background: var(--color-paper-2); }
+.section-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gap-columns); align-items: end; margin-bottom: var(--space-2xl); }
+.section-head h2 { max-width: 22ch; }
+.section-head .lead { justify-self: end; max-width: 34ch; color: var(--color-ink-2); }
+.section-head--single { grid-template-columns: minmax(0, 8fr); }
+.section-head--single .lead { justify-self: start; margin-top: var(--space-md); }
+.process__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-3xl); align-items: start; }
+.process__art-wrap { position: sticky; top: calc(var(--nav-height) + var(--space-lg)); }
+.process__art { min-height: 0; padding: var(--space-lg); }
+.art-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-sm); padding-bottom: var(--space-md); border-bottom: 1px solid var(--color-rule); font-size: var(--text-xs); color: var(--color-muted); }
+.art-head strong { font-size: var(--text-sm); color: var(--color-print); font-weight: 600; }
+.art-body { display: flex; flex-direction: column; min-height: 360px; padding-top: var(--space-lg); }
+.art-state { display: none; }
+.art-state.is-active { display: flex; flex-direction: column; flex: 1; }
+html:not(.js) .art-state:first-child { display: flex; }
+.art-label { font-size: var(--text-xs); color: var(--color-muted); }
+.art-prompt { margin-top: var(--space-sm); padding: var(--space-md); border: 1px solid var(--color-rule-2); border-radius: var(--radius-input); background: var(--color-paper); font-size: var(--text-md); line-height: 1.5; }
+.art-chips { display: flex; flex-wrap: wrap; gap: var(--space-2xs); list-style: none; margin: var(--space-md) 0 0; padding: 0; }
+.art-chips li { padding: var(--space-2xs) var(--space-sm); border: 1px solid var(--color-rule-2); border-radius: var(--radius-pill); background: var(--color-cotton); color: var(--color-ink-2); font-size: var(--text-xs); }
+.art-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid var(--color-rule); font-size: var(--text-xs); color: var(--color-muted); }
+.art-state .art-foot { margin-top: auto; }
+.art-state .stamp { align-self: flex-start; }
+.art-site-title { margin-top: var(--space-lg); font-size: var(--text-2xl); font-weight: 600; letter-spacing: -0.04em; line-height: 1.05; }
+.art-rows { margin-top: var(--space-lg); border-top: 1px solid var(--color-rule); }
+.art-row { display: flex; justify-content: space-between; gap: var(--space-md); padding-block: var(--space-sm); border-bottom: 1px solid var(--color-rule); font-size: var(--text-sm); }
+.art-row span { color: var(--color-muted); }
+.chat { display: grid; gap: var(--space-sm); margin-top: var(--space-md); }
+.chat__bubble { max-width: 90%; padding: var(--space-sm) var(--space-md); border-radius: var(--radius-input); font-size: var(--text-sm); line-height: 1.5; }
+.chat__bubble--user { justify-self: end; background: var(--color-paper-3); color: var(--color-print); }
+.chat__bubble--orvo { justify-self: start; border: 1px solid var(--color-rule-2); background: var(--color-cotton); }
+.chat__name { display: block; margin-bottom: var(--space-3xs); font-size: var(--text-xs); color: var(--color-muted); }
+.checklist { list-style: none; margin: var(--space-md) 0 0; padding: 0; border-top: 1px solid var(--color-rule); }
+.checklist li { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); padding-block: var(--space-sm); border-bottom: 1px solid var(--color-rule); font-size: var(--text-sm); }
+.checklist b { font-weight: 600; color: var(--color-ink-2); }
+.art-publish { padding-top: var(--space-lg); }
+.art-url { margin-top: var(--space-sm); font-family: var(--font-outlier); font-size: var(--text-lg); overflow-wrap: anywhere; }
+.art-publish .stamp { margin-top: var(--space-xl); font-size: var(--text-lg); padding: var(--space-xs) var(--space-md); }
+.art-note { margin-top: var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); }
+.process__caption { margin-top: var(--space-sm); font-size: var(--text-xs); color: var(--color-muted); }
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+.step { display: grid; grid-template-columns: minmax(0, 2.5rem) minmax(0, 1fr); gap: var(--space-md); min-height: 290px; padding-block: var(--space-xl); border-top: 1px solid var(--color-rule); }
+.step:first-child { border-top-color: var(--color-rule-2); }
+.step__num { font-family: var(--font-outlier); font-size: var(--text-sm); color: var(--color-muted); padding-top: var(--space-3xs); }
+.step h3 { max-width: 18ch; }
+.step p { margin-top: var(--space-sm); max-width: 36ch; color: var(--color-ink-2); }
+.step.is-active .step__num { color: var(--color-ink); font-weight: 600; }
+.step.is-active h3 { color: var(--color-ink); }
+.step.is-active { border-top-color: var(--color-ink-2); }
+.outputs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 var(--gap-columns); margin: var(--space-2xl) 0 0; border-top: 1px solid var(--color-rule-2); }
+.outputs > div { padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-rule); }
+.outputs dt { font-size: var(--text-sm); color: var(--color-muted); }
+.outputs dd { margin: var(--space-xs) 0 0; font-size: var(--text-md); color: var(--color-ink); }
+.expert__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--space-3xl); align-items: start; }
+.expert__copy .lead { margin-top: var(--space-lg); color: var(--color-ink-2); }
+.expert__copy p { margin-top: var(--space-md); max-width: 52ch; color: var(--color-ink-2); }
+.expert__plans { margin: var(--space-xl) 0 0; border-top: 1px solid var(--color-rule); }
+.expert__plans > div { display: grid; grid-template-columns: minmax(0, 4rem) minmax(0, 1fr); gap: var(--space-md); padding-block: var(--space-md); border-bottom: 1px solid var(--color-rule); }
+.expert__plans dt { font-weight: 600; }
+.expert__plans dd { margin: 0; color: var(--color-ink-2); }
+.expert-card { padding: var(--space-lg); }
+.expert-card__top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); padding-bottom: var(--space-md); border-bottom: 1px solid var(--color-rule); font-size: var(--text-sm); }
+.expert-card h3 { margin-top: var(--space-lg); max-width: 16ch; }
+.expert-card > p { margin-top: var(--space-sm); font-size: var(--text-sm); color: var(--color-muted); }
+.case-figures { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-columns); margin-bottom: var(--space-2xl); border-top: 1px solid var(--color-rule-2); }
+.proof { padding-top: var(--space-md); }
+.proof__value { display: block; font-family: var(--font-outlier); font-size: var(--text-display-s); line-height: 1; letter-spacing: -0.04em; }
+.proof__label { display: block; margin-top: var(--space-sm); max-width: 30ch; font-size: var(--text-sm); color: var(--color-muted); }
+.cases__list { border-top: 1px solid var(--color-rule-2); }
+.case { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) minmax(0, 3fr); gap: var(--gap-columns); padding-block: var(--space-xl); border-bottom: 1px solid var(--color-rule); }
+.case h3 { font-size: var(--text-lg); }
+.case__meta { margin-top: var(--space-xs); font-size: var(--text-sm); color: var(--color-muted); }
+.case blockquote { margin: 0; font-size: var(--text-lead); line-height: 1.5; text-indent: -0.35em; }
+.case__result { align-self: end; font-size: var(--text-sm); color: var(--color-muted); }
+.case__figure { display: block; font-family: var(--font-outlier); font-size: var(--text-2xl); line-height: 1; color: var(--color-ink); }
+.case__figure + span { display: block; margin-top: var(--space-xs); }
+.templates__head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-xl); margin-bottom: var(--space-xl); }
+.filters { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-bottom: var(--space-md); }
+.filter { min-height: 40px; padding: 0 var(--space-md); border: 1px solid color-mix(in oklab, var(--color-ink) 14%, transparent); border-radius: var(--radius-input); background-color: var(--color-cotton); background-image: var(--tex-cotton); box-shadow: var(--edge-stock); color: var(--color-ink-2); font: 500 var(--text-sm)/1 var(--font-body); cursor: pointer; transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out); }
+.filter:hover { background-color: var(--color-paper); }
+.filter[aria-pressed="true"] { background-color: var(--color-ink); background-image: none; border-color: var(--color-ink); color: var(--color-paper); box-shadow: var(--cast-stock); }
+.filter:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.filter-status { min-height: 1lh; font-size: var(--text-sm); color: var(--color-muted); }
+.template-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-2xl); list-style: none; margin: var(--space-md) 0 0; padding: 0; }
+.tpl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2xs) var(--space-md); min-height: 90px; padding-block: var(--space-md); border-top: 1px solid var(--color-rule); text-decoration: none; align-content: center; }
+.tpl:hover .tpl__name { color: var(--color-accent-2); text-decoration: underline; }
+.tpl:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.tpl__name { font-size: var(--text-lg); font-weight: 600; letter-spacing: -0.02em; }
+.tpl__uses { font-family: var(--font-outlier); font-size: var(--text-sm); color: var(--color-ink-2); align-self: center; }
+.tpl__meta { grid-column: 1 / -1; font-size: var(--text-sm); color: var(--color-muted); }
+.tpl__cat { color: var(--color-ink-2); }
+.templates__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid var(--color-rule-2); }
+.pricing { background: var(--color-board); color: var(--color-board-type); padding-block: var(--section-gap-l); }
+.pricing .section-head .lead { color: var(--color-board-muted); }
+.pricing__top { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-xl); margin-bottom: var(--space-2xl); }
+.pricing__top .section-head { margin-bottom: 0; flex: 1; }
+.billing { border: 1px solid color-mix(in oklab, var(--color-board-type) 28%, transparent); border-radius: var(--radius-input); padding: var(--space-2xs); }
+.billing legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.billing__options { display: flex; gap: var(--space-2xs); }
+.billing input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.billing label { display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--space-md); border-radius: 4px; color: var(--color-board-muted); font-size: var(--text-sm); cursor: pointer; white-space: nowrap; }
+.billing input:checked + label { background: var(--color-board-type); color: var(--color-board); font-weight: 500; }
+.billing input:focus-visible + label { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.billing label span { margin-left: var(--space-2xs); color: inherit; opacity: 0.8; }
+.plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-columns); }
+.plan { display: flex; flex-direction: column; padding-top: var(--space-lg); border-top: 1px solid color-mix(in oklab, var(--color-board-type) 28%, transparent); }
+.plan--pro { border-top-color: var(--color-board-type); }
+.plan__name { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-sm); font-size: var(--text-lg); font-weight: 600; }
+.plan__name span { font-size: var(--text-xs); font-weight: 400; color: var(--color-board-muted); }
+.plan__for { margin-top: var(--space-xs); font-size: var(--text-sm); color: var(--color-board-muted); }
+.price { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-xs); margin-top: var(--space-xl); }
+.price__amount { font-family: var(--font-body); font-weight: 600; font-size: clamp(2.4rem, 4vw, 3.6rem); font-variant-numeric: tabular-nums; line-height: 0.9; letter-spacing: -0.05em; }
+.price__unit { font-size: var(--text-sm); color: var(--color-board-muted); }
+.price__note { margin-top: var(--space-xs); min-height: 1lh; font-size: var(--text-sm); color: var(--color-board-muted); }
+.plan__list { list-style: none; margin: var(--space-xl) 0 var(--space-xl); padding: 0; border-top: 1px solid color-mix(in oklab, var(--color-board-type) 20%, transparent); }
+.plan__list li { padding-block: var(--space-sm); border-bottom: 1px solid color-mix(in oklab, var(--color-board-type) 20%, transparent); font-size: var(--text-sm); }
+.plan__cta { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; margin-top: auto; padding: 0 var(--space-lg); border: 1px solid color-mix(in oklab, var(--color-board-type) 30%, transparent); border-radius: var(--radius-input); background: color-mix(in oklab, var(--color-board-type) 10%, transparent); box-shadow: inset 0 1px 0 color-mix(in oklab, var(--color-board-type) 16%, transparent); color: var(--color-board-type); font-size: var(--text-md); font-weight: 500; text-decoration: none; transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out); }
+.plan__cta:hover { background: var(--color-board-type); color: var(--color-board); }
+.plan__cta:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.pricing__note { margin-top: var(--space-lg); font-size: var(--text-xs); color: var(--color-board-muted); }
+.faq__grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: start; }
+.faq__grid .lead { margin-top: var(--space-md); color: var(--color-ink-2); }
+.faq__ask { margin-top: var(--space-xl); }
+.faq__list { border-top: 1px solid var(--color-rule-2); }
+.faq__item { border-bottom: 1px solid var(--color-rule); }
+.faq__item summary { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); padding-block: var(--space-lg); cursor: pointer; list-style: none; font-size: var(--text-lg); font-weight: 500; }
+.faq__item summary::-webkit-details-marker { display: none; }
+.faq__item summary::after { content: "+"; flex: 0 0 auto; font-family: var(--font-outlier); color: var(--color-muted); transition: transform var(--dur-short) var(--ease-out); }
+.faq__item[open] summary::after { transform: rotate(45deg); }
+.faq__item summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.faq__item p { max-width: 65ch; padding-bottom: var(--space-lg); color: var(--color-ink-2); }
+.start { background: var(--color-paper-2); padding-block: var(--section-gap-l); }
+.start__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-3xl); align-items: start; }
+.start__copy .lead { margin-top: var(--space-lg); color: var(--color-ink-2); }
+.start__copy .text-button { margin-top: var(--space-xl); display: inline-block; }
+.idea-form { padding: var(--space-lg); }
+.idea-form label { display: block; margin-bottom: var(--space-xs); font-size: var(--text-sm); font-weight: 500; }
+.idea-form textarea { width: 100%; min-height: 7rem; padding: var(--space-md); border: 1px solid var(--color-muted); border-radius: var(--radius-input); background: var(--color-paper); color: var(--color-ink); outline: 2px solid transparent; outline-offset: -3px; line-height: 1.5; resize: vertical; }
+.idea-form textarea:hover { background: var(--color-cotton); }
+.idea-form textarea:focus-visible { outline-color: var(--color-focus); }
+.idea-form textarea[aria-invalid="true"] { border-color: var(--color-error); }
+.idea-form__row { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-md); }
+.form-help { min-height: 1lh; max-width: 30ch; font-size: var(--text-sm); color: var(--color-muted); }
+.form-status { min-height: 1lh; margin-top: var(--space-sm); font-size: var(--text-sm); color: var(--color-error); }
+.idea-receipt { padding: var(--space-lg); }
+.idea-receipt__top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); }
+.idea-receipt blockquote { margin: var(--space-xl) 0 0; font-size: var(--text-lead); line-height: 1.5; }
+.idea-receipt p { margin-top: var(--space-md); font-size: var(--text-sm); color: var(--color-muted); }
+.idea-receipt .text-button { margin-top: var(--space-xl); }
+.footer { padding-block: var(--space-3xl) var(--space-xl); border-top: 1px solid var(--color-rule-2); }
+.footer__top { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-2xl); align-items: end; }
+.footer__mark { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 600; letter-spacing: -0.05em; line-height: 1; }
+.footer__line { margin-top: var(--space-sm); font-size: var(--text-lg); color: var(--color-ink-2); }
+.footer__links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-md) var(--space-lg); }
+.footer__links a { font-size: var(--text-sm); color: var(--color-ink-2); text-decoration: none; }
+.footer__links a:hover { color: var(--color-accent-2); text-decoration: underline; }
+.footer__bottom { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-2xl); padding-top: var(--space-md); border-top: 1px solid var(--color-rule); font-size: var(--text-xs); color: var(--color-muted); }
+.dialog { border: 0; padding: 0; margin: auto; max-width: min(92vw, 34rem); background: transparent; color: var(--color-ink); }
+.dialog::backdrop { background: var(--color-scrim); }
+.dialog__card { max-height: min(86dvh, 44rem); overflow-y: auto; padding: var(--space-lg); }
+.dialog__top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-md); }
+.dialog__top h2 { font-size: var(--text-xl); }
+.dialog__card > p { margin-top: var(--space-sm); font-size: var(--text-sm); color: var(--color-muted); }
+.dialog form { margin-top: var(--space-lg); }
+.dialog label { display: block; margin-top: var(--space-md); font-size: var(--text-sm); font-weight: 500; }
+.dialog input, .dialog textarea { width: 100%; min-height: 48px; margin-top: var(--space-xs); padding: var(--space-sm) var(--space-md); border: 1px solid var(--color-muted); border-radius: var(--radius-input); background: var(--color-paper); color: var(--color-ink); outline: 2px solid transparent; outline-offset: -3px; }
+.dialog textarea { min-height: 6rem; resize: vertical; }
+.dialog input:focus-visible, .dialog textarea:focus-visible { outline-color: var(--color-focus); }
+.dialog input[aria-invalid="true"], .dialog textarea[aria-invalid="true"] { border-color: var(--color-error); }
+.dialog .form-status { color: var(--color-muted); }
+.dialog .form-status[data-state="error"] { color: var(--color-error); }
+.dialog .lib { list-style: none; margin: var(--space-lg) 0 0; padding: 0; border-top: 1px solid var(--color-rule); }
+.dialog .lib li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 var(--space-md); padding-block: var(--space-sm); border-bottom: 1px solid var(--color-rule); }
+.dialog .lib strong { font-size: var(--text-md); font-weight: 500; }
+.dialog .lib span { font-family: var(--font-outlier); font-size: var(--text-xs); color: var(--color-muted); }
+.dialog .lib p { grid-column: 1 / -1; margin-top: var(--space-3xs); font-size: var(--text-xs); color: var(--color-muted); }
+.dialog .btn { margin-top: var(--space-md); }
+.dialog ul { margin: var(--space-lg) 0 0; padding-left: var(--space-lg); color: var(--color-ink-2); }
+.dialog li { padding-block: var(--space-2xs); }
+@media (hover: hover) {
+  .tpl:hover .tpl__name { text-decoration-thickness: 1px; }
+}
+@media (max-width: 75rem) {
+  .process__grid, .expert__grid, .faq__grid, .start__grid { gap: var(--space-2xl); }
+  .section-head { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); }
+}
+@media (max-width: 60rem) {
+  :root { --gutter: 24px; --section-gap-s: 80px; --section-gap: 96px; --section-gap-l: 120px; --nav-height: 64px; --head-height: 96px; --gap-columns: 24px; }
+  .nav__links, .nav__actions .btn--nav, .nav__actions > .text-button { display: none; }
+  .nav__toggle { display: inline-flex; min-height: 44px; align-items: center; padding-inline: var(--space-md); border: 1px solid var(--color-rule-2); border-radius: var(--radius-input); background: transparent; color: var(--color-ink); font-size: var(--text-sm); }
+  html:not(.js) .nav__panel { display: block; position: static; border-top: 1px solid var(--color-rule); }
+  html:not(.js) .nav__toggle { display: none; }
+  .hero__grid { grid-template-columns: minmax(0, 1fr); min-height: auto; padding-block: var(--space-2xl); }
+  .hero__copy, .hero__art { grid-column: 1 / -1; }
+  .hero__copy .lead { max-width: 32ch; }
+  .hero__art { height: 640px; }
+  .hero-prompt { width: 58%; left: 4%; right: auto; top: 3%; }
+  .hero-site { width: 74%; right: 4%; bottom: 3%; }
+  .process__grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
+  .process__art-wrap { position: static; display: block; max-width: 36rem; margin-bottom: var(--space-xl); }
+  .process__art { min-height: 0; }
+  .step { min-height: auto; padding-block: var(--space-xl); }
+  .outputs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .expert__grid, .faq__grid, .start__grid, .footer__top { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
+  .expert__copy .lead { max-width: 34ch; }
+  .case-figures { margin-bottom: var(--space-xl); }
+  .case { grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); padding-block: var(--space-lg); }
+  .case blockquote { max-width: 40ch; }
+  .case__result { margin-top: var(--space-xs); }
+  .template-grid { grid-template-columns: minmax(0, 1fr); }
+  .templates__head, .pricing__top, .templates__foot { flex-direction: column; align-items: flex-start; }
+  .pricing__top { gap: var(--space-lg); }
+  .plans { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
+  .plan { padding-top: var(--space-md); }
+  .plan__list { margin-bottom: var(--space-lg); }
+  .plan__cta { margin-top: 0; }
+  .section-head { grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); }
+  .section-head .lead { justify-self: start; max-width: 36ch; }
+  .footer__links { justify-content: flex-start; }
+  .footer__bottom { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 40rem) {
+  :root { --gutter: 16px; --section-gap-s: 56px; --section-gap: 72px; --section-gap-l: 96px; --gap-columns: 16px; --banner-height: 40px; }
+  .banner__inner { justify-content: center; text-align: center; }
+  .banner__inner a { display: none; }
+  .brand__sub { display: none; }
+  .hero__grid { padding-block: var(--space-xl); }
+  .hero__actions .btn { flex: 1 1 auto; }
+  .hero__art { height: 680px; }
+  .hero-prompt { width: 76%; left: 5%; right: auto; top: 3%; padding: var(--space-md); }
+  .hero-site { width: 90%; right: 5%; bottom: 3%; padding: var(--space-md); }
+  .site-sheet__url { display: none; }
+  .site-title { font-size: var(--text-xl); }
+  .hero__art .sample-note { display: none; }
+  .outputs { grid-template-columns: minmax(0, 1fr); }
+  .case-figures { grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }
+  .proof:last-child { padding-top: var(--space-md); border-top: 1px solid var(--color-rule); }
+  .idea-form__row { flex-direction: column; align-items: stretch; }
+  .idea-form__row .btn { width: 100%; }
+  .filter { flex: 1 1 auto; }
+  .dialog__card { padding: var(--space-md); }
+  .faq__item summary { font-size: var(--text-md); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .hero-card { animation: none; opacity: 1; transform: rotate(var(--rot, 0deg)); }
+  .btn, .filter, .plan__cta, .faq__item summary::after { transition: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+<svg class="ink-filter" width="0" height="0" aria-hidden="true" focusable="false">
+  <filter id="pressed-ink" x="-12%" y="-12%" width="124%" height="124%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="7" result="grain" />
+    <feDisplacementMap in="SourceGraphic" in2="grain" scale="1.4" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+<a class="skip" href="#main">跳到主要内容</a>
+<div class="banner">
+  <div class="container banner__inner">
+    <span>Orvo 开放工作室：按月订阅，对话修改不设次数上限。</span>
+    <a href="#pricing">查看定价</a>
+  </div>
+</div>
+<header class="nav" id="top">
+  <div class="container nav__inner">
+    <a class="brand" href="#top" aria-label="Orvo 首页">
+      <span class="brand__mark">Orvo</span>
+      <span class="brand__sub">开放工作室</span>
+    </a>
+    <nav class="nav__links" aria-label="主导航">
+      <a href="#capabilities">能力</a>
+      <a href="#templates">模板</a>
+      <a href="#pricing">定价</a>
+      <a href="#faq">常见问题</a>
+    </nav>
+    <div class="nav__actions">
+      <button class="text-button" type="button" data-demo>预约演示</button>
+      <a class="btn btn--nav" href="#start">免费开始</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-panel">菜单</button>
+    </div>
+  </div>
+  <div class="nav__panel" id="nav-panel">
+    <a href="#capabilities">能力</a>
+    <a href="#templates">模板</a>
+    <a href="#pricing">定价</a>
+    <a href="#faq">常见问题</a>
+    <button class="text-button" type="button" data-demo>预约专家演示</button>
+  </div>
+</header>
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <h1 id="hero-title">把一句话，做成能上线的产品。</h1>
+        <p class="lead">网站、Web 应用和移动应用，专家陪你从第一版走到上线。</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#start">免费开始</a>
+          <button class="btn btn--quiet" type="button" data-demo>预约专家演示</button>
+        </div>
+      </div>
+      <div class="hero__art" data-slot="hero-product" data-kind="product" data-alt="Orvo 工作台：一句关于手作陶瓷小店的想法，生成了带预约入口的网站首版" role="img" aria-label="Orvo 工作台示例：一句关于手作陶瓷小店的想法，生成了带预约入口的网站首版">
+        <div aria-hidden="true">
+          <div class="prompt-card stock hero-card hero-prompt" style="--rot: -2.5deg">
+            <div class="prompt-card__top"><span>新项目</span><span>网站 / 预约与会员</span></div>
+            <p class="prompt-card__label">你想做什么？</p>
+            <p class="prompt-card__text">做一个手作陶瓷小店，能预约来工作室，也能直接下单。作品要暖一点。</p>
+            <div class="prompt-card__foot"><span>首版约 4 分钟</span><span class="mock-press">生成</span></div>
+          </div>
+          <div class="site-sheet stock hero-card hero-site" style="--rot: 1.4deg">
+            <div class="site-sheet__top"><span class="site-sheet__name">山岚陶作</span><span class="site-sheet__url">shanlan.orvo.site</span></div>
+            <p class="site-sheet__kicker">手作陶瓷，每月十五件</p>
+            <p class="site-title">把泥土，<br>捏成日常。</p>
+            <div class="site-sheet__cols">
+              <div>
+                <p class="mini-label">本月作品</p>
+                <ul class="site-list">
+                  <li>手捏马克杯 <span>$32</span></li>
+                  <li>灰釉小碟 <span>$18</span></li>
+                  <li>柴烧茶壶 <span>$76</span></li>
+                </ul>
+              </div>
+              <div>
+                <p class="mini-label">来工作室</p>
+                <p class="mini-strong">周六 14:00</p>
+                <p class="mini-text">拉坯体验，剩 3 位</p>
+                <span class="mini-book">预约</span>
+              </div>
+            </div>
+            <div class="site-sheet__foot"><span>首版 4 分 12 秒</span><span class="stamp">已上线</span></div>
+          </div>
+          <span class="sample-note">示例项目</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="capabilities" aria-labelledby="capabilities-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="capabilities-title">从一句话，到能上线。</h2>
+        <p class="lead">描述想法，Orvo 生成首版；之后每一步，都在对话里改。</p>
+      </div>
+      <div class="process__grid">
+        <div class="process__art-wrap" aria-hidden="true">
+          <div class="process__art stock">
+            <div class="art-head"><strong>山岚陶作</strong><span class="art-stage">第 1 步，共 5 步</span></div>
+            <div class="art-body">
+              <div class="art-state is-active" data-art="1">
+                <p class="art-label">你告诉 Orvo</p>
+                <p class="art-prompt">做一个只卖手作陶瓷的小店，带工作室预约。作品介绍要短，能直接下单。</p>
+                <ul class="art-chips">
+                  <li>网站</li>
+                  <li>预约与会员</li>
+                  <li>手机端</li>
+                </ul>
+                <p class="art-note">也可以只说一句：「帮我做一个卖咖啡的网站。」</p>
+                <div class="art-foot"><span>网站 / 预约与会员</span><span class="mock-press">生成首版</span></div>
+              </div>
+              <div class="art-state" data-art="2">
+                <p class="art-label">首版生成</p>
+                <p class="art-site-title">把泥土，<br>捏成日常。</p>
+                <div class="art-rows">
+                  <div class="art-row"><strong>手捏马克杯</strong><span>$32</span></div>
+                  <div class="art-row"><strong>灰釉小碟</strong><span>$18</span></div>
+                  <div class="art-row"><strong>工作室预约</strong><span>周六 14:00</span></div>
+                </div>
+                <div class="art-foot"><span>首版用时 4 分 12 秒</span><span class="stamp">已生成</span></div>
+              </div>
+              <div class="art-state" data-art="3">
+                <p class="art-label">继续用对话改</p>
+                <div class="chat">
+                  <div class="chat__bubble chat__bubble--user"><span class="chat__name">你</span>把预约入口放到首屏，配色再暖一点。</div>
+                  <div class="chat__bubble chat__bubble--orvo"><span class="chat__name">Orvo</span>已改：首屏加了预约卡，主色换成陶土色。要再看一版吗？</div>
+                  <div class="chat__bubble chat__bubble--user"><span class="chat__name">你</span>好，就用这一版。</div>
+                </div>
+                <div class="art-foot"><span>修改不设次数上限</span><span class="stamp">已修改</span></div>
+              </div>
+              <div class="art-state" data-art="4">
+                <p class="art-label">专家上线前检查</p>
+                <ul class="checklist">
+                  <li><span>预约流程</span><b>通过</b></li>
+                  <li><span>手机端</span><b>通过</b></li>
+                  <li><span>自有域名</span><b>待连接</b></li>
+                  <li><span>支付流程</span><b>待补</b></li>
+                  <li><span>代码导出</span><b>已开启</b></li>
+                </ul>
+                <p class="art-note">专家改完这两处，再交给你按发布。</p>
+                <div class="art-foot"><span>Pro 项目包含一次月度评审</span><span class="stamp">已签字</span></div>
+              </div>
+              <div class="art-state art-publish" data-art="5">
+                <p class="art-label">发布</p>
+                <p class="art-url">shanlan.orvo.site</p>
+                <p class="art-note">也可以绑定自有域名。网站、Web 应用和移动应用，代码都能完整导出。</p>
+                <span class="stamp">已发布</span>
+                <p class="art-note">上线后第一个月，专家回来和你过一遍数据，之后每月一次。</p>
+                <div class="art-foot"><span>首版到上线，平均 6 天</span><span>由你按下发布</span></div>
+              </div>
+            </div>
+          </div>
+          <p class="process__caption">示例项目，用来展示每一步会看到什么。</p>
+        </div>
+        <ol class="steps">
+          <li class="step is-active" data-step="1">
+            <span class="step__num" aria-hidden="true">1</span>
+            <div><h3>描述想法</h3><p>一句话说清做什么、给谁用。不用先学提示词，也不用画原型。</p></div>
+          </li>
+          <li class="step" data-step="2">
+            <span class="step__num" aria-hidden="true">2</span>
+            <div><h3>首版生成</h3><p>平均 4 分钟，先拿到能点、能看的版本。网站、Web 应用或移动应用都可以。</p></div>
+          </li>
+          <li class="step" data-step="3">
+            <span class="step__num" aria-hidden="true">3</span>
+            <div><h3>对话修改</h3><p>继续说：改文案、加页面、换流程。修改次数不设上限，不按 token 扣费。</p></div>
+          </li>
+          <li class="step" data-step="4">
+            <span class="step__num" aria-hidden="true">4</span>
+            <div><h3>专家上线前检查</h3><p>付费项目由专家逐项过一遍预约、支付、域名和手机端，再让你发布。</p></div>
+          </li>
+          <li class="step" data-step="5">
+            <span class="step__num" aria-hidden="true">5</span>
+            <div><h3>发布</h3><p>发布到 Orvo 子域名或自有域名。代码随时可以完整导出，项目归你。</p></div>
+          </li>
+        </ol>
+      </div>
+      <dl class="outputs">
+        <div><dt>网站</dt><dd>落地页、电商小店、内容站</dd></div>
+        <div><dt>Web 应用</dt><dd>预约、会员、库存、内部工具</dd></div>
+        <div><dt>移动应用</dt><dd>iOS 与 Android，Unlimited 包含</dd></div>
+        <div><dt>代码与域名</dt><dd>完整导出，自有域名发布</dd></div>
+      </dl>
+    </div>
+  </section>
+  <section class="section" id="experts" aria-labelledby="experts-title">
+    <div class="container expert__grid">
+      <div class="expert__copy">
+        <h2 id="experts-title">上线这件事，有人陪。</h2>
+        <p class="lead">每个付费项目配一位上过线的专家，按你的项目匹配。</p>
+        <p>需求梳理时，他帮你把想法收成一个能上线的范围。上线前，他逐项检查支付、预约、域名和移动端。上线后第一个月，他看真实使用，再决定下一步改什么。</p>
+        <p>专家来自产品、设计或工程背景，不是客服转接。Pro 每月一次 30 分钟视频评审；Unlimited 每周一次，另有专属群聊。</p>
+        <dl class="expert__plans">
+          <div><dt>Pro</dt><dd>每月一次 30 分钟视频评审</dd></div>
+          <div><dt>Unlimited</dt><dd>每周一次评审，另有专属群聊</dd></div>
+        </dl>
+      </div>
+      <aside class="expert-card stock" aria-label="上线陪跑单示例">
+        <div class="expert-card__top"><span>上线陪跑单</span><span class="stamp">已分配</span></div>
+        <h3>一位专家，<br>跟完三个节点</h3>
+        <p>按项目类型和上线目标匹配。示例记录如下。</p>
+        <ul class="checklist">
+          <li><span>需求梳理</span><b>已排期</b></li>
+          <li><span>上线前检查</span><b>待上线</b></li>
+          <li><span>上线后第一个月</span><b>待开始</b></li>
+        </ul>
+        <div class="art-foot"><span>项目：山岚陶作</span><span>示例记录</span></div>
+      </aside>
+    </div>
+  </section>
+  <section class="section" id="cases" aria-labelledby="cases-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="cases-title">他们都从一句话开始。</h2>
+        <p class="lead">从第一版到第一笔订单，他们都在 Orvo 上完成。</p>
+      </div>
+      <div class="case-figures">
+        <div class="proof"><strong class="proof__value">18,000+</strong><span class="proof__label">已经上线的项目</span></div>
+        <div class="proof"><strong class="proof__value">6 天</strong><span class="proof__label">付费项目从开始到首次上线，平均用时</span></div>
+      </div>
+      <div class="cases__list">
+        <article class="case">
+          <div><h3>林夏</h3><p class="case__meta">手作陶瓷小店，Starter</p></div>
+          <blockquote>“我以前连商品图都拍不好。Orvo 先把店搭起来，我才敢把作品挂上去。”</blockquote>
+          <p class="case__result"><strong class="case__figure">41 笔</strong><span>第一个月订单</span></p>
+        </article>
+        <article class="case">
+          <div><h3>王拓</h3><p class="case__meta">健身教练预约工具，Pro</p></div>
+          <blockquote>“专家让我把什么都能做，改成先把课约明白。砍掉一半功能，反而有人用了。”</blockquote>
+          <p class="case__result"><strong class="case__figure">2 周</strong><span>从开始到上线</span></p>
+        </article>
+        <article class="case">
+          <div><h3>陈可和两位合伙人</h3><p class="case__meta">社区团购 App，Unlimited</p></div>
+          <blockquote>“我们三个人没有工程师。第一版上线那晚，群里第一次有人说，这个能用。”</blockquote>
+          <p class="case__result"><strong class="case__figure">2,600 次</strong><span>iOS 版首月下载</span></p>
+        </article>
+      </div>
+    </div>
+  </section>
+  <section class="section section--paper" id="templates" aria-labelledby="templates-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="templates-title">120 个模板，先看 12 个。</h2>
+        <p class="lead">六类，按场景挑；选一个，接着用对话改。</p>
+      </div>
+      <div class="templates__head">
+        <div class="filters" role="group" aria-label="按类别筛选模板">
+          <button class="filter" type="button" data-filter="all" aria-pressed="true">全部</button>
+          <button class="filter" type="button" data-filter="落地页" aria-pressed="false">落地页</button>
+          <button class="filter" type="button" data-filter="电商小店" aria-pressed="false">电商小店</button>
+          <button class="filter" type="button" data-filter="预约与会员" aria-pressed="false">预约与会员</button>
+          <button class="filter" type="button" data-filter="内部工具" aria-pressed="false">内部工具</button>
+          <button class="filter" type="button" data-filter="内容社区" aria-pressed="false">内容社区</button>
+          <button class="filter" type="button" data-filter="移动应用" aria-pressed="false">移动应用</button>
+        </div>
+      </div>
+      <p class="filter-status" aria-live="polite">显示 12 个模板</p>
+      <ul class="template-grid">
+        <li data-cat="落地页"><a class="tpl" href="#start"><span class="tpl__name">产品发布页</span><span class="tpl__uses">5,480 次</span><span class="tpl__meta"><span class="tpl__cat">落地页</span>，为一次发布做预告、亮点和候补名单</span></a></li>
+        <li data-cat="电商小店"><a class="tpl" href="#start"><span class="tpl__name">手作陶瓷店</span><span class="tpl__uses">4,120 次</span><span class="tpl__meta"><span class="tpl__cat">电商小店</span>，作品上新、下单与工作室预约</span></a></li>
+        <li data-cat="预约与会员"><a class="tpl" href="#start"><span class="tpl__name">咖啡馆预约</span><span class="tpl__uses">3,240 次</span><span class="tpl__meta"><span class="tpl__cat">预约与会员</span>，时段、座位与会员次卡</span></a></li>
+        <li data-cat="电商小店"><a class="tpl" href="#start"><span class="tpl__name">周末花房</span><span class="tpl__uses">2,760 次</span><span class="tpl__meta"><span class="tpl__cat">电商小店</span>，当周花材、预订自取与配送</span></a></li>
+        <li data-cat="落地页"><a class="tpl" href="#start"><span class="tpl__name">课程招生页</span><span class="tpl__uses">2,310 次</span><span class="tpl__meta"><span class="tpl__cat">落地页</span>，讲清课程安排，收集报名意向</span></a></li>
+        <li data-cat="移动应用"><a class="tpl" href="#start"><span class="tpl__name">社区团购 App</span><span class="tpl__uses">2,050 次</span><span class="tpl__meta"><span class="tpl__cat">移动应用</span>，拼团、自提点和订单提醒</span></a></li>
+        <li data-cat="内容社区"><a class="tpl" href="#start"><span class="tpl__name">独立播客站</span><span class="tpl__uses">1,870 次</span><span class="tpl__meta"><span class="tpl__cat">内容社区</span>，单集、订阅入口和听众来信</span></a></li>
+        <li data-cat="移动应用"><a class="tpl" href="#start"><span class="tpl__name">跑步打卡 App</span><span class="tpl__uses">1,660 次</span><span class="tpl__meta"><span class="tpl__cat">移动应用</span>，训练计划、打卡和小组排行</span></a></li>
+        <li data-cat="预约与会员"><a class="tpl" href="#start"><span class="tpl__name">私教排课</span><span class="tpl__uses">1,540 次</span><span class="tpl__meta"><span class="tpl__cat">预约与会员</span>，教练档期、体验课与会员卡</span></a></li>
+        <li data-cat="内容社区"><a class="tpl" href="#start"><span class="tpl__name">城市散步地图</span><span class="tpl__uses">1,430 次</span><span class="tpl__meta"><span class="tpl__cat">内容社区</span>，路线、地点和居民投稿</span></a></li>
+        <li data-cat="内部工具"><a class="tpl" href="#start"><span class="tpl__name">内容排期表</span><span class="tpl__uses">1,280 次</span><span class="tpl__meta"><span class="tpl__cat">内部工具</span>，选题、负责人和发布状态</span></a></li>
+        <li data-cat="内部工具"><a class="tpl" href="#start"><span class="tpl__name">库存看板</span><span class="tpl__uses">960 次</span><span class="tpl__meta"><span class="tpl__cat">内部工具</span>，库存、补货提醒和门店调拨</span></a></li>
+      </ul>
+      <div class="templates__foot">
+        <span class="filter-status">共 120 个模板，按类别收在模板库。</span>
+        <button class="text-button" type="button" data-all-templates>查看全部 120 个模板</button>
+      </div>
+    </div>
+  </section>
+  <section class="pricing" id="pricing" aria-labelledby="pricing-title">
+    <div class="container">
+      <div class="pricing__top">
+        <div class="section-head">
+          <h2 id="pricing-title">按月订阅，改到满意。</h2>
+          <p class="lead">不按 token 或点数计费，对话修改不设次数上限。</p>
+        </div>
+        <fieldset class="billing">
+          <legend>计费周期</legend>
+          <div class="billing__options">
+            <input type="radio" name="billing" id="billing-monthly" value="monthly" checked>
+            <label for="billing-monthly">月付</label>
+            <input type="radio" name="billing" id="billing-yearly" value="yearly">
+            <label for="billing-yearly">年付 <span>省 20%</span></label>
+          </div>
+        </fieldset>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <div class="plan__name">Starter <span>免费</span></div>
+          <p class="plan__for">先做一个能看的网站。</p>
+          <p class="price"><span class="price__amount" data-monthly="$0" data-yearly="$0">$0</span><span class="price__unit">/ 月</span></p>
+          <p class="price__note" data-monthly="永久免费" data-yearly="永久免费">永久免费</p>
+          <ul class="plan__list">
+            <li>1 个项目</li>
+            <li>只能做网站</li>
+            <li>使用 Orvo 子域名</li>
+            <li>页面带 Orvo 标识</li>
+            <li>社区支持</li>
+          </ul>
+          <a class="plan__cta" href="#start">免费开始</a>
+        </article>
+        <article class="plan plan--pro">
+          <div class="plan__name">Pro <span>网站与 Web 应用</span></div>
+          <p class="plan__for">把项目带到能收费的程度。</p>
+          <p class="price"><span class="price__amount" data-monthly="$24.99" data-yearly="$19.99">$24.99</span><span class="price__unit">/ 月</span></p>
+          <p class="price__note" data-monthly="按月计费，随时取消" data-yearly="按年 $239.88">按月计费，随时取消</p>
+          <ul class="plan__list">
+            <li>5 个项目</li>
+            <li>网站与 Web 应用</li>
+            <li>自有域名</li>
+            <li>导出代码</li>
+            <li>每月一次专家评审</li>
+          </ul>
+          <a class="plan__cta" href="#start">选择 Pro</a>
+        </article>
+        <article class="plan">
+          <div class="plan__name">Unlimited <span>项目不限</span></div>
+          <p class="plan__for">同时推进多个产品，带上合伙人。</p>
+          <p class="price"><span class="price__amount" data-monthly="$34.99" data-yearly="$27.99">$34.99</span><span class="price__unit">/ 月</span></p>
+          <p class="price__note" data-monthly="按月计费，随时取消" data-yearly="按年 $335.88">按月计费，随时取消</p>
+          <ul class="plan__list">
+            <li>项目不限</li>
+            <li>包含移动应用</li>
+            <li>每周专家评审与专属群聊</li>
+            <li>优先生成队列</li>
+            <li>最多 3 位团队成员</li>
+          </ul>
+          <a class="plan__cta" href="#start">选择 Unlimited</a>
+        </article>
+      </div>
+      <p class="pricing__note">价格以美元计。年付一次结清，折合月价已显示在上方。</p>
+    </div>
+  </section>
+  <section class="section" id="faq" aria-labelledby="faq-title">
+    <div class="container faq__grid">
+      <div>
+        <h2 id="faq-title">先把问题问完。</h2>
+        <p class="lead">关于代码、专家、修改和退订。</p>
+        <p class="faq__ask"><button class="text-button" type="button" data-demo>没找到答案？预约专家演示</button></p>
+      </div>
+      <div class="faq__list">
+        <details class="faq__item" open>
+          <summary>生成的代码归谁？能导出吗？</summary>
+          <p>代码归你。Pro 和 Unlimited 可以随时导出完整代码，Starter 也能导出网站页面。发布到自有域名后，代码和内容都还在你的账号里。</p>
+        </details>
+        <details class="faq__item">
+          <summary>专家是什么人？怎么匹配？</summary>
+          <p>他们是上线过产品的产品、设计或工程从业者，按项目类型和上线目标匹配。每个付费项目配一位，在需求梳理、上线前检查和上线后第一个月介入。</p>
+        </details>
+        <details class="faq__item">
+          <summary>不限修改次数，具体有没有限制？</summary>
+          <p>对话修改不按次数计费，没有额度。限制只在项目数、功能范围和上线合规上；Unlimited 的项目不限，排进优先生成队列。</p>
+        </details>
+        <details class="faq__item">
+          <summary>取消订阅后，已经上线的项目怎么办？</summary>
+          <p>已经上线的项目不会因为取消订阅被下线。自有域名、代码导出和专家评审在订阅期内使用；需要继续大改时再订阅。</p>
+        </details>
+        <details class="faq__item">
+          <summary>支持哪些付款方式？</summary>
+          <p>支持主流信用卡，年付一次结清。具体可用的卡组织与发票方式，以结账页和账单邮件为准。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+  <section class="start" id="start" aria-labelledby="start-title">
+    <div class="container start__grid">
+      <div class="start__copy">
+        <h2 id="start-title">现在，写下第一句。</h2>
+        <p class="lead">免费开始，不用信用卡。首版平均 4 分钟。</p>
+        <button class="text-button" type="button" data-demo>想先聊聊？预约专家演示</button>
+      </div>
+      <form class="idea-form stock" id="start-form" data-endpoint="" novalidate>
+        <label for="idea">你想做什么？</label>
+        <textarea id="idea" name="idea" rows="3" required aria-required="true" aria-describedby="idea-help" placeholder="例如：一个只卖手作陶瓷的小店，带工作室预约。"></textarea>
+        <div class="idea-form__row">
+          <p class="form-help" id="idea-help">一句话就够。提交后，页面会先把想法收下。</p>
+          <button class="btn btn--primary" type="submit">免费开始</button>
+        </div>
+        <p class="form-status" id="idea-status" role="status" aria-live="polite"></p>
+      </form>
+      <div class="idea-receipt stock" id="idea-receipt" role="status" aria-live="polite" hidden>
+        <div class="idea-receipt__top"><span class="stamp">已收到</span><span class="tag">页面演示</span></div>
+        <blockquote id="receipt-idea"></blockquote>
+        <p>想法已被这个页面收下。当前是前端演示，尚未发送到服务器。</p>
+        <button class="text-button" type="button" id="idea-again">再写一句</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div>
+        <p class="footer__mark">Orvo</p>
+        <p class="footer__line">把想法做成能上线的东西。</p>
+      </div>
+      <nav class="footer__links" aria-label="页脚导航">
+        <a href="#capabilities">能力</a>
+        <a href="#experts">专家</a>
+        <a href="#templates">模板</a>
+        <a href="#pricing">定价</a>
+        <a href="#faq">常见问题</a>
+        <a href="#start">免费开始</a>
+      </nav>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 Orvo</span>
+      <span>价格以美元计，年付一次结清。</span>
+    </div>
+  </div>
+</footer>
+<dialog class="dialog" id="demo-dialog" aria-labelledby="demo-title">
+  <div class="dialog__card stock">
+    <div class="dialog__top">
+      <h2 id="demo-title">预约 30 分钟专家演示</h2>
+      <button class="text-button" type="button" data-close>关闭</button>
+    </div>
+    <p>说说你在做什么。我们会按项目类型匹配一位产品、设计或工程背景的专家。</p>
+    <form id="demo-form" novalidate>
+      <label for="demo-email">邮箱</label>
+      <input id="demo-email" name="email" type="email" autocomplete="email" required>
+      <label for="demo-project">你正在做什么？</label>
+      <textarea id="demo-project" name="project" rows="3" required></textarea>
+      <p class="form-status" id="demo-status" role="status" aria-live="polite"></p>
+      <button class="btn btn--primary" type="submit">提交预约</button>
+    </form>
+  </div>
+</dialog>
+<dialog class="dialog" id="templates-dialog" aria-labelledby="templates-dialog-title">
+  <div class="dialog__card stock">
+    <div class="dialog__top">
+      <h2 id="templates-dialog-title">模板库</h2>
+      <button class="text-button" type="button" data-close>关闭</button>
+    </div>
+    <p>完整模板库共 120 个，按六类整理。这个页面展示其中 12 个。</p>
+    <ul class="lib">
+      <li><strong>落地页</strong><span>20 个</span><p>产品发布、课程招生、活动报名</p></li>
+      <li><strong>电商小店</strong><span>20 个</span><p>单品行、作品上新、拼团预售</p></li>
+      <li><strong>预约与会员</strong><span>20 个</span><p>时段预约、会员次卡、到店服务</p></li>
+      <li><strong>内部工具</strong><span>20 个</span><p>库存、排期、客户跟进</p></li>
+      <li><strong>内容社区</strong><span>20 个</span><p>播客单集、订阅入口、居民投稿</p></li>
+      <li><strong>移动应用</strong><span>20 个</span><p>打卡、训练计划、小组排行</p></li>
+    </ul>
+    <a class="btn btn--primary" href="#start" data-close-start>免费开始后浏览</a>
+  </div>
+</dialog>
+<script>
+(function () {
+  'use strict';
+
+  var navToggle = document.querySelector('.nav__toggle');
+  var navPanel = document.getElementById('nav-panel');
+  function closeNav() {
+    if (!navPanel || !navToggle) return;
+    navPanel.classList.remove('is-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+  if (navToggle && navPanel) {
+    navToggle.addEventListener('click', function () {
+      var open = navToggle.getAttribute('aria-expanded') === 'true';
+      navPanel.classList.toggle('is-open', !open);
+      navToggle.setAttribute('aria-expanded', String(!open));
+    });
+    navPanel.querySelectorAll('a').forEach(function (link) { link.addEventListener('click', closeNav); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeNav(); });
+    if (window.matchMedia) {
+      var wide = window.matchMedia('(min-width: 60.01rem)');
+      var onChange = function (e) { if (e.matches) closeNav(); };
+      if (wide.addEventListener) wide.addEventListener('change', onChange);
+    }
+  }
+
+  var filters = document.querySelectorAll('[data-filter]');
+  var templateItems = document.querySelectorAll('.template-grid > li[data-cat]');
+  var filterStatus = document.querySelector('.filter-status');
+  filters.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var filter = button.getAttribute('data-filter');
+      filters.forEach(function (other) { other.setAttribute('aria-pressed', String(other === button)); });
+      var shown = 0;
+      templateItems.forEach(function (item) {
+        var visible = filter === 'all' || item.getAttribute('data-cat') === filter;
+        item.hidden = !visible;
+        if (visible) shown += 1;
+      });
+      if (filterStatus) filterStatus.textContent = filter === 'all' ? '显示 12 个模板' : '显示 ' + shown + ' 个模板';
+    });
+  });
+
+  var billing = document.querySelectorAll('input[name="billing"]');
+  var priced = document.querySelectorAll('[data-monthly][data-yearly]');
+  function updateBilling() {
+    var yearly = document.querySelector('input[name="billing"]:checked');
+    var useYearly = yearly && yearly.value === 'yearly';
+    priced.forEach(function (node) {
+      node.textContent = useYearly ? node.getAttribute('data-yearly') : node.getAttribute('data-monthly');
+    });
+  }
+  billing.forEach(function (input) { input.addEventListener('change', updateBilling); });
+  updateBilling();
+
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var arts = Array.prototype.slice.call(document.querySelectorAll('.art-state'));
+  var stageLabel = document.querySelector('.art-stage');
+  function setStep(n) {
+    steps.forEach(function (step) { step.classList.toggle('is-active', step.getAttribute('data-step') === n); });
+    arts.forEach(function (art) { art.classList.toggle('is-active', art.getAttribute('data-art') === n); });
+    if (stageLabel) stageLabel.textContent = '第 ' + n + ' 步，共 5 步';
+  }
+  setStep('1');
+  if ('IntersectionObserver' in window && steps.length) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) setStep(entry.target.getAttribute('data-step'));
+      });
+    }, { rootMargin: '-35% 0px -45% 0px', threshold: 0 });
+    steps.forEach(function (step) { io.observe(step); });
+  }
+
+  var startForm = document.getElementById('start-form');
+  var idea = document.getElementById('idea');
+  var ideaStatus = document.getElementById('idea-status');
+  var receipt = document.getElementById('idea-receipt');
+  var receiptIdea = document.getElementById('receipt-idea');
+  if (startForm && idea && receipt) {
+    startForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var value = idea.value.trim();
+      if (!value) {
+        idea.setAttribute('aria-invalid', 'true');
+        if (ideaStatus) ideaStatus.textContent = '先写一句你想做什么。';
+        idea.focus();
+        return;
+      }
+      idea.removeAttribute('aria-invalid');
+      if (ideaStatus) ideaStatus.textContent = '';
+      if (receiptIdea) receiptIdea.textContent = '“' + value + '”';
+      startForm.hidden = true;
+      receipt.hidden = false;
+      var again = document.getElementById('idea-again');
+      if (again) again.focus();
+    });
+    idea.addEventListener('input', function () {
+      if (idea.value.trim()) idea.removeAttribute('aria-invalid');
+    });
+    var againButton = document.getElementById('idea-again');
+    if (againButton) {
+      againButton.addEventListener('click', function () {
+        receipt.hidden = true;
+        startForm.hidden = false;
+        idea.value = '';
+        idea.removeAttribute('aria-invalid');
+        idea.focus();
+      });
+    }
+  }
+
+  var demoDialog = document.getElementById('demo-dialog');
+  var templatesDialog = document.getElementById('templates-dialog');
+  function showDialog(dialog) {
+    if (!dialog) return;
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', '');
+  }
+  document.querySelectorAll('[data-demo]').forEach(function (button) {
+    button.addEventListener('click', function () { showDialog(demoDialog); });
+  });
+  var allTemplates = document.querySelector('[data-all-templates]');
+  if (allTemplates) allTemplates.addEventListener('click', function () { showDialog(templatesDialog); });
+  document.querySelectorAll('dialog').forEach(function (dialog) {
+    dialog.querySelectorAll('[data-close]').forEach(function (button) {
+      button.addEventListener('click', function () { dialog.close(); });
+    });
+    dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close(); });
+  });
+  var closeStart = document.querySelector('[data-close-start]');
+  if (closeStart) closeStart.addEventListener('click', function () { if (templatesDialog) templatesDialog.close(); });
+
+  var demoForm = document.getElementById('demo-form');
+  if (demoForm) {
+    demoForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('demo-email');
+      var project = document.getElementById('demo-project');
+      var status = document.getElementById('demo-status');
+      var firstInvalid = null;
+      [email, project].forEach(function (field) {
+        if (!field) return;
+        var valid = field === email ? field.checkValidity() && field.value.trim() !== '' : field.value.trim() !== '';
+        if (valid) { field.removeAttribute('aria-invalid'); } else { field.setAttribute('aria-invalid', 'true'); }
+        if (!valid && !firstInvalid) firstInvalid = field;
+      });
+      if (firstInvalid) {
+        if (status) { status.textContent = '把邮箱和项目各写一句，再提交。'; status.setAttribute('data-state', 'error'); }
+        firstInvalid.focus();
+        return;
+      }
+      if (status) { status.textContent = '这是页面演示，预约尚未发送。你可以先去写下第一句。'; status.removeAttribute('data-state'); }
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

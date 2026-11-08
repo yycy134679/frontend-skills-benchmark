@@ -90,6 +90,7 @@
     padding: 22px 32px; margin-right: calc(var(--pad) * -1);
     padding-right: var(--pad);
   }
+  .chapter-band.has-model { grid-template-columns: 96px max-content auto minmax(0, 1fr); }
   .chapter-band .num { font-family: var(--latin); font-size: 56px; line-height: 1; letter-spacing: -.04em; }
   .chapter-band h2 { margin: 0; font-family: var(--serif); font-size: clamp(26px, 2.5vw, 36px); font-weight: 500; letter-spacing: .01em; }
   .chapter-band .side { font-family: var(--latin); font-size: 12px; letter-spacing: .14em; text-align: right; color: #cfdbcb; }
@@ -135,7 +136,15 @@
     border-bottom: 1px solid var(--ink); padding-bottom: 8px;
   }
   .track-head span { font-family: var(--serif); font-size: 14px; letter-spacing: .08em; }
-  .arrows { display: flex; gap: 4px; }
+  .model-picker { display: inline-flex; align-items: center; gap: 7px; color: var(--cream); font-size: 12px; }
+  .chapter-band .model-picker { justify-self: start; }
+  .model-picker select {
+    max-width: min(220px, 55vw); min-height: 36px; padding: 5px 28px 5px 10px;
+    border: 1px solid var(--line); border-radius: 0; background: var(--paper); color: var(--ink);
+    font: inherit; cursor: pointer;
+  }
+  .model-picker select:hover { border-color: var(--ink); }
+  .arrows { display: flex; gap: 4px; flex-shrink: 0; }
   .arrows button {
     width: 44px; height: 44px; display: grid; place-items: center;
     background: transparent; border: 1px solid transparent; cursor: pointer;
@@ -211,6 +220,8 @@
     .hero { grid-template-columns: 1fr; }
     .case-index { min-height: 0; margin-right: 0; padding-right: 28px; }
     .case-list a { margin-right: -28px; padding-right: 28px; }
+    .chapter-band.has-model { grid-template-columns: 96px max-content minmax(0, 1fr); }
+    .chapter-band.has-model .side { display: none; }
     .spread, .method-body { grid-template-columns: 1fr; }
     .spread::before { display: none; }
     .plate { flex-basis: 78%; }
@@ -221,7 +232,9 @@
     .mark strong { font-size: 23px; }
     h1 { font-size: clamp(40px, 12vw, 56px); }
     .chapter-band { grid-template-columns: 54px minmax(0, 1fr); padding: 18px 20px; margin-right: calc(var(--pad) * -1); padding-right: var(--pad); }
+    .chapter-band.has-model { grid-template-columns: 54px minmax(0, 1fr); row-gap: 12px; }
     .chapter-band .num { font-size: 36px; }
+    .chapter-band .model-picker { grid-column: 2; justify-self: start; }
     .chapter-band .side { display: none; }
     .plate { flex-basis: 88%; margin-right: 5%; }
     .contents li { grid-template-columns: 42px minmax(0, 1fr); }
@@ -256,7 +269,7 @@
           <a href="#case-01">
             <span class="ci-num">01</span>
             <span class="ci-title">精品咖啡订阅官网</span>
-            <span class="ci-meta">6 个结果</span>
+            <span class="ci-meta">2 个模型 · 每个 6 个结果</span>
           </a>
         </li>
         <li>
@@ -277,7 +290,7 @@
           <a href="#case-04">
             <span class="ci-num">04</span>
             <span class="ci-title">Orvo 官网落地页</span>
-            <span class="ci-meta">6 个结果</span>
+            <span class="ci-meta">2 个模型 · 每个 6 个结果</span>
           </a>
         </li>
       </ol>
@@ -285,10 +298,16 @@
   </section>
 
   <section class="case" id="case-01">
-    <div class="chapter-band">
+    <div class="chapter-band has-model">
       <div class="num">01</div>
       <h2>精品咖啡订阅官网</h2>
-      <div class="side">案例 01 / 6 个结果</div>
+      <label class="model-picker">模型
+              <select data-model="case01" aria-label="精品咖啡案例模型">
+                <option value="original">GPT-6.1 Terra</option>
+                <option value="deepseek">DeepSeek V4.1 Flash 1017</option>
+              </select>
+            </label>
+      <div class="side">案例 01 / 2 个模型 / 每个 6 个结果</div>
     </div>
 
     <div class="spread">
@@ -607,10 +626,16 @@
   </section>
 
   <section class="case" id="case-04">
-    <div class="chapter-band">
+    <div class="chapter-band has-model">
       <div class="num">04</div>
       <h2>Orvo 官网落地页</h2>
-      <div class="side">案例 04 / 6 个结果</div>
+      <label class="model-picker">模型
+              <select data-model="case04" aria-label="Orvo 案例模型">
+                <option value="original">GPT-6.1 Terra</option>
+                <option value="deepseek">DeepSeek V4.1 Flash 1017</option>
+              </select>
+            </label>
+      <div class="side">案例 04 / 2 个模型 / 每个 6 个结果</div>
     </div>
 
     <div class="spread">
@@ -738,7 +763,7 @@
     <div class="method-body">
       <h2>把技能单独<br>拿出来看。</h2>
       <div>
-        <p>每次运行使用同一份提示词、同一个执行环境与同一个模型 codex/gpt-6.1-terra；同一案例内思考强度一致，案例 01 为 high，案例 02 至 04 为 xhigh。案例 02 的每组成品包含首页与作品详情页，案例 03 的每组成品是单文件播放器，案例 04 的每组成品是单文件落地页。对照组不挂载技能，其余运行只多出一个技能。每组使用独立进程、独立配置目录与空 MCP 配置，隔离脚本会在运行结束后核验技能清单。</p>
+        <p>每组技能对照使用同一份提示词、同一个执行环境与同一个模型。GPT-6.1 Terra 在案例 01 使用 high、案例 02 至 04 使用 xhigh；案例 01 与 04 另有 DeepSeek V4.1 Flash 1017 的 max 结果，可在对应结果区切换。不同模型使用的技能快照和思考强度可能不同，不应将差异全部归因于模型。案例 02 的每组成品包含首页与作品详情页，案例 03 的每组成品是单文件播放器，案例 04 的每组成品是单文件落地页。对照组不挂载技能，其余运行只多出一个技能。每组使用独立进程、独立配置目录与空 MCP 配置，隔离脚本会在运行结束后核验技能清单。</p>
         <p>图版统一按 1440 × 900 截取首屏，按原比例排入册页。单次生成不能代表技能的平均水平；这本册子记录可见的差异，不做排名。</p>
       </div>
     </div>
@@ -757,11 +782,62 @@
 <script>
   const tracks = [...document.querySelectorAll('[data-track]')];
   const save = (key, value) => sessionStorage.setItem(key, String(value));
+  const deepseekResults = {
+    case01: [
+      ['no-skill', 83, 1253, '4.879', '在云雾退去之前，我们等一颗完熟的咖啡樱桃。'],
+      ['frontend-design', 94, 861, '6.119', '在雾散之前，摘下这一季。'],
+      ['oil-ui', 350, 2776, '22.879', '一支果枝，写尽一座庄园。'],
+      ['impeccable', 171, 1413, '9.814', '山脊之上，一季一摘。'],
+      ['taste-skill', 393, 6151, '18.722', 'El Paraíso Coffee 埃尔帕拉伊索庄园咖啡'],
+      ['hallmark', 146, 1163, '8.488', '这一季，来自埃尔帕拉伊索']
+    ],
+    case04: [
+      ['no-skill', 130, 1118, '6.840', '把一句想法，变成能上线的产品。'],
+      ['frontend-design', 125, 982, '7.267', '把想法说清楚，就能上线。'],
+      ['oil-ui', 225, 1233, '23.718', '把想法说出来，我们陪你做到上线。'],
+      ['impeccable', 271, 1494, '12.939', '把想法，做成能上线的产品。'],
+      ['taste-skill', 141, 1081, '8.187', '给创业者的 AI 建站与应用生成器'],
+      ['hallmark', 302, 2452, '16.175', '把一句话，做成能上线的产品。']
+    ]
+  };
 
   tracks.forEach(track => {
     const id = track.dataset.track;
     const prev = document.querySelector(`[data-prev="${id}"]`);
     const next = document.querySelector(`[data-next="${id}"]`);
+    const picker = document.querySelector(`[data-model="${id}"]`);
+    const section = track.closest('.case');
+    const note = section.querySelector('.gen-note');
+    const originalCards = track.innerHTML;
+    const originalNote = note.innerHTML;
+    const originalHref = track.querySelector('.shot').getAttribute('href');
+    const root = originalHref.slice(0, originalHref.indexOf('examples/'));
+    const caseDir = section.id;
+    const applyModel = () => {
+      track.innerHTML = originalCards;
+      note.innerHTML = originalNote;
+      if (picker && picker.value === 'deepseek') {
+        track.querySelectorAll('.plate').forEach((card, index) => {
+          const [group, turns, seconds, cost, title] = deepseekResults[id][index];
+          const shot = card.querySelector('.shot');
+          shot.href = `${root}examples/${caseDir}/deepseek-v4.1-flash-1017-max/${group}/index.html`;
+          const img = shot.querySelector('img');
+          img.src = `${root}assets/previews/${caseDir}/deepseek-v4.1-flash-1017-max/${group}.jpg`;
+          img.alt = `${group === 'no-skill' ? '不使用技能' : group}生成的${caseDir === 'case-01' ? '精品咖啡' : 'Orvo'}官网首屏：${title}`;
+          const meta = card.querySelectorAll('.c-meta span');
+          meta[1].textContent = 'DeepSeek V4.1 Flash 1017';
+          meta[2].textContent = `${turns} 轮 / ${seconds} 秒`;
+          meta[3].textContent = `$${cost}`;
+          card.querySelector('.c-note').textContent = `首屏标题：「${title}」`;
+        });
+        note.innerHTML = `生成日期 2026-11-07。六组结果均由 Claude Code 调用 <code>cline/cline-pass/deepseek-v4.1-flash-1017</code> 生成，思考强度 max。<a href="${root}examples/${caseDir}/对照记录.md">对照记录</a>保存了轮次、用时与费用。`;
+      }
+    };
+    if (picker) {
+      const savedModel = sessionStorage.getItem(`model-${id}`);
+      if (savedModel === 'deepseek') picker.value = savedModel;
+      applyModel();
+    }
     const step = () => {
       const card = track.querySelector('.plate');
       return card ? card.getBoundingClientRect().width + parseFloat(getComputedStyle(card).marginRight) : 400;
@@ -770,6 +846,13 @@
       prev.disabled = track.scrollLeft <= 2;
       next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
     };
+    if (picker) picker.addEventListener('change', () => {
+      applyModel();
+      save(`model-${id}`, picker.value);
+      track.scrollLeft = 0;
+      save(`track-${id}`, 0);
+      update();
+    });
     prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
     next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
     track.addEventListener('scroll', () => { update(); save(`track-${id}`, track.scrollLeft); }, { passive: true });

@@ -1,0 +1,2503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1E40E7">
+<title>Orvo 开放工作室｜把想法说清楚，就能上线</title>
+<meta name="description" content="Orvo 用对话把一句话变成能上线的网站、Web 应用和移动应用。按月订阅，修改不限次数，专家陪你从需求梳理走到上线后的第一个月。">
+<style>
+:root{
+  --blue:#1E40E7;
+  --blue-deep:#122FBF;
+  --blue-soft:#DDE3FF;
+  --ink:#111A16;
+  --ink-soft:#414B45;
+  --paper:#F1F2EA;
+  --paper-bright:#FBFAF3;
+  --paper-warm:#F7F1E1;
+  --line:#C9CDC2;
+  --line-strong:#9DA69B;
+  --signal:#E94B2C;
+  --signal-deep:#B6341C;
+  --butter:#EFE1B7;
+  --mint:#DDE8D6;
+  --warning:#FFE39A;
+  --display:"Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif;
+  --sans:"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+  --max:1360px;
+  --gutter:clamp(20px,4vw,56px);
+  --ease:cubic-bezier(.22,.7,.24,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img,svg{display:block;max-width:100%}
+button,input,textarea,select{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4,p,ul,ol,blockquote,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+[hidden]{display:none!important}
+::selection{background:var(--signal);color:#fff}
+:focus-visible{outline:3px solid var(--signal);outline-offset:3px}
+.skip-link{
+  position:fixed;left:16px;top:16px;z-index:200;
+  transform:translateY(-200%);
+  background:var(--ink);color:var(--paper-bright);
+  padding:10px 16px;border:1px solid var(--paper-bright);
+}
+.skip-link:focus{transform:translateY(0)}
+.container{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+.section{padding-block:clamp(76px,8.5vw,126px)}
+.sr-only{
+  position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  min-height:48px;padding:12px 22px;
+  border:1.5px solid var(--ink);border-radius:2px;
+  font-size:15px;font-weight:650;line-height:1.25;letter-spacing:.005em;
+  background:var(--paper-bright);color:var(--ink);
+  transition:transform .18s var(--ease),box-shadow .18s var(--ease),background .18s var(--ease);
+}
+.btn:hover{transform:translate(2px,2px);box-shadow:none}
+.btn--primary{background:var(--signal);color:#fff;box-shadow:4px 4px 0 var(--ink)}
+.btn--ink{background:var(--ink);color:var(--paper-bright);box-shadow:4px 4px 0 var(--signal)}
+.btn--cream{background:var(--paper-bright);color:var(--ink);box-shadow:4px 4px 0 rgba(17,26,22,.28)}
+.btn--ghost{background:transparent;box-shadow:none;border-color:currentColor}
+.btn--wide{width:100%}
+.btn svg{flex:none}
+.linkish{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:14px;font-weight:600;
+  border-bottom:1px solid currentColor;padding-bottom:2px;
+  transition:color .18s var(--ease),border-color .18s var(--ease);
+}
+.linkish:hover{color:var(--signal-deep);border-color:var(--signal-deep)}
+/* ---------- header / hero ---------- */
+.hero{
+  position:relative;overflow:hidden;
+  background-color:var(--blue);color:var(--paper-bright);
+  background-image:
+    linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px);
+  background-size:56px 56px;
+}
+.hero::before{
+  content:"";position:absolute;right:-180px;top:110px;
+  width:620px;height:620px;border:1px solid rgba(255,255,255,.16);
+  border-radius:50%;pointer-events:none;
+}
+.hero::after{
+  content:"";position:absolute;left:-80px;bottom:-170px;
+  width:340px;height:340px;border:1px solid rgba(255,255,255,.12);
+  border-radius:50%;pointer-events:none;
+}
+.site-header{position:relative;z-index:6}
+.header-inner{
+  display:flex;align-items:center;gap:30px;
+  padding-block:22px;border-bottom:1px solid rgba(255,255,255,.26);
+}
+.brand{display:flex;align-items:center;gap:13px;flex:none;line-height:1}
+.brand-name{
+  font-family:var(--sans);font-size:29px;font-weight:850;
+  letter-spacing:-.075em;
+}
+.brand-name em{font-style:normal;color:var(--signal)}
+.brand-sub{
+  padding-left:13px;border-left:1px solid rgba(255,255,255,.34);
+  font-size:11px;line-height:1.45;letter-spacing:.08em;color:rgba(251,250,243,.76);
+}
+.nav{display:flex;align-items:center;gap:clamp(16px,2.1vw,30px);margin-left:auto;font-size:13.5px}
+.nav a{color:rgba(251,250,243,.82);transition:color .18s var(--ease)}
+.nav a:hover{color:#fff}
+.header-cta{
+  margin-left:clamp(4px,1vw,14px);flex:none;
+  border:1px solid rgba(251,250,243,.55);padding:10px 15px;border-radius:2px;
+  font-size:13px;font-weight:600;color:var(--paper-bright);
+  transition:background .18s var(--ease),color .18s var(--ease),border-color .18s var(--ease);
+}
+.header-cta:hover{background:var(--paper-bright);color:var(--blue);border-color:var(--paper-bright)}
+.hero-main{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:minmax(0,1.03fr) minmax(440px,.97fr);
+  align-items:center;gap:clamp(44px,5.4vw,78px);
+  padding-top:clamp(48px,6vw,78px);
+  padding-bottom:clamp(68px,8vw,108px);
+}
+.hero-copy{position:relative;z-index:3;min-width:0}
+.hero h1{
+  font-family:var(--display);
+  font-size:clamp(46px,5.75vw,84px);
+  font-weight:700;line-height:1.08;letter-spacing:-.055em;
+}
+.h1-line{display:block;white-space:nowrap}
+.approve{
+  position:relative;display:inline-block;isolation:isolate;
+  padding:0 .02em;
+}
+.approve svg{
+  position:absolute;z-index:-1;left:-12%;top:-18%;
+  width:124%;height:138%;overflow:visible;color:var(--signal);
+}
+.approve svg path{
+  fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+}
+.hero-intro{
+  max-width:34em;margin-top:26px;
+  font-size:clamp(15.5px,1.25vw,17.5px);line-height:1.85;
+  color:rgba(251,250,243,.88);
+}
+.hero-intro strong{color:#fff;font-weight:650}
+.start-form{max-width:566px;margin-top:30px}
+.field-row{
+  display:flex;align-items:stretch;gap:5px;
+  background:var(--paper-bright);border:1.5px solid var(--ink);
+  padding:5px;box-shadow:6px 6px 0 rgba(17,26,22,.92);
+  transition:box-shadow .18s var(--ease),transform .18s var(--ease);
+}
+.field-row:focus-within{box-shadow:8px 8px 0 rgba(17,26,22,.92)}
+.field-row input{
+  flex:1;min-width:0;border:0;background:transparent;
+  padding:11px 13px;font-size:15px;line-height:1.5;color:var(--ink);
+}
+.field-row input::placeholder{color:#747B72;opacity:1}
+.field-row input:focus{outline:none}
+.field-row .btn{
+  flex:none;min-height:46px;padding:11px 18px;
+  background:var(--signal);color:#fff;border-color:var(--ink);box-shadow:none;
+  font-size:14px;
+}
+.field-row .btn:hover{background:#D94326;transform:none}
+.form-note{margin-top:14px;font-size:12.5px;line-height:1.6;color:rgba(251,250,243,.72)}
+.form-error{
+  margin-top:10px;padding:9px 12px;
+  border-left:3px solid var(--warning);background:rgba(17,26,22,.34);
+  font-size:13px;line-height:1.55;color:var(--warning);
+}
+.form-error:empty{display:none}
+.start-success{
+  display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;
+  padding:18px;border:1.5px solid var(--ink);border-radius:2px;
+  background:var(--paper-bright);color:var(--ink);
+  box-shadow:6px 6px 0 var(--signal);
+  animation:successIn .32s var(--ease) both;
+}
+@keyframes successIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.success-mark{
+  display:grid;place-items:center;width:34px;height:34px;flex:none;
+  border:1.5px solid var(--ink);border-radius:50%;
+  background:var(--mint);font-size:17px;font-weight:700;
+}
+.start-success strong{display:block;font-size:15px;margin-bottom:3px}
+.start-success p{font-size:13px;line-height:1.65;color:var(--ink-soft)}
+.success-idea{
+  display:block;margin-top:3px;font-family:var(--display);
+  font-size:15px;color:var(--ink);overflow-wrap:anywhere;
+}
+.reset-form{
+  grid-column:2;justify-self:start;margin-top:3px;
+  font-size:12px;font-weight:600;color:var(--signal-deep);
+  border-bottom:1px solid currentColor;
+}
+.hero-points{
+  display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;
+  font-size:12px;color:rgba(251,250,243,.72);
+}
+.hero-points span{display:inline-flex;align-items:center;gap:6px}
+.hero-points span::before{
+  content:"";width:5px;height:5px;background:var(--paper-bright);flex:none;
+}
+.hero-stage{position:relative;min-height:530px;display:flex;align-items:center;justify-content:flex-end}
+.hero-stage::before{
+  content:"";position:absolute;right:5%;top:7%;width:72%;height:72%;
+  border:1px dashed rgba(251,250,243,.28);border-radius:50%;
+  transform:rotate(-13deg);
+}
+.browser-card{
+  position:relative;z-index:2;width:min(100%,506px);
+  background:var(--paper-bright);color:var(--ink);
+  border:1.5px solid var(--ink);
+  box-shadow:14px 14px 0 var(--ink);
+  transform:rotate(1.7deg);
+}
+.browser-bar{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 12px;background:#E8E9E1;border-bottom:1px solid var(--line);
+  font-size:10px;color:var(--ink-soft);
+}
+.browser-dots{display:flex;gap:4px;flex:none}
+.browser-dots i{width:6px;height:6px;border:1px solid var(--ink);border-radius:50%}
+.browser-url{
+  flex:1;background:var(--paper-bright);border:1px solid var(--line);
+  padding:3px 8px;font-size:9.5px;line-height:1.4;color:#5A625B;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.browser-live{display:flex;align-items:center;gap:5px;flex:none;font-weight:600;color:var(--ink)}
+.live-dot{width:5px;height:5px;background:#2E7D47;border-radius:50%;animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.mini-site{background:#F8F5EA;padding:18px 20px 0;position:relative;overflow:hidden}
+.mini-nav{display:flex;align-items:center;gap:14px;padding-bottom:12px;border-bottom:1px solid rgba(17,26,22,.16)}
+.mini-brand{font-family:var(--display);font-size:14px;font-weight:700;line-height:1;white-space:nowrap}
+.mini-brand small{font-family:var(--sans);font-size:7px;letter-spacing:.14em;margin-left:5px;color:#646B64}
+.mini-nav-links{margin-left:auto;font-size:8.5px;color:#555D56;white-space:nowrap}
+.mini-nav-btn{
+  flex:none;padding:5px 9px;background:var(--blue);color:#fff;
+  font-size:8px;font-weight:600;line-height:1;
+}
+.mini-hero{display:grid;grid-template-columns:1.06fr .94fr;gap:8px;align-items:center;padding:20px 0 16px}
+.mini-title{
+  font-family:var(--display);font-size:clamp(23px,2vw,28px);
+  font-weight:700;line-height:1.18;letter-spacing:-.045em;
+}
+.mini-text{margin-top:9px;font-size:10px;line-height:1.7;color:#5A625B;max-width:19em}
+.mini-cta{
+  display:inline-block;margin-top:13px;padding:7px 11px;
+  background:var(--signal);color:#fff;font-size:8.5px;font-weight:600;line-height:1;
+}
+.mini-art{position:relative;min-height:176px}
+.mini-art svg{width:100%;height:100%;position:absolute;inset:0}
+.mini-booking{
+  display:flex;align-items:center;gap:6px;
+  margin:0 -20px;padding:11px 14px;
+  background:var(--ink);color:var(--paper-bright);
+}
+.mini-booking-label{font-size:8.5px;font-weight:600;white-space:nowrap;margin-right:3px}
+.mini-time{
+  border:1px solid rgba(251,250,243,.34);padding:4px 7px;
+  font-size:7.5px;line-height:1.3;color:rgba(251,250,243,.75);white-space:nowrap;
+}
+.mini-time.is-on{background:var(--paper-bright);color:var(--ink);border-color:var(--paper-bright)}
+.mini-go{
+  margin-left:auto;display:grid;place-items:center;width:20px;height:20px;
+  border-radius:50%;background:var(--signal);color:#fff;font-size:10px;flex:none;
+}
+.chat-float{
+  position:absolute;z-index:3;right:-14px;top:-26px;width:234px;
+  padding:14px 15px;background:var(--ink);color:var(--paper-bright);
+  border:1px solid var(--ink);box-shadow:7px 7px 0 var(--signal);
+  transform:rotate(-1.6deg);
+}
+.chat-float-label{display:flex;align-items:center;gap:6px;font-size:9px;color:rgba(251,250,243,.62)}
+.chat-float-label::before{content:"";width:5px;height:5px;background:var(--signal)}
+.chat-float p{font-size:12.5px;line-height:1.6;margin-top:6px}
+.chat-float .chat-state{
+  display:flex;align-items:center;gap:5px;margin-top:8px;
+  font-size:9px;color:rgba(251,250,243,.54);
+}
+.chat-float .chat-state i{width:4px;height:4px;background:#8FCF9D;border-radius:50%}
+.expert-float{
+  position:absolute;z-index:4;left:-34px;bottom:-38px;width:292px;
+  padding:16px 17px;background:var(--paper-warm);color:var(--ink);
+  border:1.5px solid var(--ink);box-shadow:9px 9px 0 var(--signal);
+  transform:rotate(-1.4deg);
+}
+.expert-float-top{display:flex;align-items:center;gap:9px}
+.avatar{
+  display:grid;place-items:center;flex:none;width:31px;height:31px;
+  border-radius:50%;border:1px solid var(--ink);
+  background:var(--signal);color:#fff;
+  font-family:var(--display);font-size:14px;font-weight:700;
+}
+.expert-float-name{font-size:11.5px;font-weight:700;line-height:1.35}
+.expert-float-role{font-size:8.5px;color:#646B64;line-height:1.35}
+.expert-float blockquote{
+  margin-top:10px;font-family:var(--display);
+  font-size:13.5px;line-height:1.55;letter-spacing:-.015em;
+}
+.expert-float-foot{
+  display:flex;align-items:center;gap:6px;margin-top:10px;
+  font-size:8.5px;color:#646B64;
+}
+.expert-float-foot span{display:inline-flex;align-items:center;gap:4px}
+.check-mini{
+  display:inline-grid;place-items:center;width:12px;height:12px;flex:none;
+  background:var(--blue);color:#fff;font-size:7px;line-height:1;
+}
+/* ---------- proof strip ---------- */
+.proof{background:var(--paper);border-bottom:1px solid var(--line)}
+.proof-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  padding-block:44px;
+}
+.proof-item{padding-inline:clamp(16px,2.5vw,32px);border-left:1px solid var(--line)}
+.proof-item:first-child{border-left:0;padding-left:0}
+.proof-num{
+  display:block;font-family:var(--display);
+  font-size:clamp(38px,4vw,58px);font-weight:700;line-height:1;letter-spacing:-.04em;
+}
+.proof-num sup{
+  position:relative;top:-.8em;margin-left:3px;
+  font-family:var(--sans);font-size:.3em;font-weight:650;letter-spacing:0;color:var(--signal-deep);
+}
+.proof-label{display:block;margin-top:10px;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+/* ---------- section head ---------- */
+.section-head{
+  display:grid;grid-template-columns:minmax(0,1.16fr) minmax(260px,.84fr);
+  align-items:end;gap:clamp(32px,5vw,72px);
+  margin-bottom:clamp(38px,4.8vw,60px);
+}
+.section h2{
+  font-family:var(--display);
+  font-size:clamp(37px,4.25vw,62px);
+  font-weight:700;line-height:1.12;letter-spacing:-.05em;
+  text-wrap:balance;
+}
+.section-head > p{
+  max-width:32em;justify-self:end;
+  font-size:15.5px;line-height:1.85;color:var(--ink-soft);
+}
+.section-head > p strong{color:var(--ink);font-weight:650}
+/* ---------- capabilities / workbench ---------- */
+.capabilities{background:var(--paper)}
+.workbench{
+  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  border:1.5px solid var(--ink);background:var(--paper-bright);
+  box-shadow:10px 10px 0 var(--ink);
+}
+.chat-panel{
+  min-width:0;display:flex;flex-direction:column;
+  border-right:1px solid var(--ink);background:var(--paper-bright);
+}
+.panel-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:13px 17px;border-bottom:1px solid var(--line);
+  font-size:10.5px;color:#59625B;
+}
+.panel-bar strong{font-size:11px;color:var(--ink);font-weight:650}
+.panel-status{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.panel-status::before{content:"";width:5px;height:5px;border-radius:50%;background:#2E7D47}
+.chat-log{display:flex;flex-direction:column;gap:14px;padding:20px 18px 16px;flex:1}
+.msg{
+  max-width:94%;padding:11px 13px;border:1px solid var(--line);
+  font-size:12px;line-height:1.7;
+}
+.msg-user{
+  align-self:flex-end;background:var(--blue-soft);border-color:#B9C4F0;
+  border-bottom-right-radius:0;
+}
+.msg-orvo{
+  align-self:flex-start;background:#F7F5EC;border-color:var(--line);
+  border-bottom-left-radius:0;
+}
+.msg-who{
+  display:flex;align-items:center;gap:5px;margin-bottom:5px;
+  font-size:8.5px;font-weight:700;letter-spacing:.05em;color:#626B63;
+}
+.msg-orvo .msg-who{color:var(--blue)}
+.msg-who::before{content:"";width:5px;height:5px;background:currentColor;border-radius:50%}
+.msg p{font-size:12px;line-height:1.68;color:#28322C}
+.msg-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.msg-tag{
+  display:inline-flex;align-items:center;gap:4px;padding:3px 6px;
+  background:var(--mint);border:1px solid #B8CCAF;
+  font-size:8.5px;line-height:1.3;color:#2C4A30;
+}
+.msg-tag::before{content:"✓";font-size:7px}
+.msg-diff{
+  margin-top:8px;padding-top:7px;border-top:1px dashed #C4CABF;
+  display:flex;justify-content:space-between;gap:10px;
+  font-size:8.5px;color:#717A72;
+}
+.chat-compose{
+  display:flex;align-items:center;gap:10px;
+  margin:0 18px 18px;padding:10px 12px;
+  border:1px solid #BFC5BA;background:#F6F4EA;
+  font-size:10.5px;color:#7B837B;
+}
+.chat-compose .send{
+  margin-left:auto;flex:none;display:grid;place-items:center;
+  width:23px;height:23px;background:var(--blue);color:#fff;border-radius:50%;
+}
+.preview-panel{
+  position:relative;min-width:0;overflow:hidden;
+  background-color:#DCE3FF;
+  background-image:
+    linear-gradient(rgba(30,64,231,.11) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(30,64,231,.11) 1px,transparent 1px);
+  background-size:28px 28px;
+  display:flex;align-items:center;justify-content:center;
+  padding:44px 34px 38px;
+}
+.preview-meta{
+  position:absolute;left:18px;top:16px;
+  display:flex;align-items:center;gap:8px;
+  font-size:9px;color:#4F5B89;
+}
+.preview-meta span + span{border-left:1px solid rgba(30,64,231,.25);padding-left:8px}
+.work-preview{
+  position:relative;width:min(100%,446px);
+  background:var(--paper-bright);border:1.5px solid var(--ink);
+  box-shadow:7px 7px 0 rgba(17,26,22,.82);
+  transform:rotate(-.7deg);
+}
+.wp-bar{
+  display:flex;align-items:center;gap:7px;padding:8px 11px;
+  border-bottom:1px solid var(--line);background:#E8E9E1;
+  font-size:8px;color:#5D665E;
+}
+.wp-bar i{width:5px;height:5px;border:1px solid var(--ink);border-radius:50%}
+.wp-url{margin-left:4px;background:var(--paper-bright);border:1px solid var(--line);padding:2px 6px;font-size:7.5px}
+.wp-body{padding:14px 17px 17px;background:#F8F5EA;position:relative}
+.wp-nav{display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(17,26,22,.16);padding-bottom:8px}
+.wp-brand{font-family:var(--display);font-size:11px;font-weight:700;line-height:1}
+.wp-links{margin-left:auto;font-size:7px;color:#59625B;white-space:nowrap}
+.wp-navbtn{background:var(--signal);color:#fff;font-size:6.5px;padding:4px 6px;font-weight:600;white-space:nowrap}
+.wp-hero{display:grid;grid-template-columns:1.08fr .92fr;gap:10px;padding:17px 0 12px}
+.wp-title{
+  font-family:var(--display);font-size:clamp(19px,1.8vw,25px);
+  font-weight:700;line-height:1.24;letter-spacing:-.05em;position:relative;
+}
+.wp-title::after{
+  content:"";position:absolute;inset:-6px -8px;
+  border:1px dashed var(--signal);pointer-events:none;
+}
+.wp-modified{
+  position:absolute;right:-4px;top:-20px;
+  background:var(--signal);color:#fff;font-family:var(--sans);
+  font-size:6.5px;letter-spacing:0;padding:2px 4px;line-height:1.4;font-weight:600;
+}
+.wp-text{margin-top:9px;font-size:8.5px;line-height:1.65;color:#5A625B}
+.wp-cta{display:inline-block;margin-top:10px;padding:6px 9px;background:var(--blue);color:#fff;font-size:7px;font-weight:600}
+.wp-art{position:relative;min-height:130px}
+.wp-art svg{position:absolute;inset:0;width:100%;height:100%}
+.wp-schedule{
+  margin-top:8px;border:1px solid var(--ink);background:var(--paper-bright);
+  display:flex;align-items:center;gap:5px;padding:8px;
+}
+.wp-schedule b{font-size:7px;margin-right:3px;white-space:nowrap}
+.wp-day{border:1px solid #C4CABF;padding:3px 5px;font-size:6.5px;color:#667067;white-space:nowrap}
+.wp-day.on{background:var(--ink);color:var(--paper-bright);border-color:var(--ink)}
+.wp-check{
+  position:absolute;right:12px;bottom:12px;
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--mint);border:1px solid #A9BFA1;padding:4px 6px;
+  font-size:7px;color:#2A4930;
+}
+.wp-check::before{content:"✓";font-weight:700}
+.preview-note{
+  position:absolute;right:17px;top:40px;
+  background:var(--paper-bright);border:1px solid var(--ink);
+  padding:6px 8px;font-size:8px;color:var(--ink);
+  transform:rotate(2.5deg);box-shadow:3px 3px 0 var(--signal);
+}
+/* capability list */
+.capability-list{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  margin-top:clamp(42px,5vw,62px);
+  border-top:1.5px solid var(--ink);
+}
+.capability{
+  padding:22px clamp(16px,2.1vw,28px) 0;
+  border-left:1px solid var(--line);
+}
+.capability:first-child{border-left:0;padding-left:0}
+.cap-icon{
+  width:26px;height:26px;margin-bottom:22px;color:var(--blue);
+}
+.capability h3{font-size:16px;font-weight:650;line-height:1.45;letter-spacing:-.01em}
+.capability p{margin-top:8px;font-size:13px;line-height:1.75;color:var(--ink-soft)}
+.capability p strong{color:var(--ink);font-weight:600}
+/* ---------- expert section ---------- */
+.expert{
+  position:relative;overflow:hidden;
+  background-color:var(--ink);color:var(--paper-bright);
+  background-image:
+    linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:64px 64px;
+}
+.expert::after{
+  content:"";position:absolute;right:-140px;top:-160px;
+  width:520px;height:520px;border:1px solid rgba(251,250,243,.12);border-radius:50%;
+  pointer-events:none;
+}
+.expert .container{position:relative;z-index:2}
+.expert-grid{
+  display:grid;grid-template-columns:minmax(0,1.06fr) minmax(380px,.94fr);
+  gap:clamp(42px,6vw,86px);align-items:start;
+}
+.expert h2{
+  font-family:var(--display);
+  font-size:clamp(37px,4.25vw,62px);
+  font-weight:700;line-height:1.13;letter-spacing:-.05em;
+}
+.expert h2 span{color:var(--butter)}
+.expert-lede{
+  max-width:32em;margin-top:24px;
+  font-size:15.5px;line-height:1.86;color:rgba(251,250,243,.78);
+}
+.expert-lede strong{color:var(--paper-bright);font-weight:650}
+.expert-timeline{margin-top:38px;border-top:1px solid rgba(251,250,243,.24)}
+.expert-step{
+  display:grid;grid-template-columns:42px minmax(0,1fr);gap:15px;
+  padding:20px 0;border-bottom:1px solid rgba(251,250,243,.17);
+}
+.step-n{
+  display:grid;place-items:center;width:29px;height:29px;
+  border:1px solid rgba(251,250,243,.45);border-radius:50%;
+  font-size:9.5px;letter-spacing:.06em;color:rgba(251,250,243,.82);
+}
+.expert-step:nth-child(2) .step-n{background:var(--signal);border-color:var(--signal);color:#fff}
+.expert-step h3{font-size:15px;font-weight:650;line-height:1.4}
+.expert-step p{margin-top:5px;max-width:36em;font-size:12.5px;line-height:1.72;color:rgba(251,250,243,.64)}
+.expert-cadence{
+  display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:22px;
+  font-size:11px;line-height:1.6;color:rgba(251,250,243,.7);
+}
+.expert-cadence span{display:inline-flex;align-items:center;gap:6px}
+.expert-cadence b{
+  border:1px solid rgba(251,250,243,.3);padding:2px 7px;
+  color:var(--paper-bright);font-weight:600;
+}
+.review-sheet{
+  position:relative;background:var(--paper-warm);color:var(--ink);
+  border:1.5px solid var(--ink);box-shadow:13px 13px 0 var(--blue);
+  transform:rotate(-1deg);padding:clamp(22px,2.5vw,30px);
+}
+.review-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--ink)}
+.review-title{font-size:12px;font-weight:700;letter-spacing:.02em}
+.review-round{font-size:9px;color:#6A7068;white-space:nowrap}
+.reviewer{display:flex;align-items:center;gap:11px;padding:16px 0}
+.reviewer .avatar{width:42px;height:42px;background:var(--blue);font-size:17px}
+.reviewer-name{font-size:14px;font-weight:700;line-height:1.4}
+.reviewer-meta{font-size:9.5px;line-height:1.55;color:#646B64}
+.review-list{border-top:1px solid rgba(17,26,22,.2)}
+.review-item{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid rgba(17,26,22,.14)}
+.review-check{
+  display:grid;place-items:center;width:18px;height:18px;flex:none;margin-top:1px;
+  border:1px solid var(--ink);background:var(--mint);
+  font-size:9px;font-weight:700;
+}
+.review-item b{display:block;font-size:11.5px;font-weight:650;line-height:1.5}
+.review-item p{font-size:10px;line-height:1.6;color:#646B64;margin-top:1px}
+.review-quote{
+  margin-top:16px;font-family:var(--display);
+  font-size:15px;line-height:1.62;letter-spacing:-.02em;
+}
+.review-sign{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  margin-top:15px;padding-top:12px;border-top:1px solid rgba(17,26,22,.2);
+  font-size:9.5px;color:#646B64;
+}
+.review-stamp{
+  border:1.5px solid var(--signal);color:var(--signal-deep);
+  padding:3px 7px;font-size:8.5px;font-weight:700;
+  transform:rotate(-4deg);white-space:nowrap;
+}
+/* ---------- process ---------- */
+.process{background:var(--paper-bright)}
+.process-stat{
+  justify-self:end;text-align:right;
+}
+.process-stat strong{
+  display:block;font-family:var(--display);
+  font-size:clamp(30px,3.2vw,44px);line-height:1.1;letter-spacing:-.04em;
+}
+.process-stat span{display:block;margin-top:6px;font-size:12px;color:var(--ink-soft)}
+.steps{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  border-top:1.5px solid var(--ink);
+}
+.step{
+  position:relative;min-width:0;
+  padding:24px clamp(13px,1.7vw,22px) 0;
+  border-left:1px solid var(--line);
+}
+.step:first-child{border-left:0;padding-left:0}
+.step::before{
+  content:"";position:absolute;top:-4.5px;left:0;
+  width:7px;height:7px;border:1.5px solid var(--ink);border-radius:50%;
+  background:var(--paper-bright);
+}
+.step:first-child::before{left:0}
+.step-num{
+  display:block;font-family:var(--display);
+  font-size:34px;font-weight:700;line-height:1;letter-spacing:-.04em;
+  color:#A7AFA5;
+}
+.step h3{margin-top:18px;font-size:15px;font-weight:650;line-height:1.45}
+.step p{margin-top:7px;font-size:12px;line-height:1.75;color:var(--ink-soft)}
+.step-tag{
+  display:inline-block;margin-top:13px;padding:3px 7px;
+  border:1px solid currentColor;font-size:9px;line-height:1.4;font-weight:600;
+  color:var(--signal-deep);
+}
+.step.is-expert{background:var(--blue-soft)}
+.step.is-expert::before{background:var(--signal);border-color:var(--signal)}
+.step.is-expert .step-num{color:var(--blue)}
+.step.is-expert{padding-right:clamp(13px,1.7vw,22px);padding-left:clamp(13px,1.7vw,22px)}
+.step.is-expert h3,.step.is-expert p{position:relative;z-index:1}
+/* ---------- cases ---------- */
+.cases{background:var(--butter)}
+.cases .section-head > p{color:#4B4F3D}
+.case-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,38px)}
+.case-card{
+  display:flex;flex-direction:column;min-width:0;
+  border-top:1.5px solid var(--ink);padding-top:20px;
+}
+.case-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.case-plan{
+  display:inline-block;padding:3px 7px;border:1px solid var(--ink);
+  font-size:9px;font-weight:650;line-height:1.4;white-space:nowrap;
+}
+.case-plan--pro{background:var(--blue);color:#fff;border-color:var(--blue)}
+.case-plan--unlimited{background:var(--ink);color:var(--paper-bright)}
+.case-type{font-size:10px;color:#555A45;line-height:1.5;text-align:right}
+.case-quote{
+  margin:22px 0 28px;font-family:var(--display);
+  font-size:clamp(18px,1.6vw,22px);font-weight:400;line-height:1.65;
+  letter-spacing:-.025em;text-wrap:pretty;
+}
+.case-quote::before{content:"“";color:var(--signal-deep);margin-right:1px}
+.case-quote::after{content:"”";color:var(--signal-deep);margin-left:1px}
+.case-bottom{margin-top:auto;padding-top:16px;border-top:1px solid rgba(17,26,22,.22)}
+.case-outcome{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.case-outcome strong{
+  font-family:var(--display);font-size:clamp(34px,3.2vw,46px);
+  font-weight:700;line-height:1;letter-spacing:-.04em;
+}
+.case-outcome span{font-size:10.5px;line-height:1.5;color:#4F5440}
+.case-person{display:flex;align-items:center;gap:8px;margin-top:14px}
+.case-avatar{
+  display:grid;place-items:center;width:28px;height:28px;flex:none;
+  border:1px solid var(--ink);border-radius:50%;
+  background:var(--paper-bright);font-family:var(--display);font-size:12px;font-weight:700;
+}
+.case-person b{font-size:11px;font-weight:650;line-height:1.4}
+.case-person span{font-size:9px;color:#555A45;line-height:1.4}
+/* ---------- templates ---------- */
+.templates{background:var(--mint);border-top:1px solid var(--line)}
+.templates .section-head > p{color:#48574A}
+.tpl-number{
+  font-family:var(--display);font-size:1.2em;line-height:.8;
+  letter-spacing:-.07em;color:var(--blue);
+}
+.filter-row{
+  display:flex;align-items:center;flex-wrap:wrap;gap:7px;
+  padding:17px 0 18px;border-top:1px solid rgba(17,26,22,.24);
+  border-bottom:1px solid rgba(17,26,22,.18);margin-bottom:26px;
+}
+.filter{
+  min-height:34px;padding:6px 12px;border:1px solid var(--ink);border-radius:2px;
+  font-size:11.5px;line-height:1.4;background:transparent;
+  transition:background .17s var(--ease),color .17s var(--ease);
+}
+.filter:hover{background:rgba(251,250,243,.5)}
+.filter[aria-pressed="true"]{background:var(--ink);color:var(--paper-bright)}
+.filter-status{margin-left:auto;font-size:10.5px;color:#4D5A4F;white-space:nowrap}
+.template-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:30px 20px;
+}
+.template-card{min-width:0}
+.thumb{
+  position:relative;aspect-ratio:4/3;overflow:hidden;
+  border:1px solid var(--ink);background:var(--thumb-bg);
+  box-shadow:4px 4px 0 rgba(17,26,22,.15);
+  transition:transform .24s var(--ease),box-shadow .24s var(--ease);
+  --thumb-bg:#DDE3FF;--thumb-page:#FBFAF3;--thumb-text:#111A16;
+  --thumb-accent:#1E40E7;--thumb-soft:#C7D1FF;--thumb-pop:#E94B2C;--thumb-hair:#C7CBBF;
+}
+.template-card:hover .thumb{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(17,26,22,.2)}
+.thumb--blue{--thumb-bg:#DDE3FF;--thumb-page:#FBFAF3;--thumb-text:#111A16;--thumb-accent:#1E40E7;--thumb-soft:#C7D1FF;--thumb-pop:#E94B2C;--thumb-hair:#C7CBBF}
+.thumb--coral{--thumb-bg:#F0D8CB;--thumb-page:#FBF7EC;--thumb-text:#271B16;--thumb-accent:#C94728;--thumb-soft:#EFC2B0;--thumb-pop:#1E40E7;--thumb-hair:#CBBFB4}
+.thumb--green{--thumb-bg:#DCE7D3;--thumb-page:#FBFBF2;--thumb-text:#142219;--thumb-accent:#315A3B;--thumb-soft:#BFD3B4;--thumb-pop:#E94B2C;--thumb-hair:#C3C9BB}
+.thumb--butter{--thumb-bg:#EFE1B7;--thumb-page:#FCFAF1;--thumb-text:#251F13;--thumb-accent:#7B5415;--thumb-soft:#DDCA91;--thumb-pop:#1E40E7;--thumb-hair:#CFC5A8}
+.thumb--ink{--thumb-bg:#16211C;--thumb-page:#1A2620;--thumb-text:#F5F1E5;--thumb-accent:#F1E4B7;--thumb-soft:#3C4B43;--thumb-pop:#E94B2C;--thumb-hair:#425149}
+.mini-page{
+  position:absolute;inset:12px 12px 0;overflow:hidden;
+  background:var(--thumb-page);color:var(--thumb-text);
+  border:1px solid var(--thumb-hair);
+}
+.mini-nav{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 10px 7px;border-bottom:1px solid var(--thumb-hair);
+}
+.mini-nav b{font-family:var(--display);font-size:9px;font-weight:700;line-height:1;white-space:nowrap}
+.mini-nav-links{margin-left:auto;font-size:6px;color:var(--thumb-text);opacity:.55;white-space:nowrap}
+.mini-nav-cta{
+  flex:none;padding:3px 5px;background:var(--thumb-accent);color:var(--thumb-page);
+  font-size:5.5px;line-height:1.2;font-weight:600;white-space:nowrap;
+}
+.mini-landing{display:grid;grid-template-columns:1.08fr .92fr;gap:8px;padding:14px 10px 10px}
+.mini-landing h4,.mini-shop-copy h4,.mini-booking-copy h4,.mini-community-copy h4{
+  font-family:var(--display);font-size:clamp(13px,1.15vw,17px);
+  font-weight:700;line-height:1.25;letter-spacing:-.04em;text-wrap:balance;
+}
+.mini-landing p,.mini-shop-copy p,.mini-booking-copy p,.mini-community-copy p{
+  margin-top:5px;font-size:6.2px;line-height:1.6;color:var(--thumb-text);opacity:.6;
+}
+.mini-btn{
+  display:inline-block;margin-top:8px;padding:4px 6px;
+  background:var(--thumb-accent);color:var(--thumb-page);
+  font-size:5.8px;font-weight:600;line-height:1.2;white-space:nowrap;
+}
+.mini-art-panel{
+  position:relative;min-height:100px;overflow:hidden;
+  background:var(--thumb-soft);
+}
+.mini-art-disc{position:absolute;width:54px;height:54px;border-radius:50%;background:var(--thumb-pop);right:-8px;top:-8px}
+.mini-art-arch{
+  position:absolute;left:16%;bottom:-1px;width:58%;height:70%;
+  border:1px solid var(--thumb-text);
+  border-bottom:0;border-radius:50% 50% 0 0 / 60% 60% 0 0;
+  background:var(--thumb-page);
+}
+.mini-art-arch::before{
+  content:"";position:absolute;left:25%;top:25%;width:50%;height:52%;
+  border-radius:50% 50% 0 0;background:var(--thumb-accent);opacity:.85;
+}
+.mini-art-caption{
+  position:absolute;left:7px;bottom:6px;font-size:5px;line-height:1.4;
+  color:var(--thumb-text);opacity:.62;
+}
+.mini-logo-row{display:flex;gap:6px;padding:6px 10px;border-top:1px solid var(--thumb-hair);opacity:.55}
+.mini-logo-row span{display:block;width:22px;height:3px;background:var(--thumb-text)}
+.mini-logo-row span:nth-child(2){width:14px}
+.mini-logo-row span:nth-child(3){width:18px}
+/* shop thumb */
+.mini-shop{display:grid;grid-template-columns:.9fr 1.1fr;gap:8px;padding:12px 10px 10px}
+.mini-products{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;align-items:end}
+.mini-product{
+  min-width:0;border:1px solid var(--thumb-hair);background:var(--thumb-page);
+  padding:5px 4px 4px;text-align:center;
+}
+.mini-product .vase-wrap{height:43px;display:flex;align-items:flex-end;justify-content:center}
+.mini-vase{
+  position:relative;width:22px;height:30px;background:var(--thumb-soft);
+  border:1px solid var(--thumb-text);border-radius:40% 40% 32% 32% / 28% 28% 58% 58%;
+}
+.mini-vase::before{
+  content:"";position:absolute;left:7px;top:-7px;width:6px;height:7px;
+  border:1px solid var(--thumb-text);border-top:0;background:var(--thumb-soft);
+}
+.mini-product:nth-child(2) .mini-vase{width:17px;height:25px;border-radius:48% 48% 36% 36% / 35% 35% 50% 50%}
+.mini-product:nth-child(3) .mini-vase{width:25px;height:18px;border-radius:45% 45% 50% 50% / 34% 34% 60% 60%}
+.mini-product small{display:block;font-size:4.8px;line-height:1.3;color:var(--thumb-text);opacity:.7;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-product i{display:block;font-style:normal;font-size:5.3px;line-height:1.2;margin-top:1px;color:var(--thumb-accent);font-weight:700}
+/* booking thumb */
+.mini-booking-layout{display:grid;grid-template-columns:1fr .92fr;gap:8px;padding:12px 10px 10px}
+.mini-times{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.mini-times span{border:1px solid var(--thumb-hair);padding:3px 5px;font-size:5px;line-height:1.2;color:var(--thumb-text);opacity:.8}
+.mini-times span:first-child{background:var(--thumb-accent);border-color:var(--thumb-accent);color:var(--thumb-page);opacity:1}
+.mini-calendar{border:1px solid var(--thumb-hair);background:var(--thumb-page);padding:6px}
+.mini-cal-top{display:flex;justify-content:space-between;gap:4px;font-size:5px;line-height:1;margin-bottom:5px;opacity:.66}
+.mini-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.mini-cal-grid i{aspect-ratio:1;border:1px solid var(--thumb-hair);font-style:normal;font-size:3.5px;line-height:1;display:grid;place-items:center;opacity:.54;color:var(--thumb-text)}
+.mini-cal-grid i:nth-child(11){background:var(--thumb-accent);border-color:var(--thumb-accent);color:var(--thumb-page);opacity:1}
+.mini-cal-grid i:nth-child(15){background:var(--thumb-soft);opacity:1}
+/* dashboard thumb */
+.mini-dash{display:grid;grid-template-columns:56px 1fr;height:100%;min-height:174px}
+.mini-side{
+  border-right:1px solid var(--thumb-hair);background:var(--thumb-soft);
+  padding:9px 7px;display:flex;flex-direction:column;gap:7px;
+}
+.mini-side b{font-family:var(--display);font-size:8px;line-height:1;margin-bottom:2px}
+.mini-side span{font-size:5.2px;line-height:1.35;color:var(--thumb-text);opacity:.6;padding:3px 4px;white-space:nowrap}
+.mini-side span:first-of-type{background:var(--thumb-accent);color:var(--thumb-page);opacity:1}
+.mini-dash-main{padding:10px 9px;min-width:0}
+.mini-dash-title{display:flex;justify-content:space-between;align-items:baseline;gap:5px}
+.mini-dash-title b{font-family:var(--display);font-size:9px;line-height:1.2}
+.mini-dash-title span{font-size:4.8px;opacity:.55;white-space:nowrap}
+.mini-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:9px}
+.mini-metric{border:1px solid var(--thumb-hair);padding:5px 4px;background:var(--thumb-page)}
+.mini-metric strong{display:block;font-family:var(--display);font-size:10px;line-height:1}
+.mini-metric span{display:block;font-size:4.4px;line-height:1.3;opacity:.55;margin-top:2px;white-space:nowrap}
+.mini-chart{
+  display:flex;align-items:flex-end;gap:3px;height:50px;
+  margin-top:9px;padding:6px 6px 0;border:1px solid var(--thumb-hair);
+  border-bottom:0;position:relative;
+}
+.mini-chart i{flex:1;height:var(--h);background:var(--thumb-accent);opacity:.72}
+.mini-chart i:nth-child(3n){background:var(--thumb-pop);opacity:.9}
+.mini-chart::after{content:"";position:absolute;left:6px;right:6px;bottom:0;border-bottom:1px solid var(--thumb-hair)}
+.mini-dash-rows{display:grid;gap:3px;margin-top:6px}
+.mini-dash-rows span{height:4px;background:var(--thumb-text);opacity:.13}
+.mini-dash-rows span:nth-child(2){width:84%}
+.mini-dash-rows span:nth-child(3){width:68%}
+/* community thumb */
+.mini-community{display:grid;grid-template-columns:1.05fr .95fr;gap:10px;padding:13px 10px 10px}
+.mini-episodes{border-left:1px solid var(--thumb-hair);padding-left:8px;display:flex;flex-direction:column;gap:5px}
+.mini-ep{display:flex;align-items:center;gap:5px;border-bottom:1px solid var(--thumb-hair);padding-bottom:5px}
+.mini-play{
+  width:13px;height:13px;flex:none;border-radius:50%;background:var(--thumb-accent);position:relative;
+}
+.mini-play::after{
+  content:"";position:absolute;left:5px;top:4px;
+  border-left:4px solid var(--thumb-page);border-top:2.5px solid transparent;border-bottom:2.5px solid transparent;
+}
+.mini-ep b{display:block;font-size:5.2px;line-height:1.35;font-weight:600}
+.mini-ep small{display:block;font-size:4.4px;line-height:1.3;opacity:.55;margin-top:1px}
+.mini-wave{display:flex;align-items:flex-end;gap:2px;height:15px;margin-top:7px;opacity:.7}
+.mini-wave i{width:2px;height:var(--h);background:var(--thumb-accent)}
+/* mobile thumb */
+.mini-phones{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.mini-phone{
+  position:relative;width:31%;height:85%;background:var(--thumb-page);
+  border:1px solid var(--thumb-text);border-radius:9px;
+  padding:5px;box-shadow:4px 4px 0 rgba(0,0,0,.12);
+}
+.mini-phone--back{
+  transform:translateX(28%) rotate(8deg) scale(.92);background:var(--thumb-soft);
+  border-color:var(--thumb-hair);
+}
+.mini-phone--front{transform:translateX(-8%) rotate(-4deg);z-index:2}
+.mini-phone-notch{
+  position:absolute;left:50%;top:4px;transform:translateX(-50%);
+  width:22%;height:4px;background:var(--thumb-text);border-radius:99px;opacity:.7;
+}
+.mini-screen{padding-top:7px;height:100%;display:flex;flex-direction:column}
+.mini-app-top{display:flex;align-items:center;gap:4px;padding:3px 1px;border-bottom:1px solid var(--thumb-hair)}
+.mini-app-top b{font-family:var(--display);font-size:7px;line-height:1}
+.mini-app-top span{margin-left:auto;width:8px;height:8px;border-radius:50%;background:var(--thumb-accent)}
+.mini-app-card{margin-top:5px;padding:5px;background:var(--thumb-soft)}
+.mini-app-card b{display:block;font-family:var(--display);font-size:8px;line-height:1.25}
+.mini-app-card p{font-size:4.6px;line-height:1.4;opacity:.65;margin-top:2px}
+.mini-progress{height:3px;background:var(--thumb-page);margin-top:5px;position:relative}
+.mini-progress::after{content:"";position:absolute;inset:0 30% 0 0;background:var(--thumb-accent)}
+.mini-app-btn{display:inline-block;margin-top:5px;padding:3px 5px;background:var(--thumb-accent);color:var(--thumb-page);font-size:4.7px;line-height:1.2}
+.mini-app-row{display:flex;align-items:center;gap:4px;margin-top:4px;padding-top:4px;border-top:1px solid var(--thumb-hair)}
+.mini-app-row i{display:block;width:12px;height:12px;background:var(--thumb-soft);border-radius:50%;flex:none}
+.mini-app-row span{display:block;height:3px;background:var(--thumb-text);opacity:.18;flex:1}
+/* template info */
+.template-info{padding:12px 2px 0}
+.template-info h3{font-family:var(--display);font-size:18px;font-weight:700;line-height:1.35;letter-spacing:-.025em}
+.template-info > p{margin-top:4px;font-size:11.5px;line-height:1.65;color:#465347;min-height:37px}
+.template-meta{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  margin-top:9px;padding-top:8px;border-top:1px solid rgba(17,26,22,.18);
+  font-size:9.5px;line-height:1.4;color:#4D5A4F;
+}
+.template-cat{
+  padding:2px 6px;border:1px solid rgba(17,26,22,.35);
+  white-space:nowrap;font-size:9px;
+}
+.template-more{
+  display:flex;align-items:center;justify-content:space-between;gap:28px;
+  margin-top:clamp(38px,4.6vw,54px);padding:clamp(22px,3vw,34px);
+  background-color:var(--blue);color:var(--paper-bright);
+  background-image:
+    linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);
+  background-size:34px 34px;
+  border:1.5px solid var(--ink);box-shadow:8px 8px 0 var(--ink);
+}
+.template-more-copy{display:flex;align-items:center;gap:clamp(16px,3vw,28px);min-width:0}
+.template-more-num{
+  font-family:var(--display);font-size:clamp(48px,6vw,76px);
+  font-weight:700;line-height:.82;letter-spacing:-.06em;flex:none;
+}
+.template-more-copy p{max-width:24em;font-size:12.5px;line-height:1.7;color:rgba(251,250,243,.78)}
+.template-more-copy strong{display:block;font-size:14px;font-weight:650;color:var(--paper-bright);margin-bottom:2px}
+.template-more .btn{flex:none;background:var(--paper-bright);color:var(--ink);box-shadow:4px 4px 0 var(--signal)}
+/* ---------- pricing ---------- */
+.pricing{background:var(--paper)}
+.pricing-head{
+  display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);
+  gap:clamp(30px,5vw,70px);align-items:end;
+  margin-bottom:34px;
+}
+.pricing-head h2{font-family:var(--display);font-size:clamp(37px,4.25vw,62px);font-weight:700;line-height:1.12;letter-spacing:-.05em}
+.pricing-side p{font-size:15px;line-height:1.8;color:var(--ink-soft);max-width:34em}
+.billing-toggle{
+  display:inline-flex;align-items:stretch;gap:2px;margin-top:18px;
+  padding:3px;border:1px solid var(--ink);background:var(--paper-bright);
+}
+.billing-btn{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  min-height:37px;padding:7px 14px;font-size:12px;font-weight:600;line-height:1.3;
+  transition:background .18s var(--ease),color .18s var(--ease);
+}
+.billing-btn span{
+  padding:2px 5px;background:var(--signal);color:#fff;
+  font-size:8.5px;line-height:1.3;font-weight:650;
+}
+.billing-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper-bright)}
+.billing-btn[aria-pressed="true"] span{background:var(--butter);color:var(--ink)}
+.pricing-promise{
+  display:flex;align-items:center;gap:18px;
+  padding:16px 20px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  margin-bottom:26px;
+}
+.pricing-promise .infinity{
+  font-family:var(--display);font-size:38px;line-height:.8;color:var(--blue);flex:none;
+}
+.pricing-promise p{font-size:12.5px;line-height:1.65;color:var(--ink-soft)}
+.pricing-promise strong{color:var(--ink);font-weight:650}
+.pricing-promise .promise-side{
+  margin-left:auto;flex:none;font-size:10px;line-height:1.5;color:#5A645C;
+  text-align:right;
+}
+.plan-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  border:1.5px solid var(--ink);background:var(--paper-bright);
+  box-shadow:9px 9px 0 var(--ink);
+}
+.plan{
+  min-width:0;display:flex;flex-direction:column;
+  padding:clamp(22px,2.6vw,32px);
+  border-left:1px solid var(--ink);
+}
+.plan:first-child{border-left:0}
+.plan--starter{background:var(--paper-bright);color:var(--ink)}
+.plan--pro{background:var(--blue);color:var(--paper-bright)}
+.plan--unlimited{background:var(--ink);color:var(--paper-bright)}
+.plan-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-height:42px}
+.plan-name{font-family:var(--display);font-size:26px;font-weight:700;line-height:1.1;letter-spacing:-.03em}
+.plan-for{font-size:0}
+.plan-flag{
+  flex:none;font-size:8.5px;line-height:1.4;font-weight:600;
+  border:1px solid currentColor;padding:3px 6px;white-space:nowrap;
+}
+.plan--pro .plan-flag{background:var(--butter);border-color:var(--butter);color:var(--ink)}
+.plan--unlimited .plan-flag{border-color:rgba(251,250,243,.5)}
+.plan-desc{margin-top:8px;font-size:11.5px;line-height:1.6;color:var(--ink-soft);min-height:36px}
+.plan--pro .plan-desc,.plan--unlimited .plan-desc{color:rgba(251,250,243,.65)}
+.plan-price{display:flex;align-items:flex-end;gap:5px;margin-top:20px;line-height:1}
+.plan-currency{align-self:flex-start;margin-top:8px;font-family:var(--sans);font-size:18px;font-weight:600}
+.plan-amount{
+  font-family:var(--display);font-size:clamp(44px,4.3vw,58px);
+  font-weight:700;line-height:.9;letter-spacing:-.055em;
+  font-variant-numeric:tabular-nums;
+}
+.plan-period{font-size:11px;line-height:1.4;color:var(--ink-soft);padding-bottom:2px}
+.plan--pro .plan-period,.plan--unlimited .plan-period{color:rgba(251,250,243,.68)}
+.plan-bill{margin-top:11px;font-size:10px;line-height:1.55;color:#626C64;min-height:32px}
+.plan--pro .plan-bill,.plan--unlimited .plan-bill{color:rgba(251,250,243,.62)}
+.plan-cta{
+  display:flex;align-items:center;justify-content:center;
+  width:100%;min-height:43px;margin-top:15px;padding:10px 14px;
+  border:1.5px solid var(--ink);border-radius:2px;
+  font-size:13px;font-weight:650;line-height:1.3;
+  transition:transform .17s var(--ease),box-shadow .17s var(--ease),background .17s var(--ease);
+}
+.plan-cta:hover{transform:translate(2px,2px)}
+.plan--starter .plan-cta{background:var(--paper);box-shadow:3px 3px 0 var(--ink)}
+.plan--pro .plan-cta{background:var(--paper-bright);color:var(--ink);border-color:var(--ink);box-shadow:3px 3px 0 var(--signal)}
+.plan--unlimited .plan-cta{background:var(--signal);color:#fff;border-color:var(--signal);box-shadow:3px 3px 0 rgba(251,250,243,.5)}
+.plan-features{margin-top:22px;padding-top:17px;border-top:1px solid rgba(17,26,22,.2);display:grid;gap:0}
+.plan--pro .plan-features,.plan--unlimited .plan-features{border-top-color:rgba(251,250,243,.24)}
+.plan-feature{display:flex;gap:8px;padding:7px 0;font-size:11.5px;line-height:1.55;color:var(--ink-soft)}
+.plan--pro .plan-feature,.plan--unlimited .plan-feature{color:rgba(251,250,243,.82)}
+.plan-check{width:13px;height:13px;flex:none;margin-top:2px;color:var(--blue)}
+.plan--pro .plan-check{color:var(--butter)}
+.plan--unlimited .plan-check{color:var(--butter)}
+.plan-feature strong{font-weight:650;color:inherit}
+.plan-footnote{
+  display:flex;justify-content:space-between;gap:24px;
+  margin-top:17px;font-size:10px;line-height:1.65;color:#657066;
+}
+.plan-footnote p{max-width:60em}
+/* ---------- faq ---------- */
+.faq{background:var(--paper-bright)}
+.faq-grid{display:grid;grid-template-columns:minmax(0,.76fr) minmax(0,1.24fr);gap:clamp(40px,6vw,92px);align-items:start}
+.faq-intro h2{font-family:var(--display);font-size:clamp(37px,4.25vw,62px);font-weight:700;line-height:1.12;letter-spacing:-.05em}
+.faq-intro > p{max-width:27em;margin-top:20px;font-size:14.5px;line-height:1.82;color:var(--ink-soft)}
+.faq-contact{
+  margin-top:30px;padding-top:20px;border-top:1px solid var(--line-strong);
+  max-width:300px;
+}
+.faq-contact p{font-size:12px;line-height:1.7;color:var(--ink-soft)}
+.faq-contact .btn{margin-top:14px;min-height:44px;padding:10px 16px;font-size:12.5px}
+.faq-list{border-top:1.5px solid var(--ink)}
+.faq-item{border-bottom:1px solid var(--ink)}
+.faq-item summary{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  padding:20px 0;cursor:pointer;list-style:none;
+  font-size:15px;font-weight:600;line-height:1.55;letter-spacing:-.005em;
+}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::marker{content:""}
+.faq-icon{
+  position:relative;flex:none;width:23px;height:23px;margin-top:1px;
+  border:1px solid var(--ink);border-radius:50%;
+}
+.faq-icon::before,.faq-icon::after{
+  content:"";position:absolute;left:50%;top:50%;width:9px;height:1px;
+  background:var(--ink);transform:translate(-50%,-50%);
+  transition:transform .2s var(--ease);
+}
+.faq-icon::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq-item[open] .faq-icon{background:var(--ink)}
+.faq-item[open] .faq-icon::before,.faq-item[open] .faq-icon::after{background:var(--paper-bright)}
+.faq-item[open] .faq-icon::after{transform:translate(-50%,-50%) rotate(0)}
+.faq-answer{padding:0 44px 22px 0;max-width:62ch}
+.faq-answer p{font-size:13.5px;line-height:1.85;color:var(--ink-soft)}
+.faq-answer p + p{margin-top:10px}
+.faq-answer strong{color:var(--ink);font-weight:650}
+/* ---------- final CTA ---------- */
+.start-section{
+  position:relative;overflow:hidden;
+  background-color:var(--blue);color:var(--paper-bright);
+  background-image:
+    linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px);
+  background-size:56px 56px;
+  padding-block:clamp(70px,8vw,110px);
+}
+.start-section::before{
+  content:"";position:absolute;left:-150px;top:-210px;
+  width:520px;height:520px;border:1px solid rgba(255,255,255,.14);border-radius:50%;
+}
+.start-grid{
+  position:relative;z-index:2;display:grid;
+  grid-template-columns:minmax(0,1.02fr) minmax(420px,.98fr);
+  gap:clamp(44px,6vw,84px);align-items:center;
+}
+.start-copy h2{
+  font-family:var(--display);font-size:clamp(40px,4.9vw,70px);
+  font-weight:700;line-height:1.12;letter-spacing:-.055em;
+}
+.start-copy > p{max-width:31em;margin-top:22px;font-size:15.5px;line-height:1.85;color:rgba(251,250,243,.82)}
+.start-alt{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:30px;font-size:12.5px;color:rgba(251,250,243,.68)}
+.start-alt button{
+  color:var(--paper-bright);font-size:12.5px;font-weight:600;
+  border-bottom:1px solid rgba(251,250,243,.65);padding-bottom:2px;
+}
+.start-alt button:hover{border-color:var(--signal);color:var(--butter)}
+.start-panel{
+  background:var(--paper-bright);color:var(--ink);
+  border:1.5px solid var(--ink);box-shadow:12px 12px 0 var(--ink);
+  padding:clamp(22px,3vw,32px);
+}
+.start-panel-label{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:10px;color:#606A61}
+.start-panel-label span:last-child{
+  padding:2px 6px;background:var(--mint);border:1px solid #B2C7A9;
+  color:#315038;font-size:8.5px;font-weight:600;
+}
+.start-panel h3{font-family:var(--display);font-size:clamp(22px,2.2vw,28px);font-weight:700;line-height:1.35;letter-spacing:-.03em;margin-top:16px}
+.start-panel form{margin-top:18px}
+.start-textarea{
+  display:block;width:100%;min-height:104px;resize:vertical;
+  border:1px solid var(--ink);border-radius:0;background:var(--paper);
+  padding:12px 13px;font-size:14px;line-height:1.65;color:var(--ink);
+}
+.start-textarea:focus{outline:3px solid var(--blue);outline-offset:-1px}
+.start-textarea::placeholder{color:#727B72;opacity:1}
+.start-form-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:11px}
+.start-form-bottom span{font-size:10.5px;line-height:1.5;color:#6A736B}
+.start-form-bottom .btn{flex:none;min-height:42px;padding:9px 16px;font-size:12.5px}
+.start-panel .form-note{color:#697269;font-size:10.5px;margin-top:11px}
+.start-panel .form-error{color:var(--signal-deep);background:#FBE9E3;border-left-color:var(--signal)}
+.start-panel .start-success{box-shadow:5px 5px 0 var(--blue);border-color:var(--ink)}
+/* ---------- footer ---------- */
+.site-footer{
+  background:var(--ink);color:var(--paper-bright);
+  border-top:1px solid rgba(251,250,243,.2);
+  padding-block:48px 26px;
+}
+.footer-top{display:flex;align-items:flex-start;justify-content:space-between;gap:44px;flex-wrap:wrap}
+.footer-brand .brand-name{color:var(--paper-bright);font-size:33px}
+.footer-brand p{max-width:24em;margin-top:13px;font-size:12px;line-height:1.8;color:rgba(251,250,243,.58)}
+.footer-nav{display:flex;gap:clamp(36px,5vw,72px);flex-wrap:wrap;margin-left:auto}
+.footer-col{display:grid;gap:10px;align-content:start}
+.footer-col a,.footer-col button{
+  text-align:left;font-size:11.5px;line-height:1.5;color:rgba(251,250,243,.7);
+  transition:color .17s var(--ease);
+}
+.footer-col a:hover,.footer-col button:hover{color:var(--butter)}
+.footer-col-title{font-size:9px;font-weight:650;letter-spacing:.08em;color:rgba(251,250,243,.4);margin-bottom:2px}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  margin-top:42px;padding-top:17px;border-top:1px solid rgba(251,250,243,.16);
+  font-size:9.5px;line-height:1.6;color:rgba(251,250,243,.44);
+}
+.footer-bottom span{display:inline-flex;align-items:center;gap:16px;flex-wrap:wrap}
+.footer-bottom a:hover{color:var(--paper-bright)}
+/* ---------- dialogs ---------- */
+dialog{
+  width:min(600px,calc(100% - 32px));max-height:90svh;
+  padding:0;border:0;background:transparent;color:var(--ink);overflow:visible;
+}
+dialog::backdrop{background:rgba(8,15,12,.67);backdrop-filter:blur(3px)}
+.modal-card{
+  position:relative;max-height:90svh;overflow:auto;
+  background:var(--paper-bright);border:1.5px solid var(--ink);
+  box-shadow:12px 12px 0 var(--signal);
+  padding:clamp(24px,4vw,40px);
+}
+.modal-card--wide{width:min(640px,100%);margin-inline:auto}
+.modal-close{
+  position:absolute;right:13px;top:13px;z-index:2;
+  display:grid;place-items:center;width:32px;height:32px;
+  border:1px solid var(--ink);border-radius:50%;
+  background:var(--paper-bright);font-size:17px;line-height:1;
+  transition:background .17s var(--ease),color .17s var(--ease);
+}
+.modal-close:hover{background:var(--ink);color:var(--paper-bright)}
+.modal-kicker{font-size:9.5px;font-weight:650;letter-spacing:.06em;color:var(--signal-deep)}
+.modal-card h2{
+  margin-top:12px;max-width:12em;font-family:var(--display);
+  font-size:clamp(30px,3.4vw,40px);font-weight:700;line-height:1.2;letter-spacing:-.045em;
+}
+.modal-lede{max-width:34em;margin-top:14px;font-size:12.5px;line-height:1.8;color:var(--ink-soft)}
+.demo-form{margin-top:24px;display:grid;gap:13px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field{display:block;min-width:0}
+.field > span{display:block;margin-bottom:6px;font-size:10.5px;font-weight:650;line-height:1.4;color:var(--ink-soft)}
+.field input,.field select,.field textarea{
+  display:block;width:100%;border:1px solid var(--ink);border-radius:0;
+  background:var(--paper);padding:10px 11px;font-size:13px;line-height:1.6;color:var(--ink);
+}
+.field textarea{resize:vertical;min-height:76px}
+.field input:focus,.field select:focus,.field textarea:focus{outline:3px solid var(--blue);outline-offset:-1px}
+.field input::placeholder,.field textarea::placeholder{color:#7A837A;opacity:1}
+.demo-form .btn{margin-top:3px}
+.modal-note{font-size:9.5px;line-height:1.6;color:#6B746C}
+.modal-success{padding-block:20px 4px;text-align:left}
+.modal-success .success-mark{width:44px;height:44px;font-size:21px;margin-bottom:16px}
+.modal-success h3{font-family:var(--display);font-size:26px;font-weight:700;line-height:1.3;letter-spacing:-.03em}
+.modal-success p{max-width:30em;margin-top:9px;font-size:13px;line-height:1.8;color:var(--ink-soft)}
+.modal-success .btn{margin-top:20px}
+.library-list{margin-top:22px;border-top:1px solid var(--ink)}
+.library-row{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:12px 0;border-bottom:1px solid var(--line);
+}
+.library-row span{display:flex;align-items:center;gap:9px;font-size:12.5px;line-height:1.5}
+.library-swatch{width:8px;height:8px;flex:none;background:var(--blue)}
+.library-row:nth-child(2) .library-swatch{background:var(--signal)}
+.library-row:nth-child(3) .library-swatch{background:#315A3B}
+.library-row:nth-child(4) .library-swatch{background:var(--ink)}
+.library-row:nth-child(5) .library-swatch{background:var(--butter);border:1px solid var(--ink)}
+.library-row:nth-child(6) .library-swatch{background:#7A9D88}
+.library-row b{font-family:var(--display);font-size:19px;font-weight:700;line-height:1;letter-spacing:-.03em}
+.library-foot{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:22px}
+.library-foot p{font-size:9.5px;line-height:1.6;color:#6B746C}
+/* ---------- responsive ---------- */
+@media (max-width:1180px){
+  .nav{gap:16px}
+  .template-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hero-main{grid-template-columns:minmax(0,1fr) minmax(400px,.92fr);gap:38px}
+  .hero-stage{min-height:530px}
+  .expert-float{left:-10px;width:272px}
+  .chat-float{right:-4px}
+}
+@media (max-width:1010px){
+  .nav{display:none}
+  .header-cta{margin-left:auto}
+  .hero-main{grid-template-columns:1fr;gap:52px;padding-top:48px;padding-bottom:76px}
+  .hero-copy{max-width:720px}
+  .hero-stage{min-height:auto;justify-content:center;padding:0 30px 46px;max-width:680px;margin-inline:auto;width:100%}
+  .browser-card{width:100%;max-width:520px;margin-inline:auto}
+  .chat-float{right:-6px;top:-20px}
+  .expert-float{left:-24px;bottom:-30px;width:280px}
+  .proof-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
+  .proof-item{padding-block:18px}
+  .proof-item:nth-child(3){border-left:0;padding-left:0}
+  .proof-item:nth-child(n+3){border-top:1px solid var(--line);padding-top:24px}
+  .proof-item:nth-child(4){border-left:1px solid var(--line)}
+  .section-head,.pricing-head{grid-template-columns:1fr;gap:22px}
+  .section-head > p{justify-self:start}
+  .process-stat{justify-self:start;text-align:left}
+  .workbench{grid-template-columns:1fr}
+  .chat-panel{border-right:0;border-bottom:1px solid var(--ink);min-height:0}
+  .chat-log{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:18px}
+  .msg{max-width:none}
+  .chat-compose{margin-top:0}
+  .preview-panel{padding:38px 28px 34px;min-height:430px}
+  .capability-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
+  .capability:nth-child(3){border-left:0;padding-left:0}
+  .capability:nth-child(n+3){margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+  .expert-grid{grid-template-columns:1fr;gap:40px}
+  .review-sheet{max-width:520px;transform:rotate(-.6deg)}
+  .steps{grid-template-columns:repeat(3,minmax(0,1fr));border-top:0}
+  .step{border-top:1.5px solid var(--ink);border-left:0;padding:22px 22px 24px 0}
+  .step::before{display:none}
+  .step.is-expert{padding-left:0}
+  .step:nth-child(4){border-top-color:var(--signal)}
+  .case-grid{grid-template-columns:1fr;gap:34px}
+  .case-card{border-top:1px solid var(--ink)}
+  .case-quote{max-width:40em;margin-top:18px}
+  .plan-grid{grid-template-columns:1fr;box-shadow:7px 7px 0 var(--ink)}
+  .plan{border-left:0;border-top:1px solid var(--ink);padding:26px}
+  .plan:first-child{border-top:0}
+  .plan-features{grid-template-columns:1fr 1fr;column-gap:20px}
+  .plan-desc{min-height:0}
+  .faq-grid{grid-template-columns:1fr;gap:38px}
+  .faq-intro{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
+  .faq-intro h2{grid-column:1/-1}
+  .faq-intro > p{margin-top:0}
+  .faq-contact{margin-top:0;padding-top:0;border-top:0}
+  .start-grid{grid-template-columns:1fr;gap:38px}
+  .start-copy{max-width:700px}
+  .start-panel{max-width:620px}
+  .template-more{flex-wrap:wrap}
+  .template-more .btn{width:100%}
+  .footer-nav{margin-left:0}
+}
+@media (max-width:760px){
+  .header-inner{padding-block:18px}
+  .brand-name{font-size:26px}
+  .brand-sub{font-size:10px;padding-left:10px}
+  .header-cta{font-size:11.5px;padding:9px 12px}
+  .hero h1{font-size:clamp(43px,9.6vw,62px)}
+  .hero-intro{font-size:15px;margin-top:22px}
+  .field-row{flex-direction:column;gap:4px;box-shadow:4px 4px 0 rgba(17,26,22,.92)}
+  .field-row input{padding:12px}
+  .field-row .btn{width:100%}
+  .hero-stage{flex-direction:column;align-items:stretch;padding:0 6px 40px}
+  .browser-card{order:1;transform:none;box-shadow:8px 8px 0 var(--ink);animation:none}
+  .chat-float{display:none}
+  .expert-float{
+    order:2;position:relative;left:auto;bottom:auto;
+    width:min(88%,330px);margin:16px auto 0;
+    transform:rotate(-1deg);animation:none;
+    align-self:center;
+  }
+  .mini-site{padding:14px 14px 0}
+  .mini-booking{margin-inline:-14px;padding-inline:10px;overflow:hidden}
+  .mini-booking-label{display:none}
+  .mini-time{padding:3px 5px}
+  .mini-title{font-size:clamp(21px,5.8vw,28px)}
+  .mini-art{min-height:132px}
+  .proof-grid{padding-block:26px}
+  .proof-num{font-size:38px}
+  .section{padding-block:70px}
+  .section h2,.expert h2,.pricing-head h2,.faq-intro h2,.start-copy h2{font-size:clamp(34px,8.2vw,44px)}
+  .chat-log{grid-template-columns:1fr}
+  .preview-panel{padding:34px 16px 30px;min-height:390px}
+  .preview-meta{left:12px;top:12px}
+  .preview-note{display:none}
+  .capability-list{grid-template-columns:1fr}
+  .capability,.capability:nth-child(3){padding-left:0;border-left:0}
+  .capability + .capability{margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
+  .cap-icon{margin-bottom:14px}
+  .review-sheet{transform:none;box-shadow:8px 8px 0 var(--blue)}
+  .steps{grid-template-columns:1fr}
+  .step,.step.is-expert{border-top:1px solid var(--line);padding:18px 0 20px 22px;position:relative}
+  .step:first-child{border-top:1.5px solid var(--ink)}
+  .step::before{display:block;left:0;top:22px}
+  .step-num{font-size:25px}
+  .step h3{margin-top:8px}
+  .step.is-expert{margin-inline:-12px;padding-inline:34px 12px}
+  .case-grid{gap:28px}
+  .template-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 14px}
+  .template-info h3{font-size:16px}
+  .template-info > p{font-size:10.5px;min-height:52px}
+  .filter-status{width:100%;margin-left:0;margin-top:4px}
+  .template-more{padding:22px;box-shadow:6px 6px 0 var(--ink)}
+  .template-more-copy{align-items:flex-start}
+  .template-more-num{font-size:56px}
+  .template-more-copy p{font-size:11.5px}
+  .pricing-promise{align-items:flex-start}
+  .pricing-promise .promise-side{display:none}
+  .plan-features{grid-template-columns:1fr}
+  .plan-grid{box-shadow:5px 5px 0 var(--ink)}
+  .faq-intro{grid-template-columns:1fr}
+  .faq-contact{max-width:none;margin-top:6px}
+  .faq-item summary{font-size:14px;padding:18px 0;gap:16px}
+  .faq-answer{padding-right:20px}
+  .start-section{padding-block:66px}
+  .start-panel{box-shadow:7px 7px 0 var(--ink);padding:21px}
+  .start-form-bottom{align-items:stretch;flex-direction:column}
+  .start-form-bottom .btn{width:100%}
+  .footer-top{flex-direction:column;gap:30px}
+  .footer-nav{width:100%;justify-content:space-between;gap:24px}
+  .footer-bottom{margin-top:32px}
+  .form-row{grid-template-columns:1fr}
+  .modal-card{box-shadow:7px 7px 0 var(--signal);padding:24px 20px}
+}
+@media (max-width:520px){
+  .brand-sub{border-left:0;padding-left:0;font-size:8.5px;letter-spacing:0;line-height:1.3}
+  .brand{gap:7px}
+  .brand-copy{display:flex;flex-direction:column;gap:2px}
+  .header-cta{padding:8px 10px;font-size:10.5px}
+  .hero h1{font-size:clamp(40px,11.2vw,50px)}
+  .hero-main{padding-top:40px;padding-bottom:46px}
+  .hero-points{gap:6px 12px;font-size:10.5px}
+  .mini-nav-links{display:none}
+  .mini-hero{grid-template-columns:1fr;padding-top:16px}
+  .mini-art{display:none}
+  .mini-text{font-size:9.5px}
+  .mini-title{font-size:25px}
+  .mini-time:nth-of-type(3){display:none}
+  .template-grid{grid-template-columns:1fr}
+  .template-info > p{min-height:0}
+  .thumb{aspect-ratio:16/10}
+  .template-info h3{font-size:18px}
+  .plan{padding:22px}
+  .step.is-expert{margin-inline:-8px}
+  .section-head{margin-bottom:32px}
+  .templates .section-head{margin-bottom:26px}
+  .filter{padding:6px 10px;font-size:10.5px}
+  .template-more-copy{flex-direction:column;gap:12px}
+  .template-more-num{font-size:50px}
+  .footer-nav{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .start-copy h2{font-size:clamp(35px,9.6vw,44px)}
+  .review-sheet{padding:20px}
+  .review-quote{font-size:14px}
+  .case-quote{font-size:19px}
+  .plan-amount{font-size:48px}
+  .plan-grid{box-shadow:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主要内容</a>
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#top" aria-label="Orvo 开放工作室首页">
+          <span class="brand-copy">
+            <span class="brand-name">orvo<em>.</em></span>
+            <span class="brand-sub">开放工作室</span>
+          </span>
+        </a>
+        <nav class="nav" aria-label="主导航">
+          <a href="#product">产品能力</a>
+          <a href="#expert">专家</a>
+          <a href="#templates">模板</a>
+          <a href="#pricing">定价</a>
+          <a href="#faq">常见问题</a>
+        </nav>
+        <button class="header-cta" type="button" data-open-demo>预约专家演示</button>
+      </div>
+    </header>
+
+    <div class="container hero-main">
+      <div class="hero-copy">
+        <h1 id="hero-title">
+          <span class="h1-line">把想法说清楚，</span>
+          <span class="h1-line">就能<span class="approve">上线<svg viewBox="0 0 180 90" aria-hidden="true"><path d="M15 47C11 24 55 9 104 10c45 1 68 13 63 35-4 19-30 32-78 35C43 83 19 72 13 58c-2-5-1-9 2-11"/></svg></span>。</span>
+        </h1>
+        <p class="hero-intro">Orvo 把一句话变成能用的网站、Web 应用和手机应用。之后用对话接着改，按月订阅，<strong>修改不设次数上限</strong>。</p>
+
+        <form class="start-form" data-start-form novalidate>
+          <div data-form-fields>
+            <label class="sr-only" for="hero-idea">描述你想做的东西</label>
+            <div class="field-row">
+              <input id="hero-idea" name="idea" type="text" autocomplete="off" maxlength="160" placeholder="例如：给巷口的咖啡馆做一个能预约的网站" aria-describedby="hero-note hero-error">
+              <button class="btn btn--primary" type="submit">生成首版</button>
+            </div>
+            <p class="form-error" id="hero-error" data-form-error hidden></p>
+            <p class="form-note" id="hero-note">免费开始，不需要信用卡。首版平均 4 分钟。</p>
+          </div>
+          <div class="start-success" data-form-success role="status" hidden>
+            <span class="success-mark" aria-hidden="true">✓</span>
+            <div>
+              <strong>收到了。</strong>
+              <p>你的想法已经进入首版准备。预览会出现在工作台，通常不超过 4 分钟。</p>
+              <span class="success-idea" data-success-idea></span>
+            </div>
+            <button class="reset-form" type="button" data-form-reset>再说一个想法</button>
+          </div>
+        </form>
+
+        <div class="hero-points" aria-label="产品要点">
+          <span>专家陪你上线</span>
+          <span>代码完整导出</span>
+          <span>随时可以取消</span>
+        </div>
+      </div>
+
+      <div class="hero-stage">
+        <div class="browser-card" role="img" aria-label="Orvo 生成的咖啡馆网站示例，包含预约入口与本周可约时段">
+          <div class="browser-bar" aria-hidden="true">
+            <span class="browser-dots"><i></i><i></i><i></i></span>
+            <span class="browser-url">shanque.orvo.site</span>
+            <span class="browser-live"><i class="live-dot"></i>已上线</span>
+          </div>
+          <div class="mini-site">
+            <div class="mini-nav">
+              <span class="mini-brand">山雀咖啡<small>SHANQUE</small></span>
+              <span class="mini-nav-links">菜单　空间　关于</span>
+              <span class="mini-nav-btn">预约</span>
+            </div>
+            <div class="mini-hero">
+              <div>
+                <div class="mini-title">把今天的好豆子，<br>留一个位置。</div>
+                <p class="mini-text">手冲、甜点，和一张靠窗的桌子。</p>
+                <span class="mini-cta">预约到店</span>
+              </div>
+              <div class="mini-art" aria-hidden="true">
+                <svg viewBox="0 0 200 210" role="img" aria-label="咖啡与阳光的抽象插画">
+                  <rect width="200" height="210" fill="#E4E8D8"/>
+                  <circle cx="145" cy="55" r="42" fill="#E94B2C"/>
+                  <path d="M20 166h154" stroke="#111A16" stroke-width="1.4"/>
+                  <path d="M56 99h62l-8 59H64Z" fill="#FBF7EA" stroke="#111A16" stroke-width="1.4"/>
+                  <path d="M118 108c26-5 28 34-2 32" fill="none" stroke="#111A16" stroke-width="1.4"/>
+                  <path d="M74 85c-7-10 8-16 1-27M91 85c-7-10 8-16 1-27M108 85c-7-10 8-16 1-27" fill="none" stroke="#1E40E7" stroke-width="1.4" stroke-linecap="round"/>
+                  <circle cx="67" cy="151" r="5" fill="#314C39"/>
+                  <ellipse cx="102" cy="163" rx="20" ry="4" fill="#111A16" opacity=".14"/>
+                  <path d="M155 173c-10-9-4-24 8-24 13 0 17 16 7 24-5 4-10 4-15 0Z" fill="#314C39"/>
+                  <path d="M160 151c2 8 2 15 1 22" stroke="#FBF7EA" stroke-width=".7" fill="none"/>
+                </svg>
+              </div>
+            </div>
+            <div class="mini-booking" aria-hidden="true">
+              <span class="mini-booking-label">本周可约</span>
+              <span class="mini-time is-on">周四 14:00</span>
+              <span class="mini-time">周五 10:30</span>
+              <span class="mini-go">→</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-float" aria-hidden="true">
+          <div class="chat-float-label">对话修改</div>
+          <p>“把「本周可约」提到首屏，按钮也放大一点。”</p>
+          <div class="chat-state"><i></i>已更新，正在检查手机端</div>
+        </div>
+
+        <div class="expert-float" aria-hidden="true">
+          <div class="expert-float-top">
+            <span class="avatar">林</span>
+            <div>
+              <div class="expert-float-name">林岚</div>
+              <div class="expert-float-role">产品专家　上线前检查</div>
+            </div>
+          </div>
+          <blockquote>“预约流程合并一步。第一位客人，不该在选人数时卡住。”</blockquote>
+          <div class="expert-float-foot">
+            <span><i class="check-mini">✓</i>关键流程</span>
+            <span><i class="check-mini">✓</i>移动端</span>
+            <span><i class="check-mini">✓</i>文案</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof" aria-label="Orvo 使用数据">
+    <div class="container">
+      <div class="proof-grid">
+        <div class="proof-item">
+          <span class="proof-num">18,000<sup>+</sup></span>
+          <span class="proof-label">个已上线的项目</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-num">6<sup>天</sup></span>
+          <span class="proof-label">付费项目从开始到首次上线，平均</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-num">120<sup>个</sup></span>
+          <span class="proof-label">可以随手改的起步模板</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-num">∞</span>
+          <span class="proof-label">付费方案的对话修改次数</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section capabilities" id="product" aria-labelledby="product-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="product-title">生成只是开始，<br>改到能用才是。</h2>
+        <p>对话、生成、专家评审和发布都在同一个项目里完成。你不必再学一套设计软件，也不用把改动排进下个月的开发计划。</p>
+      </div>
+
+      <div class="workbench" aria-label="Orvo 对话修改与实时预览示例">
+        <div class="chat-panel">
+          <div class="panel-bar">
+            <strong>项目　王拓的私教预约</strong>
+            <span class="panel-status">已自动保存</span>
+          </div>
+          <div class="chat-log">
+            <div class="msg msg-user">
+              <div class="msg-who">你</div>
+              <p>首屏太像模板了。标题改成「下班后，练得动最重要」，按钮写「约一节试试」。</p>
+            </div>
+            <div class="msg msg-orvo">
+              <div class="msg-who">Orvo</div>
+              <p>改好了。顺手把可约时段移到按钮下面，手机上不用横滑。</p>
+              <div class="msg-tags">
+                <span class="msg-tag">文案已改</span>
+                <span class="msg-tag">排期已移</span>
+              </div>
+            </div>
+            <div class="msg msg-user">
+              <div class="msg-who">你</div>
+              <p>价格模块先删掉，我想先聊再报价。</p>
+            </div>
+            <div class="msg msg-orvo">
+              <div class="msg-who">Orvo</div>
+              <p>已删除。首页现在只保留预约、教练介绍和到店路线。</p>
+              <div class="msg-diff"><span>改动 4 处</span><span>可随时撤销</span></div>
+            </div>
+          </div>
+          <div class="chat-compose" aria-hidden="true">
+            说一句要改的地方…
+            <span class="send">→</span>
+          </div>
+        </div>
+
+        <div class="preview-panel">
+          <div class="preview-meta"><span>桌面预览</span><span>手机端已同步</span></div>
+          <div class="work-preview">
+            <div class="wp-bar" aria-hidden="true"><i></i><i></i><i></i><span class="wp-url">wangtuo.orvo.site</span></div>
+            <div class="wp-body">
+              <div class="wp-nav">
+                <span class="wp-brand">王拓训练</span>
+                <span class="wp-links">预约　训练　关于</span>
+                <span class="wp-navbtn">约课</span>
+              </div>
+              <div class="wp-hero">
+                <div>
+                  <div class="wp-title">下班后，<br>练得动最重要。<span class="wp-modified">刚改</span></div>
+                  <p class="wp-text">一对一训练，先评估，再开始。你只需要带着今天的状态来。</p>
+                  <span class="wp-cta">约一节试试</span>
+                </div>
+                <div class="wp-art" aria-hidden="true">
+                  <svg viewBox="0 0 160 180">
+                    <rect width="160" height="180" fill="#E2E6D7"/>
+                    <circle cx="112" cy="52" r="38" fill="#EFE1B7"/>
+                    <path d="M22 151h120" stroke="#111A16" stroke-width="1.2"/>
+                    <path d="M48 78v42M74 70v58M100 84v36M126 76v44" stroke="#1E40E7" stroke-width="5" stroke-linecap="square"/>
+                    <circle cx="48" cy="68" r="6" fill="#111A16"/>
+                    <circle cx="74" cy="59" r="7" fill="#E94B2C"/>
+                    <circle cx="100" cy="74" r="6" fill="#111A16"/>
+                    <circle cx="126" cy="65" r="7" fill="#111A16"/>
+                    <path d="M24 132c20-8 35 5 53-2 20-8 38-2 60 4" fill="none" stroke="#111A16" stroke-width="1.2"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="wp-schedule" aria-hidden="true">
+                <b>本周可约</b>
+                <span class="wp-day">周二 18:30</span>
+                <span class="wp-day on">周四 19:00</span>
+                <span class="wp-day">周六 10:00</span>
+              </div>
+              <span class="wp-check">手机端已检查</span>
+            </div>
+          </div>
+          <span class="preview-note" aria-hidden="true">第 37 次修改，不扣次数</span>
+        </div>
+      </div>
+
+      <div class="capability-list">
+        <article class="capability">
+          <svg class="cap-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M4 5.5h20v14H12l-5 3.5v-3.5H4Z"/><path d="M9 11h10M9 15h6"/>
+          </svg>
+          <h3>对话就是编辑器</h3>
+          <p>改标题、加流程、重做布局，直接说就行。没有 token 余额，也没有改到一半提示你加购的弹窗。</p>
+        </article>
+        <article class="capability">
+          <svg class="cap-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <rect x="3.5" y="4.5" width="16" height="12"/><path d="M7.5 22h8M11.5 16.5V22"/>
+            <path d="M23 11.5v10.8c0 .7-.6 1.2-1.2 1.2H12.5"/>
+          </svg>
+          <h3>一个项目，三种形态</h3>
+          <p>同一套内容可以长成官网、Web 应用，或者 iOS 与 Android 应用。移动应用包含在 Unlimited 方案里。</p>
+        </article>
+        <article class="capability">
+          <svg class="cap-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="14" cy="14" r="10.5"/><path d="M3.8 14h20.4M14 3.5c3.3 3.4 3.3 17.6 0 21M14 3.5c-3.3 3.4-3.3 17.6 0 21"/>
+          </svg>
+          <h3>发布到你的域名</h3>
+          <p>先拿到 orvo.site 子域名，再随时绑定自己的域名。证书、速度和手机适配由 Orvo 处理。</p>
+        </article>
+        <article class="capability">
+          <svg class="cap-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M10 8 4 14l6 6M18 8l6 6-6 6M15.5 5l-3 18"/>
+          </svg>
+          <h3>代码完整归你</h3>
+          <p>Pro 和 Unlimited 可以随时导出完整代码与资源文件。你可以继续自己维护，也可以交给别的开发者。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section expert" id="expert" aria-labelledby="expert-title">
+    <div class="container">
+      <div class="expert-grid">
+        <div>
+          <h2 id="expert-title">做决定的时候，<br><span>有人在旁边。</span></h2>
+          <p class="expert-lede">每个付费项目会配一位<strong>上线过产品的专家</strong>。产品、设计或工程背景，按你的项目类型匹配。不是在群里回一句“已反馈”，而是和你在三个节点一起把事做完。</p>
+          <div class="expert-timeline">
+            <div class="expert-step">
+              <span class="step-n">01</span>
+              <div>
+                <h3>需求梳理</h3>
+                <p>先把“这次不做什么”定下来。范围小一点，首版才会快，反馈才会真。</p>
+              </div>
+            </div>
+            <div class="expert-step">
+              <span class="step-n">02</span>
+              <div>
+                <h3>上线前检查</h3>
+                <p>预约、付款、注册这些关键流程逐项走一遍，连同手机端、文案和域名一起过。</p>
+              </div>
+            </div>
+            <div class="expert-step">
+              <span class="step-n">03</span>
+              <div>
+                <h3>上线后第一个月</h3>
+                <p>看真实访问、订单和用户反馈，再决定下一轮改什么，而不是靠感觉继续加功能。</p>
+              </div>
+            </div>
+          </div>
+          <div class="expert-cadence">
+            <span><b>Pro</b>每月一次 30 分钟视频评审</span>
+            <span><b>Unlimited</b>每周一次，另有专属群聊</span>
+          </div>
+        </div>
+
+        <aside class="review-sheet" aria-label="上线前检查示例">
+          <div class="review-head">
+            <span class="review-title">上线前检查单</span>
+            <span class="review-round">第 1 轮　用时 28 分钟</span>
+          </div>
+          <div class="reviewer">
+            <span class="avatar" aria-hidden="true">林</span>
+            <div>
+              <div class="reviewer-name">林岚</div>
+              <div class="reviewer-meta">产品背景　12 年<br>评审过 63 个上线项目</div>
+            </div>
+          </div>
+          <div class="review-list">
+            <div class="review-item">
+              <span class="review-check">✓</span>
+              <div><b>预约流程从 4 步减到 3 步</b><p>日期与人数合并，手机上少一次跳转。</p></div>
+            </div>
+            <div class="review-item">
+              <span class="review-check">✓</span>
+              <div><b>手机端首屏能看到“可约时间”</b><p>按钮上移，不需要横向滑动。</p></div>
+            </div>
+            <div class="review-item">
+              <span class="review-check">✓</span>
+              <div><b>退款与改约说明补在确认页</b><p>不藏在页脚，付款前就能看到。</p></div>
+            </div>
+          </div>
+          <blockquote class="review-quote">“先让第一位客人顺利约上。社区和课程包，等有人真的问再说。”</blockquote>
+          <div class="review-sign">
+            <span>检查完成　可以发布</span>
+            <span class="review-stamp">专家已看</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section process" id="how" aria-labelledby="process-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="process-title">从一句话，<br>到第一次上线。</h2>
+        <div class="process-stat">
+          <strong>平均 6 天</strong>
+          <span>付费项目从开始到首次上线<br>每一位付费用户都走完这五步</span>
+        </div>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <span class="step-num">1</span>
+          <h3>描述想法</h3>
+          <p>用日常语言说目标、受众和你想要的感觉，不需要先写一份需求文档。</p>
+        </li>
+        <li class="step">
+          <span class="step-num">2</span>
+          <h3>首版生成</h3>
+          <p>拿到一个有真实结构、文案和响应式布局的初稿，可以直接打开看。</p>
+          <span class="step-tag">平均 4 分钟</span>
+        </li>
+        <li class="step">
+          <span class="step-num">3</span>
+          <h3>对话修改</h3>
+          <p>哪里不对就说哪里。改布局、改流程、改文案，不按次数扣费。</p>
+          <span class="step-tag">不限次数</span>
+        </li>
+        <li class="step is-expert">
+          <span class="step-num">4</span>
+          <h3>专家上线前检查</h3>
+          <p>关键流程、手机端、文案和域名一起过一遍。发现问题，当场改。</p>
+          <span class="step-tag">专家加入</span>
+        </li>
+        <li class="step">
+          <span class="step-num">5</span>
+          <h3>发布</h3>
+          <p>先用 orvo.site 子域名上线，也可以换成自有域名。上线后继续改。</p>
+          <span class="step-tag">一键发布</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section cases" id="stories" aria-labelledby="cases-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="cases-title">已经有人，<br>把它用起来了。</h2>
+        <p>三个不同的起点，三个人都先做出一版真的东西，再拿真实反馈继续改。<strong>不是演示项目，是正在接订单、接预约的产品。</strong></p>
+      </div>
+      <div class="case-grid">
+        <article class="case-card">
+          <div class="case-top">
+            <span class="case-plan">Starter</span>
+            <span class="case-type">手作陶瓷　一人店</span>
+          </div>
+          <blockquote class="case-quote">我本来只想有个能发链接的页面，上线第三天，第一位客人从表单里问能不能做一对杯子。</blockquote>
+          <div class="case-bottom">
+            <div class="case-outcome">
+              <strong>41</strong><span>笔订单<br>第一个月</span>
+            </div>
+            <div class="case-person">
+              <span class="case-avatar" aria-hidden="true">林</span>
+              <div><b>林夏</b><br><span>用 Starter 做手作陶瓷小店</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="case-card">
+          <div class="case-top">
+            <span class="case-plan case-plan--pro">Pro</span>
+            <span class="case-type">健身教练　预约工具</span>
+          </div>
+          <blockquote class="case-quote">专家让我把课程社区先删掉，只留预约和收款；少做一半之后，两周就上线了。</blockquote>
+          <div class="case-bottom">
+            <div class="case-outcome">
+              <strong>2 周</strong><span>从开始到上线<br>砍掉一半功能</span>
+            </div>
+            <div class="case-person">
+              <span class="case-avatar" aria-hidden="true">王</span>
+              <div><b>王拓</b><br><span>用 Pro 做健身教练预约工具</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="case-card">
+          <div class="case-top">
+            <span class="case-plan case-plan--unlimited">Unlimited</span>
+            <span class="case-type">社区团购　三人团队</span>
+          </div>
+          <blockquote class="case-quote">我们三个人没有工程师，第一版也不漂亮，但邻居真的开始下单，然后我们才一点点把它改顺。</blockquote>
+          <div class="case-bottom">
+            <div class="case-outcome">
+              <strong>2,600</strong><span>次 iOS 下载<br>上线首月</span>
+            </div>
+            <div class="case-person">
+              <span class="case-avatar" aria-hidden="true">陈</span>
+              <div><b>陈可</b><br><span>和两位合伙人用 Unlimited 做社区团购 App</span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section templates" id="templates" aria-labelledby="templates-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="templates-title"><span class="tpl-number">120</span> 个起点，<br>不用从零开始。</h2>
+        <p>落地页、电商小店、预约与会员、内部工具、内容社区、移动应用。选一个接近的，换成你的内容，再让 Orvo 接着改。</p>
+      </div>
+      <div class="filter-row" role="group" aria-label="按类别筛选模板">
+        <button class="filter" type="button" data-filter="all" aria-pressed="true">全部</button>
+        <button class="filter" type="button" data-filter="落地页" aria-pressed="false">落地页</button>
+        <button class="filter" type="button" data-filter="电商小店" aria-pressed="false">电商小店</button>
+        <button class="filter" type="button" data-filter="预约与会员" aria-pressed="false">预约与会员</button>
+        <button class="filter" type="button" data-filter="内部工具" aria-pressed="false">内部工具</button>
+        <button class="filter" type="button" data-filter="内容社区" aria-pressed="false">内容社区</button>
+        <button class="filter" type="button" data-filter="移动应用" aria-pressed="false">移动应用</button>
+        <span class="filter-status" data-filter-status role="status" aria-live="polite">正在载入模板</span>
+      </div>
+      <div class="template-grid" data-template-grid></div>
+      <div class="template-more">
+        <div class="template-more-copy">
+          <span class="template-more-num">120</span>
+          <p><strong>还有更多具体场景。</strong>完整模板库按六类整理，免费开始后就能在工作台里浏览、套用和改写。</p>
+        </div>
+        <button class="btn" type="button" data-open-library>查看全部 120 个模板</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pricing" id="pricing" aria-labelledby="pricing-title">
+    <div class="container">
+      <div class="pricing-head">
+        <h2 id="pricing-title">按月订阅，<br>不按次数算。</h2>
+        <div class="pricing-side">
+          <p>选一个方案，整月随便改。没有 token 余额，也不会在改到一半时让你停下再买一包额度。</p>
+          <div class="billing-toggle" role="group" aria-label="计费周期">
+            <button class="billing-btn" type="button" data-billing="monthly" aria-pressed="true">月付</button>
+            <button class="billing-btn" type="button" data-billing="annual" aria-pressed="false">年付 <span>省 20%</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pricing-promise">
+        <span class="infinity" aria-hidden="true">∞</span>
+        <p><strong>所有付费方案：对话修改不限次数。</strong><br>不按 token，也不按点数。改到你不想改为止。</p>
+        <span class="promise-side">价格以美元计<br>年付一次结清</span>
+      </div>
+
+      <div class="plan-grid">
+        <article class="plan plan--starter" aria-labelledby="plan-starter">
+          <div class="plan-head">
+            <h3 class="plan-name" id="plan-starter">Starter</h3>
+            <span class="plan-flag">免费</span>
+          </div>
+          <p class="plan-desc">先把第一版做出来，发给别人看看。</p>
+          <div class="plan-price">
+            <span class="plan-currency">$</span>
+            <span class="plan-amount" data-price="starter">0</span>
+            <span class="plan-period">/ 月</span>
+          </div>
+          <p class="plan-bill" data-bill="starter">永久免费，不需要信用卡</p>
+          <a class="plan-cta" href="#start">免费开始</a>
+          <ul class="plan-features">
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span><strong>1 个项目</strong></span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>只能做网站</span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>使用 orvo.site 子域名</span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>页面带 Orvo 标识</span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>社区支持</span></li>
+          </ul>
+        </article>
+
+        <article class="plan plan--pro" aria-labelledby="plan-pro">
+          <div class="plan-head">
+            <h3 class="plan-name" id="plan-pro">Pro</h3>
+            <span class="plan-flag">多数独立开发者</span>
+          </div>
+          <p class="plan-desc">网站和 Web 应用，准备认真接第一批用户。</p>
+          <div class="plan-price">
+            <span class="plan-currency">$</span>
+            <span class="plan-amount" data-price="pro">24.99</span>
+            <span class="plan-period">/ 月</span>
+          </div>
+          <p class="plan-bill" data-bill="pro">按月结算，随时取消</p>
+          <a class="plan-cta" href="#start">从 Pro 开始</a>
+          <ul class="plan-features">
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span><strong>5 个项目</strong></span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>网站与 Web 应用</span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>绑定自有域名</span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>完整代码导出</span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span><strong>每月一次 30 分钟专家评审</strong></span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>对话修改不限次数</span></li>
+          </ul>
+        </article>
+
+        <article class="plan plan--unlimited" aria-labelledby="plan-unlimited">
+          <div class="plan-head">
+            <h3 class="plan-name" id="plan-unlimited">Unlimited</h3>
+            <span class="plan-flag">项目不限</span>
+          </div>
+          <p class="plan-desc">做移动应用，或者和合伙人一起把项目铺开。</p>
+          <div class="plan-price">
+            <span class="plan-currency">$</span>
+            <span class="plan-amount" data-price="unlimited">34.99</span>
+            <span class="plan-period">/ 月</span>
+          </div>
+          <p class="plan-bill" data-bill="unlimited">按月结算，随时取消</p>
+          <a class="plan-cta" href="#start">从 Unlimited 开始</a>
+          <ul class="plan-features">
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span><strong>项目数量不限</strong></span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>包含 iOS 与 Android 应用</span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>每周一次专家评审与专属群聊</span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>优先生成队列</span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>最多 3 位团队成员</span></li>
+            <li class="plan-feature"><svg class="plan-check" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m2.5 7 3 3 6-6"/></svg><span>包含 Pro 的全部能力</span></li>
+          </ul>
+        </article>
+      </div>
+      <div class="plan-footnote">
+        <p>年付价格按年一次结清，折合月价已在切换后显示。所有金额以美元计，不含当地税费。取消方式见常见问题。</p>
+        <p><span class="sr-only">订阅状态</span><span data-billing-live aria-live="polite"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq" id="faq" aria-labelledby="faq-title">
+    <div class="container faq-grid">
+      <div class="faq-intro">
+        <h2 id="faq-title">还有些事，<br>先说清楚。</h2>
+        <p>代码归谁、专家怎么匹配、取消后项目会怎样，这些都可以在做决定前问明白。</p>
+        <div class="faq-contact">
+          <p>没找到你要的答案？约一次 20 分钟演示，我们直接看你的项目。</p>
+          <button class="btn btn--ink" type="button" data-open-demo>预约专家演示</button>
+        </div>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>生成的代码归谁？能导出吗？<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-answer">
+            <p>归你。Pro 与 Unlimited 可以在项目设置里随时导出完整代码和资源文件，不需要等到订阅结束，也不需要额外付费。</p>
+            <p>Starter 项目可以先在线使用；需要导出时升级到付费方案即可。导出后你仍然拥有项目内容，Orvo 不会保留一份用来限制你迁移。</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>专家是什么人？怎么匹配？<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-answer">
+            <p>专家是在产品、设计或工程岗位上真正上线过产品的从业者，不是客服或销售。开通付费项目后，我们会根据你的项目类型、当前阶段和目标平台匹配一位。</p>
+            <p>Pro 每月一次 30 分钟视频评审；Unlimited 每周一次，并配有专属群聊。三个固定节点是需求梳理、上线前检查和上线后第一个月。</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>“不限修改次数”有隐藏限制吗？<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-answer">
+            <p>没有按次数或 token 计算的限制。你可以在订阅期内一直用对话修改项目，不会因为改得多而被要求加购。</p>
+            <p>方案本身的边界仍然存在：Starter 1 个项目，Pro 5 个项目，Unlimited 项目不限但最多 3 位团队成员。移动应用只在 Unlimited 中提供。</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>取消订阅后，已经上线的项目怎么办？<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-answer">
+            <p>已上线的项目会继续在线 30 天。这段时间里你可以续订、导出代码，或把项目迁移到自己的服务器。</p>
+            <p>30 天后，使用 orvo.site 子域名的项目会暂停访问，但项目不会被删除。续订后可以恢复；绑定自有域名的项目，我们会提前提醒你完成迁移。</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>支持哪些付款方式？<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-answer">
+            <p>支持 Visa、Mastercard 和 American Express 信用卡，也支持 Apple Pay 与 Google Pay。年付可以使用 PayPal。</p>
+            <p>企业客户可以申请发票。所有价格以美元计，实际扣款可能因发卡行收取的跨境费用而略有不同。</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>免费方案能做什么？需要信用卡吗？<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-answer">
+            <p>Starter 不需要信用卡，包含 1 个网站项目、orvo.site 子域名和社区支持。页面会带 Orvo 标识，适合先做一版给别人看。</p>
+            <p>需要自有域名、Web 应用、代码导出或专家评审时，再升级到 Pro 或 Unlimited。</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="start-section" id="start" aria-labelledby="start-title">
+    <div class="container start-grid">
+      <div class="start-copy">
+        <h2 id="start-title">你已经有想法了。<br>我们差一句开始。</h2>
+        <p>不用先想清楚信息架构，也不用准备完整文案。先把那句话放进来，首版会给你一个可以讨论、可以修改、也可以直接上线的起点。</p>
+        <div class="start-alt">
+          <span>想先看看它怎么工作？</span>
+          <button type="button" data-open-demo>预约专家演示</button>
+        </div>
+      </div>
+      <div class="start-panel">
+        <div class="start-panel-label"><span>免费开始</span><span>不需要信用卡</span></div>
+        <h3>用一句话，说说你想做什么。</h3>
+        <form data-start-form novalidate>
+          <div data-form-fields>
+            <label class="sr-only" for="final-idea">描述你想做的东西</label>
+            <textarea class="start-textarea" id="final-idea" name="idea" maxlength="240" placeholder="例如：给社区里的独立咖啡店做一个能预约、能展示本周豆单的网站" aria-describedby="final-note final-error"></textarea>
+            <p class="form-error" id="final-error" data-form-error hidden></p>
+            <div class="start-form-bottom">
+              <span>首版平均 4 分钟</span>
+              <button class="btn btn--ink" type="submit">生成首版</button>
+            </div>
+            <p class="form-note" id="final-note">免费开始。需要专家、域名或代码时，再升级。</p>
+          </div>
+          <div class="start-success" data-form-success role="status" hidden>
+            <span class="success-mark" aria-hidden="true">✓</span>
+            <div>
+              <strong>收到了。</strong>
+              <p>你的想法已经进入首版准备。预览会出现在工作台，通常不超过 4 分钟。</p>
+              <span class="success-idea" data-success-idea></span>
+            </div>
+            <button class="reset-form" type="button" data-form-reset>再说一个想法</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="brand-name">orvo<em>.</em></span>
+        <p>一个开放的工作室。用对话把想法做出来，再和真正上线过产品的人一起，把它送上线。</p>
+      </div>
+      <nav class="footer-nav" aria-label="页脚导航">
+        <div class="footer-col">
+          <span class="footer-col-title">产品</span>
+          <a href="#product">产品能力</a>
+          <a href="#expert">专家评审</a>
+          <a href="#templates">模板库</a>
+          <a href="#pricing">定价</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">开始</span>
+          <a href="#start">免费开始</a>
+          <button type="button" data-open-demo>预约专家演示</button>
+          <a href="#faq">常见问题</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">工作室</span>
+          <a href="#stories">用户项目</a>
+          <a href="#how">使用流程</a>
+          <a href="#top">回到顶部</a>
+        </div>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span><span>© <span id="year">2026</span> Orvo, Inc.</span><span>代码与内容归创作者所有</span></span>
+      <span>用对话开始，和人一起上线。</span>
+    </div>
+  </div>
+</footer>
+
+<dialog id="demo-dialog" aria-labelledby="demo-title">
+  <div class="modal-card">
+    <button class="modal-close" type="button" data-close-dialog aria-label="关闭预约窗口">×</button>
+    <div data-demo-panel>
+      <p class="modal-kicker">20 分钟，不推销</p>
+      <h2 id="demo-title">带着你的想法来，<br>直接看怎么落地。</h2>
+      <p class="modal-lede">我们会根据你的产品阶段，匹配一位产品、设计或工程背景的专家。先聊现在卡在哪，再决定要不要开始。</p>
+      <form class="demo-form" id="demo-form">
+        <div class="form-row">
+          <label class="field"><span>怎么称呼</span><input type="text" name="name" autocomplete="name" placeholder="林夏" required></label>
+          <label class="field"><span>邮箱</span><input type="email" name="email" autocomplete="email" placeholder="you@example.com" required></label>
+        </div>
+        <label class="field"><span>项目现在到哪一步？</span>
+          <select name="stage">
+            <option>还只有一个想法</option>
+            <option>已经有页面，想改好</option>
+            <option>准备上线，想找人检查</option>
+            <option>已经上线，想继续迭代</option>
+          </select>
+        </label>
+        <label class="field"><span>想解决什么？<small>（选填）</small></span><textarea name="note" rows="3" placeholder="例如：预约流程太绕，想在两周内上线"></textarea></label>
+        <button class="btn btn--primary" type="submit">预约演示</button>
+        <p class="modal-note">我们会在一个工作日内通过邮件联系你。不会把你的信息发给第三方。</p>
+      </form>
+    </div>
+    <div class="modal-success" data-demo-success hidden>
+      <span class="success-mark" aria-hidden="true">✓</span>
+      <h3>预约收到了。</h3>
+      <p>我们会在一个工作日内回信，和你确认 20 分钟的时间。到时候可以直接带着项目链接来。</p>
+      <button class="btn btn--ink" type="button" data-close-dialog>知道了</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="library-dialog" aria-labelledby="library-title">
+  <div class="modal-card modal-card--wide">
+    <button class="modal-close" type="button" data-close-dialog aria-label="关闭模板库">×</button>
+    <p class="modal-kicker">模板库</p>
+    <h2 id="library-title">120 个起点，<br>六类常见产品。</h2>
+    <p class="modal-lede">完整模板库可以在免费工作台里浏览。每个模板都能换成你的内容和结构，再继续用对话改。</p>
+    <div class="library-list">
+      <div class="library-row"><span><i class="library-swatch"></i>落地页</span><b>28</b></div>
+      <div class="library-row"><span><i class="library-swatch"></i>电商小店</span><b>22</b></div>
+      <div class="library-row"><span><i class="library-swatch"></i>预约与会员</span><b>19</b></div>
+      <div class="library-row"><span><i class="library-swatch"></i>内部工具</span><b>17</b></div>
+      <div class="library-row"><span><i class="library-swatch"></i>内容社区</span><b>16</b></div>
+      <div class="library-row"><span><i class="library-swatch"></i>移动应用</span><b>18</b></div>
+    </div>
+    <div class="library-foot">
+      <p>合计 120 个。模板会持续更新，已包含在你当前的方案中。</p>
+      <button class="btn btn--ink" type="button" data-library-start>免费开始浏览</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  "use strict";
+
+  const templates = [
+    {
+      name:"独立 SaaS 落地页", cat:"落地页", theme:"blue", kind:"landing", uses:4820,
+      brand:"Lattice", title:"把零散的决定，<br>变成一条路线。", tag:"给远程团队的项目备忘录",
+      scene:"验证一个新想法，先收集首批预约与反馈"
+    },
+    {
+      name:"摄影师作品集", cat:"落地页", theme:"ink", kind:"landing", uses:2760,
+      brand:"和光", title:"光落在<br>安静的地方。", tag:"肖像与空间摄影作品",
+      scene:"把作品整理成一个可以随时分享的线上作品集"
+    },
+    {
+      name:"B2B 服务官网", cat:"落地页", theme:"green", kind:"landing", uses:1460,
+      brand:"澄明", title:"复杂的事，<br>交给我们理清。", tag:"供应链与增长咨询",
+      scene:"用案例与咨询表单接住第一批销售线索"
+    },
+    {
+      name:"手作陶瓷小店", cat:"电商小店", theme:"coral", kind:"shop", uses:2410,
+      brand:"山雀陶作", title:"一只杯子，<br>用很多年。", tag:"小批量手作，可以慢慢等",
+      scene:"小批量售卖手作，支持定制备注与到店自提",
+      products:[["粗陶杯","¥168"],["花器","¥246"],["小碟","¥96"]]
+    },
+    {
+      name:"植物与家居买手店", cat:"电商小店", theme:"green", kind:"shop", uses:1340,
+      brand:"野室", title:"把春天<br>搬进房间。", tag:"植物、器物与周末市集",
+      scene:"做新品上架、门店自提和会员积分",
+      products:[["琴叶榕","¥128"],["陶盆","¥86"],["喷壶","¥48"]]
+    },
+    {
+      name:"咖啡馆预约", cat:"预约与会员", theme:"butter", kind:"booking", uses:3240,
+      brand:"山雀咖啡", title:"留一张<br>靠窗的桌子。", tag:"手冲与甜点，周三至周日",
+      scene:"按日期与人数接收到店预约，自动提醒",
+      times:["14:00","16:30"]
+    },
+    {
+      name:"健身私教预约", cat:"预约与会员", theme:"blue", kind:"booking", uses:1540,
+      brand:"王拓训练", title:"下班后，<br>练得动最重要。", tag:"一对一训练，先评估再开始",
+      scene:"售卖单次课程、训练包和体验课",
+      times:["19:00","周六"]
+    },
+    {
+      name:"库存看板", cat:"内部工具", theme:"ink", kind:"dashboard", uses:960,
+      brand:"库存总览", title:"库存总览", tag:"本周",
+      scene:"在小团队里看库存、周转和补货提醒",
+      metrics:[["2,480","在库"],["18","偏低"],["6","待补"]],
+      bars:[28,52,40,66,44,78,34,58]
+    },
+    {
+      name:"团队 OKR 看板", cat:"内部工具", theme:"blue", kind:"dashboard", uses:690,
+      brand:"这一季，只做三件事。", title:"这一季，只做三件事。", tag:"Q4",
+      scene:"每周同步目标、负责人和进度",
+      metrics:[["3","目标"],["11","关键结果"],["72%","进度"]],
+      bars:[35,55,48,70,62,82,58,90]
+    },
+    {
+      name:"独立播客站", cat:"内容社区", theme:"coral", kind:"community", uses:1870,
+      brand:"慢速电台", title:"把声音，<br>放到该被听见的地方。", tag:"每周更新，关于手艺与生活",
+      scene:"发布节目、订阅入口和赞助方式",
+      episodes:[["EP. 42 慢一点，做完它","38 分钟"],["EP. 41 一间店的呼吸","46 分钟"],["EP. 40 不着急的客人","31 分钟"]]
+    },
+    {
+      name:"社区团购 App", cat:"移动应用", theme:"green", kind:"mobile", uses:1120,
+      brand:"邻里团", title:"今晚下单，<br>明早到楼下。", tag:"云南小粒咖啡",
+      scene:"按小区开团、收款与自提通知"
+    },
+    {
+      name:"习惯追踪 App", cat:"移动应用", theme:"blue", kind:"mobile", uses:2050,
+      brand:"小步", title:"小一点，<br>但每天都做。", tag:"连续 12 天",
+      scene:"记录习惯、连续天数与温和提醒"
+    }
+  ];
+
+  const categoryOrder = ["落地页","电商小店","预约与会员","内部工具","内容社区","移动应用"];
+
+  function nav(brand, links, cta){
+    return '<div class="mini-nav"><b>'+brand+'</b><span class="mini-nav-links">'+links+'</span><span class="mini-nav-cta">'+cta+'</span></div>';
+  }
+
+  function thumbLanding(t){
+    return '<div class="mini-page">'+
+      nav(t.brand,"产品　案例　价格","开始")+
+      '<div class="mini-landing">'+
+        '<div class="mini-landing-copy">'+
+          '<h4>'+t.title+'</h4>'+
+          '<p>'+t.tag+'</p>'+
+          '<span class="mini-btn">开始使用</span>'+
+        '</div>'+
+        '<div class="mini-art-panel">'+
+          '<span class="mini-art-disc"></span>'+
+          '<span class="mini-art-arch"></span>'+
+          '<span class="mini-art-caption">'+t.brand+'<br>2026</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="mini-logo-row"><span></span><span></span><span></span></div>'+
+    '</div>';
+  }
+
+  function thumbShop(t){
+    const products = t.products.map(function(p){
+      return '<div class="mini-product"><div class="vase-wrap"><i class="mini-vase"></i></div><small>'+p[0]+'</small><i>'+p[1]+'</i></div>';
+    }).join("");
+    return '<div class="mini-page">'+
+      nav(t.brand,"新品　门店　关于","逛小店")+
+      '<div class="mini-shop">'+
+        '<div class="mini-shop-copy"><h4>'+t.title+'</h4><p>'+t.tag+'</p><span class="mini-btn">走进小店</span></div>'+
+        '<div class="mini-products">'+products+'</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  function thumbBooking(t){
+    let cal = "";
+    for(let i=1;i<=21;i++){ cal += '<i>'+i+'</i>'; }
+    return '<div class="mini-page">'+
+      nav(t.brand,"空间　菜单　预约","预约")+
+      '<div class="mini-booking-layout">'+
+        '<div class="mini-booking-copy"><h4>'+t.title+'</h4><p>'+t.tag+'</p>'+
+          '<div class="mini-times"><span>'+t.times[0]+'</span><span>'+t.times[1]+'</span></div>'+
+          '<span class="mini-btn">预约到店</span>'+
+        '</div>'+
+        '<div class="mini-calendar"><div class="mini-cal-top"><span>本周</span><span>10 月</span></div><div class="mini-cal-grid">'+cal+'</div></div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  function thumbDashboard(t){
+    const metrics = t.metrics.map(function(m){
+      return '<div class="mini-metric"><strong>'+m[0]+'</strong><span>'+m[1]+'</span></div>';
+    }).join("");
+    const bars = t.bars.map(function(h){ return '<i style="--h:'+h+'%"></i>'; }).join("");
+    return '<div class="mini-dash">'+
+      '<div class="mini-side"><b>orvo</b><span>总览</span><span>库存</span><span>补货</span><span>设置</span></div>'+
+      '<div class="mini-dash-main">'+
+        '<div class="mini-dash-title"><b>'+t.title+'</b><span>'+t.tag+'</span></div>'+
+        '<div class="mini-metrics">'+metrics+'</div>'+
+        '<div class="mini-chart">'+bars+'</div>'+
+        '<div class="mini-dash-rows"><span></span><span></span><span></span></div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  function thumbCommunity(t){
+    const eps = t.episodes.map(function(e){
+      return '<div class="mini-ep"><span class="mini-play"></span><div><b>'+e[0]+'</b><small>'+e[1]+'</small></div></div>';
+    }).join("");
+    return '<div class="mini-page">'+
+      nav(t.brand,"节目　关于　订阅","订阅")+
+      '<div class="mini-community">'+
+        '<div class="mini-community-copy"><h4>'+t.title+'</h4><p>'+t.tag+'</p><div class="mini-wave"><i style="--h:30%"></i><i style="--h:64%"></i><i style="--h:46%"></i><i style="--h:88%"></i><i style="--h:58%"></i><i style="--h:72%"></i><i style="--h:38%"></i><i style="--h:54%"></i><i style="--h:26%"></i><i style="--h:63%"></i><i style="--h:42%"></i><i style="--h:78%"></i></div></div>'+
+        '<div class="mini-episodes">'+eps+'</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  function thumbMobile(t){
+    return '<div class="mini-phones">'+
+      '<div class="mini-phone mini-phone--back"><div class="mini-screen"><div class="mini-app-top"><b>'+t.brand+'</b><span></span></div><div class="mini-app-card"><b>今晚开团</b><p>云南小粒咖啡</p><div class="mini-progress"></div></div><div class="mini-app-row"><i></i><span></span></div><div class="mini-app-row"><i></i><span></span></div></div></div>'+
+      '<div class="mini-phone mini-phone--front"><div class="mini-phone-notch"></div><div class="mini-screen">'+
+        '<div class="mini-app-top"><b>'+t.brand+'</b><span></span></div>'+
+        '<div class="mini-app-card"><b>'+t.title+'</b><p>'+t.tag+'</p><div class="mini-progress"></div><span class="mini-app-btn">去拼团</span></div>'+
+        '<div class="mini-app-row"><i></i><span></span></div>'+
+        '<div class="mini-app-row"><i></i><span></span></div>'+
+      '</div></div>'+
+    '</div>';
+  }
+
+  function thumbMarkup(t){
+    let inner = "";
+    if(t.kind === "landing") inner = thumbLanding(t);
+    if(t.kind === "shop") inner = thumbShop(t);
+    if(t.kind === "booking") inner = thumbBooking(t);
+    if(t.kind === "dashboard") inner = thumbDashboard(t);
+    if(t.kind === "community") inner = thumbCommunity(t);
+    if(t.kind === "mobile") inner = thumbMobile(t);
+    return '<div class="thumb thumb--'+t.theme+'" aria-hidden="true">'+inner+'</div>';
+  }
+
+  const grid = document.querySelector("[data-template-grid]");
+  const filterStatus = document.querySelector("[data-filter-status]");
+  const filterButtons = Array.prototype.slice.call(document.querySelectorAll("[data-filter]"));
+
+  function formatUses(n){ return n.toLocaleString("en-US"); }
+
+  function cardMarkup(t, index){
+    return '<article class="template-card" style="--i:'+index+'">'+
+      thumbMarkup(t)+
+      '<div class="template-info">'+
+        '<h3>'+t.name+'</h3>'+
+        '<p>'+t.scene+'</p>'+
+        '<div class="template-meta"><span class="template-cat">'+t.cat+'</span><span>已使用 '+formatUses(t.uses)+' 次</span></div>'+
+      '</div>'+
+    '</article>';
+  }
+
+  function renderTemplates(category){
+    const list = category === "all" ? templates : templates.filter(function(t){ return t.cat === category; });
+    grid.innerHTML = list.map(cardMarkup).join("");
+    filterStatus.textContent = category === "all" ? "全部 12 个" : category + "　" + list.length + " 个";
+  }
+
+  filterButtons.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      filterButtons.forEach(function(b){ b.setAttribute("aria-pressed", String(b === btn)); });
+      renderTemplates(btn.dataset.filter);
+    });
+  });
+
+  renderTemplates("all");
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+
+  document.getElementById("year").textContent = String(new Date().getFullYear());
+
+  /* start forms */
+  document.querySelectorAll("[data-start-form]").forEach(function(form){
+    const fields = form.querySelector("[data-form-fields]");
+    const input = form.querySelector('input[name="idea"], textarea[name="idea"]');
+    const error = form.querySelector("[data-form-error]");
+    const success = form.querySelector("[data-form-success]");
+    const successIdea = form.querySelector("[data-success-idea]");
+    const reset = form.querySelector("[data-form-reset]");
+    if(!fields || !input || !error || !success) return;
+
+    input.addEventListener("input", function(){
+      if(input.value.trim()){
+        error.hidden = true;
+        error.textContent = "";
+        input.removeAttribute("aria-invalid");
+      }
+    });
+
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      const value = input.value.trim();
+      if(!value){
+        error.textContent = "先写一句你想做什么，再开始。";
+        error.hidden = false;
+        input.setAttribute("aria-invalid", "true");
+        input.focus();
+        return;
+      }
+      error.hidden = true;
+      error.textContent = "";
+      input.removeAttribute("aria-invalid");
+      successIdea.textContent = "「" + value + "」";
+      fields.hidden = true;
+      success.hidden = false;
+      if(reset) reset.focus();
+    });
+
+    if(reset){
+      reset.addEventListener("click", function(){
+        success.hidden = true;
+        fields.hidden = false;
+        input.value = "";
+        input.removeAttribute("aria-invalid");
+        error.hidden = true;
+        error.textContent = "";
+        input.focus();
+      });
+    }
+  });
+
+  /* billing toggle */
+  const priceData = {
+    monthly:{
+      pro:{amount:"24.99", bill:"按月结算，随时取消"},
+      unlimited:{amount:"34.99", bill:"按月结算，随时取消"}
+    },
+    annual:{
+      pro:{amount:"19.99", bill:"每年 $239.88 结算，折合 $19.99 / 月"},
+      unlimited:{amount:"27.99", bill:"每年 $335.88 结算，折合 $27.99 / 月"}
+    }
+  };
+  const billingButtons = Array.prototype.slice.call(document.querySelectorAll("[data-billing]"));
+  const billingLive = document.querySelector("[data-billing-live]");
+
+  function setBilling(mode){
+    billingButtons.forEach(function(btn){
+      btn.setAttribute("aria-pressed", String(btn.dataset.billing === mode));
+    });
+    document.querySelectorAll("[data-price]").forEach(function(el){
+      const plan = el.dataset.price;
+      if(plan === "starter") return;
+      el.textContent = priceData[mode][plan].amount;
+    });
+    document.querySelectorAll("[data-bill]").forEach(function(el){
+      const plan = el.dataset.bill;
+      if(plan === "starter"){
+        el.textContent = mode === "annual" ? "免费方案，不受年付影响" : "永久免费，不需要信用卡";
+        return;
+      }
+      el.textContent = priceData[mode][plan].bill;
+    });
+    if(billingLive){
+      billingLive.textContent = mode === "annual"
+        ? "已切换为年付。Pro 折合每月 19.99 美元，Unlimited 折合每月 27.99 美元，年付省 20%。"
+        : "已切换为月付。Pro 每月 24.99 美元，Unlimited 每月 34.99 美元。";
+    }
+  }
+
+  billingButtons.forEach(function(btn){
+    btn.addEventListener("click", function(){ setBilling(btn.dataset.billing); });
+  });
+
+  /* dialogs */
+  const demoDialog = document.getElementById("demo-dialog");
+  const libraryDialog = document.getElementById("library-dialog");
+  const demoPanel = demoDialog ? demoDialog.querySelector("[data-demo-panel]") : null;
+  const demoSuccess = demoDialog ? demoDialog.querySelector("[data-demo-success]") : null;
+  const demoForm = document.getElementById("demo-form");
+
+  function openDialog(dialog){
+    if(!dialog) return;
+    if(typeof dialog.showModal === "function"){
+      dialog.showModal();
+    }else{
+      dialog.setAttribute("open","");
+    }
+    document.body.style.overflow = "hidden";
+  }
+  function closeDialog(dialog){
+    if(!dialog) return;
+    if(typeof dialog.close === "function") dialog.close();
+    else dialog.removeAttribute("open");
+    document.body.style.overflow = "";
+  }
+
+  document.querySelectorAll("[data-open-demo]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      if(demoPanel && demoSuccess){
+        demoPanel.hidden = false;
+        demoSuccess.hidden = true;
+      }
+      openDialog(demoDialog);
+    });
+  });
+
+  document.querySelectorAll("[data-open-library]").forEach(function(btn){
+    btn.addEventListener("click", function(){ openDialog(libraryDialog); });
+  });
+
+  [demoDialog, libraryDialog].forEach(function(dialog){
+    if(!dialog) return;
+    dialog.querySelectorAll("[data-close-dialog]").forEach(function(btn){
+      btn.addEventListener("click", function(){ closeDialog(dialog); });
+    });
+    dialog.addEventListener("click", function(e){
+      if(e.target === dialog) closeDialog(dialog);
+    });
+    dialog.addEventListener("close", function(){
+      document.body.style.overflow = "";
+      if(dialog === demoDialog){
+        window.setTimeout(function(){
+          if(demoForm) demoForm.reset();
+          if(demoPanel) demoPanel.hidden = false;
+          if(demoSuccess) demoSuccess.hidden = true;
+        }, 220);
+      }
+    });
+  });
+
+  if(demoForm && demoPanel && demoSuccess){
+    demoForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      if(!demoForm.reportValidity()) return;
+      demoPanel.hidden = true;
+      demoSuccess.hidden = false;
+      const next = demoSuccess.querySelector("[data-close-dialog]");
+      if(next) next.focus();
+    });
+  }
+
+  const libraryStart = document.querySelector("[data-library-start]");
+  if(libraryStart){
+    libraryStart.addEventListener("click", function(){
+      closeDialog(libraryDialog);
+      window.setTimeout(function(){
+        const start = document.getElementById("start");
+        const idea = document.getElementById("final-idea");
+        if(start) start.scrollIntoView({behavior:"smooth", block:"start"});
+        if(idea) window.setTimeout(function(){ idea.focus({preventScroll:true}); }, 500);
+      }, 80);
+    });
+  }
+})();
+</script>
+</body>
+</html>
