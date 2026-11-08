@@ -80,6 +80,25 @@ def matches(skill, expected):
     return skill == expected or skill.split(":")[-1] == expected
 
 
+def total_turns(data, records):
+    """多段会话的最终结果仅包含末段轮次，从主会话记录汇总。"""
+    if not data.get("result_index"):
+        return data.get("num_turns")
+    session_id = data.get("session_id")
+    if not session_id:
+        return None
+    turns = sum(
+        1 for record in records
+        if record.get("type") == "user"
+        and record.get("sessionId") == session_id
+        and not record.get("isSidechain")
+    )
+    last_turns = data.get("num_turns")
+    if not turns or (isinstance(last_turns, int) and turns < last_turns):
+        return None
+    return turns
+
+
 def main():
     args = parse_args()
     records = load_records(args.cfg)
@@ -125,13 +144,24 @@ def main():
         if os.path.getsize(args.html) == 0:
             fail(f"页面文件为空：{args.html}")
 
+    elapsed_path = os.path.join(os.path.dirname(os.path.abspath(args.result)), "elapsed_ms")
+    if os.path.exists(elapsed_path):
+        try:
+            with open(elapsed_path, encoding="utf-8") as handle:
+                elapsed_ms = int(handle.read().strip())
+            if elapsed_ms < 0:
+                raise ValueError("负数耗时")
+        except (OSError, ValueError):
+            fail(f"实际耗时文件无效：{elapsed_path}")
+        duration = f"{elapsed_ms / 60000:.1f} min"
+    else:
+        duration = "未知（未记录实际运行时间）"
+    turns = total_turns(data, records)
     print("隔离核验通过")
     print("技能清单：" + ("、".join(sorted(listed)) if listed else "（空）"))
     print("技能调用：" + ("、".join(str(call) for call in calls) if calls else "（无）"))
     print(f"实际模型：{models}")
-    duration_ms = data.get("duration_ms")
-    duration = f"{duration_ms / 60000:.1f} min" if isinstance(duration_ms, (int, float)) else "未知"
-    print(f"轮次：{data.get('num_turns')}，耗时：{duration}")
+    print(f"轮次：{turns if turns is not None else '未知'}，耗时：{duration}")
     if args.html:
         print(f"页面大小：{os.path.getsize(args.html)} 字节")
 

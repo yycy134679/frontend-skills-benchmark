@@ -107,7 +107,7 @@ cd "$OUT_DIR"
 
 printf '开始运行：模型 %s，技能 %s，输出 %s\n' "$MODEL" "$SKILL_NAME" "$OUT_DIR"
 
-if ! env -i \
+if ! python3 "$SCRIPT_DIR/timed_run.py" "$OUT_DIR/elapsed_ms" env -i \
   PATH="$PATH" \
   HOME="$HOME" \
   CLAUDE_CONFIG_DIR="$CFG_DIR" \
@@ -125,13 +125,16 @@ if [ -f "$OUT_DIR/index.html" ]; then
 fi
 python3 "$SCRIPT_DIR/verify_run.py" "${VERIFY_ARGS[@]}"
 
-# 只记录轮次与耗时（分钟）；第三方模型经 Claude Code 统计的费用不准确，不再记录
-read -r TURNS DURATION_MIN < <(python3 - "$OUT_DIR/result.json" <<'PY'
+# 多段会话汇总主会话轮次；耗时由外部计时器测量。
+read -r TURNS DURATION_MIN < <(python3 - "$SCRIPT_DIR" "$CFG_DIR" "$OUT_DIR/result.json" "$OUT_DIR/elapsed_ms" <<'PY'
 import json, sys
-lines = [line for line in open(sys.argv[1], encoding="utf-8").read().splitlines() if line.strip()]
+sys.path.insert(0, sys.argv[1])
+from verify_run import load_records, total_turns
+lines = [line for line in open(sys.argv[3], encoding="utf-8").read().splitlines() if line.strip()]
 data = json.loads(lines[-1])
-ms = data.get("duration_ms")
-print(data.get("num_turns"), f"{ms / 60000:.1f}" if isinstance(ms, (int, float)) else "unknown")
+turns = total_turns(data, load_records(sys.argv[2]))
+ms = int(open(sys.argv[4], encoding="utf-8").read().strip())
+print(turns if turns is not None else "unknown", f"{ms / 60000:.1f}")
 PY
 )
 
