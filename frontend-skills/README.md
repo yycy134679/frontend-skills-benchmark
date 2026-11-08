@@ -4,9 +4,9 @@
 
 | 目录 | 技能名 | 来源 | 提交 | 许可 | 大小 |
 | --- | --- | --- | --- | --- | --- |
-| `oil-ui` | `oil-ui` | [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui) | `98187634fc45c934d36f71d050e8773d6bdea83b` | MIT | 2.1 MB |
-| `frontend-design` | `frontend-design` | [anthropics/skills · skills/frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | `ca45fc496a3436251f191354091d557da31c15b5` | Apache 2.0 | 24 KB |
-| `impeccable` | `impeccable` | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | `c3bb418ee38ee49a6b999b7752c1368f3123a2bd` | Apache 2.0 | 2.2 MB |
+| `oil-ui` | `oil-ui` | [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui) | `16b30579489155ed4fae723c4d031e9f4d3c36df` | MIT | 2.1 MB |
+| `frontend-design` | `frontend-design` | [anthropics/skills · skills/frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | `2c5958ecac7cee2b583967a2c4981d0f4a75c579` | Apache 2.0 | 24 KB |
+| `impeccable` | `impeccable` | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | `924bbd194d02e5e15a227e75b5901fb0d7a4ecad` | Apache 2.0 | 2.3 MB |
 | `taste-skill` | `design-taste-frontend` | [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill) | `f6b76575f949707b4e3c37cd86cb44b0b98643e8` | MIT | 39 MB |
 | `hallmark` | `hallmark` | [Nutlope/hallmark](https://github.com/Nutlope/hallmark) | `407fa689f4a276f2fd389208d271d0fef08f5058` | MIT | 7.1 MB |
 
