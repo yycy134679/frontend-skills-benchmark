@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="同一份提示词，不同技能生成的前端页面并排对照。">
-<title>技能对照册 · 前端技能基准</title>
+<title>技能对照册 · 前端技能对照</title>
 <style>
   :root {
     --paper: #f2ebdd;
@@ -70,16 +70,15 @@
   .case-list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; flex: 1; }
   .case-list li { flex: 1; display: flex; }
   .case-list a {
-    flex: 1; display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 14px; row-gap: 3px;
+    flex: 1; display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 14px;
     align-content: center; text-decoration: none; color: inherit;
     margin: 0 calc(var(--pad) * -1) 0 -28px; padding: 16px 28px; padding-right: var(--pad);
     transition: background .2s ease;
   }
   .case-list li + li a { border-top: 1px solid rgba(251, 247, 236, .22); }
   .case-list a:hover { background: rgba(251, 247, 236, .08); }
-  .ci-num { grid-row: span 2; font-family: var(--latin); font-size: 22px; line-height: 1.35; color: #cfdbcb; }
+  .ci-num { font-family: var(--latin); font-size: 22px; line-height: 1.35; color: #cfdbcb; }
   .ci-title { font-family: var(--serif); font-size: clamp(20px, 1.7vw, 23px); font-weight: 500; line-height: 1.45; }
-  .ci-meta { font-size: 12px; letter-spacing: .04em; color: #cfdbcb; }
   .case-index :focus-visible { outline-color: var(--paper); }
 
   /* 案例 */
@@ -93,7 +92,6 @@
   .chapter-band.has-model { grid-template-columns: 96px max-content auto minmax(0, 1fr); }
   .chapter-band .num { font-family: var(--latin); font-size: 56px; line-height: 1; letter-spacing: -.04em; }
   .chapter-band h2 { margin: 0; font-family: var(--serif); font-size: clamp(26px, 2.5vw, 36px); font-weight: 500; letter-spacing: .01em; }
-  .chapter-band .side { font-family: var(--latin); font-size: 12px; letter-spacing: .14em; text-align: right; color: #cfdbcb; }
 
   .spread {
     display: grid; grid-template-columns: 300px minmax(0, 1fr);
@@ -105,8 +103,6 @@
     width: 18px; pointer-events: none;
     background: linear-gradient(90deg, rgba(72, 58, 34, .09), rgba(72, 58, 34, 0));
   }
-  .case-aside h3 { font-family: var(--serif); font-size: 21px; font-weight: 600; margin: 0 0 14px; }
-  .case-desc { margin: 0 0 22px; font-size: 14px; line-height: 1.85; color: var(--muted); }
   details.prompt { border-top: 1px solid var(--line); }
   details.prompt summary {
     list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 12px;
@@ -132,10 +128,9 @@
   .gen-note { margin: 18px 0 0; font-size: 12px; line-height: 1.8; color: var(--muted); }
 
   .track-head {
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    display: flex; align-items: center; justify-content: flex-end; gap: 16px;
     border-bottom: 1px solid var(--ink); padding-bottom: 8px;
   }
-  .track-head span { font-family: var(--serif); font-size: 14px; letter-spacing: .08em; }
   /* 模型切换：章节色带上的细框按钮；支持 base-select 的浏览器连同弹出列表一起定制 */
   .model-picker { display: inline-flex; align-items: center; }
   /* 中文标题的字形重心比行盒中线低约 2px，下拉框随之下移，使两者视觉居中对齐 */
@@ -199,30 +194,17 @@
   .c-top h3 { margin: 0; font-family: var(--serif); font-size: 23px; font-weight: 600; letter-spacing: .01em; }
   .c-top h3 a { text-decoration: none; }
   .c-top h3 a:hover { color: var(--rust); }
-  .c-index { font-family: var(--latin); font-size: 12px; color: var(--muted); letter-spacing: .08em; }
   .c-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 6px; font-size: 12px; color: var(--muted); }
   .c-note { margin: 12px 0 0; font-size: 14px; line-height: 1.85; max-width: 48ch; }
   .c-link { display: inline-block; margin-top: 12px; font-size: 12px; text-underline-offset: 3px; }
   .c-links { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 12px; }
   .c-links .c-link { margin-top: 0; }
-  .c-none { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--muted); }
 
-  /* 目次 */
-  .contents { padding-top: clamp(60px, 7vw, 100px); }
   .section-head {
     display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
     border-bottom: 2px solid var(--ink); padding-bottom: 8px;
   }
   .section-head h2 { margin: 0; font-family: var(--serif); font-size: clamp(24px, 2.2vw, 30px); font-weight: 600; }
-  .section-head span { font-family: var(--sans); font-size: 12px; letter-spacing: .04em; color: var(--muted); }
-  .contents ol { list-style: none; margin: 0; padding: 0; }
-  .contents li { display: grid; grid-template-columns: 64px minmax(0, 1fr) 130px; gap: 18px; padding: 18px 0; border-bottom: 1px solid var(--line); }
-  .toc-num { font-family: var(--latin); font-size: 15px; color: var(--rust); padding-top: 2px; }
-  .toc-line { display: flex; align-items: baseline; gap: 12px; }
-  .toc-line h3 { margin: 0; font-family: var(--serif); font-size: 21px; font-weight: 600; white-space: nowrap; }
-  .toc-line .dots { flex: 1; border-bottom: 1px dotted var(--line); transform: translateY(-4px); }
-  .toc-main p { margin: 4px 0 0; font-size: 14px; line-height: 1.8; color: var(--muted); max-width: 62ch; }
-  .toc-status { font-family: var(--serif); font-size: 14px; color: var(--muted); text-align: right; padding-top: 2px; }
 
   /* 技能 */
   .skills { padding-top: clamp(60px, 7vw, 100px); }
@@ -253,7 +235,6 @@
     .case-index { min-height: 0; margin-right: 0; padding-right: 28px; }
     .case-list a { margin-right: -28px; padding-right: 28px; }
     .chapter-band.has-model { grid-template-columns: 96px max-content minmax(0, 1fr); }
-    .chapter-band.has-model .side { display: none; }
     .spread, .method-body { grid-template-columns: 1fr; }
     .spread::before { display: none; }
     .plate { flex-basis: 78%; }
@@ -267,11 +248,7 @@
     .chapter-band.has-model { grid-template-columns: 54px minmax(0, 1fr); row-gap: 12px; }
     .chapter-band .num { font-size: 36px; }
     .chapter-band .model-picker { grid-column: 2; justify-self: start; translate: none; }
-    .chapter-band .side { display: none; }
     .plate { flex-basis: 88%; margin-right: 5%; }
-    .contents li { grid-template-columns: 42px minmax(0, 1fr); }
-    .toc-status { grid-column: 2; text-align: left; padding-top: 4px; }
-    .toc-line h3 { font-size: 18px; white-space: normal; }
     .skill-list { grid-template-columns: 1fr; }
     .foot { flex-direction: column; }
   }
@@ -292,7 +269,7 @@
 
   <section class="hero">
     <div class="hero-main">
-      <h1>前端技能大横评</h1>
+      <h1>同一份提示词，<br>换一个技能。</h1>
     </div>
     <nav class="case-index" aria-label="案例目录">
       <p class="case-index-head">案例目录</p>
@@ -301,28 +278,24 @@
           <a href="#case-01">
             <span class="ci-num">01</span>
             <span class="ci-title">精品咖啡订阅官网</span>
-            <span class="ci-meta">2 个模型 · 每个 6 个结果</span>
           </a>
         </li>
         <li>
           <a href="#case-02">
             <span class="ci-num">02</span>
             <span class="ci-title">绘本插画师个人网站</span>
-            <span class="ci-meta">6 个结果</span>
           </a>
         </li>
         <li>
           <a href="#case-03">
             <span class="ci-num">03</span>
             <span class="ci-title">黑胶播放器</span>
-            <span class="ci-meta">6 个结果</span>
           </a>
         </li>
         <li>
           <a href="#case-04">
             <span class="ci-num">04</span>
             <span class="ci-title">Orvo 官网落地页</span>
-            <span class="ci-meta">2 个模型 · 每个 6 个结果</span>
           </a>
         </li>
       </ol>
@@ -339,25 +312,21 @@
                 <option value="deepseek">DeepSeek V4.1 Flash 1017</option>
               </select>
             </label>
-      <div class="side">案例 01 / 2 个模型 / 每个 6 个结果</div>
     </div>
 
     <div class="spread">
       <aside class="case-aside">
-        <h3>题解</h3>
-        <p class="case-desc">单一庄园精品咖啡品牌 TerraBrew 的官网首页。首屏呈现哥伦比亚埃尔帕拉伊索庄园当季咖啡果枝与产区批次信息。</p>
         <details class="prompt">
           <summary><span>提示词</span><span class="hint" aria-hidden="true"></span></summary>
           <div class="prompt-body" tabindex="0" role="region" aria-label="提示词全文">
             <p id="prompt-01">单一庄园精品咖啡品牌「TerraBrew」官网（1440×900 起，响应式到 390 宽）：首屏呈现哥伦比亚埃尔帕拉伊索庄园当季咖啡果枝实景与产区批次信息；往下依次展开可点击切换的八维咖啡风味轮（花香、果香、酸质、甜感、醇厚、坚果、巧克力、香料）、五步庄园溯源时间轴、带植物线稿印章的单批次凭证卡，以及深烘焙褐订阅配置器与页脚。<br><br>八维风味轮、溯源节点与订阅配置器是这件作品的核心：点击风味扇区同步切换庄园风味笔记，切换重量、配送周期和研磨方式时实时计算每次配送价格并生成配置摘要。</p>
           </div>
         </details>
-        <p class="gen-note">生成日期 2026-11-06。六组结果均由 Claude Code 调用 <code>codex/gpt-6.1-terra</code> 生成，思考强度 high。<a href="../../examples/case-01/对照记录.md">对照记录</a>保存了轮次与耗时。</p>
+        <p class="gen-note">2026-11-06 生成 · GPT-6.1 Terra · 思考强度 high · <a href="../../examples/case-01/对照记录.md">完整记录</a></p>
       </aside>
 
       <div>
         <div class="track-head">
-          <span>结果 01–06</span>
           <div class="arrows">
             <button type="button" data-prev="case01" aria-label="上一个结果">←</button>
             <button type="button" data-next="case01" aria-label="下一个结果">→</button>
@@ -370,10 +339,9 @@
               <img src="../../assets/previews/case-01/no-skill.jpg" alt="不使用技能生成的精品咖啡官网首屏，整幅咖啡果实照片上压着中文标题">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3>基准 · 不使用技能</h3><span class="c-index">图版 01</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>15 轮 / 4.7 min</span></div>
+              <div class="c-top"><h3>不使用技能</h3></div>
+              <div class="c-meta"><span>15 轮 / 4.7 min</span></div>
               <p class="c-note">整幅果实照片铺满首屏，中文标题压在左侧；导航三项，画面下沿只留批次与庄园一行小字。</p>
-              <span class="c-none">对照组，不挂载技能</span>
             </figcaption>
           </figure>
 
@@ -382,8 +350,8 @@
               <img src="../../assets/previews/case-01/frontend-design.jpg" alt="frontend-design 生成的精品咖啡官网首屏，果实照片下方并列庄园、产区、海拔与批次">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">frontend-design</a></h3><span class="c-index">图版 02</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>9 轮 / 3.8 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">frontend-design</a></h3></div>
+              <div class="c-meta"><span>9 轮 / 3.8 min</span></div>
               <p class="c-note">同样是果实照片，标题下多一行英文，导航扩为四项；画面底部并列庄园、产区、海拔与批次四项信息。</p>
             </figcaption>
           </figure>
@@ -393,8 +361,8 @@
               <img src="../../assets/previews/case-01/oil-ui.jpg" alt="oil-ui 生成的精品咖啡官网首屏，标题为好咖啡始于一片土地" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener">oil-ui</a></h3><span class="c-index">图版 03</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>17 轮 / 4.2 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener">oil-ui</a></h3></div>
+              <div class="c-meta"><span>17 轮 / 4.2 min</span></div>
               <p class="c-note">首屏标题改为「好咖啡，始于一片土地。」，字号更大；底部信息条与下一段标题露出，页面节奏更接近长文。</p>
             </figcaption>
           </figure>
@@ -404,8 +372,8 @@
               <img src="../../assets/previews/case-01/impeccable.jpg" alt="impeccable 生成的精品咖啡官网首屏，左侧奶油色文字区与右侧咖啡豆照片分栏" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a></h3><span class="c-index">图版 04</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>15 轮 / 5.7 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a></h3></div>
+              <div class="c-meta"><span>15 轮 / 5.7 min</span></div>
               <p class="c-note">首屏改为左右分栏：左侧奶油色文字区，右侧深色咖啡豆照片；标题用衬线大字，下一段「风味」章节露出。</p>
             </figcaption>
           </figure>
@@ -415,8 +383,8 @@
               <img src="../../assets/previews/case-01/taste-skill.jpg" alt="taste-skill 生成的精品咖啡官网首屏，深色咖啡豆照片上压着白色标题" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener">taste-skill</a></h3><span class="c-index">图版 05</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>8 轮 / 3.5 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener">taste-skill</a></h3></div>
+              <div class="c-meta"><span>8 轮 / 3.5 min</span></div>
               <p class="c-note">首屏用深色咖啡豆照片铺满，白色标题压在中间偏左；整体色调最暗，接近一张海报。</p>
             </figcaption>
           </figure>
@@ -426,8 +394,8 @@
               <img src="../../assets/previews/case-01/hallmark.jpg" alt="hallmark 生成的精品咖啡官网首屏，果实照片上标题与信息行分列" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener">hallmark</a></h3><span class="c-index">图版 06</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>22 轮 / 5.0 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener">hallmark</a></h3></div>
+              <div class="c-meta"><span>22 轮 / 5.0 min</span></div>
               <p class="c-note">首屏用果实照片，标题与信息行分列上下；导航四项，画面底部并列四组庄园信息，版式较规整。</p>
             </figcaption>
           </figure>
@@ -441,25 +409,21 @@
     <div class="chapter-band">
       <div class="num">02</div>
       <h2>绘本插画师个人网站</h2>
-      <div class="side">案例 02 / 6 个结果</div>
     </div>
 
     <div class="spread">
       <aside class="case-aside">
-        <h3>题解</h3>
-        <p class="case-desc">一位独立绘本插画师的个人网站。首页呈现作品集、正在连载的绘本与合作邀约，作品详情页展开单本绘本的完整介绍。</p>
         <details class="prompt">
           <summary><span>提示词</span><span class="hint" aria-hidden="true"></span></summary>
           <div class="prompt-body" tabindex="0" role="region" aria-label="提示词全文">
             <p id="prompt-02">一位独立绘本插画师的个人网站：作品集、正在连载的绘本、合作邀约。做首页和一个作品详情页。<br><br>插画师的作品主要画给孩子，也画给仍然愿意读故事的大人。作品集里既有已经出版的绘本，也有杂志插画与日常速写，按主题分成几组；正在连载的绘本按章节更新，能看到故事简介和最新一章；合作邀约写明绘本出版、品牌插画与线下工作坊三类合作，并给出联系方式与回复时间。<br><br>整个网站要精美，翻看起来像翻开一本绘本书。</p>
           </div>
         </details>
-        <p class="gen-note">生成日期 2026-11-07。六组结果均由 Claude Code 调用 <code>codex/gpt-6.1-terra</code> 生成，思考强度 xhigh。<a href="../../examples/case-02/对照记录.md">对照记录</a>保存了轮次与耗时。</p>
+        <p class="gen-note">2026-11-07 生成 · GPT-6.1 Terra · 思考强度 xhigh · <a href="../../examples/case-02/对照记录.md">完整记录</a></p>
       </aside>
 
       <div>
         <div class="track-head">
-          <span>结果 07–12</span>
           <div class="arrows">
             <button type="button" data-prev="case02" aria-label="上一个结果">←</button>
             <button type="button" data-next="case02" aria-label="下一个结果">→</button>
@@ -472,11 +436,10 @@
               <img src="../../assets/previews/case-02/no-skill.jpg" alt="不使用技能生成的绘本插画师网站首屏，左侧标题把小小日子画成大大故事，右侧夜景里骑车的熊" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3>基准 · 不使用技能</h3><span class="c-index">图版 07</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>11 轮 / 4.7 min</span></div>
+              <div class="c-top"><h3>不使用技能</h3></div>
+              <div class="c-meta"><span>11 轮 / 4.7 min</span></div>
               <p class="c-note">米色底配深绿，标题分三行，右侧木框夜景里小熊骑车经过小屋，右下角一枚圆形徽章。</p>
               <div class="c-links"><a class="c-link" href="../../examples/case-02/no-skill-claude-code/work.html" target="_blank" rel="noopener">作品详情页</a></div>
-              <span class="c-none">对照组，不挂载技能</span>
             </figcaption>
           </figure>
 
@@ -485,8 +448,8 @@
               <img src="../../assets/previews/case-02/frontend-design.jpg" alt="frontend-design 生成的绘本插画师网站首屏，左侧标题与右侧蓝天狐狸插画分栏" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">frontend-design</a></h3><span class="c-index">图版 08</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>9 轮 / 6.0 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">frontend-design</a></h3></div>
+              <div class="c-meta"><span>9 轮 / 6.0 min</span></div>
               <p class="c-note">左右对半分栏，右半幅是蓝天、狐狸与小屋；最左侧一行竖排小字，标题上方用短横线引导。</p>
               <div class="c-links">
                 <a class="c-link" href="../../examples/case-02/frontend-design-claude-code/work.html" target="_blank" rel="noopener">作品详情页</a>
@@ -499,8 +462,8 @@
               <img src="../../assets/previews/case-02/oil-ui.jpg" alt="oil-ui 生成的绘本插画师网站首屏，左侧标题与右侧提灯小熊插画" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener">oil-ui</a></h3><span class="c-index">图版 09</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>33 轮 / 6.7 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener">oil-ui</a></h3></div>
+              <div class="c-meta"><span>33 轮 / 6.7 min</span></div>
               <p class="c-note">鼠尾草绿与米白分栏，右侧插画标着 ILLUSTRATION NO. 01，小熊提灯站在林间；画面下沿露出下一组作品的编号。</p>
               <div class="c-links">
                 <a class="c-link" href="../../examples/case-02/oil-ui-claude-code/work.html" target="_blank" rel="noopener">作品详情页</a>
@@ -513,8 +476,8 @@
               <img src="../../assets/previews/case-02/impeccable.jpg" alt="impeccable 生成的绘本插画师网站首屏，淡紫天空下孩子与狐狸坐在打开的书上" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a></h3><span class="c-index">图版 10</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>15 轮 / 5.9 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a></h3></div>
+              <div class="c-meta"><span>15 轮 / 5.9 min</span></div>
               <p class="c-note">淡紫天空铺满首屏，孩子与狐狸坐在打开的书上，标题后半句转为锈红；首屏下沿已经露出自我介绍。</p>
               <div class="c-links">
                 <a class="c-link" href="../../examples/case-02/impeccable-claude-code/work.html" target="_blank" rel="noopener">作品详情页</a>
@@ -527,8 +490,8 @@
               <img src="../../assets/previews/case-02/taste-skill.jpg" alt="taste-skill 生成的绘本插画师网站首屏，圆拱形画框里熊和孩子共读一本书" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener">taste-skill</a></h3><span class="c-index">图版 11</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>15 轮 / 8.0 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener">taste-skill</a></h3></div>
+              <div class="c-meta"><span>15 轮 / 8.0 min</span></div>
               <p class="c-note">右侧插画收进圆拱形画框，熊与孩子共读一本书；金色圆形贴纸压在画框右下角，画框外留出米色空白。</p>
               <div class="c-links">
                 <a class="c-link" href="../../examples/case-02/taste-skill-claude-code/work.html" target="_blank" rel="noopener">作品详情页</a>
@@ -541,8 +504,8 @@
               <img src="../../assets/previews/case-02/hallmark.jpg" alt="hallmark 生成的绘本插画师网站首屏，芥末黄底色上白色相框里兔子拿着信封" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener">hallmark</a></h3><span class="c-index">图版 12</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>37 轮 / 8.8 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener">hallmark</a></h3></div>
+              <div class="c-meta"><span>37 轮 / 8.8 min</span></div>
               <p class="c-note">芥末黄铺满首屏，白色相框略微倾斜，夜里兔子拿着一封信；红色圆形贴纸压在相框左下角。</p>
               <div class="c-links">
                 <a class="c-link" href="../../examples/case-02/hallmark-claude-code/work.html" target="_blank" rel="noopener">作品详情页</a>
@@ -559,25 +522,21 @@
     <div class="chapter-band">
       <div class="num">03</div>
       <h2>黑胶播放器</h2>
-      <div class="side">案例 03 / 6 个结果</div>
     </div>
 
     <div class="spread">
       <aside class="case-aside">
-        <h3>题解</h3>
-        <p class="case-desc">桌面端音乐 App 的「正在播放」模块。唱臂落针开始播放，拖动唱臂选段，歌词随进度逐行高亮，播放队列可以展开收起。</p>
         <details class="prompt">
           <summary><span>提示词</span><span class="hint" aria-hidden="true"></span></summary>
           <div class="prompt-body" tabindex="0" role="region" aria-label="提示词全文">
             <p id="prompt-03">一个桌面端音乐 App 的「正在播放」模块，播放一张三首曲目的虚构专辑，曲目、歌手、专辑名与歌词全部虚构，每首有独立时长和逐行时间戳歌词。<br><br>唱臂从支架落到唱片开始播放，落针过程中可以抬臂取消。播放时唱片转动，暂停时减速停下。拖动唱臂可以选段：落针角度对应播放位置，拖动时显示预览时间，松手后从该处继续播放，按 Esc 取消并回到拖动前的位置。唱臂可以用方向键调整位置。<br><br>播放控制包含播放与暂停、上一首、下一首、单曲循环开关、进度拖动、音量拖动与静音，显示当前时间与总时长。一首放完自动进入下一首，开启单曲循环时重头再放。<br><br>歌词随播放进度逐行高亮并自动滚动，点击任意一行从该行的时间开始播放。播放队列可以展开收起，列出三首曲目并标出正在播放的一首，点击切换，点击面板外或按 Esc 关闭。<br><br>空格键播放暂停，左右方向键前后跳五秒。收藏与音量在刷新后保留。系统开启减弱动态效果时唱片停止旋转。<br><br>音频用 Web Audio 合成或直接内嵌在页面里，不引用外部音频文件。页面为单个 HTML 文件，样式与脚本内联，打开即可运行。</p>
           </div>
         </details>
-        <p class="gen-note">生成日期 2026-11-07。六组结果均由 Claude Code 调用 <code>codex/gpt-6.1-terra</code> 生成，思考强度 xhigh。<a href="../../examples/case-03/对照记录.md">对照记录</a>保存了轮次与耗时。</p>
+        <p class="gen-note">2026-11-07 生成 · GPT-6.1 Terra · 思考强度 xhigh · <a href="../../examples/case-03/对照记录.md">完整记录</a></p>
       </aside>
 
       <div>
         <div class="track-head">
-          <span>结果 13–18</span>
           <div class="arrows">
             <button type="button" data-prev="case03" aria-label="上一个结果">←</button>
             <button type="button" data-next="case03" aria-label="下一个结果">→</button>
@@ -590,10 +549,9 @@
               <img src="../../assets/previews/case-03/no-skill.jpg" alt="不使用技能生成的黑胶播放器首屏，米白底左侧是拾音室侧边栏，唱盘与右侧歌词并列">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3>基准 · 不使用技能</h3><span class="c-index">图版 13</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>14 轮 / 5.2 min</span></div>
+              <div class="c-top"><h3>不使用技能</h3></div>
+              <div class="c-meta"><span>14 轮 / 5.2 min</span></div>
               <p class="c-note">米白底配鼠尾草绿，左侧带「拾音室」侧边栏，主标题「让时间慢下来。」；唱盘、歌词与固定在底部的播放条组成完整 App 界面。</p>
-              <span class="c-none">对照组，不挂载技能</span>
             </figcaption>
           </figure>
 
@@ -602,8 +560,8 @@
               <img src="../../assets/previews/case-03/frontend-design.jpg" alt="frontend-design 生成的黑胶播放器首屏，淡紫底居中大唱盘搭着唱臂，上方标题月光落在房间里" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">frontend-design</a></h3><span class="c-index">图版 14</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>9 轮 / 3.8 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">frontend-design</a></h3></div>
+              <div class="c-meta"><span>9 轮 / 3.8 min</span></div>
               <p class="c-note">淡紫灰底，唱盘居中放大，唱臂稳稳搭在唱片上；标题「月光落在房间里」压在唱盘上方，歌词独立成右侧一栏，页面留白最多。</p>
             </figcaption>
           </figure>
@@ -613,8 +571,8 @@
               <img src="../../assets/previews/case-03/oil-ui.jpg" alt="oil-ui 生成的黑胶播放器首屏，暖米色唱片套里的唱盘与右侧「窗边的风」歌词" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener">oil-ui</a></h3><span class="c-index">图版 15</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>31 轮 / 6.3 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener">oil-ui</a></h3></div>
+              <div class="c-meta"><span>31 轮 / 6.3 min</span></div>
               <p class="c-note">暖米色唱片套里装着唱盘，中心标签是橙色的《慢慢有光》；右栏歌词清爽，按钮区直接写出空格键操作提示。</p>
             </figcaption>
           </figure>
@@ -624,9 +582,9 @@
               <img src="../../assets/previews/case-03/impeccable.jpg" alt="impeccable 生成的黑胶播放器首屏，浅豆绿背景上大唱盘与右侧歌词" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a></h3><span class="c-index">图版 16</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>16 轮 / 3.8 min</span></div>
-              <p class="c-note">浅豆绿满屏，唱盘最大，歌词当前行用深绿加粗；页面高 1,043 像素，播放条落在 900 像素视口之外。</p>
+              <div class="c-top"><h3><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a></h3></div>
+              <div class="c-meta"><span>16 轮 / 3.8 min</span></div>
+              <p class="c-note">浅豆绿满屏，唱盘最大，歌词当前行用深绿加粗；播放条在首屏之外，要往下滚才能看到。</p>
             </figcaption>
           </figure>
 
@@ -635,8 +593,8 @@
               <img src="../../assets/previews/case-03/taste-skill.jpg" alt="taste-skill 生成的黑胶播放器首屏，灰橄榄色唱片套与右侧大标题「落日来信」" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener">taste-skill</a></h3><span class="c-index">图版 17</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>23 轮 / 5.8 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener">taste-skill</a></h3></div>
+              <div class="c-meta"><span>23 轮 / 5.8 min</span></div>
               <p class="c-note">灰橄榄色唱片封套，标签写着 DUSK RECORDS / After the rain；右侧大号衬线标题「落日来信」，底部播放条完整可见。</p>
             </figcaption>
           </figure>
@@ -646,8 +604,8 @@
               <img src="../../assets/previews/case-03/hallmark.jpg" alt="hallmark 生成的黑胶播放器首屏，奶油色大标题与左侧大唱盘、金属轴心唱臂" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener">hallmark</a></h3><span class="c-index">图版 18</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>14 轮 / 3.8 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener">hallmark</a></h3></div>
+              <div class="c-meta"><span>14 轮 / 3.8 min</span></div>
               <p class="c-note">奶油底，大号标题「把黄昏折起来」，唱臂轴心做成一颗金属圆盘；控制条与「拖动唱臂」提示都落在首屏内。</p>
             </figcaption>
           </figure>
@@ -667,25 +625,21 @@
                 <option value="deepseek">DeepSeek V4.1 Flash 1017</option>
               </select>
             </label>
-      <div class="side">案例 04 / 2 个模型 / 每个 6 个结果</div>
     </div>
 
     <div class="spread">
       <aside class="case-aside">
-        <h3>题解</h3>
-        <p class="case-desc">AI 建站与应用生成工具 Orvo 的中文官网落地页。提示词只给产品事实、套餐、模板与用户案例，不指定任何视觉方向。</p>
         <details class="prompt">
           <summary><span>提示词</span><span class="hint" aria-hidden="true"></span></summary>
           <div class="prompt-body" tabindex="0" role="region" aria-label="提示词全文">
             <p id="prompt-04">为 AI 建站与应用生成工具 Orvo 设计并实现官网落地页。<br><br>- 产品：用户用对话描述想法，Orvo 在几分钟内生成能上线的网站、Web 应用和 iOS / Android 应用。生成后可以继续用对话修改，一键发布到 Orvo 子域名或自有域名，代码可以完整导出。<br>- 受众：早期创业者和独立开发者，多数人能说清想做什么，但没有完整的设计或工程能力。<br>- 界面语言：中文。<br><br>和同类的两点不同：<br>- 专家全程带着做：每个付费项目配一位上线过产品的专家（产品、设计或工程背景），在需求梳理、上线前检查、上线后第一个月三个节点介入。Pro 每月一次 30 分钟视频评审，Unlimited 每周一次，另有专属群聊。<br>- 按月订阅：不按 token 或点数计费，对话修改次数不设上限。同类工具常见的做法是按用量扣点，用户改到一半额度用完，只能加购或停下。<br><br>定价（按月，月付和年付可切换，年付省 20%）：<br>- Starter $0：1 个项目，只能做网站，使用 Orvo 子域名，页面带 Orvo 标识，社区支持。<br>- Pro $24.99 / 月，年付折合 $19.99 / 月（每年 $239.88）：5 个项目，网站与 Web 应用，自有域名，导出代码，每月一次专家评审。<br>- Unlimited $34.99 / 月，年付折合 $27.99 / 月（每年 $335.88）：项目不限，包含移动应用，每周专家评审与专属群聊，优先生成队列，最多 3 位团队成员。<br><br>模板：共 120 个，分落地页、电商小店、预约与会员、内部工具、内容社区、移动应用六类。页面展示其中 12 个，可以按类别筛选，每个写明名称、适用场景与使用次数，并有入口查看全部。示例：「咖啡馆预约」预约与会员，已使用 3,240 次；「独立播客站」内容社区，已使用 1,870 次；「库存看板」内部工具，已使用 960 次；其余由你补全。<br><br>使用流程：描述想法 → 首版生成（平均 4 分钟）→ 对话修改 → 专家上线前检查 → 发布。<br><br>数据与用户反馈：<br>- 已上线项目 18,000 多个，付费项目从开始到首次上线平均 6 天。<br>- 三位用户的案例：林夏用 Starter 做了手作陶瓷小店，第一个月接到 41 笔订单；王拓用 Pro 做了健身教练预约工具，专家评审帮他砍掉了一半功能后两周上线；陈可和两位合伙人用 Unlimited 做了社区团购 App，iOS 版首月 2,600 次下载。每个案例配一句用户原话，原话由你撰写。<br><br>常见问题至少回答以下五个：生成的代码归谁、能不能导出；专家是什么人、怎么匹配；不限修改次数有没有使用限制；取消订阅后已上线的项目怎么办；支持哪些付款方式。<br><br>行动入口：免费开始与预约专家演示两种。免费开始可以直接输入一句想法，只做前端：输入为空时给出提示，提交后显示已收到的状态。<br><br>页面至少包含：首屏、产品能力、模板、定价、常见问题、结尾行动。<br><br>主视口为桌面 1440 宽，适配到 390 宽的手机。</p>
           </div>
         </details>
-        <p class="gen-note">生成日期 2026-11-07。六组结果均由 Claude Code 调用 <code>codex/gpt-6.1-terra</code> 生成，思考强度 xhigh。<a href="../../examples/case-04/对照记录.md">对照记录</a>保存了轮次与耗时。</p>
+        <p class="gen-note">2026-11-07 生成 · GPT-6.1 Terra · 思考强度 xhigh · <a href="../../examples/case-04/对照记录.md">完整记录</a></p>
       </aside>
 
       <div>
         <div class="track-head">
-          <span>结果 19–24</span>
           <div class="arrows">
             <button type="button" data-prev="case04" aria-label="上一个结果">←</button>
             <button type="button" data-next="case04" aria-label="下一个结果">→</button>
@@ -698,10 +652,9 @@
               <img src="../../assets/previews/case-04/no-skill.jpg" alt="不使用技能生成的 Orvo 落地页首屏，米白底深绿标题「好想法，值得上线。」，右侧浅绿面板里是浏览器样机">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3>基准 · 不使用技能</h3><span class="c-index">图版 19</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>8 轮 / 5.2 min</span></div>
+              <div class="c-top"><h3>不使用技能</h3></div>
+              <div class="c-meta"><span>8 轮 / 5.2 min</span></div>
               <p class="c-note">米白底深绿，标题里「上线」两字换成橙色衬线；右侧浅绿面板放浏览器样机与「你的首版已就绪」浮卡，首屏底部列出 18,000+ 与 6 天。</p>
-              <span class="c-none">对照组，不挂载技能</span>
             </figcaption>
           </figure>
 
@@ -710,8 +663,8 @@
               <img src="../../assets/previews/case-04/frontend-design.jpg" alt="frontend-design 生成的 Orvo 落地页首屏，白底亮蓝标题「想法，开工。上线，有人同行。」，右侧淡紫斑块托着样机" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">frontend-design</a></h3><span class="c-index">图版 20</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>10 轮 / 5.0 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">frontend-design</a></h3></div>
+              <div class="c-meta"><span>10 轮 / 5.0 min</span></div>
               <p class="c-note">六组里唯一的白底配亮蓝，第二行标题整行蓝色；右侧淡紫斑块托着样机，底部一行勾出不按点数、不限修改、代码可导出。</p>
             </figcaption>
           </figure>
@@ -721,8 +674,8 @@
               <img src="../../assets/previews/case-04/oil-ui.jpg" alt="oil-ui 生成的 Orvo 落地页首屏，大号标题「好想法，就该被做出来。」，下方整宽浅绿面板放输入框与陶器店样机" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener">oil-ui</a></h3><span class="c-index">图版 21</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>51 轮 / 10.0 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener">oil-ui</a></h3></div>
+              <div class="c-meta"><span>51 轮 / 10.0 min</span></div>
               <p class="c-note">标题字号最大，简介与演示入口挪到右侧；输入框和陶器小店样机一起放进下方整宽的浅绿面板。轮次是其余五组的二到六倍。</p>
             </figcaption>
           </figure>
@@ -732,9 +685,9 @@
               <img src="../../assets/previews/case-04/impeccable.jpg" alt="impeccable 生成的 Orvo 落地页首屏，橄榄绿标题「值得真的上线。」，右侧拱形面板上贴着荧光绿圆形贴纸" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a></h3><span class="c-index">图版 22</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>22 轮 / 5.1 min</span></div>
-              <p class="c-note">第二行标题用橄榄绿；右侧面板做成上圆下方的拱形，样机上贴荧光绿圆形贴纸和一条对话修改浮卡，空输入时会标记输入框无效。</p>
+              <div class="c-top"><h3><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a></h3></div>
+              <div class="c-meta"><span>22 轮 / 5.1 min</span></div>
+              <p class="c-note">第二行标题用橄榄绿；右侧面板做成上圆下方的拱形，样机上贴荧光绿圆形贴纸和一条对话修改浮卡，不填内容直接提交，会提示先写一句。</p>
             </figcaption>
           </figure>
 
@@ -743,8 +696,8 @@
               <img src="../../assets/previews/case-04/taste-skill.jpg" alt="taste-skill 生成的 Orvo 落地页首屏，标题「你的想法，可以上线了。」里橙色斜体的上线了，右侧单列 18,000+" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener">taste-skill</a></h3><span class="c-index">图版 23</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>21 轮 / 7.6 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener">taste-skill</a></h3></div>
+              <div class="c-meta"><span>21 轮 / 7.6 min</span></div>
               <p class="c-note">「上线了」用橙色斜体；输入框最宽，右侧单独放 18,000+ 与「认识你的专家伙伴」，工作区样机从首屏下沿露出一半。</p>
             </figcaption>
           </figure>
@@ -754,8 +707,8 @@
               <img src="../../assets/previews/case-04/hallmark.jpg" alt="hallmark 生成的 Orvo 落地页首屏，深绿标题「好想法，尽管上线。」，左侧带标签的多行输入框，右侧绿色面板里是中文小店样机" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener">hallmark</a></h3><span class="c-index">图版 24</span></div>
-              <div class="c-meta"><span>Claude Code</span><span>codex/gpt-6.1-terra</span><span>14 轮 / 4.3 min</span></div>
+              <div class="c-top"><h3><a href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener">hallmark</a></h3></div>
+              <div class="c-meta"><span>14 轮 / 4.3 min</span></div>
               <p class="c-note">深绿标题，输入框是带标签的多行文本框；右侧样机写的是中文小店页面，首屏下方四格数据条，窄屏下筛选按钮自动换行。</p>
             </figcaption>
           </figure>
@@ -765,22 +718,9 @@
     </div>
   </section>
 
-  <section class="contents" id="queue">
-    <div class="section-head"><h2>目次 / 待刊</h2><span>一份提示词，等待生成</span></div>
-    <ol>
-      <li>
-        <span class="toc-num">04</span>
-        <div class="toc-main">
-          <div class="toc-line"><h3>3D 雪景页面</h3><span class="dots"></span></div>
-          <p>一个三维雪景页面，雪花飘扬，用页面展示浪漫与美学。</p>
-        </div>
-        <span class="toc-status">等待生成</span>
-      </li>
-    </ol>
-  </section>
 
   <section class="skills" id="skills">
-    <div class="section-head"><h2>供稿技能</h2><span>五个仓库快照</span></div>
+    <div class="section-head"><h2>参与对比的技能</h2></div>
     <div class="skill-list">
       <a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener"><strong>frontend-design</strong><span>anthropics/skills</span></a>
       <a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener"><strong>impeccable</strong><span>pbakaus/impeccable</span></a>
@@ -791,12 +731,13 @@
   </section>
 
   <section class="method" id="method">
-    <div class="section-head"><h2>编写说明</h2><span>只改变一个变量</span></div>
+    <div class="section-head"><h2>方法</h2></div>
     <div class="method-body">
       <h2>把技能单独<br>拿出来看。</h2>
       <div>
-        <p>每组技能对照使用同一份提示词、同一个执行环境与同一个模型。GPT-6.1 Terra 在案例 01 使用 high、案例 02 至 04 使用 xhigh；案例 01 与 04 另有 DeepSeek V4.1 Flash 1017 的 max 结果，可在对应结果区切换。不同模型使用的技能快照和思考强度可能不同，不应将差异全部归因于模型。案例 02 的每组成品包含首页与作品详情页，案例 03 的每组成品是单文件播放器，案例 04 的每组成品是单文件落地页。对照组不挂载技能，其余运行只多出一个技能。每组使用独立进程、独立配置目录与空 MCP 配置，隔离脚本会在运行结束后核验技能清单。</p>
-        <p>图版统一按 1440 × 900 截取首屏，按原比例排入册页。单次生成不能代表技能的平均水平；这本册子记录可见的差异，不做排名。</p>
+        <p>每个案例的六组页面用同一份提示词、同一个模型生成，区别只在于是否使用技能、使用哪一个。</p>
+        <p>每组只生成一次，结果有偶然性，适合看差异，不适合排名。</p>
+        <p>卡片上是首屏截图，点开可以看完整页面。案例 01 和 04 还可以切换到 DeepSeek 的结果；两个模型用到的部分技能版本和思考强度不同，跨模型比较时请留意。</p>
       </div>
     </div>
   </section>
@@ -805,8 +746,7 @@
 
 <footer>
   <div class="shell foot">
-    <span class="fmark">技能对照册 / 第一辑 / 2026</span>
-    <span>每组结果只来自一次生成，用于看见差异，不用于给技能排名。</span>
+    <span class="fmark">技能对照册 · 2026</span>
     <nav aria-label="页脚导航"><a href="#case-01">案例</a><a href="#skills">技能</a><a href="#method">方法</a></nav>
   </div>
 </footer>
@@ -856,12 +796,10 @@
           const img = shot.querySelector('img');
           img.src = `${root}assets/previews/${caseDir}/deepseek-v4.1-flash-1017-max/${group}.jpg`;
           img.alt = `${group === 'no-skill' ? '不使用技能' : group}生成的${caseDir === 'case-01' ? '精品咖啡' : 'Orvo'}官网首屏：${title}`;
-          const meta = card.querySelectorAll('.c-meta span');
-          meta[1].textContent = 'DeepSeek V4.1 Flash 1017';
-          meta[2].textContent = `${turns} 轮 / ${(seconds / 60).toFixed(1)} min`;
+          card.querySelector('.c-meta span').textContent = `${turns} 轮 / ${(seconds / 60).toFixed(1)} min`;
           card.querySelector('.c-note').textContent = `首屏标题：「${title}」`;
         });
-        note.innerHTML = `生成日期 2026-11-07。六组结果均由 Claude Code 调用 <code>cline/cline-pass/deepseek-v4.1-flash-1017</code> 生成，思考强度 max。<a href="${root}examples/${caseDir}/对照记录.md">对照记录</a>保存了轮次与耗时。`;
+        note.innerHTML = `2026-11-07 生成 · DeepSeek V4.1 Flash · 思考强度 max · <a href="${root}examples/${caseDir}/对照记录.md">完整记录</a>`;
       }
     };
     if (picker) {

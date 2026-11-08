@@ -44,7 +44,8 @@ python3 -m http.server 8765 --directory .
 - `assets/previews/case-NN/<技能名>.jpg` 是 1440×900 的首屏截图，由首页直接引用；新增案例时同步补齐截图。
 - `gallery-prototype/design-demos/dir-1.html` 是首页的设计源文件，与根首页内容同步，仅资源路径不同（`../../assets/`、`../../examples/`）。
 - [gallery-prototype/direction-approved.md](gallery-prototype/direction-approved.md) 记录选定方向与用户原话，[gallery-prototype/directions.md](gallery-prototype/directions.md) 保存全部候选与筛选理由。`gallery-prototype/` 已入库，用于追溯设计过程，不属于归档案例。
-- 归档新案例时，需要把成品放进 `examples/case-NN/`，补齐 `对照记录.md` 与 `assets/previews/case-NN/`，再更新首页的目次、结果卡片与生成说明（日期、模型、思考强度）。
+- 归档新案例时，需要把成品放进 `examples/case-NN/`，补齐 `对照记录.md` 与 `assets/previews/case-NN/`，再更新首页的案例目录、章节色带、提示词、结果卡片与生成说明。
+- 首页文案只写用户需要知道的信息：案例不写描述段落，案例目录与色带不写结果数量；生成说明格式为「日期 生成 · 模型展示名 · 思考强度 xx · 完整记录」，用模型展示名（如 GPT-6.1 Terra），不写 `codex/`、`cline/` 等内部路由名；结果卡片只写技能名、「N 轮 / X min」、一句首屏观察，观察从用户视角描述，不写像素测量或实现术语。
 
 ## 运行链路
 
