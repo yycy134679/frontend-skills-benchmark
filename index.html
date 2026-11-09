@@ -126,6 +126,8 @@
   .prompt-body:focus-visible { outline-offset: 2px; }
   .prompt-body p { margin: 0 0 14px; font-size: 14px; line-height: 1.95; color: #3a3329; }
   .gen-note { margin: 18px 0 0; font-size: 12px; line-height: 1.8; color: var(--muted); }
+  /* 评分说明行紧跟生成说明，与之同样式、间距收紧 */
+  .gen-note + .gen-note { margin-top: 2px; }
 
   .track-head {
     display: flex; align-items: center; justify-content: flex-end; gap: 16px;
@@ -191,7 +193,10 @@
   .shot:hover { border-color: var(--ink); }
   .caption { padding-top: 14px; border-top: 1px solid var(--line); margin-top: 14px; }
   .c-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-  .c-top h3 { margin: 0; font-family: var(--serif); font-size: 23px; font-weight: 600; letter-spacing: .01em; }
+  .c-top h3 { margin: 0; min-width: 0; overflow-wrap: anywhere; font-family: var(--serif); font-size: 23px; font-weight: 600; letter-spacing: .01em; }
+  /* AI 评分：已评分卡片在技能名右侧显示，未评分卡片没有这个元素 */
+  .c-score { flex: none; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .c-score b { font-family: var(--latin); font-size: 28px; font-weight: 400; line-height: 1; color: var(--ink); }
   .c-top h3 a { text-decoration: none; }
   .c-top h3 a:hover { color: var(--rust); }
   .c-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 6px; font-size: 12px; color: var(--muted); }
@@ -842,6 +847,7 @@
           </div>
         </details>
         <p class="gen-note">2026-11-09 生成 · Claude Code · Claude Opus 5.5 · 思考强度 medium · <a href="examples/case-06/对照记录.md">完整记录</a></p>
+        <p class="gen-note score-note">2026-11-09 评分 · Claude Opus 5.5 · 规则 v1 · <a href="examples/case-06/评分记录.md">评分记录</a></p>
       </aside>
       <div>
         <div class="track-head"><div class="arrows">
@@ -854,9 +860,9 @@
               <img src="assets/previews/case-06/no-skill.jpg" alt="不使用技能生成的《云烟成雨》宣传页首屏，灰蓝雨天城市剪影，左侧竖排大标题「云烟成雨」">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3>不使用技能</h3></div>
+              <div class="c-top"><h3>不使用技能</h3><span class="c-score"><b>76</b> 分</span></div>
               <div class="c-meta"><span>3 轮 / 2.6 min</span></div>
-              <p class="c-note">灰蓝色雨天城市配竖排大标题，右侧一句导语引人往下读。</p>
+              <p class="c-note">雨天城市配竖排标题氛围到位，歌词轮播与雨声试听齐全；意象卡片和标签偏模板化。</p>
             </figcaption>
           </figure>
 
@@ -865,9 +871,9 @@
               <img src="assets/previews/case-06/frontend-design.jpg" alt="frontend-design 生成的《云烟成雨》宣传页首屏，雾中城市剪影与一盏路灯，右侧竖排标题" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">frontend-design</a></h3></div>
+              <div class="c-top"><h3><a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">frontend-design</a></h3><span class="c-score"><b>86</b> 分</span></div>
               <div class="c-meta"><span>5 轮 / 2.2 min</span></div>
-              <p class="c-note">雾中城市与一盏路灯，竖排标题，首屏没有导航，点击画面能让雨下大。</p>
+              <p class="c-note">云、烟、雨三段叙事贴合歌名，雾灰配色克制耐看；没有导航，可操作的地方很少。</p>
             </figcaption>
           </figure>
 
@@ -876,9 +882,9 @@
               <img src="assets/previews/case-06/oil-ui.jpg" alt="oil-ui 生成的《云烟成雨》宣传页首屏，米白底色，居中竖排黑色大标题，左下两个按钮" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener">oil-ui</a></h3></div>
+              <div class="c-top"><h3><a href="https://github.com/oil-oil/oil-ui" target="_blank" rel="noopener">oil-ui</a></h3><span class="c-score"><b>81</b> 分</span></div>
               <div class="c-meta"><span>22 轮 / 5.3 min</span></div>
-              <p class="c-note">米白底色上居中竖排大标题，左下放两句引文和收听入口。</p>
+              <p class="c-note">滚动时纸白渐入雨夜，竖排歌词逐行浮现很有仪式感；歌词段拖得偏长，标题断行不齐。</p>
             </figcaption>
           </figure>
 
@@ -887,9 +893,9 @@
               <img src="assets/previews/case-06/impeccable.jpg" alt="impeccable 生成的《云烟成雨》宣传页首屏，起雾的车窗外是模糊的城市灯光，窗上竖排写着标题" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a></h3></div>
+              <div class="c-top"><h3><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a></h3><span class="c-score"><b>94</b> 分</span></div>
               <div class="c-meta"><span>38 轮 / 8.5 min</span></div>
-              <p class="c-note">首屏是一扇起雾的车窗，按住鼠标可以擦开雾气看窗外灯光。</p>
+              <p class="c-note">起雾车窗能亲手擦开，沿公交线路分站讲歌，记忆点最强；下半页回到常规排版。</p>
             </figcaption>
           </figure>
 
@@ -898,9 +904,9 @@
               <img src="assets/previews/case-06/taste-skill.jpg" alt="taste-skill 生成的《云烟成雨》宣传页首屏，深色雨夜，路灯光束下有猫的剪影，左侧横排大标题" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener">taste-skill</a></h3></div>
+              <div class="c-top"><h3><a href="https://github.com/leonxlnx/taste-skill" target="_blank" rel="noopener">taste-skill</a></h3><span class="c-score"><b>90</b> 分</span></div>
               <div class="c-meta"><span>18 轮 / 5.6 min</span></div>
-              <p class="c-note">深色雨夜里路灯下坐着一只猫，横排大标题和歌曲信息在左侧。</p>
+              <p class="c-note">路灯下的猫与雨夜插画贯穿全页，播放器和音量调节完整；深浅区块来回切换，风格略显拼接。</p>
             </figcaption>
           </figure>
 
@@ -909,9 +915,9 @@
               <img src="assets/previews/case-06/hallmark.jpg" alt="hallmark 生成的《云烟成雨》宣传页首屏，深色背景上的暖色光斑，横排大标题，右下角雨量滑块" loading="lazy">
             </a>
             <figcaption class="caption">
-              <div class="c-top"><h3><a href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener">hallmark</a></h3></div>
+              <div class="c-top"><h3><a href="https://github.com/Nutlope/hallmark" target="_blank" rel="noopener">hallmark</a></h3><span class="c-score"><b>84</b> 分</span></div>
               <div class="c-meta"><span>17 轮 / 3.2 min</span></div>
-              <p class="c-note">深色背景飘着雨夜光斑，横排大标题，右下角可以调节雨量。</p>
+              <p class="c-note">雨夜光斑配雨量滑块，画面与雨声同步变化；内容只有简介与收听，页面偏单薄。</p>
             </figcaption>
           </figure>
         </div>
@@ -937,6 +943,7 @@
       <div>
         <p>每个案例的六组页面用同一份提示词、同一个模型生成，区别只在于是否使用技能、使用哪一个。</p>
         <p>每组只生成一次，结果有偶然性，适合看差异，不适合排名。</p>
+        <p>已评分案例的分数由 AI 按<a href="评分规则.md">评分规则</a>给出，只代表这一次生成的成品，相差几分不代表优劣，仍不适合用来给技能排名。</p>
         <p>卡片上是首屏截图，点开可以看完整页面。案例 01 和 04 还可以切换到 DeepSeek 的结果；两个模型用到的部分技能版本和思考强度不同，跨模型比较时请留意。</p>
       </div>
     </div>
@@ -954,6 +961,7 @@
 <script>
   const tracks = [...document.querySelectorAll('[data-track]')];
   const save = (key, value) => sessionStorage.setItem(key, String(value));
+  // 每项：[技能目录名, 轮次, 秒数, 首屏标题, 分数?, 评价?]；有分数时卡片显示分数与评价，否则显示首屏标题
   const deepseekResults = {
     case01: [
       ['no-skill', 83, 1253, '在云雾退去之前，我们等一颗完熟的咖啡樱桃。'],
@@ -979,7 +987,8 @@
     const next = document.querySelector(`[data-next="${id}"]`);
     const picker = document.querySelector(`[data-model="${id}"]`);
     const section = track.closest('.case');
-    const note = section.querySelector('.gen-note');
+    const note = section.querySelector('.gen-note:not(.score-note)');
+    const scoreNote = section.querySelector('.score-note');
     const originalCards = track.innerHTML;
     const originalNote = note.innerHTML;
     const originalHref = track.querySelector('.shot').getAttribute('href');
@@ -988,16 +997,28 @@
     const applyModel = () => {
       track.innerHTML = originalCards;
       note.innerHTML = originalNote;
+      if (scoreNote) scoreNote.hidden = false;
       if (picker && picker.value === 'deepseek') {
+        // 评分说明行对应默认模型的结果，切到 DeepSeek 时隐藏
+        if (scoreNote) scoreNote.hidden = true;
         track.querySelectorAll('.plate').forEach((card, index) => {
-          const [group, turns, seconds, title] = deepseekResults[id][index];
+          const [group, turns, seconds, title, score, review] = deepseekResults[id][index];
           const shot = card.querySelector('.shot');
           shot.href = `${root}examples/${caseDir}/deepseek-v4.1-flash-1017-max/${group}/index.html`;
           const img = shot.querySelector('img');
           img.src = `${root}assets/previews/${caseDir}/deepseek-v4.1-flash-1017-max/${group}.jpg`;
           img.alt = `${group === 'no-skill' ? '不使用技能' : group}生成的${caseDir === 'case-01' ? '精品咖啡' : 'Orvo'}官网首屏：${title}`;
           card.querySelector('.c-meta span').textContent = `${turns} 轮 / ${(seconds / 60).toFixed(1)} min`;
-          card.querySelector('.c-note').textContent = `首屏标题：「${title}」`;
+          card.querySelector('.c-score')?.remove();
+          if (score != null) {
+            const badge = document.createElement('span');
+            badge.className = 'c-score';
+            badge.innerHTML = `<b>${score}</b> 分`;
+            card.querySelector('.c-top').append(badge);
+            card.querySelector('.c-note').textContent = review || '';
+          } else {
+            card.querySelector('.c-note').textContent = `首屏标题：「${title}」`;
+          }
         });
         note.innerHTML = `2026-11-07 生成 · Claude Code · DeepSeek V4.1 Flash · 思考强度 max · <a href="${root}examples/${caseDir}/对照记录.md">完整记录</a>`;
       }

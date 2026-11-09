@@ -21,12 +21,15 @@ python3 -m http.server 8765 --directory .
 - [黑胶播放器](examples/case-03/对照记录.md)
 - [Orvo 官网落地页](examples/case-04/对照记录.md)
 - [独立开发者个人主页](examples/case-05/对照记录.md)
+- [《云烟成雨》歌曲宣传网页](examples/case-06/对照记录.md)
 
 各链接指向对照记录，完整需求见 [案例提示词](案例提示词.md)。
 
 ## 对比方法
 
 同一案例使用相同提示词和模型，分别运行无技能对照组与各个单技能组；每组在隔离的 Claude Code 进程中生成页面。画廊展示成品、运行信息和页面观察，各案例记录保留更详细的条件与结果。
+
+各组生成完后，由 AI 在浏览器中以桌面宽度打开页面、实际操作交互并阅读源码，按 [评分规则](评分规则.md) 从需求还原、视觉设计、交互与动效、可访问性、代码质量五个维度打分，满分 100。卡片上显示总分和一句评价，分项得分与扣分依据见各案例的评分记录。旧案例正在逐个补评分，尚未评分的卡片仍显示首屏观察。
 
 参与对比的技能包括 [oil-ui](https://github.com/oil-oil/oil-ui)、[frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)、[impeccable](https://github.com/pbakaus/impeccable)、[design-taste-frontend](https://github.com/leonxlnx/taste-skill) 和 [hallmark](https://github.com/Nutlope/hallmark)。仓库中保存的技能快照、来源与版本见 [前端技能对照库](frontend-skills/README.md)。
 
@@ -55,10 +58,11 @@ bash bench/run.sh \
 | 路径 | 内容 |
 | --- | --- |
 | [index.html](index.html) | 静态画廊首页 |
-| [examples/](examples/) | 各案例的成品和对照记录 |
+| [examples/](examples/) | 各案例的成品、对照记录和评分记录 |
 | [assets/previews/](assets/previews/) | 画廊使用的首屏截图 |
 | [frontend-skills/](frontend-skills/) | 参与对比的上游技能快照 |
 | [bench/](bench/) | 隔离运行与结果核验脚本 |
+| [评分规则.md](评分规则.md) | AI 评分的维度、分值与评价写法 |
 | [案例提示词.md](案例提示词.md) | 案例需求提示词 |
 | [产品概要设计.md](产品概要设计.md) | 画廊的产品定位与功能设计 |
 | [gallery-prototype/](gallery-prototype/) | 首页设计方向的候选与选定记录 |

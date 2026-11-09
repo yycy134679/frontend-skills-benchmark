@@ -47,8 +47,21 @@ python3 -m http.server 8765 --directory .
 - 部分案例在章节色带上提供模型切换，补充模型的结果放在 `examples/case-NN/<模型>-<思考强度>/<技能目录名>/`，截图放在 `assets/previews/case-NN/<模型>-<思考强度>/<技能目录名>.jpg`（如 `deepseek-v4.1-flash-1017-max/`），对照记录中另起一节记录。
 - `gallery-prototype/design-demos/dir-1.html` 是首页的设计源文件，与根首页内容同步，仅资源路径不同（`../../assets/`、`../../examples/`）。
 - [gallery-prototype/direction-approved.md](gallery-prototype/direction-approved.md) 记录选定方向与用户原话，[gallery-prototype/directions.md](gallery-prototype/directions.md) 保存全部候选与筛选理由。`gallery-prototype/` 已入库，用于追溯设计过程，不属于归档案例。
-- 归档新案例时，需要把成品放进 `examples/case-NN/`，补齐 `对照记录.md` 与 `assets/previews/case-NN/`，再更新首页的案例目录、章节色带、提示词、结果卡片与生成说明。
-- 首页文案只写用户需要知道的信息：案例不写描述段落，案例目录与色带不写结果数量；生成说明格式为「日期 生成 · Claude Code · 模型展示名 · 思考强度 xx · 完整记录」，用模型展示名（如 GPT-6.1 Terra），不写 `codex/`、`cline/` 等内部路由名；结果卡片只写技能名、「N 轮 / X min」、一句首屏观察，观察从用户视角描述，不写像素测量或实现术语。
+- 归档新案例时，需要把成品放进 `examples/case-NN/`，补齐 `对照记录.md` 与 `assets/previews/case-NN/`，按下方「AI 评分」完成评分，再更新首页的案例目录、章节色带、提示词、结果卡片、生成说明与评分说明。
+- 首页文案只写用户需要知道的信息：案例不写描述段落，案例目录与色带不写结果数量；生成说明格式为「日期 生成 · Claude Code · 模型展示名 · 思考强度 xx · 完整记录」，用模型展示名（如 GPT-6.1 Terra），不写 `codex/`、`cline/` 等内部路由名。
+- 结果卡片写技能名、总分（`.c-score`）、「N 轮 / X min」与一句评价，评价按 [评分规则](评分规则.md) 的「评价写法」。已评分的案例在生成说明下加一行评分说明，格式为「日期 评分 · 评分模型展示名 · 规则 vN · 评分记录」。旧案例正在逐个回填，未评分的卡片暂时保留一句首屏观察，不显示分数。
+
+## AI 评分
+
+规则、分值、档位与评价写法全部在 [评分规则.md](评分规则.md)，改规则要升版本号。一个案例的各组都归档后，由主会话用 Claude Code 内置浏览器直接打开页面验收，不另写截图脚本：
+
+1. 对照提示词写出验收清单，六组共用。
+2. 用 `gallery` 预览服务（`.claude/launch.json`）打开 `examples/case-NN/<组>/index.html`，先把六组的首屏看一遍，以无技能组为参照。
+3. 逐组只在 1440×900 桌面视口下从头滚到尾查看，不看手机宽度；逐条实际操作清单里的功能项，查看控制台报错，用页面脚本检查横向溢出与对外部地址的请求，切换深色配色与减弱动态效果核对表现。
+4. 读源码，重点看核心交互、样式组织、无障碍，以及提示词要求时的移动端适配规则（桌面视口看不到，只凭源码判断），扣分写出 `文件:行号`。内嵌 base64 图片的大文件用 grep 定位后按行段读取。
+5. 打分、校准、写评价，产出 `examples/case-NN/评分记录.md`，在 `对照记录.md` 结果表加「AI 评分」列，再更新首页卡片与评分说明。
+
+多页或体积大的案例（如案例 05）一个案例开一个会话评分，避免上下文不够。内置浏览器只在桌面版 Claude Code 中可用。
 
 ## 运行链路
 
@@ -62,8 +75,10 @@ python3 -m http.server 8765 --directory .
 
 - `examples/case-NN/<技能目录名>-claude-code/`：单个结果的成品目录（对照组为 `no-skill-claude-code`），自包含、无外部依赖，样式与脚本内联，图片内嵌。通常包含 `index.html`；提示词要求多页时还会有 `work.html` 等页面，页面之间用相对链接。
 - `examples/case-NN/对照记录.md`：汇总该案例的运行条件、各组指标与页面观察；`examples/case-NN` 的编号递增。
+- `examples/case-NN/评分记录.md`：验收清单、各组分项得分与依据、卡片评价，格式见 [评分规则.md](评分规则.md)。
 - 原始运行目录（`result.json`、`cfg-*` 会话记录、`run.meta`）放在仓库外的 `~/Code/benchmark-runs/<案例>/`，体积大且只用于追溯，不入库。
 - `frontend-skills/` 是上游技能的只读快照，来源仓库、提交号与许可证记录在 [frontend-skills/README.md](frontend-skills/README.md)，不要修改其中的技能内容。
+- [评分规则.md](评分规则.md) 是 AI 评分的唯一标准，首页「方法」一节链接它。
 - [案例提示词.md](案例提示词.md) 保存各案例的提示词原文；实际运行时在提示词末尾补一段「交付要求」，写明文件名、单文件与内联约束。
 
 ## 结果记录
