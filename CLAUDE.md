@@ -28,6 +28,12 @@ bash bench/run.sh --prompt <提示词文件> --model codex/gpt-6.1-terra --out ~
 python3 bench/verify_run.py --cfg <cfg 目录> --skill <技能名|none> --model <模型> --result <result.json> --html <页面>
 ```
 
+对照记录、评分记录、评分规则、案例提示词与技能库 README 由 Markdown 渲染成同名 `.html`（只用标准库、样式内联），首页链接指向 `.html`。修改任何这些 `.md` 后重新生成并一起提交：
+
+```bash
+python3 bench/render_md.py
+```
+
 本地预览画廊首页：
 
 ```bash
@@ -36,7 +42,7 @@ python3 -m http.server 8765 --directory .
 
 然后打开 `http://localhost:8765/`。首页的预览图与示例链接都使用相对路径，直接打开 `index.html` 也能浏览，通过本地服务器预览更接近发布环境。
 
-仓库没有构建步骤。唯一的自动测试是 `python3 -m unittest bench/test_timing.py`，用假的 `claude` 进程检查 `run.sh` 的计时与轮次汇总，改动 `run.sh`、`timed_run.py` 或 `verify_run.py` 后运行。其余改动的验证方式是实际跑一组生成任务，查看 `verify_run.py` 的输出与生成的页面；改动首页时，在 1440 与 375 两个宽度下检查案例轨道、图片与跳转链接。
+仓库没有构建步骤。自动测试有两组：`python3 -m unittest bench/test_timing.py` 用假的 `claude` 进程检查 `run.sh` 的计时与轮次汇总，改动 `run.sh`、`timed_run.py` 或 `verify_run.py` 后运行；`python3 -m unittest bench/test_render_md.py` 检查 Markdown 渲染器，改动 `render_md.py` 后运行。其余改动的验证方式是实际跑一组生成任务，查看 `verify_run.py` 的输出与生成的页面；改动首页时，在 1440 与 375 两个宽度下检查案例轨道、图片与跳转链接。
 
 未另行说明时，同一案例的多组生成默认三路并发：调度脚本写在 `.tmp/` 下（该目录已忽略），同时保持三个生成进程，任一组结束后补入下一组。
 
@@ -47,7 +53,7 @@ python3 -m http.server 8765 --directory .
 - 部分案例在章节色带上提供模型切换，补充模型的结果放在 `examples/case-NN/<模型>-<思考强度>/<技能目录名>/`，截图放在 `assets/previews/case-NN/<模型>-<思考强度>/<技能目录名>.jpg`（如 `deepseek-v4.1-flash-1017-max/`），对照记录中另起一节记录。
 - `gallery-prototype/design-demos/dir-1.html` 是首页的设计源文件，与根首页内容同步，仅资源路径不同（`../../assets/`、`../../examples/`）。
 - [gallery-prototype/direction-approved.md](gallery-prototype/direction-approved.md) 记录选定方向与用户原话，[gallery-prototype/directions.md](gallery-prototype/directions.md) 保存全部候选与筛选理由。`gallery-prototype/` 已入库，用于追溯设计过程，不属于归档案例。
-- 归档新案例时，需要把成品放进 `examples/case-NN/`，补齐 `对照记录.md` 与 `assets/previews/case-NN/`，按下方「AI 评分」完成评分，再更新首页的案例目录、章节色带、提示词、结果卡片、生成说明与评分说明。
+- 归档新案例时，需要把成品放进 `examples/case-NN/`，补齐 `对照记录.md` 与 `assets/previews/case-NN/`，运行 `python3 bench/render_md.py` 生成对应 html，按下方「AI 评分」完成评分，再更新首页的案例目录、章节色带、提示词、结果卡片、生成说明与评分说明。
 - 首页文案只写用户需要知道的信息：案例不写描述段落，案例目录与色带不写结果数量；生成说明格式为「日期 生成 · Claude Code · 模型展示名 · 思考强度 xx · 完整记录」，用模型展示名（如 GPT-6.1 Terra），不写 `codex/`、`cline/` 等内部路由名。
 - 结果卡片写技能名、总分（`.c-score`）、「N 轮 / X min」与一句评价，评价按 [评分规则](评分规则.md) 的「评价写法」。已评分的案例在生成说明下加一行评分说明，格式为「日期 评分 · 评分模型展示名 · 规则 vN · 评分记录」。旧案例正在逐个回填，未评分的卡片暂时保留一句首屏观察，不显示分数。
 

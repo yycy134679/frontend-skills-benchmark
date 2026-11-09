@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>记录 · 技能对照册</title>
+<style>
+:root{--paper:#f2ebdd;--paper-deep:#e8dfc9;--cream:#fbf7ec;--ink:#221e18;--muted:#5e5546;--line:#c8bda7;--green:#28503c;--rust:#a33a26;--pad:clamp(20px,5vw,72px);
+--serif:"Songti SC","Noto Serif SC","STSong","SimSun",serif;--sans:"PingFang SC","Helvetica Neue","Noto Sans SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--rust)}
+:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+::selection{background:var(--rust);color:var(--cream)}
+.shell{max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+.masthead{display:flex;justify-content:space-between;align-items:end;gap:24px;padding-top:26px;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.mark{font-family:var(--serif);font-size:27px;font-weight:600;letter-spacing:.02em;color:var(--ink);text-decoration:none}
+.back{font-size:12px;color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:3px}
+.back:hover{border-color:var(--ink);color:var(--ink)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr);gap:56px;padding-top:clamp(36px,5vw,64px);padding-bottom:96px}
+.doc{min-width:0;max-width:860px}
+.toc{display:none}
+@media(min-width:1100px){.layout{grid-template-columns:minmax(0,860px) 230px;justify-content:space-between}
+.toc{display:block;position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto;font-size:13px;line-height:1.6}}
+.toc p{margin:0 0 10px;font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+.toc a{display:block;padding:4px 0 4px 14px;margin-left:-1px;border-left:2px solid transparent;color:var(--muted);text-decoration:none}
+.toc a.sub{padding-left:28px;font-size:12px}
+.toc a:hover{color:var(--ink)}
+.toc a.active{border-left-color:var(--rust);color:var(--ink);font-weight:600}
+.doc h1{margin:0 0 22px;font-family:var(--serif);font-weight:600;font-size:clamp(34px,4.6vw,54px);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.doc h1+p{font-size:16px;color:var(--muted)}
+.doc h2{margin:56px 0 18px;padding-top:16px;border-top:1px solid var(--ink);font-family:var(--serif);font-weight:600;font-size:26px;line-height:1.35}
+.doc h3{margin:36px 0 12px;font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.45;color:var(--green)}
+.doc p{margin:0 0 16px}
+.doc ul,.doc ol{margin:0 0 20px;padding-left:1.3em}
+.doc li{margin:4px 0;padding-left:.2em}
+.doc li::marker{color:var(--rust)}
+.doc strong{font-weight:600}
+.doc code{font-family:var(--mono);font-size:.86em;background:var(--cream);border:1px solid var(--line);border-radius:3px;padding:1px 5px;word-break:break-word}
+.doc pre{margin:0 0 22px;padding:16px 20px;background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--green);overflow-x:auto;font-size:13px;line-height:1.75}
+.doc pre code{background:none;border:0;padding:0;font-size:inherit;word-break:normal;white-space:pre-wrap}
+.doc blockquote{margin:0 0 20px;padding:2px 0 2px 18px;border-left:3px solid var(--rust);color:var(--muted)}
+.doc hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+.table-wrap{margin:0 0 28px;overflow-x:auto;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);background:var(--cream)}
+table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.7}
+th,td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+thead th{background:var(--paper-deep);font-weight:600;white-space:nowrap;border-bottom:1px solid var(--ink)}
+tbody th{font-weight:600;min-width:5em}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+td{min-width:4.5em}
+.mark-ok,.mark-half,.mark-no,.mark-na{text-align:center;font-weight:700}
+.mark-ok{color:var(--green)}.mark-half{color:#b0761a}.mark-no{color:var(--rust)}.mark-na{color:var(--muted);font-weight:400}
+@media(max-width:700px){body{font-size:14px}.mark{font-size:22px}.doc h2{font-size:22px;margin-top:44px}th,td{padding:8px 10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="shell masthead">
+  <a class="mark" href="index.html">技能对照册</a>
+  <a class="back" href="index.html">← 返回首页</a>
+</header>
+<div class="shell layout">
+<main class="doc">
+<h2 id="案例提示词编写要求">案例提示词编写要求</h2>
+<p>AI 新增或修改案例提示词时，应以对比不同技能的效果为目标，明确要求生成的产物及其大致内容，为各组提供一致的任务条件。提示词不得引导视觉样式，例如指定配色、版式、字体、画面氛围或设计风格，应为不同技能保留自主发挥的空间。</p>
+<h2 id="精品咖啡订阅官网">精品咖啡订阅官网</h2>
+<pre><code>单一庄园精品咖啡品牌「TerraBrew」官网（1440×900 起，响应式到 390 宽）：首屏呈现哥伦比亚埃尔帕拉伊索庄园当季咖啡果枝实景与产区批次信息；往下依次展开可点击切换的八维咖啡风味轮（花香、果香、酸质、甜感、醇厚、坚果、巧克力、香料）、五步庄园溯源时间轴、带植物线稿印章的单批次凭证卡，以及深烘焙褐订阅配置器与页脚。
+八维风味轮、溯源节点与订阅配置器是这件作品的核心：点击风味扇区同步切换庄园风味笔记，切换重量、配送周期和研磨方式时实时计算每次配送价格并生成配置摘要。</code></pre>
+<h2 id="黑胶播放器">黑胶播放器</h2>
+<pre><code>一个桌面端音乐 App 的「正在播放」模块，播放一张三首曲目的虚构专辑，曲目、歌手、专辑名与歌词全部虚构，每首有独立时长和逐行时间戳歌词。
+
+唱臂从支架落到唱片开始播放，落针过程中可以抬臂取消。播放时唱片转动，暂停时减速停下。拖动唱臂可以选段：落针角度对应播放位置，拖动时显示预览时间，松手后从该处继续播放，按 Esc 取消并回到拖动前的位置。唱臂可以用方向键调整位置。
+
+播放控制包含播放与暂停、上一首、下一首、单曲循环开关、进度拖动、音量拖动与静音，显示当前时间与总时长。一首放完自动进入下一首，开启单曲循环时重头再放。
+
+歌词随播放进度逐行高亮并自动滚动，点击任意一行从该行的时间开始播放。播放队列可以展开收起，列出三首曲目并标出正在播放的一首，点击切换，点击面板外或按 Esc 关闭。
+
+空格键播放暂停，左右方向键前后跳五秒。收藏与音量在刷新后保留。系统开启减弱动态效果时唱片停止旋转。
+
+音频用 Web Audio 合成或直接内嵌在页面里，不引用外部音频文件。页面为单个 HTML 文件，样式与脚本内联，打开即可运行。</code></pre>
+<h2 id="绘本插画师个人网站">绘本插画师个人网站</h2>
+<pre><code>一位独立绘本插画师的个人网站：作品集、正在连载的绘本、合作邀约。做首页和一个作品详情页。
+
+插画师的作品主要画给孩子，也画给仍然愿意读故事的大人。作品集里既有已经出版的绘本，也有杂志插画与日常速写，按主题分成几组；正在连载的绘本按章节更新，能看到故事简介和最新一章；合作邀约写明绘本出版、品牌插画与线下工作坊三类合作，并给出联系方式与回复时间。
+
+整个网站要精美，翻看起来像翻开一本绘本书。</code></pre>
+<h2 id="Orvo-开放工作室">Orvo · 开放工作室</h2>
+<pre><code>为 AI 建站与应用生成工具 Orvo 设计并实现官网落地页。
+
+- 产品：用户用对话描述想法，Orvo 在几分钟内生成能上线的网站、Web 应用和 iOS / Android 应用。生成后可以继续用对话修改，一键发布到 Orvo 子域名或自有域名，代码可以完整导出。
+- 受众：早期创业者和独立开发者，多数人能说清想做什么，但没有完整的设计或工程能力。
+- 界面语言：中文。
+
+和同类的两点不同：
+- 专家全程带着做：每个付费项目配一位上线过产品的专家（产品、设计或工程背景），在需求梳理、上线前检查、上线后第一个月三个节点介入。Pro 每月一次 30 分钟视频评审，Unlimited 每周一次，另有专属群聊。
+- 按月订阅：不按 token 或点数计费，对话修改次数不设上限。同类工具常见的做法是按用量扣点，用户改到一半额度用完，只能加购或停下。
+
+定价（按月，月付和年付可切换，年付省 20%）：
+- Starter $0：1 个项目，只能做网站，使用 Orvo 子域名，页面带 Orvo 标识，社区支持。
+- Pro $24.99 / 月，年付折合 $19.99 / 月（每年 $239.88）：5 个项目，网站与 Web 应用，自有域名，导出代码，每月一次专家评审。
+- Unlimited $34.99 / 月，年付折合 $27.99 / 月（每年 $335.88）：项目不限，包含移动应用，每周专家评审与专属群聊，优先生成队列，最多 3 位团队成员。
+
+模板：共 120 个，分落地页、电商小店、预约与会员、内部工具、内容社区、移动应用六类。页面展示其中 12 个，可以按类别筛选，每个写明名称、适用场景与使用次数，并有入口查看全部。示例：「咖啡馆预约」预约与会员，已使用 3,240 次；「独立播客站」内容社区，已使用 1,870 次；「库存看板」内部工具，已使用 960 次；其余由你补全。
+
+使用流程：描述想法 → 首版生成（平均 4 分钟）→ 对话修改 → 专家上线前检查 → 发布。
+
+数据与用户反馈：
+- 已上线项目 18,000 多个，付费项目从开始到首次上线平均 6 天。
+- 三位用户的案例：林夏用 Starter 做了手作陶瓷小店，第一个月接到 41 笔订单；王拓用 Pro 做了健身教练预约工具，专家评审帮他砍掉了一半功能后两周上线；陈可和两位合伙人用 Unlimited 做了社区团购 App，iOS 版首月 2,600 次下载。每个案例配一句用户原话，原话由你撰写。
+
+常见问题至少回答以下五个：生成的代码归谁、能不能导出；专家是什么人、怎么匹配；不限修改次数有没有使用限制；取消订阅后已上线的项目怎么办；支持哪些付款方式。
+
+行动入口：免费开始与预约专家演示两种。免费开始可以直接输入一句想法，只做前端：输入为空时给出提示，提交后显示已收到的状态。
+
+页面至少包含：首屏、产品能力、模板、定价、常见问题、结尾行动。
+
+主视口为桌面 1440 宽，适配到 390 宽的手机。</code></pre>
+<h2 id="独立开发者个人主页">独立开发者个人主页</h2>
+<pre><code>一位独立开发者的个人主页：他做的产品、正在做的事、写过的文章。做首页和一篇文章详情页。
+
+他叫周屿，住在杭州，辞职做独立开发进入第四年，前后端都自己写，界面也自己设计。访客多半是同行开发者、他产品的用户和偶尔来约稿的编辑。
+
+产品有四个，状态各不相同：
+- 拾页：Mac 上的稍后读与高亮笔记应用，买断制 128 元，在售，约 1.2 万付费用户，2.0 版正在开发。
+- 慢信：给一年后的自己写信的 iOS 应用，订阅制每年 30 元，在运营。
+- slugify-zh：把中文标题转成网址片段的开源库，GitHub 2.3k 星，持续维护。
+- 周末菜单：按冰箱里剩下的食材推荐菜谱的小程序，2024 年停止维护，写明停更原因。
+
+正在做的事写成一段注明更新日期（2026 年 10 月）的近况：拾页 2.0 的开发进度与每周开发日志，最近在读的书和在学的东西。他公开产品收入，附上 2025 年 11 月到 2026 年 10 月的月收入（元）：18400、19100、21700、20300、22800、24500、23900、26200、27800、25600、29300、31000。
+
+文章约三十篇，分产品、技术、独立开发生活三类，可以按类别筛选，每篇显示日期与阅读时长；首页列出最近的几篇和读者最多的几篇。文章详情页是一篇两千字左右的《把拾页的同步从 iCloud 迁到自建服务》，包含小标题、代码块、引用、一张示意图和脚注，结尾有上一篇与下一篇。
+
+页面上还要有邮件订阅（约四千位订阅者），只做前端：校验邮箱格式，提交后显示成功状态。另附邮箱与 GitHub、即刻、X 的链接。
+
+桌面以 1440 宽为主，适配到 390 宽的手机；跟随系统切换浅色与深色，也可以手动切换并在刷新后保留；系统开启减弱动态效果时关闭动画。</code></pre>
+<h2 id="3D-雪景页面">3D 雪景页面</h2>
+<pre><code>生成一个 html 页面 3d 的场景 雪花飘扬 展示你拥有的所有的美学和浪漫</code></pre>
+<h2 id="云烟成雨-歌曲宣传网页">《云烟成雨》歌曲宣传网页</h2>
+<pre><code>为房东的猫演唱的歌曲《云烟成雨》制作一个中文宣传网页，向访客介绍这首歌。
+
+页面以桌面端浏览为主，同时适配手机。</code></pre>
+<h2 id="22-岁生日祝福网页">22 岁生日祝福网页</h2>
+<pre><code>为朋友苏禾 22 岁生日做一个祝福网页，生日当天作为链接发给她。
+
+写这个网页的人是她的大学室友阿遥，两人 2022 年 9 月入学时认识，今年夏天一起毕业：苏禾留在南京读研，阿遥去了深圳工作，这是两人第一次不在一个城市过生日。生日是 2026 年 11 月 21 日。
+
+页面包含：
+- 开场：她的名字、22 岁与生日日期。生日之前显示距离生日的倒计时，生日当天和之后显示祝福。网址带 ?date=2026-11-21 这样的参数时按参数里的日期显示，方便提前预览。
+- 一封信：阿遥写给她的信，六百字左右，由你撰写，要写到具体的共同回忆，不要只写泛泛的祝福。
+- 22 个瞬间：四年里的 22 件小事，按大一到大四分组，每件写明日期、地点和一句话。可以按年份筛选，点开一件查看详情，详情里可以切到上一件和下一件。示例：2022 年 9 月 3 日，宿舍 302，她带来的台灯成了全宿舍共用的那一盏；2024 年 7 月，青岛，两人在海边等日出，结果下了一整天雨。其余由你补全。
+- 蛋糕与蜡烛：蛋糕上插 22 根蜡烛，点击可以逐根吹灭，也可以对着麦克风吹气一次吹灭一批。麦克风需要用户授权，拒绝或不支持时只保留点击。全部吹灭后可以写下一个愿望，愿望只保存在本机，提交后显示已收好的状态，刷新后仍然保留。
+- 朋友留言：另外五位同学的留言，各配名字和一句与她有关的具体小事，由你撰写。
+- 生日歌：用 Web Audio 合成，默认不播放，点击后才播放，可以随时停止。
+
+图片和插图在页面内绘制或内嵌，不引用外部资源。桌面以 1440 宽为主，适配到 390 宽的手机。系统开启减弱动态效果时关闭动画。</code></pre>
+</main>
+<nav class="toc" aria-label="本页目录"><p>目录</p><ol><li><a href="#案例提示词编写要求">案例提示词编写要求</a></li><li><a href="#精品咖啡订阅官网">精品咖啡订阅官网</a></li><li><a href="#黑胶播放器">黑胶播放器</a></li><li><a href="#绘本插画师个人网站">绘本插画师个人网站</a></li><li><a href="#Orvo-开放工作室">Orvo · 开放工作室</a></li><li><a href="#独立开发者个人主页">独立开发者个人主页</a></li><li><a href="#3D-雪景页面">3D 雪景页面</a></li><li><a href="#云烟成雨-歌曲宣传网页">《云烟成雨》歌曲宣传网页</a></li><li><a href="#22-岁生日祝福网页">22 岁生日祝福网页</a></li></ol></nav>
+</div>
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if(!links.length||!('IntersectionObserver' in window))return;
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var heads=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}).filter(Boolean);
+  function update(){
+    var cur=heads[0];
+    heads.forEach(function(h){if(h.getBoundingClientRect().top<=120)cur=h});
+    links.forEach(function(a){a.classList.remove('active');a.removeAttribute('aria-current')});
+    var a=cur&&map[cur.id];if(a){a.classList.add('active');a.setAttribute('aria-current','true')}
+  }
+  var ticking=false;
+  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){ticking=false;update()})}},{passive:true});
+  update();
+})();
+</script>
+</body>
+</html>

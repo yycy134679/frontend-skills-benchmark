@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>绘本插画师个人网站案例对照记录 · 技能对照册</title>
+<style>
+:root{--paper:#f2ebdd;--paper-deep:#e8dfc9;--cream:#fbf7ec;--ink:#221e18;--muted:#5e5546;--line:#c8bda7;--green:#28503c;--rust:#a33a26;--pad:clamp(20px,5vw,72px);
+--serif:"Songti SC","Noto Serif SC","STSong","SimSun",serif;--sans:"PingFang SC","Helvetica Neue","Noto Sans SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--rust)}
+:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+::selection{background:var(--rust);color:var(--cream)}
+.shell{max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+.masthead{display:flex;justify-content:space-between;align-items:end;gap:24px;padding-top:26px;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.mark{font-family:var(--serif);font-size:27px;font-weight:600;letter-spacing:.02em;color:var(--ink);text-decoration:none}
+.back{font-size:12px;color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:3px}
+.back:hover{border-color:var(--ink);color:var(--ink)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr);gap:56px;padding-top:clamp(36px,5vw,64px);padding-bottom:96px}
+.doc{min-width:0;max-width:860px}
+.toc{display:none}
+@media(min-width:1100px){.layout{grid-template-columns:minmax(0,860px) 230px;justify-content:space-between}
+.toc{display:block;position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto;font-size:13px;line-height:1.6}}
+.toc p{margin:0 0 10px;font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+.toc a{display:block;padding:4px 0 4px 14px;margin-left:-1px;border-left:2px solid transparent;color:var(--muted);text-decoration:none}
+.toc a.sub{padding-left:28px;font-size:12px}
+.toc a:hover{color:var(--ink)}
+.toc a.active{border-left-color:var(--rust);color:var(--ink);font-weight:600}
+.doc h1{margin:0 0 22px;font-family:var(--serif);font-weight:600;font-size:clamp(34px,4.6vw,54px);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.doc h1+p{font-size:16px;color:var(--muted)}
+.doc h2{margin:56px 0 18px;padding-top:16px;border-top:1px solid var(--ink);font-family:var(--serif);font-weight:600;font-size:26px;line-height:1.35}
+.doc h3{margin:36px 0 12px;font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.45;color:var(--green)}
+.doc p{margin:0 0 16px}
+.doc ul,.doc ol{margin:0 0 20px;padding-left:1.3em}
+.doc li{margin:4px 0;padding-left:.2em}
+.doc li::marker{color:var(--rust)}
+.doc strong{font-weight:600}
+.doc code{font-family:var(--mono);font-size:.86em;background:var(--cream);border:1px solid var(--line);border-radius:3px;padding:1px 5px;word-break:break-word}
+.doc pre{margin:0 0 22px;padding:16px 20px;background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--green);overflow-x:auto;font-size:13px;line-height:1.75}
+.doc pre code{background:none;border:0;padding:0;font-size:inherit;word-break:normal;white-space:pre-wrap}
+.doc blockquote{margin:0 0 20px;padding:2px 0 2px 18px;border-left:3px solid var(--rust);color:var(--muted)}
+.doc hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+.table-wrap{margin:0 0 28px;overflow-x:auto;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);background:var(--cream)}
+table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.7}
+th,td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+thead th{background:var(--paper-deep);font-weight:600;white-space:nowrap;border-bottom:1px solid var(--ink)}
+tbody th{font-weight:600;min-width:5em}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+td{min-width:4.5em}
+.mark-ok,.mark-half,.mark-no,.mark-na{text-align:center;font-weight:700}
+.mark-ok{color:var(--green)}.mark-half{color:#b0761a}.mark-no{color:var(--rust)}.mark-na{color:var(--muted);font-weight:400}
+@media(max-width:700px){body{font-size:14px}.mark{font-size:22px}.doc h2{font-size:22px;margin-top:44px}th,td{padding:8px 10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="shell masthead">
+  <a class="mark" href="../../index.html#case-02">技能对照册</a>
+  <a class="back" href="../../index.html#case-02">← 返回首页</a>
+</header>
+<div class="shell layout">
+<main class="doc">
+<h1 id="绘本插画师个人网站案例对照记录">绘本插画师个人网站案例对照记录</h1>
+<p>同一份提示词、同一个模型，只改变加载的前端技能，比较六个版本的页面产物、轮次与耗时。</p>
+<h2 id="运行条件">运行条件</h2>
+<ul>
+<li>日期：2026-11-07</li>
+<li>模型：<code>codex/gpt-6.1-terra</code>，思考强度 <code>xhigh</code></li>
+<li>提示词：三段式描述，交代读者对象、作品集构成、连载更新方式与三类合作；交付要求为首页 <code>index.html</code> 与作品详情页 <code>work.html</code>，两个单文件，样式与脚本内联，不引用外部依赖</li>
+<li>隔离方式：<code>bench/run.sh</code>，每组独立进程、独立配置目录、空 MCP 配置，关闭内置技能后只挂载被测技能</li>
+<li>并发方式：三路同时运行，任意一组结束后补入下一组</li>
+<li>技能快照：仓库 <a href="../../frontend-skills/README.html">frontend-skills</a> 目录，来源提交记录在该目录的 README</li>
+</ul>
+<h2 id="结果">结果</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">版本</th><th scope="col">技能调用</th><th scope="col">轮次</th><th scope="col">耗时</th><th scope="col">首页</th><th scope="col">详情页</th></tr></thead><tbody><tr><th scope="row"><a href="no-skill-claude-code/index.html">无技能</a></th><td>无</td><td>11</td><td>4.7 min</td><td>29,358 字节</td><td>23,766 字节</td></tr><tr><th scope="row"><a href="frontend-design-claude-code/index.html">frontend-design</a></th><td><code>frontend-design</code></td><td>9</td><td>6.0 min</td><td>25,040 字节</td><td>15,944 字节</td></tr><tr><th scope="row"><a href="oil-ui-claude-code/index.html">oil-ui</a></th><td><code>oil-ui</code></td><td>33</td><td>6.7 min</td><td>22,780 字节</td><td>23,957 字节</td></tr><tr><th scope="row"><a href="taste-skill-claude-code/index.html">taste-skill</a></th><td><code>design-taste-frontend</code></td><td>15</td><td>8.0 min</td><td>26,805 字节</td><td>17,925 字节</td></tr><tr><th scope="row"><a href="impeccable-claude-code/index.html">impeccable</a></th><td><code>impeccable</code></td><td>15</td><td>5.9 min</td><td>26,066 字节</td><td>13,427 字节</td></tr><tr><th scope="row"><a href="hallmark-claude-code/index.html">hallmark</a></th><td><code>hallmark</code></td><td>37</td><td>8.8 min</td><td>21,358 字节</td><td>25,557 字节</td></tr></tbody></table></div>
+<h2 id="页面观察">页面观察</h2>
+<p>六组在 1440×900 视口下查看过首屏。共同点是首屏都把「画给孩子，也画给大人」写进简介，标题仍然落在「把日子画成……」上，插画都用几何色块拼成。</p>
+<ul>
+<li><strong>无技能</strong>：米色底配深绿，小屋与骑车的熊，圆形徽章写着给小读者和大读者，版式中规中矩。</li>
+<li><strong>frontend-design</strong>：米黄底，浅蓝天空与狐狸，左侧竖排小字与短横线标题，结构最轻。</li>
+<li><strong>oil-ui</strong>：鼠尾草绿，森林里提灯的小熊，配 <code>ILLUSTRATION NO. 01</code> 编号，页面有约 0.8 秒的入场动画。</li>
+<li><strong>taste-skill</strong>：插画用圆拱形框，熊和孩子共读一本书，圆形贴纸落在右下角。</li>
+<li><strong>impeccable</strong>：淡紫天空占满首屏，孩子与狐狸坐在打开的书上，红色强调句最醒目。</li>
+<li><strong>hallmark</strong>：芥末黄整屏打底，深绿夜色插画加白色相框，红色圆形贴纸压在画框边。</li>
+</ul>
+<h2 id="说明">说明</h2>
+<p>六组页面都没有引用外部资源，内联脚本通过 <code>node --check</code> 语法检查，首页作品卡片都能进入 <code>work.html</code>，详情页都能返回。六组都覆盖了出版、杂志、速写三类作品，连载章节、三类合作与回复时间也都在页面里。滚动区的动效、悬停状态与 390 宽窄屏表现没有逐项检查。</p>
+<p>轮次与耗时取自 Claude Code 的 JSON 输出，耗时由毫秒换算为分钟。三路并发运行，单组耗时会互相拉长，耗时一列不能跨组比较；单次样本受服务波动影响，不能据此判断技能优劣。</p>
+<p>原始运行目录保存在仓库之外的 <code>~/Code/benchmark-runs/case-02/</code>，包含每组的 <code>result.json</code>、<code>run.meta</code> 与 <code>cfg-*</code> 会话记录。</p>
+</main>
+<nav class="toc" aria-label="本页目录"><p>目录</p><ol><li><a href="#运行条件">运行条件</a></li><li><a href="#结果">结果</a></li><li><a href="#页面观察">页面观察</a></li><li><a href="#说明">说明</a></li></ol></nav>
+</div>
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if(!links.length||!('IntersectionObserver' in window))return;
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var heads=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}).filter(Boolean);
+  function update(){
+    var cur=heads[0];
+    heads.forEach(function(h){if(h.getBoundingClientRect().top<=120)cur=h});
+    links.forEach(function(a){a.classList.remove('active');a.removeAttribute('aria-current')});
+    var a=cur&&map[cur.id];if(a){a.classList.add('active');a.setAttribute('aria-current','true')}
+  }
+  var ticking=false;
+  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){ticking=false;update()})}},{passive:true});
+  update();
+})();
+</script>
+</body>
+</html>

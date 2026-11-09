@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>《云烟成雨》歌曲宣传网页案例对照记录 · 技能对照册</title>
+<style>
+:root{--paper:#f2ebdd;--paper-deep:#e8dfc9;--cream:#fbf7ec;--ink:#221e18;--muted:#5e5546;--line:#c8bda7;--green:#28503c;--rust:#a33a26;--pad:clamp(20px,5vw,72px);
+--serif:"Songti SC","Noto Serif SC","STSong","SimSun",serif;--sans:"PingFang SC","Helvetica Neue","Noto Sans SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--rust)}
+:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+::selection{background:var(--rust);color:var(--cream)}
+.shell{max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+.masthead{display:flex;justify-content:space-between;align-items:end;gap:24px;padding-top:26px;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.mark{font-family:var(--serif);font-size:27px;font-weight:600;letter-spacing:.02em;color:var(--ink);text-decoration:none}
+.back{font-size:12px;color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:3px}
+.back:hover{border-color:var(--ink);color:var(--ink)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr);gap:56px;padding-top:clamp(36px,5vw,64px);padding-bottom:96px}
+.doc{min-width:0;max-width:860px}
+.toc{display:none}
+@media(min-width:1100px){.layout{grid-template-columns:minmax(0,860px) 230px;justify-content:space-between}
+.toc{display:block;position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto;font-size:13px;line-height:1.6}}
+.toc p{margin:0 0 10px;font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+.toc a{display:block;padding:4px 0 4px 14px;margin-left:-1px;border-left:2px solid transparent;color:var(--muted);text-decoration:none}
+.toc a.sub{padding-left:28px;font-size:12px}
+.toc a:hover{color:var(--ink)}
+.toc a.active{border-left-color:var(--rust);color:var(--ink);font-weight:600}
+.doc h1{margin:0 0 22px;font-family:var(--serif);font-weight:600;font-size:clamp(34px,4.6vw,54px);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.doc h1+p{font-size:16px;color:var(--muted)}
+.doc h2{margin:56px 0 18px;padding-top:16px;border-top:1px solid var(--ink);font-family:var(--serif);font-weight:600;font-size:26px;line-height:1.35}
+.doc h3{margin:36px 0 12px;font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.45;color:var(--green)}
+.doc p{margin:0 0 16px}
+.doc ul,.doc ol{margin:0 0 20px;padding-left:1.3em}
+.doc li{margin:4px 0;padding-left:.2em}
+.doc li::marker{color:var(--rust)}
+.doc strong{font-weight:600}
+.doc code{font-family:var(--mono);font-size:.86em;background:var(--cream);border:1px solid var(--line);border-radius:3px;padding:1px 5px;word-break:break-word}
+.doc pre{margin:0 0 22px;padding:16px 20px;background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--green);overflow-x:auto;font-size:13px;line-height:1.75}
+.doc pre code{background:none;border:0;padding:0;font-size:inherit;word-break:normal;white-space:pre-wrap}
+.doc blockquote{margin:0 0 20px;padding:2px 0 2px 18px;border-left:3px solid var(--rust);color:var(--muted)}
+.doc hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+.table-wrap{margin:0 0 28px;overflow-x:auto;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);background:var(--cream)}
+table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.7}
+th,td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+thead th{background:var(--paper-deep);font-weight:600;white-space:nowrap;border-bottom:1px solid var(--ink)}
+tbody th{font-weight:600;min-width:5em}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+td{min-width:4.5em}
+.mark-ok,.mark-half,.mark-no,.mark-na{text-align:center;font-weight:700}
+.mark-ok{color:var(--green)}.mark-half{color:#b0761a}.mark-no{color:var(--rust)}.mark-na{color:var(--muted);font-weight:400}
+@media(max-width:700px){body{font-size:14px}.mark{font-size:22px}.doc h2{font-size:22px;margin-top:44px}th,td{padding:8px 10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="shell masthead">
+  <a class="mark" href="../../index.html#case-06">技能对照册</a>
+  <a class="back" href="../../index.html#case-06">← 返回首页</a>
+</header>
+<div class="shell layout">
+<main class="doc">
+<h1 id="云烟成雨-歌曲宣传网页案例对照记录">《云烟成雨》歌曲宣传网页案例对照记录</h1>
+<p>同一份提示词、同一个模型，只改变加载的前端技能，比较六个版本的页面产物、轮次与耗时。</p>
+<h2 id="运行条件">运行条件</h2>
+<ul>
+<li>日期：2026-11-09</li>
+<li>模型：<code>claude-opus-5-5</code>（Claude Opus 5.5），思考强度 <code>medium</code>；直连 Anthropic 官方接口，使用命令行 claude 的登录令牌，不经过本地代理。</li>
+<li>提示词：为房东的猫演唱的歌曲《云烟成雨》制作中文宣传网页，桌面优先并适配手机。原文见 <a href="../../案例提示词.html">案例提示词</a>。</li>
+<li>交付要求：单个 <code>index.html</code>；样式与脚本内联，不引用外部资源，图形由页面自行绘制或内嵌。</li>
+<li>隔离方式：<code>bench/run.sh</code>，每组独立进程、独立配置目录、空 MCP 配置，关闭内置技能后只挂载被测技能。</li>
+<li>并发方式：无技能、oil-ui、taste-skill、impeccable、hallmark 五组三路并发；frontend-design 组重跑时单独运行。</li>
+<li>技能快照：仓库 <a href="../../frontend-skills/README.html">frontend-skills</a> 目录，来源提交记录在该目录的 README。</li>
+</ul>
+<h2 id="结果">结果</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">版本</th><th scope="col">技能调用</th><th scope="col">轮次</th><th scope="col">耗时</th><th scope="col">页面大小</th><th scope="col">AI 评分</th></tr></thead><tbody><tr><th scope="row"><a href="no-skill-claude-code/index.html">无技能</a></th><td>无</td><td>3</td><td>2.6 min</td><td>29,942 字节</td><td><a href="评分记录.html">76</a></td></tr><tr><th scope="row"><a href="frontend-design-claude-code/index.html">frontend-design</a></th><td><code>frontend-design</code></td><td>5</td><td>2.2 min</td><td>19,594 字节</td><td><a href="评分记录.html">86</a></td></tr><tr><th scope="row"><a href="oil-ui-claude-code/index.html">oil-ui</a></th><td><code>oil-ui</code></td><td>22</td><td>5.3 min</td><td>29,878 字节</td><td><a href="评分记录.html">81</a></td></tr><tr><th scope="row"><a href="impeccable-claude-code/index.html">impeccable</a></th><td><code>impeccable</code></td><td>38</td><td>8.5 min</td><td>38,312 字节</td><td><a href="评分记录.html">94</a></td></tr><tr><th scope="row"><a href="taste-skill-claude-code/index.html">taste-skill</a></th><td><code>design-taste-frontend</code></td><td>18</td><td>5.6 min</td><td>38,678 字节</td><td><a href="评分记录.html">90</a></td></tr><tr><th scope="row"><a href="hallmark-claude-code/index.html">hallmark</a></th><td><code>hallmark</code></td><td>17</td><td>3.2 min</td><td>26,280 字节</td><td><a href="评分记录.html">84</a></td></tr></tbody></table></div>
+<p>耗时由 <code>timed_run.py</code> 独立计时，轮次按完整主会话记录汇总。AI 评分由 Claude Opus 5.5 按评分规则 v1 在 1440 桌面视口下验收给出，分项与依据见 <a href="评分记录.html">评分记录</a>。</p>
+<p>frontend-design 组第一次运行时模型没有调用技能，核验判为无效，该次结果没有归档；表中是重跑结果。无效运行保存在原始运行目录的 <code>invalid-frontend-design-no-invoke/</code>。</p>
+<h2 id="页面观察">页面观察</h2>
+<ul>
+<li><strong>无技能</strong>：灰蓝色雨天城市，竖排大标题，右侧一句导语和「走进这首歌」入口。</li>
+<li><strong>frontend-design</strong>：雾中城市剪影与一盏路灯，竖排标题在右侧，首屏没有导航；提示点击画面让雨下大。</li>
+<li><strong>oil-ui</strong>：米白底色上居中竖排大标题，左下两句引文和两个收听入口。</li>
+<li><strong>impeccable</strong>：首屏是一扇起雾的车窗，窗外是模糊的城市灯光，可以按住鼠标擦开雾气。</li>
+<li><strong>taste-skill</strong>：深色雨夜，路灯下有一只猫的剪影，横排大标题和歌曲信息在左侧。</li>
+<li><strong>hallmark</strong>：深色背景上飘着雨夜光斑，横排大标题，右下角可以调节雨量。</li>
+</ul>
+<h2 id="验证">验证</h2>
+<ul>
+<li>六组均通过技能清单、技能调用和实际模型的隔离核验。</li>
+<li>在浏览器中以 1440 与 375 宽度打开六组页面，未发现脚本错误和页面级横向溢出。</li>
+<li>首屏截图在页面加载 6 秒、入场动画结束后截取。</li>
+<li>页面中的歌曲信息、歌词引用和收听链接由模型自行生成，未核对其准确性；未逐项验证各页面的交互效果。</li>
+</ul>
+<p>五组三路并发运行，单组耗时不能直接横向比较；每组只有一次样本，结果也受服务波动影响，不能据此判断技能优劣。原始运行目录保存在仓库之外的 <code>~/Code/benchmark-runs/case-06/claude-opus-5.5-medium/</code>。</p>
+</main>
+<nav class="toc" aria-label="本页目录"><p>目录</p><ol><li><a href="#运行条件">运行条件</a></li><li><a href="#结果">结果</a></li><li><a href="#页面观察">页面观察</a></li><li><a href="#验证">验证</a></li></ol></nav>
+</div>
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if(!links.length||!('IntersectionObserver' in window))return;
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var heads=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}).filter(Boolean);
+  function update(){
+    var cur=heads[0];
+    heads.forEach(function(h){if(h.getBoundingClientRect().top<=120)cur=h});
+    links.forEach(function(a){a.classList.remove('active');a.removeAttribute('aria-current')});
+    var a=cur&&map[cur.id];if(a){a.classList.add('active');a.setAttribute('aria-current','true')}
+  }
+  var ticking=false;
+  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){ticking=false;update()})}},{passive:true});
+  update();
+})();
+</script>
+</body>
+</html>

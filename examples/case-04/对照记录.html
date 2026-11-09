@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orvo 官网落地页案例对照记录 · 技能对照册</title>
+<style>
+:root{--paper:#f2ebdd;--paper-deep:#e8dfc9;--cream:#fbf7ec;--ink:#221e18;--muted:#5e5546;--line:#c8bda7;--green:#28503c;--rust:#a33a26;--pad:clamp(20px,5vw,72px);
+--serif:"Songti SC","Noto Serif SC","STSong","SimSun",serif;--sans:"PingFang SC","Helvetica Neue","Noto Sans SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--rust)}
+:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+::selection{background:var(--rust);color:var(--cream)}
+.shell{max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+.masthead{display:flex;justify-content:space-between;align-items:end;gap:24px;padding-top:26px;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.mark{font-family:var(--serif);font-size:27px;font-weight:600;letter-spacing:.02em;color:var(--ink);text-decoration:none}
+.back{font-size:12px;color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:3px}
+.back:hover{border-color:var(--ink);color:var(--ink)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr);gap:56px;padding-top:clamp(36px,5vw,64px);padding-bottom:96px}
+.doc{min-width:0;max-width:860px}
+.toc{display:none}
+@media(min-width:1100px){.layout{grid-template-columns:minmax(0,860px) 230px;justify-content:space-between}
+.toc{display:block;position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto;font-size:13px;line-height:1.6}}
+.toc p{margin:0 0 10px;font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+.toc a{display:block;padding:4px 0 4px 14px;margin-left:-1px;border-left:2px solid transparent;color:var(--muted);text-decoration:none}
+.toc a.sub{padding-left:28px;font-size:12px}
+.toc a:hover{color:var(--ink)}
+.toc a.active{border-left-color:var(--rust);color:var(--ink);font-weight:600}
+.doc h1{margin:0 0 22px;font-family:var(--serif);font-weight:600;font-size:clamp(34px,4.6vw,54px);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.doc h1+p{font-size:16px;color:var(--muted)}
+.doc h2{margin:56px 0 18px;padding-top:16px;border-top:1px solid var(--ink);font-family:var(--serif);font-weight:600;font-size:26px;line-height:1.35}
+.doc h3{margin:36px 0 12px;font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.45;color:var(--green)}
+.doc p{margin:0 0 16px}
+.doc ul,.doc ol{margin:0 0 20px;padding-left:1.3em}
+.doc li{margin:4px 0;padding-left:.2em}
+.doc li::marker{color:var(--rust)}
+.doc strong{font-weight:600}
+.doc code{font-family:var(--mono);font-size:.86em;background:var(--cream);border:1px solid var(--line);border-radius:3px;padding:1px 5px;word-break:break-word}
+.doc pre{margin:0 0 22px;padding:16px 20px;background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--green);overflow-x:auto;font-size:13px;line-height:1.75}
+.doc pre code{background:none;border:0;padding:0;font-size:inherit;word-break:normal;white-space:pre-wrap}
+.doc blockquote{margin:0 0 20px;padding:2px 0 2px 18px;border-left:3px solid var(--rust);color:var(--muted)}
+.doc hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+.table-wrap{margin:0 0 28px;overflow-x:auto;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);background:var(--cream)}
+table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.7}
+th,td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+thead th{background:var(--paper-deep);font-weight:600;white-space:nowrap;border-bottom:1px solid var(--ink)}
+tbody th{font-weight:600;min-width:5em}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+td{min-width:4.5em}
+.mark-ok,.mark-half,.mark-no,.mark-na{text-align:center;font-weight:700}
+.mark-ok{color:var(--green)}.mark-half{color:#b0761a}.mark-no{color:var(--rust)}.mark-na{color:var(--muted);font-weight:400}
+@media(max-width:700px){body{font-size:14px}.mark{font-size:22px}.doc h2{font-size:22px;margin-top:44px}th,td{padding:8px 10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="shell masthead">
+  <a class="mark" href="../../index.html#case-04">技能对照册</a>
+  <a class="back" href="../../index.html#case-04">← 返回首页</a>
+</header>
+<div class="shell layout">
+<main class="doc">
+<h1 id="Orvo-官网落地页案例对照记录">Orvo 官网落地页案例对照记录</h1>
+<p>同一份提示词、同一个模型，只改变加载的前端技能，比较六个版本的页面产物、轮次与耗时。</p>
+<h2 id="运行条件">运行条件</h2>
+<ul>
+<li>日期：2026-11-07</li>
+<li>模型：<code>codex/gpt-6.1-terra</code>，思考强度 <code>xhigh</code></li>
+<li>提示词：AI 建站与应用生成工具 Orvo 的官网落地页；给出产品能力、两点差异、三档套餐权益与年付折合价、120 个模板的分类与示例、使用流程、数据与三位用户案例、五个必答问题和两种行动入口，不指定任何视觉方向</li>
+<li>交付要求：单文件 <code>index.html</code>，样式与脚本内联，不引用任何外部资源</li>
+<li>隔离方式：<code>bench/run.sh</code>，每组独立进程、独立配置目录、空 MCP 配置，关闭内置技能后只挂载被测技能</li>
+<li>并发方式：三路同时运行，任意一组结束后补入下一组</li>
+<li>技能快照：仓库 <a href="../../frontend-skills/README.html">frontend-skills</a> 目录，来源提交记录在该目录的 README</li>
+</ul>
+<h2 id="结果">结果</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">版本</th><th scope="col">技能调用</th><th scope="col">轮次</th><th scope="col">耗时</th><th scope="col">页面大小</th></tr></thead><tbody><tr><th scope="row"><a href="no-skill-claude-code/index.html">无技能</a></th><td>无</td><td>8</td><td>5.2 min</td><td>41,665 字节</td></tr><tr><th scope="row"><a href="frontend-design-claude-code/index.html">frontend-design</a></th><td><code>frontend-design</code></td><td>10</td><td>5.0 min</td><td>42,293 字节</td></tr><tr><th scope="row"><a href="oil-ui-claude-code/index.html">oil-ui</a></th><td><code>oil-ui</code></td><td>51</td><td>10.0 min</td><td>44,428 字节</td></tr><tr><th scope="row"><a href="taste-skill-claude-code/index.html">taste-skill</a></th><td><code>design-taste-frontend</code></td><td>21</td><td>7.6 min</td><td>37,975 字节</td></tr><tr><th scope="row"><a href="impeccable-claude-code/index.html">impeccable</a></th><td><code>impeccable</code></td><td>22</td><td>5.1 min</td><td>39,959 字节</td></tr><tr><th scope="row"><a href="hallmark-claude-code/index.html">hallmark</a></th><td><code>hallmark</code></td><td>14</td><td>4.3 min</td><td>37,283 字节</td></tr></tbody></table></div>
+<h2 id="页面观察">页面观察</h2>
+<p>六组在 1440×900 视口下查看过首屏。共同点比前几个案例更明显：标题都是「好想法 / 你的想法」加「上线」的句式，首屏左侧都放一个可以直接输入想法的免费开始输入框，五组在右侧或下方画了一个浏览器窗口样机，样机里多是植物或陶器的小店页面。除 frontend-design 外，五组都用米白底配深绿或橄榄绿。</p>
+<ul>
+<li><strong>无技能</strong>：米白底深绿，标题「好想法，值得上线。」里「上线」用橙色衬线字；右侧浅绿面板放浏览器样机与「你的首版已就绪」浮卡，首屏底部是 18,000+ 与 6 天两项数据。</li>
+<li><strong>frontend-design</strong>：唯一的白底配亮蓝，标题分两行「想法，开工。上线，有人同行。」，第二行整行蓝色；右侧淡紫色斑块托着样机，底部一行写着不按点数计费、修改不限次数、代码可导出三项勾选。</li>
+<li><strong>oil-ui</strong>：标题字号最大，「好想法，就该被做出来。」占满左侧两行，简介和演示入口挪到右侧；输入框与样机一起放进下方整宽的浅绿面板，用户头像与项目数落在首屏下沿。</li>
+<li><strong>taste-skill</strong>：标题「你的想法，可以上线了。」里「上线了」用橙色斜体；输入框最宽，右侧单独放 18,000+ 与「认识你的专家伙伴」入口，工作区样机从首屏下方露出一半。</li>
+<li><strong>impeccable</strong>：标题第二行「值得真的上线。」用橄榄绿；右侧面板做成上圆下方的拱形，样机上贴着荧光绿圆形贴纸和一条对话修改的浮卡，首屏底部是三项数据。</li>
+<li><strong>hallmark</strong>：深绿标题「好想法，尽管上线。」，输入框是带标签的多行文本框；右侧绿色面板里的样机写的是中文小店页面，首屏下方是四格数据条。</li>
+</ul>
+<h2 id="验证">验证</h2>
+<p>用 Playwright 在 1440×900 视口逐组实测：</p>
+<ul>
+<li>六组都只有一个 <code>index.html</code>，没有引用外部图片、字体或脚本；内联脚本通过语法检查，加载与操作过程中控制台没有报错。</li>
+<li>定价切换：六组切到年付后 Pro 与 Unlimited 显示 $19.99 与 $27.99，切回月付后恢复 $24.99 与 $34.99。</li>
+<li>模板筛选：六组点「内部工具」后只剩「库存看板」可见，「咖啡馆预约」与「独立播客站」被隐藏。</li>
+<li>免费开始输入框：六组空提交都给出「先写下一句你的想法」一类的提示，填入内容后都显示已收到的状态，页面没有跳转。impeccable 与 hallmark 在空提交时给输入框加了 <code>aria-invalid</code>，其余四组没有。</li>
+<li>常见问题：六组用 <code>&lt;details&gt;</code> 写了五到六个问答，提示词要求的五个问题都在。</li>
+<li>内容核对：六组都写进了年付全年总价 $239.88 与 $335.88、三个模板示例的使用次数、林夏、王拓、陈可三个用户案例和 18,000 多个项目。</li>
+<li>宽度：六组在 1440 与 390 宽下页面都没有横向滚动。390 宽下模板筛选按钮排成一行超出屏幕，靠所在容器横向滑动查看；hallmark 与无技能组的筛选按钮会换行。</li>
+<li>「预约专家演示」入口、悬停状态和滚动动效没有逐项检查。</li>
+</ul>
+<p>hallmark 组在输出目录里额外创建了 <code>.hallmark/salt</code>（9 字节），是技能自己写的文件，没有归档。每组 <code>result.json</code> 第一行都有一条 <code>unrecognized_model</code> 警告，JSON 在第二行，核验脚本能正常读取。</p>
+<p>轮次与耗时取自 Claude Code 的 JSON 输出，耗时由毫秒换算为分钟。oil-ui 用了 51 轮，是其余五组的二到六倍，原因没有展开分析。三路并发运行，单组耗时会互相拉长，耗时一列不能跨组比较；单次样本受服务波动影响，不能据此判断技能优劣。</p>
+<p>原始运行目录保存在仓库之外的 <code>~/Code/benchmark-runs/case-04/</code>，包含每组的 <code>result.json</code>、<code>run.meta</code> 与 <code>cfg-*</code> 会话记录。</p>
+<h2 id="DeepSeek-V4-1-Flash-1017-补充对照">DeepSeek V4.1 Flash 1017 补充对照</h2>
+<ul>
+<li>日期：2026-11-07；模型 <code>cline/cline-pass/deepseek-v4.1-flash-1017</code>；思考强度 <code>max</code>。</li>
+<li>使用与原组相同的 Orvo 提示词、交付要求、隔离脚本和仓库技能快照；不同模型的思考强度不同。</li>
+<li>三路并发运行，单组耗时不可直接比较。</li>
+</ul>
+<div class="table-wrap"><table><thead><tr><th scope="col">版本</th><th scope="col">技能调用</th><th scope="col">轮次</th><th scope="col">耗时</th><th scope="col">页面大小</th></tr></thead><tbody><tr><th scope="row"><a href="deepseek-v4.1-flash-1017-max/no-skill/index.html">无技能</a></th><td>无</td><td>130</td><td>18.6 min</td><td>148,830 字节</td></tr><tr><th scope="row"><a href="deepseek-v4.1-flash-1017-max/frontend-design/index.html">frontend-design</a></th><td><code>frontend-design</code></td><td>125</td><td>16.4 min</td><td>124,539 字节</td></tr><tr><th scope="row"><a href="deepseek-v4.1-flash-1017-max/oil-ui/index.html">oil-ui</a></th><td><code>oil-ui</code></td><td>462</td><td>53.2 min</td><td>185,226 字节</td></tr><tr><th scope="row"><a href="deepseek-v4.1-flash-1017-max/impeccable/index.html">impeccable</a></th><td><code>impeccable</code></td><td>271</td><td>24.9 min</td><td>159,394 字节</td></tr><tr><th scope="row"><a href="deepseek-v4.1-flash-1017-max/taste-skill/index.html">taste-skill</a></th><td><code>design-taste-frontend</code></td><td>141</td><td>18.0 min</td><td>120,905 字节</td></tr><tr><th scope="row"><a href="deepseek-v4.1-flash-1017-max/hallmark/index.html">hallmark</a></th><td><code>hallmark</code></td><td>302</td><td>40.9 min</td><td>76,851 字节</td></tr></tbody></table></div>
+<p>六组均通过技能清单、技能调用和实际模型的隔离核验，内联脚本通过语法检查。1440×900 首屏加载时未发现页面脚本错误；尚未逐项验证生成页面的功能。oil-ui 的后台代理通知触发了新的处理轮次，最终结果只记录末段的约 20.5 min 和 225 轮；表中 53.2 min 根据配置目录名称中的启动时间到结果文件写入时间估算，462 轮按完整主会话记录汇总。原始运行目录为 <code>~/Code/benchmark-runs/case-04/deepseek-v4.1-flash-1017-max-j3896d0w/</code>。</p>
+</main>
+<nav class="toc" aria-label="本页目录"><p>目录</p><ol><li><a href="#运行条件">运行条件</a></li><li><a href="#结果">结果</a></li><li><a href="#页面观察">页面观察</a></li><li><a href="#验证">验证</a></li><li><a href="#DeepSeek-V4-1-Flash-1017-补充对照">DeepSeek V4.1 Flash 1017 补充对照</a></li></ol></nav>
+</div>
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if(!links.length||!('IntersectionObserver' in window))return;
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var heads=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}).filter(Boolean);
+  function update(){
+    var cur=heads[0];
+    heads.forEach(function(h){if(h.getBoundingClientRect().top<=120)cur=h});
+    links.forEach(function(a){a.classList.remove('active');a.removeAttribute('aria-current')});
+    var a=cur&&map[cur.id];if(a){a.classList.add('active');a.setAttribute('aria-current','true')}
+  }
+  var ticking=false;
+  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){ticking=false;update()})}},{passive:true});
+  update();
+})();
+</script>
+</body>
+</html>

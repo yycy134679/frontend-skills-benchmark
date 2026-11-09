@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>评分规则 v1 · 技能对照册</title>
+<style>
+:root{--paper:#f2ebdd;--paper-deep:#e8dfc9;--cream:#fbf7ec;--ink:#221e18;--muted:#5e5546;--line:#c8bda7;--green:#28503c;--rust:#a33a26;--pad:clamp(20px,5vw,72px);
+--serif:"Songti SC","Noto Serif SC","STSong","SimSun",serif;--sans:"PingFang SC","Helvetica Neue","Noto Sans SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--rust)}
+:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+::selection{background:var(--rust);color:var(--cream)}
+.shell{max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+.masthead{display:flex;justify-content:space-between;align-items:end;gap:24px;padding-top:26px;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.mark{font-family:var(--serif);font-size:27px;font-weight:600;letter-spacing:.02em;color:var(--ink);text-decoration:none}
+.back{font-size:12px;color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:3px}
+.back:hover{border-color:var(--ink);color:var(--ink)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr);gap:56px;padding-top:clamp(36px,5vw,64px);padding-bottom:96px}
+.doc{min-width:0;max-width:860px}
+.toc{display:none}
+@media(min-width:1100px){.layout{grid-template-columns:minmax(0,860px) 230px;justify-content:space-between}
+.toc{display:block;position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto;font-size:13px;line-height:1.6}}
+.toc p{margin:0 0 10px;font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+.toc a{display:block;padding:4px 0 4px 14px;margin-left:-1px;border-left:2px solid transparent;color:var(--muted);text-decoration:none}
+.toc a.sub{padding-left:28px;font-size:12px}
+.toc a:hover{color:var(--ink)}
+.toc a.active{border-left-color:var(--rust);color:var(--ink);font-weight:600}
+.doc h1{margin:0 0 22px;font-family:var(--serif);font-weight:600;font-size:clamp(34px,4.6vw,54px);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.doc h1+p{font-size:16px;color:var(--muted)}
+.doc h2{margin:56px 0 18px;padding-top:16px;border-top:1px solid var(--ink);font-family:var(--serif);font-weight:600;font-size:26px;line-height:1.35}
+.doc h3{margin:36px 0 12px;font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.45;color:var(--green)}
+.doc p{margin:0 0 16px}
+.doc ul,.doc ol{margin:0 0 20px;padding-left:1.3em}
+.doc li{margin:4px 0;padding-left:.2em}
+.doc li::marker{color:var(--rust)}
+.doc strong{font-weight:600}
+.doc code{font-family:var(--mono);font-size:.86em;background:var(--cream);border:1px solid var(--line);border-radius:3px;padding:1px 5px;word-break:break-word}
+.doc pre{margin:0 0 22px;padding:16px 20px;background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--green);overflow-x:auto;font-size:13px;line-height:1.75}
+.doc pre code{background:none;border:0;padding:0;font-size:inherit;word-break:normal;white-space:pre-wrap}
+.doc blockquote{margin:0 0 20px;padding:2px 0 2px 18px;border-left:3px solid var(--rust);color:var(--muted)}
+.doc hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+.table-wrap{margin:0 0 28px;overflow-x:auto;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);background:var(--cream)}
+table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.7}
+th,td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+thead th{background:var(--paper-deep);font-weight:600;white-space:nowrap;border-bottom:1px solid var(--ink)}
+tbody th{font-weight:600;min-width:5em}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+td{min-width:4.5em}
+.mark-ok,.mark-half,.mark-no,.mark-na{text-align:center;font-weight:700}
+.mark-ok{color:var(--green)}.mark-half{color:#b0761a}.mark-no{color:var(--rust)}.mark-na{color:var(--muted);font-weight:400}
+@media(max-width:700px){body{font-size:14px}.mark{font-size:22px}.doc h2{font-size:22px;margin-top:44px}th,td{padding:8px 10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="shell masthead">
+  <a class="mark" href="index.html">技能对照册</a>
+  <a class="back" href="index.html">← 返回首页</a>
+</header>
+<div class="shell layout">
+<main class="doc">
+<h1 id="评分规则-v1">评分规则 v1</h1>
+<p>一个案例的各组生成完毕后，主会话按本规则给每组成品打分并写评价。分数显示在首页结果卡片上，分项得分与扣分依据写进 <code>examples/case-NN/评分记录.md</code>。</p>
+<p>评分对象是用户打开页面后实际看到、操作到的结果，源码用来确认原因和找出看不见的问题。分数只代表这一次生成的成品，不代表技能本身的水平。</p>
+<p>为节省消耗，评委只在浏览器中以 1440×900 桌面视口查看和操作页面，不在手机宽度下查看。提示词要求的移动端适配只通过阅读源码判断（见「需求还原」中的约束项），不单设手机布局分。</p>
+<h2 id="总览">总览</h2>
+<p>满分 100，五个维度：</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">维度</th><th scope="col">分值</th><th scope="col">子项</th></tr></thead><tbody><tr><th scope="row">需求还原</th><td>30</td><td>按验收清单计算</td></tr><tr><th scope="row">视觉设计</th><td>35</td><td>排版与层级 7、色彩 7、构图与节奏 7、细节完成度 7、主题契合与辨识度 7</td></tr><tr><th scope="row">交互与动效</th><td>15</td><td>核心交互手感 6、状态与反馈 5、动效 4</td></tr><tr><th scope="row">可访问性</th><td>10</td><td>键盘与焦点 4、语义与对比度 3、减弱动效与配色模式 3</td></tr><tr><th scope="row">代码质量</th><td>10</td><td>结构与组织 4、健壮性 3、性能与体积 3</td></tr></tbody></table></div>
+<p>所有子项取整数。总分是五个维度相加。</p>
+<h2 id="需求还原-30">需求还原（30）</h2>
+<h3 id="验收清单">验收清单</h3>
+<p>评分前，对照提示词写出这个案例的验收清单，六组共用同一份。每一项必须能在页面上验证，分三类：</p>
+<ul>
+<li><strong>内容</strong>：提示词要求出现的信息、板块和页面，例如「五步庄园溯源时间轴」「三类合作与回复时间」。</li>
+<li><strong>功能</strong>：提示词要求的交互，例如「点击风味扇区同步切换风味笔记」「输入为空时给出提示」。</li>
+<li><strong>约束</strong>：交付条件，例如单文件内联、不引用外部资源、指定的页面文件、适配到 390 宽、跟随系统深色。移动端适配这类桌面视口看不到的约束，读源码判断：主要板块在窄屏下有对应的布局规则记达成，只零星处理或明显会溢出记部分，完全没有处理记未达成。</li>
+</ul>
+<p>提示词明确称为核心的项，或页面主要目的所在的交互，权重记 2；其余项记 1。提示词写得笼统时（例如「向访客介绍这首歌」），清单就只列提示词说到的几项，不替提示词补需求。</p>
+<h3 id="判定与计算">判定与计算</h3>
+<p>每项判为：</p>
+<ul>
+<li><strong>达成（1）</strong>：按提示词描述能完整看到或操作成功。</li>
+<li><strong>部分（0.5）</strong>：做了但不完整，例如只有四步时间轴，筛选只对部分类别生效，或者窄屏规则只覆盖了部分板块。</li>
+<li><strong>未达成（0）</strong>：缺失、无法操作或结果错误，例如价格算错、提示词给出的数字被改掉。</li>
+<li><strong>无法验证（—）</strong>：在浏览器里无法确认，例如真实发信。该项不计入，必须注明原因。</li>
+</ul>
+<p>需求还原得分 = 30 × Σ(权重 × 判定) ÷ Σ(权重)，四舍五入取整。</p>
+<p>提示词没有要求的额外功能不计入需求还原。做得好可以在交互与动效里体现；如果出错、拖慢页面或干扰阅读，照常在相应维度扣分。</p>
+<h2 id="视觉设计-35">视觉设计（35）</h2>
+<p>在浏览器中以 1440 宽度从头看到尾后评，五个子项各 7 分。</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">子项</th><th scope="col">7</th><th scope="col">5–6</th><th scope="col">3–4</th><th scope="col">0–2</th></tr></thead><tbody><tr><th scope="row">排版与层级</th><td>字号与字重的节奏清楚，中文排版舒服（行长、行距、标点），一眼看出主次</td><td>层级清楚，个别段落偏密或偏挤</td><td>层级平均，标题与正文拉不开，或有大段难读文字</td><td>文字重叠、截断，或层级混乱</td></tr><tr><th scope="row">色彩</th><td>配色有明确主张且克制，强调色用在该强调的地方，整体协调</td><td>协调统一，但比较保守或有一两处突兀</td><td>常见的套路配色，或强调色泛滥、对比不足</td><td>颜色冲突，或影响阅读</td></tr><tr><th scope="row">构图与节奏</th><td>板块之间疏密有变化，长页面读下来有起伏，首屏构图完整</td><td>结构清晰，板块节奏略单调</td><td>板块一律等宽堆叠，或留白失衡（过空或过挤）</td><td>布局错位、塌陷或大片空白</td></tr><tr><th scope="row">细节完成度</th><td>对齐、间距、圆角、图标、图像处理统一，挑不出毛病</td><td>少量不一致，不仔细看看不出</td><td>多处对不齐、间距随意，或图像质量差、比例失真</td><td>破图、占位文字、明显未完成的板块</td></tr><tr><th scope="row">主题契合与辨识度</th><td>视觉语言贴合品牌与内容，有让人记住的处理，不像模板</td><td>贴合主题，个性一般</td><td>换个品牌名也能用，典型的模板观感</td><td>与主题冲突</td></tr></tbody></table></div>
+<h2 id="交互与动效-15">交互与动效（15）</h2>
+<p>在桌面视口实际操作后评。这一维度评的是交互做得好不好；交互有没有做，归需求还原。</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">子项</th><th scope="col">满分</th><th scope="col">满分表现</th><th scope="col">常见扣分</th></tr></thead><tbody><tr><th scope="row">核心交互手感</th><td>6</td><td>提示词点名的交互响应及时，结果一目了然，操作方式符合直觉</td><td>要找半天才知道能点；切换后没有明显变化；拖动或点击区域过小</td></tr><tr><th scope="row">状态与反馈</th><td>5</td><td>悬停、按下、焦点、选中、空值、错误、成功状态齐全且清楚</td><td>缺焦点样式；表单错误只靠颜色提示；提交后没有反馈</td></tr><tr><th scope="row">动效</th><td>4</td><td>动效服务于理解，例如表现状态变化或引导视线，流畅不拖沓</td><td>卡顿；入场动画让内容迟迟不出现；装饰动效干扰阅读</td></tr></tbody></table></div>
+<p>页面没有任何交互要求时，核心交互手感按导航、链接、按钮等基础操作评。</p>
+<h2 id="可访问性-10">可访问性（10）</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">子项</th><th scope="col">满分</th><th scope="col">满分表现</th><th scope="col">常见扣分</th></tr></thead><tbody><tr><th scope="row">键盘与焦点</th><td>4</td><td>所有交互可以用键盘完成，焦点顺序合理，焦点位置看得见</td><td>用 div 做按钮导致无法聚焦；焦点样式被去掉</td></tr><tr><th scope="row">语义与对比度</th><td>3</td><td>有正确的标题层级与地标，图片有替代文本，表单有标签，正文对比度足够</td><td>浅灰小字压在浅底上；缺替代文本；标题层级跳乱</td></tr><tr><th scope="row">减弱动效与配色模式</th><td>3</td><td>系统开启减弱动态效果时关掉或明显减弱动画；提示词要求深浅色时两套都完整可读</td><td>减弱动效无效；深色模式有遗漏的浅色块或看不清的文字</td></tr></tbody></table></div>
+<p>提示词要求了深浅色或减弱动效时，这两项同时在验收清单中计入；这里评的是做得是否到位。</p>
+<h2 id="代码质量-10">代码质量（10）</h2>
+<p>读源码后评，扣分要写出代码位置。</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">子项</th><th scope="col">满分</th><th scope="col">满分表现</th><th scope="col">常见扣分</th></tr></thead><tbody><tr><th scope="row">结构与组织</th><td>4</td><td>语义化 HTML，样式用变量统一管理，脚本按功能划分，没有大段重复</td><td>大量重复的样式或标记；魔法数字散落；死代码</td></tr><tr><th scope="row">健壮性</th><td>3</td><td>无控制台报错，边界输入有处理，状态之间不会互相打架</td><td>有报错；快速连续操作后状态错乱；本地存储读写不做容错</td></tr><tr><th scope="row">性能与体积</th><td>3</td><td>动画用合成属性或按帧调度，资源体积合理</td><td>滚动或动画明显掉帧；同一图片重复内嵌；无节制的定时器</td></tr></tbody></table></div>
+<p>页面体积只在明显浪费时扣分。提示词要求实景图片并内嵌时，体积大是合理的。</p>
+<h2 id="通用规则">通用规则</h2>
+<h3 id="硬性上限">硬性上限</h3>
+<p>必需页面缺失、无法打开或首屏空白时，该组总分最高 40。</p>
+<h3 id="分数档位">分数档位</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">总分</th><th scope="col">含义</th></tr></thead><tbody><tr><th scope="row">90 以上</th><td>可以直接上线，有让人记住的地方</td></tr><tr><th scope="row">80–89</th><td>完整统一，只有少量瑕疵</td></tr><tr><th scope="row">70–79</th><td>能用，但模板化或有明显短板</td></tr><tr><th scope="row">60–69</th><td>有影响使用的问题</td></tr><tr><th scope="row">60 以下</th><td>核心需求缺失，或页面破损</td></tr></tbody></table></div>
+<p>逐项打完分后，看总分落在哪一档，与对这个页面的整体判断是否相符；不符时回头检查子项，不要直接改总分。</p>
+<h3 id="校准">校准</h3>
+<ul>
+<li>同一案例先把各组都看完，再统一定分。无技能组作为参照，先评。</li>
+<li>定分后按总分排序，与整体印象对照，有不合理的地方就复核对应子项。</li>
+<li>子项的满分要留给确实挑不出问题的表现，不要因为没发现问题就默认给满分。</li>
+</ul>
+<h3 id="中立">中立</h3>
+<ul>
+<li>本规则不使用任何被测技能自己的术语或检查清单。评分时不参考技能文档里的标准。</li>
+<li>只看用户能感知到的结果，不因为页面遵循了某个技能的主张而加分，也不因为技能名带来的预期而调整分数。</li>
+</ul>
+<h3 id="证据">证据</h3>
+<p>扣 2 分及以上必须写出依据：浏览器中的操作步骤与看到的结果，或代码位置（<code>文件:行号</code>）。验收清单中的「部分」和「未达成」同样要写依据。</p>
+<h3 id="不计入评分">不计入评分</h3>
+<ul>
+<li>生成轮次、耗时、页面大小单独展示，不计入评分。</li>
+<li>模型自行编写的信息（歌曲资料、用户评价、文章内容等）不核对真伪，只看是否合理、是否自洽。提示词给定的数据（价格、收入、数量）必须准确，属于需求还原。</li>
+</ul>
+<h2 id="评价写法">评价写法</h2>
+<p>每组写一句卡片评价，显示在首页结果卡片上：</p>
+<ul>
+<li>不超过 50 字，先写最突出的长处，再写最主要的短板，用分号隔开。</li>
+<li>从用户视角描述看到和用到的东西，不写像素、属性名等实现术语，不复述分数。</li>
+<li>可以点出与同案例其他组的差异，但不要写成排名。</li>
+</ul>
+<p>示例：「风味轮与订阅配置器联动顺畅，果实照片气质出众；订阅区按钮缺少选中反馈，切换后不易察觉。」</p>
+<h2 id="评分记录格式">评分记录格式</h2>
+<p><code>examples/case-NN/评分记录.md</code> 依次包含：</p>
+<ol>
+<li><strong>评分条件</strong>：评分日期、评分模型、规则版本、验收视口（1440×900）。</li>
+<li><strong>验收清单</strong>：一张矩阵表，行是清单项（注明类别与权重），列是各组，单元格填 ✓、△、✗ 或 —；表后列出各个 △ 和 ✗ 的依据。</li>
+<li><strong>各组评分</strong>：每组一节，标题为「技能名 · 总分」，下面是分项表（维度、得分、依据），最后是卡片评价原文。</li>
+<li>有补充模型结果时另起一节，结构相同。</li>
+</ol>
+<h2 id="版本">版本</h2>
+<ul>
+<li>每份评分记录写明规则版本与评分模型。</li>
+<li>修改分值、子项或判定方式时升版本号，并在本节记录改动；旧分数保留原版本标注，是否重评另行决定。</li>
+<li>跨案例比较分数时，只比较同一规则版本、同一评分模型给出的分数。</li>
+</ul>
+<div class="table-wrap"><table><thead><tr><th scope="col">版本</th><th scope="col">日期</th><th scope="col">说明</th></tr></thead><tbody><tr><th scope="row">v1</th><td>2026-11-09</td><td>首版</td></tr></tbody></table></div>
+</main>
+<nav class="toc" aria-label="本页目录"><p>目录</p><ol><li><a href="#总览">总览</a></li><li><a href="#需求还原-30">需求还原（30）</a></li><li><a href="#验收清单" class=sub>验收清单</a></li><li><a href="#判定与计算" class=sub>判定与计算</a></li><li><a href="#视觉设计-35">视觉设计（35）</a></li><li><a href="#交互与动效-15">交互与动效（15）</a></li><li><a href="#可访问性-10">可访问性（10）</a></li><li><a href="#代码质量-10">代码质量（10）</a></li><li><a href="#通用规则">通用规则</a></li><li><a href="#硬性上限" class=sub>硬性上限</a></li><li><a href="#分数档位" class=sub>分数档位</a></li><li><a href="#校准" class=sub>校准</a></li><li><a href="#中立" class=sub>中立</a></li><li><a href="#证据" class=sub>证据</a></li><li><a href="#不计入评分" class=sub>不计入评分</a></li><li><a href="#评价写法">评价写法</a></li><li><a href="#评分记录格式">评分记录格式</a></li><li><a href="#版本">版本</a></li></ol></nav>
+</div>
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if(!links.length||!('IntersectionObserver' in window))return;
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var heads=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}).filter(Boolean);
+  function update(){
+    var cur=heads[0];
+    heads.forEach(function(h){if(h.getBoundingClientRect().top<=120)cur=h});
+    links.forEach(function(a){a.classList.remove('active');a.removeAttribute('aria-current')});
+    var a=cur&&map[cur.id];if(a){a.classList.add('active');a.setAttribute('aria-current','true')}
+  }
+  var ticking=false;
+  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){ticking=false;update()})}},{passive:true});
+  update();
+})();
+</script>
+</body>
+</html>
