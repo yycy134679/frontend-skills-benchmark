@@ -38,12 +38,17 @@
 
   /* 刊头 */
   .masthead {
-    display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px;
-    padding-top: 26px; padding-bottom: 16px; border-bottom: 2px solid var(--ink);
+    display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 24px;
+    padding-top: 26px; padding-bottom: 16px; position: relative;
+  }
+  /* 横线从正文左缘起，右端与目录、章节色带一样出血到版心边缘 */
+  .masthead::after {
+    content: ""; position: absolute; left: var(--pad); right: 0; bottom: 0;
+    height: 2px; background: var(--ink);
   }
   .mark { text-decoration: none; }
   .mark strong { font-family: var(--serif); font-size: 27px; font-weight: 600; letter-spacing: .02em; }
-  .masthead nav { display: flex; justify-content: flex-end; gap: 26px; font-size: 12px; }
+  .masthead nav { display: flex; justify-content: flex-end; gap: 28px; font-size: 14px; }
   .masthead nav a { text-decoration: none; padding-bottom: 3px; border-bottom: 1px solid transparent; }
   .masthead nav a:hover { border-color: var(--ink); }
 
@@ -51,38 +56,41 @@
   .hero {
     display: grid; grid-template-columns: minmax(0, 1fr) 330px;
     gap: clamp(32px, 6vw, 90px); align-items: stretch;
-    padding-top: clamp(44px, 5vw, 64px); padding-bottom: clamp(36px, 4vw, 52px);
+    padding-top: clamp(28px, 2.6vw, 36px);
   }
   .hero-main { min-width: 0; display: flex; flex-direction: column; justify-content: center; }
   h1 {
     margin: 0; font-family: var(--serif); font-weight: 600;
-    font-size: clamp(54px, 7.2vw, 108px); line-height: 1.08; letter-spacing: -.035em;
+    font-size: clamp(54px, 5.6vw, 84px); line-height: 1.1; letter-spacing: -.035em;
   }
 
   /* 案例目录 */
   .case-index {
     background: var(--green); color: var(--cream);
-    padding: 26px 28px 0; padding-right: var(--pad);
+    padding: 18px 28px 4px; padding-right: var(--pad);
     margin-right: calc(var(--pad) * -1);
-    display: flex; flex-direction: column; min-height: 300px;
+    display: flex; flex-direction: column;
   }
   .case-index-head { margin: 0; font-size: 12px; letter-spacing: .12em; color: #cfdbcb; }
-  .case-list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; flex: 1; }
+  .case-list { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; flex: 1; }
   .case-list li { flex: 1; display: flex; }
   .case-list a {
     flex: 1; display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 14px;
     align-content: center; text-decoration: none; color: inherit;
-    margin: 0 calc(var(--pad) * -1) 0 -28px; padding: 16px 28px; padding-right: var(--pad);
+    margin: 0 calc(var(--pad) * -1) 0 -28px; padding: 7px 28px; padding-right: var(--pad);
     transition: background .2s ease;
   }
   .case-list li + li a { border-top: 1px solid rgba(251, 247, 236, .22); }
   .case-list a:hover { background: rgba(251, 247, 236, .08); }
-  .ci-num { font-family: var(--latin); font-size: 22px; line-height: 1.35; color: #cfdbcb; }
-  .ci-title { font-family: var(--serif); font-size: clamp(20px, 1.7vw, 23px); font-weight: 500; line-height: 1.45; }
+  .ci-num { font-family: var(--latin); font-size: 17px; line-height: 1.45; color: #cfdbcb; }
+  .ci-title { font-family: var(--serif); font-size: 17px; font-weight: 500; line-height: 1.45; }
+  /* 以书名号开头的标题：全角「《」左半格是空白，往左挂出半格与其他标题首字对齐 */
+  .ci-title.hang { text-indent: -.5em; }
   .case-index :focus-visible { outline-color: var(--paper); }
 
   /* 案例 */
   .case { padding-top: clamp(44px, 5vw, 64px); }
+  .hero + .case { padding-top: clamp(32px, 3.4vw, 48px); }
   .chapter-band {
     display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; align-items: center; gap: 24px;
     background: var(--green); color: var(--cream);
@@ -237,8 +245,10 @@
 
   @media (max-width: 1120px) {
     .hero { grid-template-columns: 1fr; }
-    .case-index { min-height: 0; margin-right: 0; padding-right: 28px; }
-    .case-list a { margin-right: -28px; padding-right: 28px; }
+    .case-index { padding: 16px var(--pad) 6px 20px; }
+    .case-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; }
+    .case-list a { margin: 0; padding: 9px 0; grid-template-columns: 28px minmax(0, 1fr); column-gap: 8px; }
+    .case-list li:nth-child(2) a { border-top: 0; }
     .chapter-band.has-model { grid-template-columns: 96px max-content minmax(0, 1fr); }
     .spread, .method-body { grid-template-columns: 1fr; }
     .spread::before { display: none; }
@@ -249,6 +259,13 @@
     .masthead nav { justify-content: flex-start; gap: 18px; }
     .mark strong { font-size: 23px; }
     h1 { font-size: clamp(40px, 12vw, 56px); }
+    /* 手机宽度两列会把标题挤成两行，改回单列紧凑行；与章节色带一样只向右出血 */
+    .case-index { margin-right: calc(var(--pad) * -1); padding: 14px var(--pad) 4px 20px; }
+    .case-list { grid-template-columns: 1fr; }
+    .case-list li:nth-child(2) a { border-top: 1px solid rgba(251, 247, 236, .22); }
+    .case-list a { padding: 7px 0; }
+    .ci-num, .ci-title { font-size: 15px; }
+    .ci-num { line-height: 1.6; }
     .chapter-band { grid-template-columns: 54px minmax(0, 1fr); padding: 18px 20px; margin-right: calc(var(--pad) * -1); padding-right: var(--pad); }
     .chapter-band.has-model { grid-template-columns: 54px minmax(0, 1fr); row-gap: 12px; }
     .chapter-band .num { font-size: 36px; }
@@ -312,7 +329,7 @@
         <li>
           <a href="#case-06">
             <span class="ci-num">06</span>
-            <span class="ci-title">《云烟成雨》歌曲宣传网页</span>
+            <span class="ci-title hang">《云烟成雨》歌曲宣传网页</span>
           </a>
         </li>
         <li>
