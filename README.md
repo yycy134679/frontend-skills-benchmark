@@ -22,6 +22,7 @@ python3 -m http.server 8765 --directory .
 - [Orvo 官网落地页](examples/case-04/对照记录.md)
 - [独立开发者个人主页](examples/case-05/对照记录.md)
 - [《云烟成雨》歌曲宣传网页](examples/case-06/对照记录.md)
+- [22 岁生日祝福网页](examples/case-07/对照记录.md)
 
 各链接指向对照记录，完整需求见 [案例提示词](案例提示词.md)。
 
