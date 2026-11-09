@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>云烟成雨 · 房东的猫</title>
+<meta name="description" content="房东的猫演唱的民谣《云烟成雨》介绍页：歌曲由来、创作信息，以及适合按下播放的五个时刻。">
+<meta name="theme-color" content="#16243a">
+<style>
+  :root{
+    --night:#16243a;
+    --night-2:#1c2d47;
+    --night-3:#22375a;
+    --gasket:#0a121d;
+    --mist:#dde6ee;
+    --mist-2:#a3b6c8;
+    --mist-3:#7f95ab;
+    --lamp:#f2a650;
+    --lamp-soft:#f7c58a;
+    --rule:rgba(163,182,200,.22);
+    --sans:"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif;
+    --hand:"Kaiti SC","STKaiti","KaiTi","BiauKai","Kaiti TC","Songti SC","STSong",serif;
+    --ease:cubic-bezier(.16,1,.3,1);
+    --pad:clamp(20px,5vw,72px);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth;background:var(--night);scrollbar-color:var(--night-3) var(--night)}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--night);color:var(--mist);font-family:var(--sans);font-size:17px;line-height:1.8;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  ::selection{background:var(--lamp);color:var(--gasket)}
+  ::-webkit-scrollbar{width:10px}
+  ::-webkit-scrollbar-track{background:var(--night)}
+  ::-webkit-scrollbar-thumb{background:var(--night-3);border-radius:10px;border:2px solid var(--night)}
+  a{color:inherit;text-underline-offset:.3em;text-decoration-thickness:1px}
+  :focus-visible{outline:2px solid var(--lamp);outline-offset:3px;border-radius:4px}
+  .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  svg.i{width:1.15em;height:1.15em;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ---------- hero: the bus window ---------- */
+  .hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding:clamp(12px,2vw,28px) clamp(12px,2vw,28px) 0}
+  .window{position:relative;flex:1;min-height:58svh;border-radius:clamp(20px,2.6vw,36px);background:#b4c2d0;overflow:hidden;
+    box-shadow:0 0 0 clamp(7px,.8vw,11px) var(--gasket),0 18px 40px -12px rgba(0,0,0,.6) inset}
+  .window canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:crosshair}
+  .window .bar{position:absolute;left:0;right:0;top:11%;height:clamp(8px,.9vw,13px);background:var(--gasket);pointer-events:none;
+    box-shadow:0 2px 0 rgba(255,255,255,.06)}
+  .window .glare{position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.07) 0 18%,transparent 18% 23%,rgba(255,255,255,.04) 23% 26%,transparent 26%)}
+  .no-js-title{position:absolute;right:12%;top:16%;margin:0;writing-mode:vertical-rl;font-family:var(--hand);font-weight:400;font-size:clamp(64px,15vh,150px);letter-spacing:.08em;color:#0f1a29;line-height:1}
+  .js .no-js-title{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+  .sill{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(16px,3vw,48px);align-items:end;padding:clamp(26px,3.4vw,44px) clamp(8px,2vw,24px) clamp(26px,3.4vw,44px)}
+  .sill .artist{margin:0 0 .35em;font-size:15px;letter-spacing:.32em;color:var(--lamp)}
+  .sill .lede{margin:0;font-size:clamp(20px,1.9vw,27px);line-height:1.55;color:var(--mist);max-width:24em;text-wrap:balance}
+  .sill .right{display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end}
+  .btn{appearance:none;font:inherit;font-size:16px;display:inline-flex;align-items:center;gap:.55em;padding:.72em 1.35em;border-radius:999px;cursor:pointer;text-decoration:none;
+    border:1px solid var(--lamp);background:var(--lamp);color:var(--gasket);font-weight:600;letter-spacing:.06em;
+    transition:background .35s var(--ease),color .35s var(--ease),box-shadow .35s var(--ease),transform .35s var(--ease)}
+  .btn:hover{background:var(--lamp-soft);box-shadow:0 8px 20px -10px rgba(0,0,0,.55);transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  .btn.ghost{background:transparent;color:var(--mist);border-color:var(--rule)}
+  .btn.ghost:hover{border-color:var(--mist-2);background:rgba(221,230,238,.06);box-shadow:none}
+  .btn[aria-pressed="true"]{background:transparent;color:var(--lamp)}
+  .btn[aria-pressed="true"] .eq i{animation:eq 1.1s var(--ease) infinite alternate}
+  .eq{display:inline-flex;gap:2px;align-items:flex-end;height:1em}
+  .eq i{display:block;width:2px;height:40%;background:currentColor;border-radius:1px}
+  .eq i:nth-child(2){height:75%;animation-delay:-.4s!important}
+  .eq i:nth-child(3){height:55%;animation-delay:-.8s!important}
+  @keyframes eq{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+  .eq i{transform-origin:bottom}
+  .hint{margin:0;display:flex;align-items:center;gap:.5em;font-size:14px;color:var(--mist-2)}
+  .hint .touch{display:none}
+  @media (pointer:coarse){.hint .touch{display:inline}.hint .mouse{display:none}}
+
+  /* ---------- shared section ---------- */
+  section.block{padding:clamp(80px,11vw,160px) var(--pad);max-width:1360px;margin:0 auto}
+  h2{font-family:var(--hand);font-weight:400;font-size:clamp(34px,4.4vw,60px);line-height:1.2;letter-spacing:.04em;margin:0 0 .7em;color:var(--mist);text-wrap:balance}
+  p{margin:0 0 1.1em}
+  .muted{color:var(--mist-2)}
+
+  /* about the song */
+  .song{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:start}
+  .song .body p{max-width:34em;font-size:clamp(17px,1.3vw,19px)}
+  .song .body p:first-of-type{font-size:clamp(20px,1.7vw,24px);line-height:1.7;color:var(--mist)}
+  .credits{margin:0;border-top:1px solid var(--rule)}
+  .credits div{display:grid;grid-template-columns:5.5em 1fr;gap:1em;padding:1.05em 0;border-bottom:1px solid var(--rule)}
+  .credits dt{color:var(--mist-3);font-size:14px;letter-spacing:.3em;padding-top:.2em}
+  .credits dd{margin:0;font-size:18px;color:var(--mist)}
+  .credits dd small{display:block;font-size:14px;color:var(--mist-2)}
+  .ticket-note{margin-top:1.4em;font-size:14px;color:var(--mist-3)}
+
+  /* lyric */
+  .lyric{position:relative;background:var(--night-2);overflow:hidden}
+  .lyric canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.55}
+  .lyric figure{position:relative;margin:0 auto;max-width:1360px;padding:clamp(90px,13vw,190px) var(--pad)}
+  .lyric blockquote{margin:0;font-family:var(--hand);font-size:clamp(24px,6.4vw,92px);line-height:1.35;letter-spacing:.06em;color:var(--mist)}
+  .lyric blockquote span{display:block}
+  .lyric blockquote span:last-child{padding-left:clamp(1em,12vw,3.2em);color:var(--lamp-soft)}
+  .lyric figcaption{margin-top:2em;font-size:14px;letter-spacing:.2em;color:var(--mist-2)}
+
+  /* route */
+  .route-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(40px,5vw,64px)}
+  .route-head h2{margin:0}
+  .route-head p{margin:0;max-width:26em;color:var(--mist-2)}
+  .line{position:relative;padding-top:58px}
+  .line::before{content:"";position:absolute;left:10%;right:10%;top:calc(58px + 13px);height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--mist-3) 0 14px,transparent 14px 22px);opacity:.55}
+  .line .done{position:absolute;left:10%;top:calc(58px + 13px);height:4px;border-radius:4px;background:var(--lamp);width:0;transition:width .9s var(--ease)}
+  .bus{position:absolute;top:0;left:10%;width:62px;height:40px;margin-left:-31px;color:var(--lamp);transition:left .9s var(--ease)}
+  .bus svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+  .stops{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr)}
+  .stop{appearance:none;background:none;border:0;padding:0 4px;font:inherit;color:var(--mist-2);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+  .stop .dot{width:30px;height:30px;border-radius:50%;background:var(--night);border:3px solid var(--mist-3);transition:border-color .4s var(--ease),background .4s var(--ease),transform .4s var(--ease)}
+  .stop .name{font-size:clamp(14px,1.3vw,18px);letter-spacing:.12em;white-space:nowrap;transition:color .3s}
+  .stop .kind{font-size:12px;letter-spacing:.2em;color:var(--mist-3);margin-top:-10px;min-height:1.5em}
+  .stop:hover .name{color:var(--mist)}
+  .stop:hover .dot{border-color:var(--mist-2)}
+  .stop.passed .dot{border-color:var(--lamp)}
+  .stop[aria-selected="true"] .dot{border-color:var(--lamp);background:var(--lamp);transform:scale(1.12)}
+  .stop[aria-selected="true"] .name{color:var(--lamp)}
+  .stop:focus-visible{outline:none}
+  .stop:focus-visible .dot{outline:2px solid var(--lamp);outline-offset:4px}
+  .panel{margin-top:clamp(40px,5vw,70px);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);gap:clamp(24px,5vw,80px);align-items:start;min-height:9em}
+  .panel[hidden]{display:none}
+  .panel .count{font-size:14px;letter-spacing:.3em;color:var(--mist-3);margin:.9em 0 0}
+  .panel h3{font-family:var(--hand);font-weight:400;font-size:clamp(40px,5.2vw,76px);line-height:1.1;margin:0;color:var(--mist)}
+  .panel .txt p{font-size:clamp(18px,1.5vw,21px);line-height:1.85;max-width:28em}
+  .panel .txt .when{font-size:14px;color:var(--lamp);letter-spacing:.12em;margin-bottom:.8em}
+  .panel.enter .txt,.panel.enter h3{animation:arrive .7s var(--ease) both}
+  .panel.enter h3{animation-delay:.05s}
+  @keyframes arrive{from{opacity:0;filter:blur(6px);transform:translateY(10px)}to{opacity:1;filter:none;transform:none}}
+  .route-nav{display:flex;gap:10px;margin-top:1.2em}
+  .route-nav .btn{padding:.55em 1.1em;font-size:15px}
+  .route-nav .btn:disabled{opacity:.35;cursor:default;transform:none;box-shadow:none}
+
+  /* band */
+  .band{padding-bottom:clamp(60px,7vw,100px)!important;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(40px,7vw,120px);align-items:center;border-top:1px solid var(--rule)}
+  .band .art{aspect-ratio:1/1;max-width:440px;width:100%}
+  .band .art svg{width:100%;height:100%;display:block}
+  .band p{max-width:32em;font-size:clamp(17px,1.3vw,19px)}
+
+  /* close */
+  .close{text-align:center;padding:clamp(70px,9vw,130px) var(--pad) clamp(70px,8vw,110px);background:linear-gradient(var(--night),#101b2c)}
+  .close h2{font-size:clamp(40px,6vw,84px);margin-bottom:.45em}
+  .close p{color:var(--mist-2);margin:0 auto 2.2em;max-width:30em}
+  .close .actions{justify-content:center}
+  .status{min-height:1.8em;margin-top:1.1em;font-size:14px;color:var(--lamp)}
+  footer{padding:28px var(--pad) 40px;background:#101b2c;color:var(--mist-3);font-size:13px;line-height:1.7;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid rgba(163,182,200,.12)}
+  footer p{margin:0}
+
+  @media (max-width:860px){
+    body{font-size:16px}
+    .sill{grid-template-columns:1fr;gap:18px;padding-left:6px;padding-right:6px}
+    .sill .right{align-items:flex-start}
+    .actions{justify-content:flex-start}
+    .close .actions{justify-content:center}
+    .song,.band,.panel{grid-template-columns:1fr}
+    .band .art{max-width:260px}
+    .panel{min-height:0}
+    .line::before,.line .done{left:10%}
+    .stop .name{letter-spacing:.04em}
+    .stop .dot{width:24px;height:24px}
+    .line::before,.line .done{top:calc(58px + 10px)}
+  }
+  @media (max-width:420px){
+    .stop .name{font-size:13px}
+    .stop .kind{font-size:11px;letter-spacing:.08em}
+    .bus{width:48px;height:32px;margin-left:-24px;top:14px}
+  }
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+
+<header class="hero">
+  <div class="window">
+    <canvas id="glass" aria-hidden="true"></canvas>
+    <div class="glare" aria-hidden="true"></div>
+    <div class="bar" aria-hidden="true"></div>
+    <h1 class="no-js-title">云烟成雨</h1>
+  </div>
+  <div class="sill">
+    <div>
+      <p class="artist">房东的猫 · 2017</p>
+      <p class="lede">一首写给雨天、晚安，和那个后来没再见到的人的民谣。</p>
+    </div>
+    <div class="right">
+      <div class="actions">
+        <button class="btn rain-toggle" type="button" aria-pressed="false">
+          <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl">听一场雨</span>
+        </button>
+        <a class="btn ghost" href="#song">了解这首歌</a>
+      </div>
+      <p class="hint">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11"/><path d="M12 10.5V9a1.5 1.5 0 0 1 3 0v2"/><path d="M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.6a6 6 0 0 1-4.6-2.2L4.3 15.6a1.6 1.6 0 0 1 2.4-2L9 15.5"/></svg>
+        <span class="mouse">按住鼠标，在起雾的车窗上擦一擦</span><span class="touch">手指横着划过车窗，擦掉一片雾</span>
+      </p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="block song" id="song" aria-labelledby="song-h">
+    <div class="body">
+      <h2 id="song-h">一场从云开始的雨</h2>
+      <p>《云烟成雨》是民谣组合房东的猫在 2017 年发行的单曲，也是动画《我是江小白》的片尾曲。</p>
+      <p class="muted">它没有激烈的告白，也没有铺满的编曲。一把木吉他，一副干净的嗓音，唱一段慢慢变淡的关系：想念还在，人已经走远了。</p>
+      <p class="muted">云散成烟，烟落成雨。歌名本身就是一个过程——那些说不出口的话，在心里飘了很久，最后总要找个地方落下来。很多人第一次听到它，是在某个下雨的晚上：回家的车上、说完晚安之后，或者一个人走过从前常去的街。</p>
+    </div>
+    <dl class="credits" aria-label="歌曲信息">
+      <div><dt>演唱</dt><dd>房东的猫</dd></div>
+      <div><dt>作词</dt><dd>墨鱼丝</dd></div>
+      <div><dt>作曲</dt><dd>少年佩</dd></div>
+      <div><dt>发行</dt><dd>2017 年</dd></div>
+      <div><dt>出处</dt><dd>动画《我是江小白》<small>片尾曲</small></dd></div>
+      <div><dt>风格</dt><dd>民谣 · 木吉他</dd></div>
+    </dl>
+  </section>
+
+  <section class="lyric" aria-label="歌词摘句">
+    <canvas id="rain" aria-hidden="true"></canvas>
+    <figure>
+      <blockquote><span>我多想再见你</span><span>哪怕匆匆一眼就别离</span></blockquote>
+      <figcaption>——《云烟成雨》歌词</figcaption>
+    </figure>
+  </section>
+
+  <section class="block" id="listen" aria-labelledby="listen-h">
+    <div class="route-head">
+      <h2 id="listen-h">沿着这条线路听</h2>
+      <p>五个适合按下播放的时刻，像一趟雨夜里的公交，从落雨坐到雨停。点一站看看。</p>
+    </div>
+
+    <div class="line">
+      <div class="done" aria-hidden="true"></div>
+      <div class="bus" aria-hidden="true">
+        <svg viewBox="0 0 62 40"><rect x="3" y="3" width="56" height="26" rx="6"/><path d="M3 14h56"/><path d="M14 3v11M25 3v11M36 3v11M47 3v11"/><circle cx="15" cy="32" r="4.5" fill="#16243a"/><circle cx="47" cy="32" r="4.5" fill="#16243a"/><path d="M53 21h3"/></svg>
+      </div>
+      <ol class="stops" role="tablist" aria-label="收听时刻">
+        <li><button class="stop" role="tab" id="t0" aria-controls="p0" aria-selected="true"><span class="dot"></span><span class="name">傍晚落雨</span><span class="kind">始发站</span></button></li>
+        <li><button class="stop" role="tab" id="t1" aria-controls="p1" aria-selected="false" tabindex="-1"><span class="dot"></span><span class="name">末班车</span><span class="kind"></span></button></li>
+        <li><button class="stop" role="tab" id="t2" aria-controls="p2" aria-selected="false" tabindex="-1"><span class="dot"></span><span class="name">晚安之后</span><span class="kind"></span></button></li>
+        <li><button class="stop" role="tab" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1"><span class="dot"></span><span class="name">旧街重游</span><span class="kind"></span></button></li>
+        <li><button class="stop" role="tab" id="t4" aria-controls="p4" aria-selected="false" tabindex="-1"><span class="dot"></span><span class="name">雨停</span><span class="kind">终点站</span></button></li>
+      </ol>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p0" aria-labelledby="t0">
+      <div><h3>傍晚落雨</h3><p class="count">第 1 站 · 共 5 站</p></div>
+      <div class="txt"><p class="when">天色刚暗，雨刚开始</p><p>窗外的雨下起来了，城市的灯一盏一盏亮起。前奏的木吉他刚好接住第一滴雨，把一整天的嘈杂慢慢按下去。</p></div>
+    </div>
+    <div class="panel" role="tabpanel" id="p1" aria-labelledby="t1" hidden>
+      <div><h3>末班车</h3><p class="count">第 2 站 · 共 5 站</p></div>
+      <div class="txt"><p class="when">晚上十一点，车厢里没几个人</p><p>额头抵着冰凉的车窗，路灯一格一格往后退。人声很轻，轻得像是怕吵醒谁——适合把耳机音量调低一点，听雨和歌混在一起。</p></div>
+    </div>
+    <div class="panel" role="tabpanel" id="p2" aria-labelledby="t2" hidden>
+      <div><h3>晚安之后</h3><p class="count">第 3 站 · 共 5 站</p></div>
+      <div class="txt"><p class="when">对话框停在一句晚安</p><p>屏幕暗下去，人却还醒着。这首歌不劝你放下，也不催你睡，只是陪你把这个夜晚坐完。</p></div>
+    </div>
+    <div class="panel" role="tabpanel" id="p3" aria-labelledby="t3" hidden>
+      <div><h3>旧街重游</h3><p class="count">第 4 站 · 共 5 站</p></div>
+      <div class="txt"><p class="when">路过以前一起走过的地方</p><p>店换了招牌，路口多了红绿灯。走到这里才发现，记得最清楚的不是风景，而是那天的天气。</p></div>
+    </div>
+    <div class="panel" role="tabpanel" id="p4" aria-labelledby="t4" hidden>
+      <div><h3>雨停</h3><p class="count">第 5 站 · 共 5 站</p></div>
+      <div class="txt"><p class="when">歌放完了，窗上的雾也散了</p><p>雨总会停。想念可以留着，日子也可以继续往前走。下车的时候，记得带好伞。</p></div>
+    </div>
+    <div class="route-nav">
+      <button class="btn ghost" type="button" data-step="-1" aria-label="上一站">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>上一站
+      </button>
+      <button class="btn ghost" type="button" data-step="1" aria-label="下一站">下一站
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <section class="block band" id="band" aria-labelledby="band-h">
+    <div class="art" aria-hidden="true">
+      <svg viewBox="0 0 400 400">
+        <defs>
+          <linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a4366"/><stop offset="1" stop-color="#3c5a80"/></linearGradient>
+        </defs>
+        <rect x="40" y="30" width="320" height="300" rx="26" fill="url(#win)" stroke="#0a121d" stroke-width="12"/>
+        <path d="M40 120h320" stroke="#0a121d" stroke-width="10"/>
+        <g fill="#f2a650" opacity=".85"><circle cx="110" cy="200" r="9"/><circle cx="168" cy="236" r="5"/><circle cx="290" cy="190" r="7"/><circle cx="250" cy="250" r="4"/></g>
+        <g stroke="#a3b6c8" stroke-width="2.5" stroke-linecap="round" opacity=".6"><path d="M92 150v26M130 140v18M220 150v30M300 142v20M262 166v14M180 160v12"/></g>
+        <rect x="0" y="322" width="400" height="78" fill="#16243a"/>
+        <path d="M20 330h360" stroke="#0a121d" stroke-width="10" stroke-linecap="round"/>
+        <g fill="#0d1726">
+          <path d="M200 324c-30 0-54-10-56-34-1-14 6-28 20-36l-4-30 22 18c6-1 12-1 18-1s12 0 18 1l22-18-4 30c14 8 21 22 20 36-2 24-26 34-56 34z"/>
+          <path d="M252 318c34 4 58-6 64-26" fill="none" stroke="#0d1726" stroke-width="10" stroke-linecap="round"/>
+        </g>
+        <g fill="#f2a650"><ellipse cx="184" cy="262" rx="5" ry="3"/><ellipse cx="216" cy="262" rx="5" ry="3"/></g>
+      </svg>
+    </div>
+    <div>
+      <h2 id="band-h">关于房东的猫</h2>
+      <p>房东的猫是来自武汉的独立民谣组合。歌大多以木吉他为骨架，嗓音干净、不加修饰，写的是很普通的日子：深夜的街道、换季的天气、来不及说出口的话。</p>
+      <p class="muted">《云烟成雨》是很多人认识这个名字的起点。它把一种很难讲清楚的情绪唱得很轻，轻到可以在任何一个下雨的晚上，安静地陪着你。</p>
+    </div>
+  </section>
+
+  <section class="close" aria-labelledby="close-h">
+    <h2 id="close-h">今晚，听一场《云烟成雨》</h2>
+    <p>在你常用的音乐平台搜索歌名就能找到。复制下面的关键词，戴上耳机，等雨来。</p>
+    <div class="actions">
+      <button class="btn copy" type="button">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"/></svg>
+        复制「云烟成雨 房东的猫」
+      </button>
+      <button class="btn ghost rain-toggle" type="button" aria-pressed="false">
+        <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl">听一场雨</span>
+      </button>
+    </div>
+    <p class="status" role="status" aria-live="polite"></p>
+  </section>
+</main>
+
+<footer>
+  <p>《云烟成雨》· 演唱：房东的猫 · 作词：墨鱼丝 · 作曲：少年佩</p>
+  <p>非官方歌曲介绍页。窗外夜景、雾气与雨声均由页面程序即时生成，并非歌曲录音。</p>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mk = (w, h) => { const c = document.createElement('canvas'); c.width = Math.max(1, w | 0); c.height = Math.max(1, h | 0); return c; };
+  const rng = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  /* ================= fogged window ================= */
+  const box = document.querySelector('.window');
+  const cv = document.getElementById('glass');
+  const ctx = cv.getContext('2d');
+  let W, H, D, sharp, blurred, fogTex, mask, m, layer, l, titleC, brush, BR, glyphs = [], drops = [], t0 = 0, frame = 0, introDone = reduce, running = true, raf = 0;
+
+  function paintScene(w, h) {
+    const c = mk(w, h), g = c.getContext('2d'), r = rng(7);
+    const sky = g.createLinearGradient(0, 0, 0, h * .72);
+    sky.addColorStop(0, '#0f1b2e'); sky.addColorStop(.55, '#22385a'); sky.addColorStop(1, '#58698a');
+    g.fillStyle = sky; g.fillRect(0, 0, w, h);
+    const haze = g.createRadialGradient(w * .35, h * .66, 0, w * .35, h * .66, w * .6);
+    haze.addColorStop(0, 'rgba(242,166,80,.22)'); haze.addColorStop(1, 'rgba(242,166,80,0)');
+    g.fillStyle = haze; g.fillRect(0, 0, w, h);
+
+    const city = (base, minH, maxH, col, lit, scale) => {
+      for (let x = -w * .02; x < w;) {
+        const bw = w * (.035 + r() * .07) * scale, bh = h * (minH + r() * (maxH - minH));
+        g.fillStyle = col; g.fillRect(x, base - bh, bw, bh + 4);
+        const s = Math.max(2, w * .0042 * scale);
+        for (let y = base - bh + s * 2; y < base - s * 2; y += s * 2.7)
+          for (let xx = x + s * 1.2; xx < x + bw - s * 1.6; xx += s * 2.3)
+            if (r() < lit) { g.fillStyle = r() < .78 ? `rgba(246,196,126,${.35 + r() * .55})` : `rgba(190,228,242,${.3 + r() * .45})`; g.fillRect(xx, y, s, s * 1.3); }
+        x += bw + w * .006 * r();
+      }
+    };
+    city(h * .64, .14, .42, '#1a2a44', .3, 1);
+    city(h * .72, .1, .3, '#111c2e', .18, 1.5);
+
+    const road = g.createLinearGradient(0, h * .71, 0, h);
+    road.addColorStop(0, '#132035'); road.addColorStop(1, '#080f1a');
+    g.fillStyle = road; g.fillRect(0, h * .71, w, h * .29);
+
+    const bokeh = (x, y, rad, col, a, sx = 1, sy = 1) => {
+      g.save(); g.translate(x, y); g.scale(sx, sy);
+      const gr = g.createRadialGradient(0, 0, 0, 0, 0, rad);
+      gr.addColorStop(0, `rgba(${col},${a})`); gr.addColorStop(.5, `rgba(${col},${a * .6})`); gr.addColorStop(1, `rgba(${col},0)`);
+      g.fillStyle = gr; g.beginPath(); g.arc(0, 0, rad, 0, 7); g.fill(); g.restore();
+    };
+    g.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < 8; i++) {
+      const x = w * (.04 + i * .135 + r() * .03), y = h * (.44 + r() * .06), rad = w * (.026 + r() * .014);
+      bokeh(x, y, rad, '255,184,100', .6);
+      bokeh(x, h * .86 + r() * h * .04, rad * .9, '255,184,100', .22, .35, 3.2);
+    }
+    for (let i = 0; i < 5; i++) bokeh(w * r(), h * (.5 + r() * .14), w * (.01 + r() * .012), r() < .5 ? '95,208,197' : '240,120,160', .5);
+    for (let i = 0; i < 34; i++) {
+      const x = r() * w, y = h * (.745 + r() * .07), rad = w * (.007 + r() * .02);
+      const col = r() < .55 ? '236,74,60' : (r() < .6 ? '255,242,220' : '255,192,112');
+      bokeh(x, y, rad, col, .75);
+      bokeh(x, y + rad * 3.2, rad, col, .2, .45, 3);
+    }
+    g.globalCompositeOperation = 'source-over';
+    return c;
+  }
+  function blurOf(src, w, h) {
+    const a = mk(w / 6, h / 6), ag = a.getContext('2d'); ag.imageSmoothingQuality = 'high'; ag.drawImage(src, 0, 0, a.width, a.height);
+    const b = mk(a.width / 4, a.height / 4), bg = b.getContext('2d'); bg.imageSmoothingQuality = 'high'; bg.drawImage(a, 0, 0, b.width, b.height);
+    const o = mk(w, h), og = o.getContext('2d'); og.imageSmoothingQuality = 'high'; og.drawImage(b, 0, 0, w, h);
+    return o;
+  }
+  function paintFog(w, h) {
+    const c = mk(w, h), g = c.getContext('2d'), r = rng(11);
+    const lg = g.createLinearGradient(0, 0, 0, h);
+    lg.addColorStop(0, 'rgba(190,205,222,.52)'); lg.addColorStop(1, 'rgba(214,224,234,.7)');
+    g.fillStyle = lg; g.fillRect(0, 0, w, h);
+    const n = (w * h) / (700 * D * D);
+    for (let i = 0; i < n; i++) {
+      const x = r() * w, y = r() * h, rad = (.5 + r() * r() * 2.6) * D;
+      g.fillStyle = 'rgba(14,26,44,.07)'; g.beginPath(); g.arc(x, y + rad * .45, rad, 0, 7); g.fill();
+      g.fillStyle = `rgba(255,255,255,${.1 + r() * .16})`; g.beginPath(); g.arc(x, y, rad, 0, 7); g.fill();
+    }
+    return c;
+  }
+  const HAND = '"Kaiti SC","STKaiti","KaiTi","BiauKai","Kaiti TC","Songti SC","STSong",serif';
+  function layoutTitle() {
+    titleC = mk(W, H); const g = titleC.getContext('2d');
+    const portrait = W / H < .95;
+    const size = portrait ? Math.min(H * .145, W * .25) : Math.min(H * .165, W * .115);
+    const step = size * 1.1;
+    const cx = portrait ? W * .7 : W * .78;
+    const top = H * .17;
+    g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#000';
+        glyphs = [];
+    const put = (ch, x, y, s, delay, dur) => {
+      g.font = `${s}px ${HAND}`; g.fillText(ch, x, y);
+      glyphs.push({ x: x - s * .6, y: y - s * .6, w: s * 1.2, h: s * 1.2, delay, dur, dripped: false });
+    };
+    [...'云烟成雨'].forEach((ch, i) => put(ch, cx, top + step * i + step / 2, size, .5 + i * .62, .55));
+    const s2 = size * .34, st2 = s2 * 1.16, x2 = cx - size * 1.02, bottom = top + step * 4;
+    [...'房东的猫'].forEach((ch, i) => put(ch, x2, bottom - st2 * (4 - i) + st2 / 2, s2, 3.3 + i * .2, .25));
+    const data = g.getImageData(0, 0, W, H).data;
+    glyphs.forEach(gl => {
+      gl.tips = [];
+      if (gl.w < size) return;
+      const x0 = gl.x | 0, x1 = (gl.x + gl.w) | 0, y0 = gl.y | 0, y1 = Math.min(H - 1, (gl.y + gl.h) | 0);
+      for (let x = x0; x < x1; x += 3 * D) {
+        for (let y = y1; y > y0 + gl.h * .55; y--) { if (data[(y * W + (x | 0)) * 4 + 3] > 160) { gl.tips.push([x, y]); break; } }
+      }
+    });
+  }
+  function init() {
+    D = Math.min(window.devicePixelRatio || 1, 1.5);
+    const rect = box.getBoundingClientRect();
+    W = Math.round(rect.width * D); H = Math.round(rect.height * D);
+    if (!W || !H) return;
+    cv.width = W; cv.height = H;
+    sharp = paintScene(W, H); blurred = blurOf(sharp, W, H); fogTex = paintFog(W, H);
+    mask = mk(W, H); m = mask.getContext('2d'); m.fillStyle = '#000'; m.fillRect(0, 0, W, H);
+    layer = mk(W, H); l = layer.getContext('2d');
+    BR = 34 * D; brush = mk(BR * 2, BR * 2);
+    const bg = brush.getContext('2d'), gr = bg.createRadialGradient(BR, BR, 0, BR, BR, BR);
+    gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(.55, 'rgba(0,0,0,.85)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    bg.fillStyle = gr; bg.fillRect(0, 0, BR * 2, BR * 2);
+    layoutTitle(); drops = [];
+    if (introDone) glyphs.forEach(g => g.dripped = true);
+    t0 = performance.now();
+    if (reduce) render(t0);
+  }
+  function spawn(x, y, r) { if (!reduce && drops.length < 90) drops.push({ x, y, r: r * D, v: 0, rest: 0, ph: Math.random() * 6 }); }
+  function render(now) {
+    const t = (now - t0) / 1000;
+    if (++frame % 5 === 0) { m.globalCompositeOperation = 'source-over'; m.fillStyle = 'rgba(0,0,0,.007)'; m.fillRect(0, 0, W, H); }
+    m.globalCompositeOperation = 'destination-out';
+    let all = true;
+    for (const gl of glyphs) {
+      const p = introDone ? 1 : clamp((t - gl.delay) / gl.dur, 0, 1);
+      if (p < 1) all = false;
+      if (p > 0) { const hh = gl.h * p; m.drawImage(titleC, gl.x, gl.y, gl.w, hh, gl.x, gl.y, gl.w, hh); }
+      if (p >= 1 && !gl.dripped) { gl.dripped = true; const n = 2 + (Math.random() * 2 | 0); for (let k = 0; k < n && gl.tips.length; k++) { const [x, y] = gl.tips[Math.random() * gl.tips.length | 0]; spawn(x, y, 3.2 + Math.random() * 2.4); } }
+    }
+    if (all) introDone = true;
+    for (let i = drops.length - 1; i >= 0; i--) {
+      const d = drops[i];
+      if (d.rest > 0) { d.rest -= 1 / 60; continue; }
+      d.v = Math.min(d.v + .045 * D, (1.4 + d.r / D * .25) * D);
+      d.y += d.v; d.x += Math.sin(d.y * .02 + d.ph) * .25 * D;
+      if (Math.random() < .006) { d.rest = .4 + Math.random() * 1.4; d.v = 0; }
+      m.beginPath(); m.arc(d.x, d.y - d.r * .4, d.r * .62, 0, 7); m.fill();
+      if (d.y > H + 10) drops.splice(i, 1);
+    }
+    l.globalCompositeOperation = 'source-over';
+    l.clearRect(0, 0, W, H); l.drawImage(blurred, 0, 0); l.drawImage(fogTex, 0, 0);
+    l.globalCompositeOperation = 'destination-in'; l.drawImage(mask, 0, 0);
+    ctx.drawImage(sharp, 0, 0); ctx.drawImage(layer, 0, 0);
+    for (const d of drops) {
+      ctx.beginPath(); ctx.ellipse(d.x, d.y, d.r * .82, d.r, 0, 0, 7);
+      ctx.fillStyle = 'rgba(226,238,248,.16)'; ctx.fill();
+      ctx.lineWidth = .9 * D; ctx.strokeStyle = 'rgba(6,14,24,.5)'; ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.beginPath(); ctx.arc(d.x - d.r * .3, d.y - d.r * .38, d.r * .22, 0, 7); ctx.fill();
+    }
+  }
+  function loop(now) { raf = 0; if (!running || !W) return; render(now); raf = requestAnimationFrame(loop); }
+  function start() { if (!raf && running) raf = requestAnimationFrame(loop); }
+
+  let wiping = false, last = null, travel = 0;
+  const pos = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * D, (e.clientY - r.top) * D]; };
+  function wipe(a, b) {
+    m.globalCompositeOperation = 'destination-out';
+    const dx = b[0] - a[0], dy = b[1] - a[1], dist = Math.hypot(dx, dy), n = Math.max(1, Math.ceil(dist / (BR * .25)));
+    for (let i = 1; i <= n; i++) m.drawImage(brush, a[0] + dx * i / n - BR, a[1] + dy * i / n - BR);
+    travel += dist;
+    if (travel > 46 * D) { travel = 0; if (Math.random() < .35) spawn(b[0] + (Math.random() - .5) * BR, b[1] + BR * .7, 2.6 + Math.random() * 2.6); }
+    if (reduce) render(performance.now());
+  }
+  cv.addEventListener('pointerdown', e => { if (e.button > 0) return; wiping = true; last = pos(e); wipe(last, last); if (e.pointerType === 'mouse') cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove', e => { if (!wiping) return; const p = pos(e); wipe(last, p); last = p; });
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => cv.addEventListener(ev, () => { wiping = false; }));
+
+  new IntersectionObserver(es => { running = es[0].isIntersecting && !document.hidden; start(); }).observe(box);
+  document.addEventListener('visibilitychange', () => { running = !document.hidden; start(); });
+  let rt; let lastW = innerWidth;
+  addEventListener('resize', () => { if (Math.abs(innerWidth - lastW) < 2 && W) return; lastW = innerWidth; clearTimeout(rt); rt = setTimeout(() => { init(); start(); }, 180); });
+  init(); start();
+
+  /* ================= falling rain behind the lyric ================= */
+  const rc = document.getElementById('rain'), rx = rc.getContext('2d'), sec = rc.parentElement;
+  let RW, RH, streaks = [], rRaf = 0, rOn = false;
+  function rInit() {
+    const d = Math.min(devicePixelRatio || 1, 1.5), b = sec.getBoundingClientRect();
+    RW = rc.width = b.width * d | 0; RH = rc.height = b.height * d | 0;
+    const r = rng(3); streaks = Array.from({ length: Math.round(b.width / 9) }, () => ({ x: r() * RW, y: r() * RH, len: (14 + r() * 30) * d, v: (5 + r() * 7) * d, a: .1 + r() * .28 }));
+    if (reduce) rDraw(false);
+  }
+  function rDraw(move) {
+    rx.clearRect(0, 0, RW, RH); rx.lineWidth = 1.2; rx.lineCap = 'round';
+    for (const s of streaks) {
+      if (move) { s.y += s.v; s.x -= s.v * .12; if (s.y > RH + s.len) { s.y = -s.len; s.x = Math.random() * RW * 1.1; } }
+      rx.strokeStyle = `rgba(190,212,232,${s.a})`; rx.beginPath(); rx.moveTo(s.x, s.y); rx.lineTo(s.x + s.len * .12, s.y - s.len); rx.stroke();
+    }
+  }
+  function rLoop() { rRaf = 0; if (!rOn) return; rDraw(true); rRaf = requestAnimationFrame(rLoop); }
+  new IntersectionObserver(es => { rOn = es[0].isIntersecting && !reduce; if (rOn && !rRaf) rRaf = requestAnimationFrame(rLoop); }).observe(sec);
+  addEventListener('resize', () => { clearTimeout(rInit.t); rInit.t = setTimeout(rInit, 200); });
+  rInit();
+
+  /* ================= route ================= */
+  const tabs = [...document.querySelectorAll('.stop')], panels = tabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
+  const bus = document.querySelector('.bus'), done = document.querySelector('.line .done');
+  const prev = document.querySelector('[data-step="-1"]'), next = document.querySelector('[data-step="1"]');
+  let cur = 0;
+  function go(i, focus) {
+    i = clamp(i, 0, tabs.length - 1);
+    tabs.forEach((t, k) => { const on = k === i; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; t.classList.toggle('passed', k < i); panels[k].hidden = !on; });
+    const p = panels[i]; p.classList.remove('enter'); void p.offsetWidth; if (i !== cur && !reduce) p.classList.add('enter');
+    const pct = 10 + i * 20;
+    bus.style.left = pct + '%'; done.style.width = (pct - 10) + '%';
+    prev.disabled = i === 0; next.disabled = i === tabs.length - 1;
+    if (focus) tabs[i].focus();
+    cur = i;
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => go(i));
+    t.addEventListener('keydown', e => {
+      const k = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      if (k) { e.preventDefault(); go(cur + k, true); }
+      if (e.key === 'Home') { e.preventDefault(); go(0, true); }
+      if (e.key === 'End') { e.preventDefault(); go(tabs.length - 1, true); }
+    });
+  });
+  prev.addEventListener('click', () => go(cur - 1));
+  next.addEventListener('click', () => go(cur + 1));
+  go(0);
+
+  /* ================= rain sound (synthesised) ================= */
+  const toggles = [...document.querySelectorAll('.rain-toggle')];
+  let ac, master, playing = false;
+  function build() {
+    ac = new (window.AudioContext || window.webkitAudioContext)();
+    const len = ac.sampleRate * 4, buf = ac.createBuffer(2, len, ac.sampleRate);
+    for (let c = 0; c < 2; c++) { const d = buf.getChannelData(c); let b = 0; for (let i = 0; i < len; i++) { const w = Math.random() * 2 - 1; b = (b + .02 * w) / 1.02; d[i] = w * .5 + b * 3; } }
+    const src = ac.createBufferSource(); src.buffer = buf; src.loop = true;
+    const hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 260;
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3200;
+    const peak = ac.createBiquadFilter(); peak.type = 'peaking'; peak.frequency.value = 1400; peak.gain.value = 3;
+    master = ac.createGain(); master.gain.value = 0;
+    src.connect(hp).connect(lp).connect(peak).connect(master).connect(ac.destination); src.start();
+    const lfo = ac.createOscillator(), lg = ac.createGain(); lfo.frequency.value = .07; lg.gain.value = 600; lfo.connect(lg).connect(lp.frequency); lfo.start();
+  }
+  function setRain(on) {
+    try {
+      if (!ac) build();
+      if (ac.state === 'suspended') ac.resume();
+      const n = ac.currentTime; master.gain.cancelScheduledValues(n); master.gain.setValueAtTime(master.gain.value, n);
+      master.gain.linearRampToValueAtTime(on ? .22 : 0, n + (on ? 1.6 : .6));
+      playing = on;
+    } catch (e) { playing = false; }
+    toggles.forEach(b => { b.setAttribute('aria-pressed', playing); b.querySelector('.lbl').textContent = playing ? '雨声播放中 · 点击停止' : '听一场雨'; });
+  }
+  toggles.forEach(b => b.addEventListener('click', () => setRain(!playing)));
+
+  /* ================= copy ================= */
+  const status = document.querySelector('.status'), KEY = '云烟成雨 房东的猫';
+  document.querySelector('.copy').addEventListener('click', async () => {
+    let ok = false;
+    try { await navigator.clipboard.writeText(KEY); ok = true; } catch (e) {
+      const ta = document.createElement('textarea'); ta.value = KEY; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+      try { ok = document.execCommand('copy'); } catch (_) {} ta.remove();
+    }
+    status.textContent = ok ? '已复制「' + KEY + '」，去音乐平台粘贴搜索吧。' : '没能自动复制，请手动搜索：' + KEY;
+  });
+})();
+</script>
+</body>
+</html>

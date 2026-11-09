@@ -19,9 +19,10 @@ usage() {
   --effort <级别>      思考强度，默认 high
   -h, --help           显示帮助
 
-依赖环境变量：
-  ANTHROPIC_BASE_URL   模型服务地址
-  ANTHROPIC_AUTH_TOKEN 访问令牌
+鉴权（二选一）：
+  代理：导出 ANTHROPIC_BASE_URL 与 ANTHROPIC_AUTH_TOKEN
+  直连：不导出上面两个变量，使用 CLAUDE_CODE_OAUTH_TOKEN；
+        未设置时从钥匙串读取命令行 claude 的登录令牌（需先 claude 登录）
 
 示例：
   export ANTHROPIC_BASE_URL=http://127.0.0.1:3425
@@ -65,8 +66,19 @@ if [ "$SKILL_NAME" != "none" ]; then
   [ -f "$SKILL_DIR/SKILL.md" ] || die "技能目录缺少 SKILL.md：$SKILL_DIR"
 fi
 
-: "${ANTHROPIC_BASE_URL:?请先导出 ANTHROPIC_BASE_URL}"
-: "${ANTHROPIC_AUTH_TOKEN:?请先导出 ANTHROPIC_AUTH_TOKEN}"
+AUTH_ENV=()
+if [ -n "${ANTHROPIC_BASE_URL:-}" ]; then
+  : "${ANTHROPIC_AUTH_TOKEN:?使用代理时请同时导出 ANTHROPIC_AUTH_TOKEN}"
+  AUTH_ENV=(ANTHROPIC_BASE_URL="$ANTHROPIC_BASE_URL" ANTHROPIC_AUTH_TOKEN="$ANTHROPIC_AUTH_TOKEN")
+else
+  # 一次性 CLAUDE_CONFIG_DIR 对应不同的钥匙串条目，隔离进程读不到登录状态，需显式传入令牌。
+  if [ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]; then
+    CLAUDE_CODE_OAUTH_TOKEN="$(security find-generic-password -s 'Claude Code-credentials' -a "$USER" -w 2>/dev/null \
+      | python3 -c 'import json,sys; print(json.load(sys.stdin)["claudeAiOauth"]["accessToken"])' 2>/dev/null)" \
+      || die "未导出 ANTHROPIC_BASE_URL，且读不到命令行 claude 的登录令牌，请先运行 claude 登录"
+  fi
+  AUTH_ENV=(CLAUDE_CODE_OAUTH_TOKEN="$CLAUDE_CODE_OAUTH_TOKEN")
+fi
 command -v claude >/dev/null 2>&1 || die "找不到 claude 命令"
 command -v python3 >/dev/null 2>&1 || die "找不到 python3 命令"
 
@@ -113,8 +125,7 @@ if ! python3 "$SCRIPT_DIR/timed_run.py" "$OUT_DIR/elapsed_ms" env -i \
   CLAUDE_CONFIG_DIR="$CFG_DIR" \
   CLAUDE_CODE_DISABLE_CLAUDE_MDS=1 \
   CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1 \
-  ANTHROPIC_BASE_URL="$ANTHROPIC_BASE_URL" \
-  ANTHROPIC_AUTH_TOKEN="$ANTHROPIC_AUTH_TOKEN" \
+  "${AUTH_ENV[@]}" \
   claude -p "$PROMPT_TEXT" "${RUN_ARGS[@]}" > result.json 2>&1; then
   die "claude 执行失败，查看 $OUT_DIR/result.json"
 fi

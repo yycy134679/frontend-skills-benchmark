@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>云烟成雨｜房东的猫</title>
+<meta name="description" content="房东的猫演唱的《云烟成雨》，动画《我是江小白》片尾曲。">
+<style>
+  :root{
+    --cloud:#E6EBEA;
+    --smoke:#8E9A9C;
+    --moss:#5C756E;
+    --night:#1E2A31;
+    --deep:#141D22;
+    --lamp:#E2B563;
+    --ink:#24323A;
+    --serif:"Songti SC","STSong","Noto Serif SC","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--serif);
+    color:var(--ink);
+    background:var(--cloud);
+    font-size:18px;
+    line-height:1.95;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--lamp);outline-offset:4px;border-radius:2px}
+
+  /* ---------- 首屏 ---------- */
+  .hero{
+    position:relative;
+    height:100vh;height:100svh;min-height:560px;
+    overflow:hidden;
+    background:linear-gradient(180deg,#DCE3E2 0%,#C3CDCD 48%,#8E9C9F 100%);
+    cursor:pointer;
+  }
+  #sky{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .hero-inner{
+    position:relative;z-index:2;height:100%;
+    display:flex;align-items:center;justify-content:flex-end;
+    max-width:1180px;margin:0 auto;padding:0 6vw;
+    gap:clamp(24px,4vw,64px);
+    pointer-events:none;
+  }
+  .title{
+    writing-mode:vertical-rl;
+    font-size:clamp(76px,13vh,148px);
+    font-weight:700;
+    letter-spacing:.28em;
+    line-height:1;
+    color:var(--night);
+    opacity:.88;
+  }
+  .title span{display:inline-block;animation:condense 2.4s cubic-bezier(.2,.7,.2,1) both}
+  .title span:nth-child(2){animation-delay:.35s}
+  .title span:nth-child(3){animation-delay:.7s}
+  .title span:nth-child(4){animation-delay:1.05s}
+  @keyframes condense{
+    from{opacity:0;filter:blur(14px);transform:translateY(-.25em)}
+    to{opacity:1;filter:blur(0);transform:none}
+  }
+  .byline{
+    writing-mode:vertical-rl;
+    font-size:19px;letter-spacing:.5em;color:var(--ink);
+    align-self:center;margin-top:12vh;
+    animation:condense 2s 1.6s both;
+  }
+  .byline small{display:block;font-size:14px;letter-spacing:.35em;color:#4A5A60;margin-right:14px}
+  .hint{
+    position:absolute;z-index:2;left:6vw;bottom:36px;
+    font-size:14px;letter-spacing:.12em;color:#3C4C52;
+    animation:condense 2s 2.4s both;
+  }
+
+  /* ---------- 通用章节 ---------- */
+  section.block{padding:clamp(88px,14vh,160px) 6vw}
+  .wrap{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:clamp(32px,7vw,110px);align-items:start}
+  .side{
+    writing-mode:vertical-rl;
+    font-size:30px;font-weight:700;letter-spacing:.4em;
+    line-height:1.2;
+    padding-top:6px;
+  }
+  .body p{max-width:34em;margin-bottom:1.2em;text-align:justify}
+  .body p:last-child{margin-bottom:0}
+  .lead{font-size:24px;line-height:1.8;margin-bottom:1.4em !important}
+
+  .about{background:var(--cloud)}
+  .about .side{color:var(--moss)}
+
+  /* ---------- 云 烟 雨 ---------- */
+  .stages{
+    background:linear-gradient(180deg,var(--cloud) 0%,#B9C3C4 45%,#6E7D82 100%);
+    padding:clamp(80px,12vh,140px) 6vw clamp(100px,16vh,180px);
+  }
+  .stages .intro{max-width:1000px;margin:0 auto 64px;font-size:20px;color:#33434A}
+  .stage-row{
+    max-width:1000px;margin:0 auto;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,4vw,56px);
+  }
+  .stage{position:relative;padding-top:8px}
+  .stage .glyph{
+    font-size:clamp(96px,12vw,150px);font-weight:700;line-height:1;
+    display:block;margin-bottom:28px;
+  }
+  .stage:nth-child(1) .glyph{color:#F4F6F5;text-shadow:0 0 30px rgba(255,255,255,.9),0 0 2px rgba(60,80,90,.35)}
+  .stage:nth-child(2) .glyph{color:#7F8C8F;filter:blur(.6px);text-shadow:0 0 18px rgba(127,140,143,.8)}
+  .stage:nth-child(3) .glyph{color:var(--night)}
+  .stage h3{font-size:20px;letter-spacing:.1em;margin-bottom:10px}
+  .stage p{font-size:16px;line-height:1.95;color:#25333A;max-width:17em}
+  .stage:nth-child(3) h3,.stage:nth-child(3) p{color:#EEF2F1}
+  .stage::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:1px;
+    background:currentColor;opacity:.25;
+  }
+  .stage:nth-child(3)::before{background:#EEF2F1}
+
+  /* ---------- 信息 ---------- */
+  .credits{background:#6E7D82;color:#F1F4F3}
+  .credits .side{color:#DDE5E3}
+  dl.facts{display:grid;grid-template-columns:7em 1fr;row-gap:0;max-width:34em}
+  dl.facts dt,dl.facts dd{padding:18px 0;border-bottom:1px solid rgba(241,244,243,.22)}
+  dl.facts dt{color:#C9D3D2;font-size:16px;letter-spacing:.2em}
+  dl.facts dd{font-size:20px}
+  .note{font-size:14px;color:#C9D3D2;margin-top:22px;max-width:34em}
+
+  /* ---------- 乐队 ---------- */
+  .band{background:linear-gradient(180deg,#6E7D82 0%,#33434A 100%);color:#EEF2F1}
+  .band .side{color:#E6ECEA}
+
+  /* ---------- 收听 ---------- */
+  .listen{
+    position:relative;overflow:hidden;
+    background:var(--deep);color:#E8EDEC;
+    padding:clamp(110px,18vh,200px) 6vw clamp(90px,14vh,150px);
+  }
+  .lamp{
+    position:absolute;right:12%;top:-80px;width:520px;height:620px;pointer-events:none;
+    background:radial-gradient(ellipse 50% 46% at 50% 22%,rgba(226,181,99,.30),rgba(226,181,99,.08) 55%,transparent 72%);
+  }
+  .lamp::after{
+    content:"";position:absolute;left:50%;top:80px;width:12px;height:12px;margin-left:-6px;border-radius:50%;
+    background:#F6DDA6;box-shadow:0 0 22px 8px rgba(226,181,99,.65);
+  }
+  .listen .wrap{position:relative}
+  .listen .side{color:var(--lamp)}
+  .search{
+    display:inline-block;margin:6px 0 34px;padding:16px 24px;
+    font-size:24px;letter-spacing:.06em;
+    border:1px solid rgba(226,181,99,.55);color:#F3E3BF;
+    user-select:all;
+  }
+  .btn{
+    font:inherit;font-size:17px;letter-spacing:.08em;
+    background:transparent;color:#E8EDEC;
+    border:1px solid rgba(232,237,236,.5);border-radius:999px;
+    padding:12px 26px 12px 22px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:12px;
+    transition:background .25s,border-color .25s,color .25s;
+  }
+  .btn:hover{border-color:var(--lamp);color:#F3E3BF}
+  .btn[aria-pressed="true"]{background:var(--lamp);border-color:var(--lamp);color:var(--deep)}
+  .btn .drop{width:10px;height:14px;background:currentColor;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;clip-path:polygon(50% 0,100% 62%,92% 85%,70% 100%,30% 100%,8% 85%,0 62%)}
+  .btn-note{font-size:14px;color:#9AA8AB;margin-top:14px}
+  .copy-tip{font-size:14px;color:#9AA8AB;margin-top:-22px;margin-bottom:34px}
+
+  footer{background:var(--deep);color:#6F7E83;font-size:13px;padding:30px 6vw 40px;border-top:1px solid #26333A}
+  footer p{max-width:1000px;margin:0 auto}
+
+  /* ---------- 手机 ---------- */
+  @media (max-width:760px){
+    body{font-size:17px}
+    .hero-inner{justify-content:center;padding:0 24px}
+    .title{font-size:clamp(64px,17vw,96px)}
+    .byline{font-size:16px;margin-top:20vh}
+    .hint{left:24px;right:24px;bottom:24px;font-size:13px}
+    section.block{padding:72px 24px}
+    .wrap{grid-template-columns:1fr;gap:28px}
+    .side{writing-mode:horizontal-tb;font-size:26px;letter-spacing:.3em}
+    .lead{font-size:20px}
+    .stages{padding:72px 24px 96px}
+    .stages .intro{font-size:18px;margin-bottom:44px}
+    .stage-row{grid-template-columns:1fr;gap:44px}
+    .stage{display:grid;grid-template-columns:auto 1fr;column-gap:22px;align-items:start;padding-top:18px}
+    .stage .glyph{font-size:84px;margin:0;grid-row:span 2}
+    .stage p{max-width:none}
+    dl.facts{grid-template-columns:5.5em 1fr}
+    dl.facts dd{font-size:18px}
+    .listen{padding:96px 24px 80px}
+    .lamp{right:-160px;width:420px}
+    .search{font-size:19px;padding:14px 18px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .title span,.byline,.hint{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero" id="hero" aria-label="云烟成雨 首屏">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <p class="byline">房东的猫<small>演唱</small></p>
+    <h1 class="title" aria-label="云烟成雨"><span>云</span><span>烟</span><span>成</span><span>雨</span></h1>
+  </div>
+  <p class="hint">轻点画面，让雨下大一些</p>
+</header>
+
+<main>
+  <section class="block about" aria-labelledby="about-h">
+    <div class="wrap">
+      <h2 class="side" id="about-h">这首歌</h2>
+      <div class="body">
+        <p class="lead">一首写给“放下”的歌。不哭不闹，只是把一段过去轻轻放进雨里。</p>
+        <p>《云烟成雨》由民谣组合房东的猫演唱，2017 年作为动画《我是江小白》的片尾曲发行。故事里的人在城市里兜兜转转，片尾这首歌替他们说出了没说出口的那部分：想念还在，但已经不必再追。</p>
+        <p>编曲很克制，以木吉他为底，人声贴着耳朵唱，像深夜里一个人走过一条长长的街。旋律不靠高音取胜，而是一句一句往下落，落到最后，情绪也跟着安静下来。</p>
+        <p>发行之后，它慢慢成了很多人歌单里“下雨天必听”的那一首，也让更多人认识了房东的猫。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="stages" aria-labelledby="stages-h">
+    <h2 class="intro" id="stages-h">歌名里藏着一段变化：云聚起来，散成烟，最后落成雨。听这首歌，也像经历一遍这个过程。</h2>
+    <div class="stage-row">
+      <article class="stage">
+        <span class="glyph" aria-hidden="true">云</span>
+        <h3>聚</h3>
+        <p>开头是悬在半空的想念。很轻，很远，看得见，却够不着。</p>
+      </article>
+      <article class="stage">
+        <span class="glyph" aria-hidden="true">烟</span>
+        <h3>散</h3>
+        <p>回忆一点点模糊，细节记不清了，只剩下大概的形状和温度。</p>
+      </article>
+      <article class="stage">
+        <span class="glyph" aria-hidden="true">雨</span>
+        <h3>落</h3>
+        <p>最后终于落下来。落地就是结束，也是一种释然。</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="block credits" aria-labelledby="credits-h">
+    <div class="wrap">
+      <h2 class="side" id="credits-h">歌曲信息</h2>
+      <div class="body">
+        <dl class="facts">
+          <dt>歌名</dt><dd>云烟成雨</dd>
+          <dt>演唱</dt><dd>房东的猫</dd>
+          <dt>作词</dt><dd>墨鱼丝</dd>
+          <dt>作曲</dt><dd>少年佩</dd>
+          <dt>发行</dt><dd>2017 年</dd>
+          <dt>出处</dt><dd>动画《我是江小白》片尾曲</dd>
+        </dl>
+        <p class="note">歌词与完整音频请在正版音乐平台收听。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block band" aria-labelledby="band-h">
+    <div class="wrap">
+      <h2 class="side" id="band-h">房东的猫</h2>
+      <div class="body">
+        <p class="lead">来自武汉的民谣组合，由嫚嫚和少卿组成。</p>
+        <p>他们的歌大多从很小的地方写起：一间出租屋，一段通勤路，一个睡不着的晚上。声音干净，配器简单，听起来像朋友坐在身边弹琴唱给你听。</p>
+        <p>《云烟成雨》是他们流传最广的作品之一。如果你喜欢这首，可以顺着把他们的其他歌也听一听。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="listen" aria-labelledby="listen-h">
+    <div class="lamp" aria-hidden="true"></div>
+    <div class="wrap">
+      <h2 class="side" id="listen-h">去听</h2>
+      <div class="body">
+        <p>打开你常用的音乐平台，搜索：</p>
+        <p><span class="search" id="query" tabindex="0" role="button" aria-describedby="copy-tip">云烟成雨 房东的猫</span></p>
+        <p class="copy-tip" id="copy-tip">点击搜索词即可复制。</p>
+        <p>等待的时候，可以先听一会儿雨。</p>
+        <button class="btn" id="rainBtn" type="button" aria-pressed="false"><span class="drop" aria-hidden="true"></span><span class="label">播放雨声</span></button>
+        <p class="btn-note">雨声由页面实时合成，不是歌曲本身。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>这是一张介绍《云烟成雨》的非官方宣传页。歌曲版权归原作者及相关权利方所有。</p>
+</footer>
+
+<script>
+(() => {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hero = document.getElementById('hero');
+  const cv = document.getElementById('sky');
+  const ctx = cv.getContext('2d');
+  let W = 0, H = 0, dpr = 1;
+  let drops = [], mists = [], splashes = [];
+  let intensity = 0.35, target = 0.35;
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = hero.clientWidth; H = hero.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    seed();
+  }
+  function seed(){
+    mists = [];
+    const n = Math.round(W / 90) + 6;
+    for (let i = 0; i < n; i++){
+      mists.push({
+        x: Math.random() * W * 1.4 - W * 0.2,
+        y: Math.random() * H * 0.62,
+        r: 120 + Math.random() * 260,
+        v: 0.06 + Math.random() * 0.18,
+        a: 0.18 + Math.random() * 0.3,
+        tone: Math.random()
+      });
+    }
+    drops = [];
+    for (let i = 0; i < 420; i++) drops.push(newDrop(true));
+  }
+  function newDrop(anywhere){
+    const z = Math.random();
+    return {
+      x: Math.random() * (W + 200) - 100,
+      y: anywhere ? Math.random() * H : -20 - Math.random() * 120,
+      z,
+      len: 8 + z * 22,
+      v: 5 + z * 11,
+      on: Math.random()
+    };
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    // 远处的城市剪影（雨中淡出）
+    ctx.fillStyle = 'rgba(70,86,92,0.22)';
+    ctx.beginPath();
+    ctx.moveTo(0,H);
+    let x = 0;
+    let seedv = 7;
+    while (x < W){
+      seedv = (seedv * 9301 + 49297) % 233280;
+      const w = 30 + (seedv / 233280) * 70;
+      seedv = (seedv * 9301 + 49297) % 233280;
+      const h = H * (0.1 + (seedv / 233280) * 0.18);
+      ctx.lineTo(x, H - h); ctx.lineTo(x + w, H - h);
+      x += w;
+    }
+    ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+
+    // 路灯
+    const lx = W * 0.16, ly = H * 0.58;
+    const g = ctx.createRadialGradient(lx, ly, 0, lx, ly, H * 0.38);
+    g.addColorStop(0,'rgba(240,200,120,0.55)');
+    g.addColorStop(0.25,'rgba(226,181,99,0.18)');
+    g.addColorStop(1,'rgba(226,181,99,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle = 'rgba(40,52,58,0.55)';
+    ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(lx, H); ctx.lineTo(lx, ly + 6); ctx.quadraticCurveTo(lx, ly - 10, lx + 14, ly - 8); ctx.stroke();
+    ctx.fillStyle = '#F6DDA6';
+    ctx.beginPath(); ctx.arc(lx + 14, ly - 2, 4, 0, Math.PI*2); ctx.fill();
+
+    // 云雾
+    for (const m of mists){
+      const c = m.tone > 0.5 ? '245,247,246' : '196,206,207';
+      const rg = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, m.r);
+      rg.addColorStop(0, `rgba(${c},${m.a})`);
+      rg.addColorStop(1, `rgba(${c},0)`);
+      ctx.fillStyle = rg;
+      ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, Math.PI*2); ctx.fill();
+    }
+
+    // 雨
+    const slant = 0.18;
+    ctx.lineCap = 'round';
+    for (const d of drops){
+      if (d.on > intensity) continue;
+      const a = 0.12 + d.z * 0.35;
+      const nearLamp = Math.hypot(d.x - lx, d.y - ly) < H * 0.3;
+      ctx.strokeStyle = nearLamp ? `rgba(248,222,160,${a + 0.2})` : `rgba(48,64,72,${a})`;
+      ctx.lineWidth = 0.6 + d.z * 1.1;
+      ctx.beginPath();
+      ctx.moveTo(d.x, d.y);
+      ctx.lineTo(d.x - d.len * slant, d.y - d.len);
+      ctx.stroke();
+    }
+    for (const s of splashes){
+      ctx.strokeStyle = `rgba(48,64,72,${s.a})`;
+      ctx.lineWidth = 0.8;
+      ctx.beginPath(); ctx.ellipse(s.x, s.y, s.r, s.r * 0.3, 0, 0, Math.PI*2); ctx.stroke();
+    }
+  }
+
+  function step(){
+    intensity += (target - intensity) * 0.02;
+    for (const m of mists){
+      m.x += m.v;
+      if (m.x - m.r > W) { m.x = -m.r; m.y = Math.random() * H * 0.62; }
+    }
+    for (let i = 0; i < drops.length; i++){
+      const d = drops[i];
+      d.y += d.v; d.x += d.v * 0.18;
+      if (d.y > H - 4){
+        if (d.on <= intensity && d.z > 0.55 && splashes.length < 80)
+          splashes.push({x:d.x, y:H - 6 - Math.random()*14, r:1, a:0.4});
+        const nd = newDrop(false); nd.on = d.on; drops[i] = nd;
+      }
+    }
+    for (const s of splashes){ s.r += 0.6; s.a -= 0.025; }
+    splashes = splashes.filter(s => s.a > 0);
+  }
+
+  let running = true;
+  function loop(){
+    if (running){ step(); draw(); }
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  if (reduce){ draw(); }
+  else {
+    new IntersectionObserver(es => { running = es[0].isIntersecting; }).observe(hero);
+    loop();
+  }
+
+  // 点击首屏：雨下大一阵，再慢慢收住
+  let calm;
+  hero.addEventListener('click', () => {
+    target = 1;
+    clearTimeout(calm);
+    calm = setTimeout(() => { target = 0.35; }, 4200);
+    if (reduce) { intensity = 1; draw(); setTimeout(() => { intensity = 0.35; draw(); }, 2500); }
+  });
+
+  // 复制搜索词
+  const q = document.getElementById('query');
+  const tip = document.getElementById('copy-tip');
+  async function copy(){
+    try{
+      await navigator.clipboard.writeText(q.textContent);
+      tip.textContent = '已复制，去音乐平台粘贴搜索吧。';
+    }catch(e){
+      tip.textContent = '无法自动复制，请长按或选中文字手动复制。';
+    }
+  }
+  q.addEventListener('click', copy);
+  q.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copy(); } });
+
+  // 合成雨声
+  const btn = document.getElementById('rainBtn');
+  const label = btn.querySelector('.label');
+  let ac, master, playing = false;
+  function buildRain(){
+    ac = new (window.AudioContext || window.webkitAudioContext)();
+    const len = ac.sampleRate * 3;
+    const buf = ac.createBuffer(2, len, ac.sampleRate);
+    for (let ch = 0; ch < 2; ch++){
+      const data = buf.getChannelData(ch);
+      let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+      for (let i = 0; i < len; i++){
+        const w = Math.random()*2-1;
+        b0=0.99886*b0+w*0.0555179; b1=0.99332*b1+w*0.0750759; b2=0.96900*b2+w*0.1538520;
+        b3=0.86650*b3+w*0.3104856; b4=0.55000*b4+w*0.5329522; b5=-0.7616*b5-w*0.0168980;
+        let v = (b0+b1+b2+b3+b4+b5+b6+w*0.5362)*0.11; b6=w*0.115926;
+        if (Math.random() < 0.0009) v += (Math.random()*2-1)*0.6; // 零星的雨滴
+        data[i] = v;
+      }
+    }
+    const src = ac.createBufferSource(); src.buffer = buf; src.loop = true;
+    const hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 380;
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 5200;
+    master = ac.createGain(); master.gain.value = 0;
+    src.connect(hp); hp.connect(lp); lp.connect(master); master.connect(ac.destination);
+    src.start();
+  }
+  btn.addEventListener('click', () => {
+    if (!ac) buildRain();
+    if (ac.state === 'suspended') ac.resume();
+    playing = !playing;
+    const t = ac.currentTime;
+    master.gain.cancelScheduledValues(t);
+    master.gain.setValueAtTime(master.gain.value, t);
+    master.gain.linearRampToValueAtTime(playing ? 0.55 : 0, t + 1.2);
+    btn.setAttribute('aria-pressed', String(playing));
+    label.textContent = playing ? '停止雨声' : '播放雨声';
+  });
+})();
+</script>
+</body>
+</html>

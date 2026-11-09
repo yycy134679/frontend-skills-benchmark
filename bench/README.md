@@ -16,6 +16,8 @@ bash bench/run.sh \
   --out "$HOME/Code/benchmark-runs/coffee-fd"
 ```
 
+不导出 `ANTHROPIC_BASE_URL` 时脚本直连 Anthropic 官方接口：优先使用 `CLAUDE_CODE_OAUTH_TOKEN`，未设置时从 macOS 钥匙串读取命令行 claude 的登录令牌（需先在命令行登录）。一次性配置目录对应另一个钥匙串条目，隔离进程自己读不到登录状态，所以必须显式传入令牌。在 Claude Code 会话里调用时，会话会注入 `ANTHROPIC_BASE_URL`，需要用 `env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN` 去掉。直连时 `--model` 填官方模型 ID，如 `claude-opus-5-5`。
+
 对照组去掉 `--skill` 与 `--skill-dir`，其余参数保持不变：
 
 ```bash

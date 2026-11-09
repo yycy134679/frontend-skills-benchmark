@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>云烟成雨 · 房东的猫</title>
+<meta name="description" content="房东的猫演唱的《云烟成雨》，2017 年动画《我是江小白》片尾曲。">
+<style>
+/* Hallmark · v2.0.0 · theme: kiln (dealt 3/3, seed prompt-b5d4·b77b5eee·2026-11-09·r0) · kiln: rain, a cool night colourway of ember · draw: 1fccb8 · shape: Narrative Workflow · hero: Corridor · nav: masthead · footer: colophon block · genre: atmospheric · signature: a rain window drawn live, its rain amount one slider that also drives a synthesized rain you can hear · deal: fonts are system CJK faces, no external resources allowed */
+/* Hallmark · pre-emit critique: P4 H5 E4 S4 R5 V4 · weakest: P, a song page states facts; gave it one argument instead: hear the rain first, then the song */
+/* Hallmark · answered F15 · the cover rail keeps a tighter gutter so four covers read as one shelf */
+/* Hallmark · waive 1 · display is Songti SC, a CJK serif · the brief bans external fonts, so the song title uses the system Songti serif */
+
+:root {
+  --color-paper: oklch(15% 0.018 245);
+  --color-paper-2: oklch(19.5% 0.022 245);
+  --color-paper-3: oklch(24% 0.024 245);
+  --color-ink: oklch(94% 0.018 80);
+  --color-ink-2: oklch(84% 0.02 75);
+  --color-muted: oklch(72% 0.022 240);
+  --color-rule: oklch(96% 0.01 80 / 0.13);
+  --color-accent: oklch(80% 0.13 72);
+  --color-accent-hover: oklch(86% 0.11 76);
+  --color-accent-ink: oklch(17% 0.02 245);
+  --color-focus: oklch(84% 0.14 76);
+  --color-scrim: oklch(15% 0.018 245 / 0.72);
+  --color-lamp: oklch(78% 0.13 66);
+  --color-drop: oklch(92% 0.02 230);
+  --color-glass: oklch(30% 0.03 240);
+
+  --font-display: "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif SC", "Noto Serif CJK SC", "SimSun", serif;
+  --font-body: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.5rem, 1.1rem + 1.4vw, 2.125rem);
+  --text-2xl: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+  --text-display: clamp(4.25rem, 1.5rem + 10vw, 10.5rem);
+
+  --space-xs: 0.5rem; --space-sm: 0.875rem; --space-md: 1.5rem; --space-lg: 2.5rem; --space-xl: 4.5rem; --space-2xl: clamp(5rem, 3rem + 7vw, 9.5rem);
+  --radius-card: 28px; --radius-well: 16px; --radius-pill: 999px; --rule-hair: 1px;
+  --container: 1200px; --gutter: clamp(1.25rem, 4vw, 3rem);
+  --dur-short: 160ms; --dur-long: 600ms; --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { scroll-behavior: smooth; scrollbar-color: var(--color-paper-3) var(--color-paper); caret-color: var(--color-accent); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--color-paper); color: var(--color-ink);
+  font-family: var(--font-body); font-size: var(--text-base); line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: color-mix(in oklab, var(--color-accent) 35%, transparent); }
+h1, h2, h3 {
+  font-family: var(--font-display); font-weight: 600; line-height: 1.08; margin: 0;
+  color: var(--color-ink); overflow-wrap: break-word; min-width: 0; text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; }
+.wrap { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+
+/* focus */
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--color-focus); outline-offset: 3px; transition: none;
+}
+
+/* controls */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6em;
+  min-height: 50px; padding: 0 1.6rem; border: 0; border-radius: var(--radius-pill);
+  font: 500 var(--text-base)/1 var(--font-body); text-decoration: none; cursor: pointer;
+  transition: background-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out);
+}
+.btn--primary { background: var(--color-accent); color: var(--color-accent-ink); }
+.btn--primary:hover { background: var(--color-accent-hover); }
+.btn--ghost { background: transparent; color: var(--color-ink); box-shadow: inset 0 0 0 var(--rule-hair) var(--color-rule); }
+.btn--ghost:hover { box-shadow: inset 0 0 0 var(--rule-hair) var(--color-ink-2); }
+.btn:active { transform: translateY(1px); }
+.btn[aria-pressed="true"] { box-shadow: inset 0 0 0 var(--rule-hair) var(--color-accent); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* nav: masthead */
+.mast { position: relative; z-index: 3; border-bottom: var(--rule-hair) solid var(--color-rule); background: var(--color-paper); }
+.mast .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); min-height: 68px; }
+.mark { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; text-decoration: none; }
+.mark small { font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-muted); font-weight: 400; margin-left: 0.75em; }
+.mast nav { display: flex; align-items: center; gap: var(--space-md); }
+.mast nav a:not(.btn) { color: var(--color-ink-2); text-decoration: none; font-size: var(--text-sm); padding: var(--space-xs) 0; }
+.mast nav a:not(.btn):hover { color: var(--color-ink); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+.mast .btn { min-height: 42px; padding: 0 1.15rem; font-size: var(--text-sm); }
+
+/* hero: corridor */
+.hero { position: relative; isolation: isolate; min-height: min(calc(100svh - 68px), 860px); display: flex; align-items: flex-end; background: var(--color-glass); color: var(--color-ink); }
+.hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; display: block; }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, var(--color-scrim), transparent 60%); pointer-events: none; }
+.hero .wrap { padding-block: var(--space-xl) clamp(3rem, 7vh, 5.5rem); display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--space-xl); }
+.hero-date { font-size: var(--text-base); color: var(--color-ink-2); margin-bottom: var(--space-sm); }
+.hero h1 { font-size: var(--text-display); letter-spacing: 0.04em; line-height: 1.02; font-weight: 700; }
+.hero-line { font-size: var(--text-lg); color: var(--color-ink-2); margin-top: var(--space-md); max-width: 30ch; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-lg); }
+
+.rain-control { display: grid; gap: 0.6rem; min-width: 240px; padding: var(--space-md); border-radius: var(--radius-well); background: var(--color-scrim); border: var(--rule-hair) solid var(--color-rule); }
+.rain-control label { font-size: var(--text-sm); color: var(--color-ink-2); display: flex; justify-content: space-between; gap: 1rem; }
+.rain-control output { font-family: var(--font-display); color: var(--color-ink); font-variant-numeric: tabular-nums; }
+.rain-control p { font-size: var(--text-sm); color: var(--color-muted); }
+
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: transparent; cursor: pointer; margin: 0; }
+input[type="range"]::-webkit-slider-runnable-track { height: 2px; background: var(--color-ink-2); border-radius: 2px; }
+input[type="range"]::-moz-range-track { height: 2px; background: var(--color-ink-2); border-radius: 2px; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; margin-top: -12px; height: 24px; width: 24px; border-radius: 50%; background: var(--color-accent); border: 0; transition: transform var(--dur-short) var(--ease-out); }
+input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--color-accent); border: 0; }
+input[type="range"]:hover::-webkit-slider-thumb { transform: scale(1.12); }
+input[type="range"]:focus-visible { outline-offset: 2px; }
+
+/* sections */
+section { padding-block: var(--space-2xl); }
+.sec-head { font-size: var(--text-2xl); max-width: 16ch; }
+.grid-2 { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-xl); align-items: start; }
+
+/* the song: statement + facts */
+.statement { font-family: var(--font-display); font-size: clamp(1.75rem, 1rem + 2.6vw, 3.25rem); line-height: 1.35; font-weight: 600; max-width: 19em; }
+.statement + p { margin-top: var(--space-lg); color: var(--color-ink-2); max-width: 36em; }
+.facts { margin: 0; border-top: var(--rule-hair) solid var(--color-rule); }
+.facts div { display: grid; grid-template-columns: 6em minmax(0, 1fr); gap: var(--space-md); padding: 1.05rem 0; border-bottom: var(--rule-hair) solid var(--color-rule); }
+.facts dt { color: var(--color-muted); font-size: var(--text-sm); padding-top: 0.2em; }
+.facts dd { margin: 0; font-family: var(--font-display); font-size: var(--text-lg); }
+
+/* listen band */
+.band { color: var(--color-ink); background: var(--color-paper-2); border-block: var(--rule-hair) solid var(--color-rule); }
+.listen { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-xl); align-items: center; }
+.listen .sec-head + p { margin-top: var(--space-md); color: var(--color-ink-2); max-width: 30em; }
+.platforms { list-style: none; margin: 0; padding: 0; border-top: var(--rule-hair) solid var(--color-rule); }
+.platforms a {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--space-md);
+  padding: 1.35rem 0.25rem; border-bottom: var(--rule-hair) solid var(--color-rule); text-decoration: none;
+  transition: background-color var(--dur-short) var(--ease-out);
+}
+.platforms a:hover { background: var(--color-paper-3); }
+.platforms strong { font-family: var(--font-display); font-weight: 600; font-size: var(--text-xl); }
+.platforms span { font-size: var(--text-sm); color: var(--color-muted); }
+
+/* the band + rail of covers */
+.band-intro { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-xl); align-items: end; margin-bottom: var(--space-xl); }
+.band-intro p { color: var(--color-ink-2); max-width: 32em; }
+.rail { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-md) var(--space-lg); list-style: none; margin: 0; padding: 0; }
+.rail figure { margin: 0; }
+.cover { aspect-ratio: 1; width: 100%; display: block; border-radius: var(--radius-well); background: var(--color-paper-3); box-shadow: 0 30px 60px -30px var(--color-paper); }
+.rail figcaption { margin-top: var(--space-sm); font-family: var(--font-display); font-size: var(--text-lg); }
+.rail .is-this figcaption { color: var(--color-ink); }
+.rail figcaption span { display: block; font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-muted); margin-top: 0.15rem; }
+
+/* footer: colophon */
+.colophon { border-top: var(--rule-hair) solid var(--color-rule); padding-block: var(--space-xl) var(--space-lg); }
+.colophon .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-lg); align-items: end; }
+.colophon .big { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 600; }
+.colophon p { font-size: var(--text-sm); color: var(--color-muted); max-width: 46em; margin-top: var(--space-sm); }
+.colophon a { color: var(--color-ink-2); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .grid-2, .listen, .band-intro { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); }
+  .rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); }
+  .rain-control { min-width: 0; }
+}
+@media (max-width: 560px) {
+  .mast nav a:not(.btn) { display: none; }
+  .mark small { display: none; }
+  .hero { min-height: calc(100svh - 68px); }
+  .hero-actions .btn { flex: 1 1 100%; }
+  .colophon .wrap { grid-template-columns: minmax(0, 1fr); }
+  .facts div { grid-template-columns: 4.5em minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .platforms a, input[type="range"]::-webkit-slider-thumb { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <a class="mark" href="#top">云烟成雨<small>房东的猫</small></a>
+    <nav aria-label="页面导航">
+      <a href="#song">这首歌</a>
+      <a href="#band">房东的猫</a>
+      <a class="btn btn--primary" href="#listen">收听</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="title" style="padding-block:0">
+    <canvas id="rain" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div>
+        <p class="hero-date">2017 年，动画《我是江小白》片尾曲</p>
+        <h1 id="title">云烟成雨</h1>
+        <p class="hero-line">房东的猫，唱给一场下了很久的雨。</p>
+        <div class="hero-actions">
+          <a class="btn btn--primary" href="#listen">去听这首歌</a>
+          <button class="btn btn--ghost" id="rainBtn" type="button" aria-pressed="false">先听一场雨</button>
+        </div>
+      </div>
+      <div class="rain-control">
+        <label for="rainAmount">雨量 <output id="rainOut" for="rainAmount">六分</output></label>
+        <input id="rainAmount" type="range" min="1" max="10" step="1" value="6" aria-describedby="rainNote">
+        <p id="rainNote">窗上的雨与声音一起变。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="song" aria-labelledby="songHead">
+    <div class="wrap grid-2">
+      <div>
+        <h2 id="songHead" class="sr">关于这首歌</h2>
+        <p class="statement">一首关于放下的民谣：雨落下来，云烟散去，留下的人继续往前走。</p>
+        <p>木吉他与人声为骨，编配克制，适合在一个安静的夜里，从头到尾不被打扰地听完。</p>
+      </div>
+      <dl class="facts">
+        <div><dt>演唱</dt><dd>房东的猫</dd></div>
+        <div><dt>发行</dt><dd>2017 年</dd></div>
+        <div><dt>出处</dt><dd>动画《我是江小白》片尾曲</dd></div>
+        <div><dt>作词</dt><dd>墨鱼丝</dd></div>
+        <div><dt>作曲</dt><dd>少年佩</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="listen" class="band" aria-labelledby="listenHead">
+    <div class="wrap listen">
+      <div>
+        <h2 id="listenHead" class="sec-head">戴上耳机，关掉灯</h2>
+        <p>在常用的音乐平台搜索“云烟成雨”，认准演唱者房东的猫。</p>
+      </div>
+      <ul class="platforms">
+        <li><a href="https://music.163.com/#/search/m/?s=%E4%BA%91%E7%83%9F%E6%88%90%E9%9B%A8&amp;type=1" target="_blank" rel="noopener"><strong>网易云音乐</strong><span>新窗口打开</span></a></li>
+        <li><a href="https://y.qq.com/n/ryqq/search?w=%E4%BA%91%E7%83%9F%E6%88%90%E9%9B%A8" target="_blank" rel="noopener"><strong>QQ 音乐</strong><span>新窗口打开</span></a></li>
+        <li><a href="https://search.bilibili.com/all?keyword=%E4%BA%91%E7%83%9F%E6%88%90%E9%9B%A8%20%E6%88%BF%E4%B8%9C%E7%9A%84%E7%8C%AB" target="_blank" rel="noopener"><strong>哔哩哔哩</strong><span>新窗口打开</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="band" aria-labelledby="bandHead">
+    <div class="wrap">
+      <div class="band-intro">
+        <h2 id="bandHead" class="sec-head">房东的猫</h2>
+        <p>中国独立民谣乐队，歌里多是城市、季节与平常日子。《云烟成雨》之外，这几首也值得一听。</p>
+      </div>
+      <ul class="rail">
+        <li class="is-this"><figure><canvas class="cover" data-cover="0" width="480" height="480" aria-hidden="true"></canvas><figcaption>云烟成雨<span>本页这首</span></figcaption></figure></li>
+        <li><figure><canvas class="cover" data-cover="1" width="480" height="480" aria-hidden="true"></canvas><figcaption>下一站，茶山刘<span>房东的猫</span></figcaption></figure></li>
+        <li><figure><canvas class="cover" data-cover="2" width="480" height="480" aria-hidden="true"></canvas><figcaption>秋酿<span>房东的猫</span></figcaption></figure></li>
+        <li><figure><canvas class="cover" data-cover="3" width="480" height="480" aria-hidden="true"></canvas><figcaption>美好事物<span>房东的猫</span></figcaption></figure></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="colophon">
+  <div class="wrap">
+    <div>
+      <p class="big">云烟成雨</p>
+      <p>这是一张非官方的歌曲介绍页。页面中的雨窗与封面图形均由浏览器现场绘制，雨声由网页音频即时合成，并非歌曲音频；歌曲版权归原作者与发行方所有。</p>
+    </div>
+    <a href="#top">回到顶部</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = getComputedStyle(document.documentElement);
+  function tok(name) { return root.getPropertyValue(name).trim(); }
+  var C = { glass: tok('--color-glass'), paper: tok('--color-paper'), paper3: tok('--color-paper-3'), lamp: tok('--color-lamp'), drop: tok('--color-drop'), ink: tok('--color-ink'), accent: tok('--color-accent'), muted: tok('--color-muted') };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var words = ['', '一分', '二分', '三分', '四分', '五分', '六分', '七分', '八分', '九分', '十分'];
+
+  /* ---------- rain window ---------- */
+  var cv = document.getElementById('rain');
+  var ctx = cv.getContext('2d');
+  var W = 0, H = 0, dpr = 1, amount = 6, lights = [], beads = [], runs = [], streaks = [], bg = null, raf = 0;
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function paintBackground() {
+    bg = document.createElement('canvas');
+    bg.width = W * dpr; bg.height = H * dpr;
+    var b = bg.getContext('2d');
+    b.scale(dpr, dpr);
+    b.fillStyle = C.glass; b.fillRect(0, 0, W, H);
+    var g = b.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, C.paper); g.addColorStop(1, C.glass);
+    b.globalAlpha = 0.7; b.fillStyle = g; b.fillRect(0, 0, W, H);
+    // distant city lights, out of focus through wet glass
+    b.filter = 'blur(' + Math.round(Math.max(W, 600) / 70) + 'px)';
+    lights = [];
+    var n = Math.round(W / 38);
+    for (var i = 0; i < n; i++) {
+      var warm = Math.random() < 0.6;
+      lights.push({ x: rand(0, W), y: rand(H * 0.18, H * 0.75), r: rand(10, 46), a: rand(0.12, 0.42), c: warm ? C.lamp : C.drop });
+    }
+    lights.forEach(function (l) { b.globalAlpha = l.a; b.fillStyle = l.c; b.beginPath(); b.arc(l.x, l.y, l.r, 0, 6.283); b.fill(); });
+    b.filter = 'none'; b.globalAlpha = 1;
+  }
+
+  function seed() {
+    beads = []; runs = []; streaks = [];
+    var nb = Math.round((W * H) / 9000 * (amount / 6));
+    for (var i = 0; i < nb; i++) beads.push({ x: rand(0, W), y: rand(0, H), r: rand(0.8, 2.6) });
+    for (var j = 0; j < amount * 2; j++) runs.push(newRun(true));
+    for (var k = 0; k < amount * 14; k++) streaks.push(newStreak(true));
+  }
+  function newRun(anyY) { return { x: rand(0, W), y: anyY ? rand(-H, H) : rand(-120, -10), r: rand(2.4, 5), v: rand(0.6, 2.8), wob: rand(0, 6.28), trail: [] }; }
+  function newStreak(anyY) { return { x: rand(-40, W), y: anyY ? rand(0, H) : rand(-80, -10), l: rand(14, 38), v: rand(11, 19) }; }
+
+  function drawDrop(x, y, r, a) {
+    ctx.globalAlpha = a * 0.55; ctx.fillStyle = C.paper;
+    ctx.beginPath(); ctx.arc(x, y + r * 0.25, r, 0, 6.283); ctx.fill();
+    ctx.globalAlpha = a; ctx.fillStyle = C.drop;
+    ctx.beginPath(); ctx.arc(x - r * 0.3, y - r * 0.3, r * 0.42, 0, 6.283); ctx.fill();
+  }
+
+  function frame() {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.globalAlpha = 1;
+    ctx.drawImage(bg, 0, 0, W, H);
+    // falling rain beyond the glass
+    ctx.strokeStyle = C.drop; ctx.lineWidth = 1;
+    ctx.globalAlpha = 0.16;
+    ctx.beginPath();
+    for (var s = 0; s < streaks.length; s++) {
+      var st = streaks[s];
+      ctx.moveTo(st.x, st.y); ctx.lineTo(st.x + st.l * 0.18, st.y + st.l);
+      if (!reduce.matches) { st.y += st.v; st.x += st.v * 0.18; if (st.y > H) streaks[s] = newStreak(false); }
+    }
+    ctx.stroke();
+    // beads on the glass
+    for (var i = 0; i < beads.length; i++) drawDrop(beads[i].x, beads[i].y, beads[i].r, 0.5);
+    // running drops with trails
+    for (var j = 0; j < runs.length; j++) {
+      var d = runs[j];
+      if (!reduce.matches) {
+        d.wob += 0.05; d.y += d.v * (0.6 + Math.random() * 0.8); d.x += Math.sin(d.wob) * 0.35;
+        if (Math.random() < 0.3) { d.trail.push({ x: d.x, y: d.y - d.r }); if (d.trail.length > 46) d.trail.shift(); }
+        if (d.y - 200 > H) runs[j] = newRun(false);
+      }
+      for (var t = 0; t < d.trail.length; t++) drawDrop(d.trail[t].x, d.trail[t].y, d.r * 0.32, 0.35 * t / d.trail.length);
+      drawDrop(d.x, d.y, d.r, 0.85);
+    }
+    ctx.globalAlpha = 1;
+    if (!reduce.matches && !document.hidden) raf = requestAnimationFrame(frame);
+  }
+
+  function resize() {
+    var rect = cv.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = Math.max(1, Math.round(rect.width)); H = Math.max(1, Math.round(rect.height));
+    cv.width = W * dpr; cv.height = H * dpr;
+    paintBackground(); seed();
+    cancelAnimationFrame(raf); frame();
+  }
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(resize, 150); });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) { cancelAnimationFrame(raf); frame(); } });
+  if (reduce.addEventListener) reduce.addEventListener('change', function () { cancelAnimationFrame(raf); frame(); });
+  resize();
+
+  /* ---------- synthesized rain sound ---------- */
+  var ac = null, master = null, hiss = null, low = null, dropTimer = 0, playing = false;
+  var btn = document.getElementById('rainBtn');
+  var range = document.getElementById('rainAmount');
+  var out = document.getElementById('rainOut');
+  var AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) { btn.disabled = true; btn.textContent = '此浏览器无法发声'; }
+
+  function noiseBuffer() {
+    var len = ac.sampleRate * 3, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0), last = 0;
+    for (var i = 0; i < len; i++) { var w = Math.random() * 2 - 1; last = (last + 0.02 * w) / 1.02; d[i] = w * 0.55 + last * 3.2; }
+    return buf;
+  }
+  function build() {
+    ac = new AC();
+    master = ac.createGain(); master.gain.value = 0; master.connect(ac.destination);
+    var buf = noiseBuffer();
+    var src = ac.createBufferSource(); src.buffer = buf; src.loop = true;
+    hiss = ac.createBiquadFilter(); hiss.type = 'bandpass'; hiss.frequency.value = 2400; hiss.Q.value = 0.5;
+    low = ac.createBiquadFilter(); low.type = 'lowpass'; low.frequency.value = 500;
+    var gH = ac.createGain(); gH.gain.value = 0.35; var gL = ac.createGain(); gL.gain.value = 0.5;
+    src.connect(hiss); hiss.connect(gH); gH.connect(master);
+    src.connect(low); low.connect(gL); gL.connect(master);
+    src.start();
+  }
+  function drip() {
+    if (!playing) return;
+    var o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime;
+    o.frequency.setValueAtTime(rand(1400, 3200), t);
+    o.frequency.exponentialRampToValueAtTime(rand(500, 900), t + 0.05);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(rand(0.01, 0.04), t + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.1);
+    dropTimer = setTimeout(drip, rand(40, 420) / (amount / 5));
+  }
+  function level() { return 0.08 + amount * 0.045; }
+  function setLevel() {
+    if (!ac) return;
+    master.gain.setTargetAtTime(playing ? level() : 0, ac.currentTime, 0.4);
+    hiss.frequency.setTargetAtTime(1600 + amount * 160, ac.currentTime, 0.3);
+  }
+  btn.addEventListener('click', function () {
+    if (!AC) return;
+    if (!ac) build();
+    if (ac.state === 'suspended') ac.resume();
+    playing = !playing;
+    btn.setAttribute('aria-pressed', String(playing));
+    btn.textContent = playing ? '让雨停下' : '先听一场雨';
+    setLevel();
+    clearTimeout(dropTimer); if (playing) drip();
+  });
+  range.addEventListener('input', function () {
+    amount = +range.value; out.textContent = words[amount];
+    seed(); setLevel();
+    if (reduce.matches) frame();
+  });
+
+  /* ---------- drawn covers ---------- */
+  var covers = document.querySelectorAll('canvas[data-cover]');
+  covers.forEach(function (c) {
+    var k = +c.dataset.cover, x = c.getContext('2d'), S = c.width;
+    x.fillStyle = C.paper3; x.fillRect(0, 0, S, S);
+    x.strokeStyle = C.ink; x.fillStyle = C.ink;
+    if (k === 0) { // rain lines
+      x.globalAlpha = 0.5; x.lineWidth = 2;
+      for (var i = 0; i < 70; i++) { var px = (i * 97) % S, py = (i * 53) % S; x.beginPath(); x.moveTo(px, py); x.lineTo(px + 8, py + 46); x.stroke(); }
+      x.globalAlpha = 1; x.fillStyle = C.accent; x.beginPath(); x.arc(S * 0.7, S * 0.3, S * 0.08, 0, 6.283); x.fill();
+    } else if (k === 1) { // a road with stops
+      x.globalAlpha = 0.65; x.lineWidth = 3;
+      x.beginPath(); x.moveTo(S * 0.1, S * 0.62); x.lineTo(S * 0.9, S * 0.62); x.stroke();
+      for (var s = 0; s < 5; s++) { x.beginPath(); x.arc(S * (0.14 + s * 0.18), S * 0.62, s === 3 ? 14 : 8, 0, 6.283); s === 3 ? (x.fillStyle = C.accent, x.fill()) : x.stroke(); }
+    } else if (k === 2) { // autumn: falling leaves as arcs
+      x.globalAlpha = 0.6; x.lineWidth = 3;
+      for (var a = 0; a < 9; a++) { x.beginPath(); x.ellipse(S * (0.2 + (a % 3) * 0.3), S * (0.22 + Math.floor(a / 3) * 0.28), 26, 12, a * 0.7, 0, 6.283); x.stroke(); }
+      x.globalAlpha = 1; x.fillStyle = C.accent; x.beginPath(); x.ellipse(S * 0.5, S * 0.5, 26, 12, 0.6, 0, 6.283); x.fill();
+    } else { // concentric rings
+      x.globalAlpha = 0.5; x.lineWidth = 2;
+      for (var r = 1; r < 9; r++) { x.beginPath(); x.arc(S * 0.5, S * 0.55, r * 22, 0, 6.283); x.stroke(); }
+      x.globalAlpha = 1; x.fillStyle = C.accent; x.beginPath(); x.arc(S * 0.5, S * 0.55, 10, 0, 6.283); x.fill();
+    }
+  });
+})();
+</script>
+</body>
+</html>

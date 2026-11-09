@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>云烟成雨 · 房东的猫</title>
+<style>
+:root{
+  --ink:#1d2430;
+  --ink-soft:#4a5566;
+  --paper:#eef1f2;
+  --mist:#c9d3d8;
+  --accent:#6f8f9c;
+  --warm:#c98f6b;
+  --serif:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","SimSun",serif;
+  --sans:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.8;overflow-x:hidden}
+a{color:inherit}
+
+/* 导航 */
+nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;
+  padding:18px 6vw;transition:background .4s,box-shadow .4s,padding .4s;color:#eef3f5}
+nav.solid{background:rgba(238,241,242,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);box-shadow:0 1px 0 rgba(0,0,0,.06);padding:12px 6vw}
+nav .logo{font-family:var(--serif);font-size:20px;letter-spacing:.3em;text-decoration:none}
+nav ul{display:flex;gap:32px;list-style:none;font-size:14px;letter-spacing:.15em}
+nav ul a{text-decoration:none;opacity:.85}
+nav ul a:hover{opacity:1}
+
+/* 首屏 */
+.hero{position:relative;height:100vh;min-height:600px;overflow:hidden;color:#f2f6f7;
+  background:linear-gradient(180deg,#56687a 0%,#7d909c 45%,#a9b6bc 75%,#c7d0d3 100%)}
+#sky{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 8vw;gap:4vw}
+.title-block{display:flex;gap:36px;align-items:flex-start}
+.title-v{font-family:var(--serif);writing-mode:vertical-rl;font-size:clamp(56px,8vw,112px);letter-spacing:.25em;font-weight:400;
+  text-shadow:0 4px 30px rgba(30,40,55,.35);line-height:1}
+.sub-v{writing-mode:vertical-rl;font-family:var(--serif);font-size:16px;letter-spacing:.5em;opacity:.85;margin-top:40px}
+.sub-v span{display:block;margin-left:14px;font-size:13px;opacity:.75}
+.hero-card{max-width:380px;text-align:right}
+.hero-card .en{font-size:12px;letter-spacing:.5em;opacity:.7;text-transform:uppercase}
+.hero-card p.quote{font-family:var(--serif);font-size:clamp(18px,1.8vw,24px);margin:18px 0 28px;line-height:2}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 26px;border:1px solid rgba(255,255,255,.7);border-radius:40px;
+  color:#fff;text-decoration:none;font-size:14px;letter-spacing:.2em;background:rgba(255,255,255,.08);cursor:pointer;transition:.3s;font-family:inherit}
+.btn:hover{background:rgba(255,255,255,.22)}
+.scroll-tip{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.4em;opacity:.75;text-align:center}
+.scroll-tip i{display:block;width:1px;height:40px;background:#fff;margin:10px auto 0;animation:drip 2s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* 通用段落 */
+section.block{padding:120px 8vw;position:relative}
+.sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:56px}
+.sec-head .no{font-family:var(--serif);font-size:14px;color:var(--accent);letter-spacing:.2em}
+.sec-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3vw,40px);letter-spacing:.2em}
+.sec-head .line{flex:1;height:1px;background:linear-gradient(90deg,var(--mist),transparent)}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 1s ease,transform 1s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* 关于 */
+.about{display:grid;grid-template-columns:1.1fr 1fr;gap:6vw;align-items:center}
+.about p{color:var(--ink-soft);margin-bottom:18px;font-size:16px;text-align:justify}
+.about p strong{color:var(--ink);font-weight:600}
+.cover-wrap{position:relative;aspect-ratio:1;max-width:460px;width:100%;justify-self:center}
+#cover{width:100%;height:100%;display:block;border-radius:4px;box-shadow:0 30px 60px -20px rgba(30,40,55,.45)}
+.vinyl{position:absolute;top:6%;right:-14%;width:88%;aspect-ratio:1;border-radius:50%;z-index:-1;
+  background:repeating-radial-gradient(circle,#1b1e22 0 2px,#24282d 2px 4px);box-shadow:0 20px 40px rgba(0,0,0,.25);transition:transform 1s}
+.vinyl::after{content:"";position:absolute;inset:36%;border-radius:50%;background:radial-gradient(circle,#eef1f2 0 8%,var(--warm) 9% 100%)}
+.cover-wrap.playing .vinyl{animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* 信息卡 */
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--mist);border:1px solid var(--mist);margin-top:80px}
+.fact{background:var(--paper);padding:28px 24px}
+.fact .k{font-size:12px;letter-spacing:.3em;color:var(--accent)}
+.fact .v{font-family:var(--serif);font-size:22px;margin-top:8px}
+.fact .d{font-size:13px;color:var(--ink-soft);margin-top:4px}
+
+/* 歌词摘句 */
+.lyric-sec{background:#26313d;color:#e6ecef;overflow:hidden}
+.lyric-sec .sec-head .line{background:linear-gradient(90deg,rgba(255,255,255,.2),transparent)}
+#rain2{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.6}
+.lyric-stage{position:relative;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.lyric-line{font-family:var(--serif);font-size:clamp(24px,3.4vw,46px);letter-spacing:.18em;line-height:1.6;min-height:2.2em;transition:opacity .9s,filter .9s}
+.lyric-line.fade{opacity:0;filter:blur(8px)}
+.lyric-note{margin-top:24px;font-size:14px;color:#9fb0ba;letter-spacing:.15em;max-width:640px;min-height:3.6em;transition:opacity .9s}
+.lyric-note.fade{opacity:0}
+.dots{display:flex;gap:12px;justify-content:center;margin-top:36px}
+.dots button{width:28px;height:3px;border:0;background:rgba(255,255,255,.25);cursor:pointer;transition:.3s}
+.dots button.on{background:#e6ecef;width:48px}
+.copy-note{text-align:center;font-size:12px;color:#7d8d97;margin-top:40px;letter-spacing:.1em}
+
+/* 关键词 */
+.themes{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.theme{background:#fff;padding:36px 30px;border-radius:2px;position:relative;overflow:hidden;transition:transform .4s,box-shadow .4s}
+.theme:hover{transform:translateY(-6px);box-shadow:0 20px 40px -20px rgba(30,40,55,.3)}
+.theme canvas{width:64px;height:64px;display:block;margin-bottom:18px}
+.theme h3{font-family:var(--serif);font-weight:400;font-size:24px;letter-spacing:.2em;margin-bottom:10px}
+.theme p{color:var(--ink-soft);font-size:15px}
+.theme .big{position:absolute;right:-10px;bottom:-30px;font-family:var(--serif);font-size:140px;color:rgba(111,143,156,.08);line-height:1;pointer-events:none}
+
+/* 乐队 */
+.band{display:grid;grid-template-columns:1fr 1.2fr;gap:6vw;align-items:center;background:linear-gradient(180deg,var(--paper),#e3e8ea)}
+#catCanvas{width:100%;max-width:420px;aspect-ratio:1;display:block;justify-self:center}
+.band p{color:var(--ink-soft);margin-bottom:18px;text-align:justify}
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.tags span{font-size:13px;padding:5px 14px;border:1px solid var(--mist);border-radius:20px;color:var(--ink-soft);background:rgba(255,255,255,.5)}
+
+/* 聆听 */
+.listen{text-align:center}
+.listen .sec-head{justify-content:center}
+.listen .sec-head .line{display:none}
+.player{max-width:640px;margin:0 auto;background:#fff;border-radius:6px;padding:28px 32px;box-shadow:0 30px 60px -30px rgba(30,40,55,.35);display:flex;align-items:center;gap:24px;text-align:left}
+.player .pbtn{flex:none;width:58px;height:58px;border-radius:50%;border:0;background:var(--ink);color:#fff;cursor:pointer;display:grid;place-items:center;transition:.3s}
+.player .pbtn:hover{background:var(--accent)}
+.player .pbtn svg{width:22px;height:22px}
+.player .meta{flex:1;min-width:0}
+.player .meta b{font-family:var(--serif);font-weight:400;font-size:20px;letter-spacing:.15em}
+.player .meta small{display:block;color:var(--ink-soft);font-size:13px}
+#wave{width:100%;height:40px;display:block;margin-top:8px}
+.listen .hint{color:var(--ink-soft);font-size:14px;margin-top:22px}
+.scenes{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;margin-top:48px}
+.scenes div{padding:14px 22px;background:rgba(255,255,255,.6);border:1px solid var(--mist);font-size:14px;letter-spacing:.1em}
+.scenes div em{font-style:normal;color:var(--accent);margin-right:6px}
+
+footer{background:#1d2430;color:#8d9aa4;text-align:center;padding:56px 8vw;font-size:13px;line-height:2}
+footer .f-title{font-family:var(--serif);color:#e6ecef;font-size:22px;letter-spacing:.4em;margin-bottom:10px}
+
+/* 手机适配 */
+@media (max-width:860px){
+  nav ul{display:none}
+  .hero-inner{flex-direction:column;justify-content:center;padding:90px 7vw 80px;gap:40px}
+  .title-block{gap:20px}
+  .sub-v{margin-top:20px;font-size:14px}
+  .hero-card{text-align:center;max-width:none}
+  section.block{padding:80px 7vw}
+  .sec-head{margin-bottom:36px}
+  .about,.band{grid-template-columns:1fr;gap:48px}
+  .cover-wrap{max-width:300px}
+  .vinyl{right:-10%}
+  .facts{grid-template-columns:repeat(2,1fr);margin-top:56px}
+  .fact{padding:20px 16px}
+  .fact .v{font-size:18px}
+  .themes{grid-template-columns:1fr}
+  .band #catCanvas{order:-1;max-width:280px}
+  .player{padding:20px;gap:16px}
+  .lyric-line{letter-spacing:.08em}
+}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .cover-wrap.playing .vinyl,.scroll-tip i{animation:none}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="logo" href="#top">云烟成雨</a>
+  <ul>
+    <li><a href="#about">关于歌曲</a></li>
+    <li><a href="#lyrics">词句</a></li>
+    <li><a href="#themes">意象</a></li>
+    <li><a href="#band">房东的猫</a></li>
+    <li><a href="#listen">聆听</a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <div class="title-block">
+      <h1 class="title-v">云烟成雨</h1>
+      <div class="sub-v">房东的猫<span>演唱</span></div>
+    </div>
+    <div class="hero-card">
+      <div class="en">Clouds Turn into Rain</div>
+      <p class="quote">有些人走散了，就像云烟落成了雨，<br>再也回不到天上。</p>
+      <a class="btn" href="#about">走进这首歌 ↓</a>
+    </div>
+  </div>
+  <div class="scroll-tip">向下<i></i></div>
+</header>
+
+<section class="block" id="about">
+  <div class="sec-head reveal"><span class="no">壹</span><h2>关于歌曲</h2><span class="line"></span></div>
+  <div class="about">
+    <div class="reveal">
+      <p>《云烟成雨》是民谣乐队<strong>房东的猫</strong>演唱的一首歌曲，发行于 <strong>2017 年</strong>，作为动画《我是江小白》的片尾曲而被许多人熟知。</p>
+      <p>整首歌只有一把干净的木吉他、一段轻柔的旋律和一个温和的女声。没有激烈的编曲，也没有刻意的高音，它像一场下在城市里的小雨，安静地落下来，把那些说不出口的告别与想念一点点打湿。</p>
+      <p>歌名里的“云烟”是曾经轻盈缥缈的相遇，“成雨”则是它终于落地、化作回忆的样子——<strong>相逢一场，最终各自散去</strong>。这份淡淡的遗憾，让无数听众在某个深夜里按下了单曲循环。</p>
+    </div>
+    <div class="cover-wrap reveal" id="coverWrap">
+      <div class="vinyl"></div>
+      <canvas id="cover" width="800" height="800" aria-label="手绘封面：雨中的城市与云"></canvas>
+    </div>
+  </div>
+  <div class="facts reveal">
+    <div class="fact"><div class="k">演唱</div><div class="v">房东的猫</div><div class="d">独立民谣乐队</div></div>
+    <div class="fact"><div class="k">发行</div><div class="v">2017 年</div><div class="d">单曲</div></div>
+    <div class="fact"><div class="k">作词 / 作曲</div><div class="v">墨鱼丝 / 少年佩</div><div class="d">词曲创作</div></div>
+    <div class="fact"><div class="k">关联作品</div><div class="v">《我是江小白》</div><div class="d">动画片尾曲</div></div>
+  </div>
+</section>
+
+<section class="block lyric-sec" id="lyrics">
+  <canvas id="rain2" aria-hidden="true"></canvas>
+  <div class="sec-head reveal"><span class="no">贰</span><h2>词句摘录</h2><span class="line"></span></div>
+  <div class="lyric-stage reveal">
+    <div class="lyric-line" id="lyricLine"></div>
+    <div class="lyric-note" id="lyricNote"></div>
+    <div class="dots" id="dots"></div>
+  </div>
+  <p class="copy-note">* 仅摘录片段用于介绍，完整歌词与录音版权归原作者及版权方所有。</p>
+</section>
+
+<section class="block" id="themes">
+  <div class="sec-head reveal"><span class="no">叁</span><h2>歌里的意象</h2><span class="line"></span></div>
+  <div class="themes">
+    <div class="theme reveal"><canvas data-icon="cloud" width="128" height="128"></canvas><h3>云烟</h3><p>相遇时的轻盈和不确定。它飘在半空，看得见，却握不住，正如那些来不及说破的心事。</p><span class="big">云</span></div>
+    <div class="theme reveal"><canvas data-icon="rain" width="128" height="128"></canvas><h3>落雨</h3><p>云终究会落成雨。热闹散场之后，留下的是潮湿的街道，和一个人慢慢走回家的背影。</p><span class="big">雨</span></div>
+    <div class="theme reveal"><canvas data-icon="moon" width="128" height="128"></canvas><h3>晚安</h3><p>深夜里一句平常的晚安，是最轻也最重的牵挂。歌里的温柔，大多藏在这样细小的日常里。</p><span class="big">夜</span></div>
+  </div>
+</section>
+
+<section class="block band" id="band">
+  <canvas id="catCanvas" width="840" height="840" aria-label="插画：窗台上看雨的猫"></canvas>
+  <div class="reveal">
+    <div class="sec-head"><span class="no">肆</span><h2>关于房东的猫</h2><span class="line"></span></div>
+    <p>房东的猫是一支来自武汉的独立民谣乐队，以温柔清澈的女声与简洁的木吉他编配见长。他们的歌常常写普通人的生活：城市、旅途、离别、成长，以及那些平凡夜晚里的小情绪。</p>
+    <p>《云烟成雨》是乐队传唱度最高的作品之一。在它之后，许多人顺着这首歌找到了乐队的其他作品，也记住了这个有些俏皮的名字——就像一只住在出租屋里、安静看着窗外下雨的猫。</p>
+    <div class="tags"><span>#独立民谣</span><span>#木吉他</span><span>#治愈</span><span>#城市夜晚</span><span>#单曲循环</span></div>
+  </div>
+</section>
+
+<section class="block listen" id="listen">
+  <div class="sec-head reveal"><span class="no">伍</span><h2>在雨声里聆听</h2><span class="line"></span></div>
+  <div class="player reveal">
+    <button class="pbtn" id="playBtn" aria-label="播放雨声氛围">
+      <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>
+    </button>
+    <div class="meta">
+      <b>云烟成雨 · 氛围试听</b>
+      <small>页面生成的雨声与吉他泛音，帮你进入这首歌的情绪</small>
+      <canvas id="wave" width="800" height="80"></canvas>
+    </div>
+  </div>
+  <p class="hint reveal">完整歌曲请在各大正版音乐平台搜索「云烟成雨 房东的猫」收听。</p>
+  <div class="scenes reveal">
+    <div><em>☂</em>下雨的傍晚</div>
+    <div><em>☾</em>失眠的深夜</div>
+    <div><em>⇢</em>回家的地铁</div>
+    <div><em>✉</em>想念一个人时</div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-title">云烟成雨</div>
+  <div>房东的猫 · 2017</div>
+  <div>本页为非官方歌曲介绍页面，所有图形均由页面实时绘制。</div>
+</footer>
+
+<script>
+(function(){
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- 导航 ---------- */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('solid', window.scrollY > window.innerHeight * 0.6);
+window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+/* ---------- 显现动画 ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }), {threshold:.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ---------- 首屏：云、城市、雨 ---------- */
+const sky = document.getElementById('sky'), sc = sky.getContext('2d');
+let W, H, drops = [], clouds = [], buildings = [], lights = [];
+function rnd(a,b){return a + Math.random()*(b-a)}
+function setupSky(){
+  W = sky.clientWidth; H = sky.clientHeight;
+  sky.width = W*DPR; sky.height = H*DPR; sc.setTransform(DPR,0,0,DPR,0,0);
+  const n = Math.floor(W*H/9000);
+  drops = Array.from({length:n}, () => ({x:rnd(0,W), y:rnd(0,H), l:rnd(10,24), v:rnd(6,12), a:rnd(.15,.45)}));
+  clouds = Array.from({length:7}, (_,i) => ({x:rnd(-200,W), y:rnd(H*.04,H*.4), s:rnd(.7,1.6), v:rnd(.08,.25), a:rnd(.25,.55)}));
+  buildings = []; lights = [];
+  for (let layer=0; layer<2; layer++){
+    let x = -20;
+    while (x < W + 20){
+      const w = rnd(30,90), h = layer ? rnd(H*.08,H*.24) : rnd(H*.14,H*.38);
+      buildings.push({x, w, h, layer});
+      if (layer){
+        for (let wy = H - h + 12; wy < H - 10; wy += 16)
+          for (let wx = x + 6; wx < x + w - 8; wx += 12)
+            if (Math.random() < .22) lights.push({x:wx, y:wy, p:rnd(0,6.28)});
+      }
+      x += w + rnd(-4,6);
+    }
+  }
+}
+function cloud(ctx,x,y,s,a){
+  ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+  const g = ctx.createRadialGradient(0,0,10,0,0,140);
+  g.addColorStop(0,`rgba(240,244,246,${a})`); g.addColorStop(1,'rgba(240,244,246,0)');
+  ctx.fillStyle = g;
+  [[0,0,120],[-90,20,80],[90,15,90],[40,-30,80],[-40,-20,70]].forEach(([cx,cy,r])=>{ctx.beginPath();ctx.arc(cx,cy,r,0,7);ctx.fill();});
+  ctx.restore();
+}
+let t = 0;
+function drawSky(){
+  t += 1;
+  sc.clearRect(0,0,W,H);
+  clouds.forEach(c => { c.x += c.v; if (c.x > W + 250) c.x = -250; cloud(sc, c.x, c.y, c.s, c.a); });
+  // 城市
+  buildings.forEach(b => {
+    sc.fillStyle = b.layer ? 'rgba(52,64,78,.92)' : 'rgba(110,126,140,.55)';
+    sc.fillRect(b.x, H - b.h, b.w, b.h);
+  });
+  lights.forEach(l => {
+    const a = .45 + .35*Math.sin(t*.01 + l.p);
+    sc.fillStyle = `rgba(240,196,140,${a})`; sc.fillRect(l.x, l.y, 4, 6);
+  });
+  // 地面雾
+  const fog = sc.createLinearGradient(0,H*.75,0,H);
+  fog.addColorStop(0,'rgba(200,210,214,0)'); fog.addColorStop(1,'rgba(200,210,214,.55)');
+  sc.fillStyle = fog; sc.fillRect(0,H*.75,W,H*.25);
+  // 雨
+  sc.lineWidth = 1;
+  drops.forEach(d => {
+    sc.strokeStyle = `rgba(235,242,246,${d.a})`;
+    sc.beginPath(); sc.moveTo(d.x,d.y); sc.lineTo(d.x - d.l*.18, d.y + d.l); sc.stroke();
+    d.y += d.v; d.x -= d.v*.18;
+    if (d.y > H){ d.y = -d.l; d.x = rnd(0, W + 60); }
+  });
+}
+setupSky();
+
+/* ---------- 歌词区小雨 ---------- */
+const r2 = document.getElementById('rain2'), rc = r2.getContext('2d');
+let R2W, R2H, d2 = [];
+function setupR2(){
+  R2W = r2.clientWidth; R2H = r2.clientHeight;
+  r2.width = R2W*DPR; r2.height = R2H*DPR; rc.setTransform(DPR,0,0,DPR,0,0);
+  d2 = Array.from({length:Math.floor(R2W*R2H/14000)}, () => ({x:rnd(0,R2W), y:rnd(0,R2H), l:rnd(8,18), v:rnd(3,6)}));
+}
+function drawR2(){
+  rc.clearRect(0,0,R2W,R2H); rc.strokeStyle = 'rgba(200,215,225,.28)';
+  rc.beginPath();
+  d2.forEach(d => { rc.moveTo(d.x,d.y); rc.lineTo(d.x, d.y + d.l); d.y += d.v; if (d.y > R2H) { d.y = -d.l; d.x = rnd(0,R2W); } });
+  rc.stroke();
+}
+setupR2();
+
+/* ---------- 封面 ---------- */
+function drawCover(){
+  const c = document.getElementById('cover'), x = c.getContext('2d'), S = 800;
+  const g = x.createLinearGradient(0,0,0,S);
+  g.addColorStop(0,'#8ea2ad'); g.addColorStop(.6,'#c5d0d4'); g.addColorStop(1,'#e9eded');
+  x.fillStyle = g; x.fillRect(0,0,S,S);
+  // 远山
+  x.fillStyle = 'rgba(120,140,152,.45)';
+  x.beginPath(); x.moveTo(0,520);
+  for (let i=0;i<=S;i+=20) x.lineTo(i, 470 + Math.sin(i*.012)*40 + Math.sin(i*.04)*12);
+  x.lineTo(S,S); x.lineTo(0,S); x.fill();
+  // 云
+  cloud(x,220,200,1.3,.9); cloud(x,560,150,1.0,.75); cloud(x,430,300,.8,.6);
+  // 城市剪影
+  let bx = 0; x.fillStyle = '#3e4b59';
+  const seed = [60,140,90,200,110,170,80,230,120,150,95,180];
+  let i = 0;
+  while (bx < S){ const w = 50 + (seed[i%12]%45), h = seed[i%12] + 60; x.fillRect(bx, S - h - 40, w, h + 40); bx += w + 6; i++; }
+  x.fillStyle = 'rgba(240,196,140,.8)';
+  for (let k=0;k<70;k++){ x.fillRect((k*97)%S, S - 60 - ((k*53)%220), 6, 9); }
+  // 雨丝
+  x.strokeStyle = 'rgba(255,255,255,.45)'; x.lineWidth = 1.5;
+  for (let k=0;k<160;k++){ const px = (k*137)%S, py = (k*251)%S; x.beginPath(); x.moveTo(px,py); x.lineTo(px-4,py+26); x.stroke(); }
+  // 标题
+  x.fillStyle = '#1d2430'; x.font = '64px "Songti SC","STSong","Noto Serif SC",serif'; x.textBaseline = 'top';
+  ['云','烟','成','雨'].forEach((ch,k) => x.fillText(ch, 680, 70 + k*82));
+  x.font = '22px "PingFang SC","Microsoft YaHei",sans-serif'; x.fillStyle = 'rgba(29,36,48,.75)';
+  ['房','东','的','猫'].forEach((ch,k) => x.fillText(ch, 630, 80 + k*30));
+  x.fillStyle = '#c98f6b'; x.fillRect(632, 210, 18, 18);
+}
+drawCover();
+
+/* ---------- 意象图标 ---------- */
+document.querySelectorAll('canvas[data-icon]').forEach(c => {
+  const x = c.getContext('2d'), k = c.dataset.icon;
+  x.strokeStyle = '#6f8f9c'; x.fillStyle = '#6f8f9c'; x.lineWidth = 5; x.lineCap = 'round';
+  const cl = (cx,cy) => { x.beginPath(); x.arc(cx-22,cy,18,Math.PI*.5,Math.PI*1.5); x.arc(cx,cy-14,24,Math.PI,0); x.arc(cx+26,cy+2,16,Math.PI*1.5,Math.PI*.5); x.closePath(); x.stroke(); };
+  if (k==='cloud'){ cl(62,64); x.globalAlpha=.4; x.beginPath(); x.moveTo(20,100); x.lineTo(108,100); x.stroke(); }
+  if (k==='rain'){ cl(62,46); [[40,82],[62,92],[84,82],[52,108],[76,110]].forEach(([a,b])=>{x.beginPath();x.moveTo(a,b);x.lineTo(a-4,b+10);x.stroke();}); }
+  if (k==='moon'){ x.beginPath(); x.arc(64,64,36,Math.PI*.3,Math.PI*1.7); x.arc(80,52,30,Math.PI*1.45,Math.PI*.55,true); x.stroke();
+    [[100,30],[104,90],[28,24]].forEach(([a,b])=>{x.beginPath();x.arc(a,b,3,0,7);x.fill();}); }
+});
+
+/* ---------- 猫与窗 ---------- */
+const cat = document.getElementById('catCanvas'), cx = cat.getContext('2d');
+let catDrops = Array.from({length:60}, () => ({x:rnd(140,700), y:rnd(100,560), v:rnd(2,4)}));
+let tailT = 0, blink = 0;
+function drawCat(){
+  const S = 840; tailT += .03;
+  cx.clearRect(0,0,S,S);
+  // 窗
+  cx.fillStyle = '#d7dfe2'; cx.fillRect(100,60,640,560);
+  const wg = cx.createLinearGradient(0,100,0,580); wg.addColorStop(0,'#6d8191'); wg.addColorStop(1,'#a7b6be');
+  cx.fillStyle = wg; cx.fillRect(130,90,580,500);
+  cloud(cx, 300, 180, .9, .55); cloud(cx, 560, 240, .7, .45);
+  cx.fillStyle = 'rgba(60,74,88,.8)';
+  [[150,420,70,170],[230,380,60,210],[300,450,80,140],[390,350,70,240],[470,430,90,160],[570,400,60,190],[640,460,70,130]].forEach(r=>cx.fillRect(...r));
+  cx.save(); cx.beginPath(); cx.rect(130,90,580,500); cx.clip();
+  cx.strokeStyle = 'rgba(240,246,248,.55)'; cx.lineWidth = 2;
+  catDrops.forEach(d => { cx.beginPath(); cx.moveTo(d.x,d.y); cx.lineTo(d.x-2,d.y+18); cx.stroke(); d.y += d.v; if (d.y > 590){ d.y = 90; d.x = rnd(140,700);} });
+  cx.restore();
+  cx.fillStyle = '#d7dfe2'; cx.fillRect(412,90,16,500); cx.fillRect(130,330,580,14);
+  // 窗台
+  cx.fillStyle = '#b9a28e'; cx.fillRect(70,600,700,36);
+  cx.fillStyle = 'rgba(0,0,0,.08)'; cx.fillRect(70,636,700,12);
+  // 猫（背影）
+  const bx = 420, by = 600;
+  cx.fillStyle = '#2b2f36';
+  // 尾巴
+  cx.lineWidth = 26; cx.lineCap = 'round'; cx.strokeStyle = '#2b2f36';
+  cx.beginPath(); cx.moveTo(bx+80, by-14);
+  cx.quadraticCurveTo(bx+190, by-10 + Math.sin(tailT)*12, bx+180 + Math.sin(tailT)*20, by+70); cx.stroke();
+  // 身体
+  cx.beginPath(); cx.ellipse(bx, by-80, 105, 95, 0, 0, Math.PI*2); cx.fill();
+  cx.fillRect(bx-105, by-80, 210, 80);
+  // 头
+  cx.beginPath(); cx.ellipse(bx, by-210, 72, 64, 0, 0, Math.PI*2); cx.fill();
+  // 耳
+  cx.beginPath(); cx.moveTo(bx-62,by-236); cx.lineTo(bx-52,by-305); cx.lineTo(bx-8,by-262); cx.fill();
+  cx.beginPath(); cx.moveTo(bx+62,by-236); cx.lineTo(bx+52,by-305); cx.lineTo(bx+8,by-262); cx.fill();
+  // 窗上的呵气
+  blink += .02;
+  cx.fillStyle = `rgba(255,255,255,${.12 + .08*Math.sin(blink)})`;
+  cx.beginPath(); cx.ellipse(bx, by-290, 70, 34, 0, 0, Math.PI*2); cx.fill();
+  // 窗边小字
+  cx.fillStyle = 'rgba(29,36,48,.55)'; cx.font = '26px "Songti SC","STSong",serif';
+  cx.fillText('等 雨 停', 600, 700);
+}
+
+/* ---------- 词句轮播 ---------- */
+const lines = [
+  ['云烟成雨', '歌名本身就是一句诗：轻盈的相遇，最终化作落地的回忆。'],
+  ['你的晚安 是下意识的恻隐', '一句再普通不过的“晚安”，被听成了温柔，也被听成了距离。'],
+  ['我多想再见你', '歌里最直白的一句。没有修辞，只是一个很简单、很难实现的愿望。'],
+  ['哪怕匆匆一眼就别离', '不求重来，只求再看一眼——遗憾被唱得极轻，因此格外动人。']
+];
+const lineEl = document.getElementById('lyricLine'), noteEl = document.getElementById('lyricNote'), dotsEl = document.getElementById('dots');
+let li = 0, ltimer;
+lines.forEach((_,i) => { const b = document.createElement('button'); b.setAttribute('aria-label','第'+(i+1)+'句'); b.onclick = () => showLine(i, true); dotsEl.appendChild(b); });
+function showLine(i, manual){
+  li = i; lineEl.classList.add('fade'); noteEl.classList.add('fade');
+  setTimeout(() => {
+    lineEl.textContent = lines[i][0]; noteEl.textContent = lines[i][1];
+    lineEl.classList.remove('fade'); noteEl.classList.remove('fade');
+    [...dotsEl.children].forEach((d,k) => d.classList.toggle('on', k===i));
+  }, manual ? 400 : 900);
+  clearInterval(ltimer); ltimer = setInterval(() => showLine((li+1) % lines.length), 6000);
+}
+showLine(0);
+
+/* ---------- 氛围音（Web Audio 合成） ---------- */
+let actx, master, playing = false, noteTimer, analyser;
+const playBtn = document.getElementById('playBtn'), playIcon = document.getElementById('playIcon'), coverWrap = document.getElementById('coverWrap');
+function initAudio(){
+  actx = new (window.AudioContext || window.webkitAudioContext)();
+  master = actx.createGain(); master.gain.value = 0;
+  analyser = actx.createAnalyser(); analyser.fftSize = 256;
+  master.connect(analyser); analyser.connect(actx.destination);
+  // 雨声：滤波噪声
+  const len = actx.sampleRate * 2, buf = actx.createBuffer(1, len, actx.sampleRate), d = buf.getChannelData(0);
+  let last = 0; for (let i=0;i<len;i++){ const w = Math.random()*2-1; last = (last + .02*w)/1.02; d[i] = last*3.5 + w*.05; }
+  const src = actx.createBufferSource(); src.buffer = buf; src.loop = true;
+  const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1800;
+  const ng = actx.createGain(); ng.gain.value = .5;
+  src.connect(lp); lp.connect(ng); ng.connect(master); src.start();
+}
+// 类似吉他拨弦的音（C 大调五声音阶附近）
+const scale = [261.63, 293.66, 329.63, 392.0, 440.0, 523.25, 587.33, 659.25];
+const prog = [[0,2,4],[5,0,2],[3,5,0],[4,1,3]];
+let step = 0;
+function pluck(f, when, vol){
+  const o = actx.createOscillator(), g = actx.createGain(), f2 = actx.createBiquadFilter();
+  o.type = 'triangle'; o.frequency.value = f;
+  f2.type = 'lowpass'; f2.frequency.value = 2200;
+  g.gain.setValueAtTime(0, when); g.gain.linearRampToValueAtTime(vol, when + .01); g.gain.exponentialRampToValueAtTime(.0001, when + 2.6);
+  o.connect(f2); f2.connect(g); g.connect(master); o.start(when); o.stop(when + 2.8);
+}
+function schedule(){
+  const now = actx.currentTime, chord = prog[Math.floor(step/4) % prog.length], n = chord[step % 3];
+  pluck(scale[n] / 2, now, .16);
+  if (step % 4 === 0) pluck(scale[chord[0]] / 4, now, .14);
+  if (Math.random() < .3) pluck(scale[(n+2) % scale.length], now + .35, .07);
+  step++;
+}
+function toggle(){
+  if (!actx) initAudio();
+  if (actx.state === 'suspended') actx.resume();
+  playing = !playing;
+  master.gain.cancelScheduledValues(actx.currentTime);
+  master.gain.linearRampToValueAtTime(playing ? .6 : 0, actx.currentTime + 1.2);
+  clearInterval(noteTimer);
+  if (playing){ schedule(); noteTimer = setInterval(schedule, 700); }
+  playIcon.innerHTML = playing ? '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>' : '<path d="M7 4.5v15l12-7.5z"/>';
+  playBtn.setAttribute('aria-label', playing ? '暂停' : '播放雨声氛围');
+  coverWrap.classList.toggle('playing', playing);
+}
+playBtn.addEventListener('click', toggle);
+
+const wave = document.getElementById('wave'), wc = wave.getContext('2d');
+let waveData = new Uint8Array(128);
+function drawWave(){
+  const w = wave.width, h = wave.height; wc.clearRect(0,0,w,h);
+  const bars = 64, bw = w / bars;
+  if (analyser && playing) analyser.getByteFrequencyData(waveData);
+  for (let i=0;i<bars;i++){
+    let v = (analyser && playing) ? waveData[i] / 255 : .08 + .04*Math.sin(i*.5 + t*.03);
+    const bh = Math.max(4, v*h);
+    wc.fillStyle = i/bars < .5 ? '#6f8f9c' : '#a9bcc4';
+    wc.fillRect(i*bw + 2, (h - bh)/2, bw - 4, bh);
+  }
+}
+
+/* ---------- 主循环（仅在可见时绘制） ---------- */
+const visible = new Map();
+const vio = new IntersectionObserver(es => es.forEach(e => visible.set(e.target, e.isIntersecting)));
+[sky, r2, cat, wave].forEach(el => vio.observe(el));
+function loop(){
+  if (visible.get(sky)) drawSky();
+  if (visible.get(r2)) drawR2();
+  if (visible.get(cat)) drawCat();
+  if (visible.get(wave)) drawWave();
+  if (!reduce) requestAnimationFrame(loop);
+}
+if (reduce){ drawSky(); drawCat(); drawWave(); } else loop();
+
+let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { setupSky(); setupR2(); if (reduce) drawSky(); }, 150); });
+})();
+</script>
+</body>
+</html>

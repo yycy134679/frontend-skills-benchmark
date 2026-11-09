@@ -16,6 +16,8 @@ export ANTHROPIC_AUTH_TOKEN=magpie
 bash bench/run.sh --prompt <提示词文件> --model codex/gpt-6.1-terra --out ~/Code/benchmark-runs/<案例>/<组名>
 ```
 
+直连 Anthropic 官方接口时不导出上面两个变量（在 Claude Code 会话里还要 `env -u ANTHROPIC_BASE_URL` 去掉会话注入的值），`run.sh` 会读取命令行 claude 的登录令牌，`--model` 填官方模型 ID，如 `claude-opus-5-5`。
+
 技能组追加 `--skill <技能名> --skill-dir frontend-skills/<目录>`，对照组只去掉这两个参数，其余保持一致。思考强度用 `--effort` 指定，默认 `high`；同一案例的各组必须相同。
 
 技能名由技能的 `SKILL.md` 中 `name` 字段决定，与目录名无关：`frontend-skills/taste-skill` 的技能名是 `design-taste-frontend`，挂载时必须使用这个名字。
