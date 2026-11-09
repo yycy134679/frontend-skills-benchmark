@@ -11,7 +11,7 @@ export ANTHROPIC_AUTH_TOKEN=magpie
 bash bench/run.sh \
   --prompt /path/to/case.md \
   --skill frontend-design \
-  --skill-dir "$HOME/.config/magpie/library/skills/frontend-design" \
+  --skill-dir frontend-skills/frontend-design \
   --model codex/gpt-6.1-terra \
   --out "$HOME/Code/benchmark-runs/coffee-fd"
 ```
@@ -24,6 +24,8 @@ bash bench/run.sh \
   --model codex/gpt-6.1-terra \
   --out "$HOME/Code/benchmark-runs/coffee-control"
 ```
+
+思考强度用 `--effort` 指定，默认 `high`，写入 `run.meta`；同一案例的技能组与对照组必须使用相同的值。
 
 `--out` 必须位于仓库之外，脚本会直接拒绝仓库内的路径，避免模型读到案例提示词、基准记录和画廊数据。
 
@@ -71,6 +73,12 @@ bash bench/run.sh \
 - 生成了 `index.html` 但文件为空。
 
 生成进程由 `timed_run.py` 使用单调时钟独立计时，耗时覆盖进程启动到退出，不包括隔离准备与核验。核验通过时打印技能清单、技能调用、实际模型、轮次、实测耗时（分钟）与页面大小；`run.meta` 使用同一份耗时。后台代理通知可能触发新一轮处理，此时结果文件的 `duration_ms` 和 `num_turns` 只表示最后一段；脚本改从完整主会话记录汇总轮次。旧运行没有 `elapsed_ms` 时，单独运行核验脚本会显示耗时未知，不把可能偏短的自报耗时当作实测耗时。Claude Code 调用第三方模型时统计的费用不准确，脚本不再读取或记录费用。
+
+计时与轮次汇总有一组集成测试，用假的 `claude` 进程跑完整的 `run.sh`，不调用真实模型。改动 `run.sh`、`timed_run.py` 或 `verify_run.py` 后运行：
+
+```bash
+python3 -m unittest bench/test_timing.py
+```
 
 ## 模型选择
 

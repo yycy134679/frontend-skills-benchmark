@@ -60,3 +60,5 @@ bash bench/run.sh \
 | [frontend-skills/](frontend-skills/) | 参与对比的上游技能快照 |
 | [bench/](bench/) | 隔离运行与结果核验脚本 |
 | [案例提示词.md](案例提示词.md) | 案例需求提示词 |
+| [产品概要设计.md](产品概要设计.md) | 画廊的产品定位与功能设计 |
+| [gallery-prototype/](gallery-prototype/) | 首页设计方向的候选与选定记录 |

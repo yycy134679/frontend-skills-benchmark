@@ -29,7 +29,7 @@ usage() {
   bash bench/run.sh \
     --prompt case.md \
     --skill frontend-design \
-    --skill-dir "$HOME/.config/magpie/library/skills/frontend-design" \
+    --skill-dir frontend-skills/frontend-design \
     --model codex/gpt-6.1-terra \
     --out "$HOME/Code/benchmark-runs/coffee-fd"
 USAGE

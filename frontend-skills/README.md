@@ -29,7 +29,7 @@ bash bench/run.sh \
   --out "$HOME/Code/benchmark-runs/coffee-oil-ui"
 ```
 
-`--skill` 填写技能自身的名称，`--skill-dir` 填写上表中的目录。`taste-skill` 的技能名是 `design-taste-frontend`，其余三个与目录名一致。
+`--skill` 填写技能自身的名称，`--skill-dir` 填写上表中的目录。`taste-skill` 的技能名是 `design-taste-frontend`，其余四个与目录名一致。
 
 ## 更新方式
 
@@ -39,4 +39,4 @@ git clone --depth 1 https://github.com/oil-oil/oil-ui.git /path/to/oil-ui
 
 重新下载后覆盖对应目录，并把新的提交号写回上表。`impeccable` 取 `plugin/skills/impeccable`，`frontend-design` 取 `skills/frontend-design`，`taste-skill` 取 `skills/taste-skill`，`hallmark` 取 `skills/hallmark`。
 
-快照不包含各仓库的命令行工具、构建配置、测试与示例站点，只保留技能运行所需的 `SKILL.md`、`references`、`scripts` 与 `assets`。
+除 `oil-ui` 外，快照只取上游的技能子目录，不包含仓库的命令行工具、构建配置、测试与示例站点，保留其中的 `SKILL.md`、参考文档、脚本、素材与许可文件。`oil-ui` 的仓库根目录就是技能本身，快照按整个仓库保留，因此含有 `tests/`、`.github/` 与多语言 README。

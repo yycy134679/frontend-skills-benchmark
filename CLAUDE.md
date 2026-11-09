@@ -16,7 +16,7 @@ export ANTHROPIC_AUTH_TOKEN=magpie
 bash bench/run.sh --prompt <提示词文件> --model codex/gpt-6.1-terra --out ~/Code/benchmark-runs/<案例>/<组名>
 ```
 
-技能组追加 `--skill <技能名> --skill-dir frontend-skills/<目录>`，对照组只去掉这两个参数，其余保持一致。
+技能组追加 `--skill <技能名> --skill-dir frontend-skills/<目录>`，对照组只去掉这两个参数，其余保持一致。思考强度用 `--effort` 指定，默认 `high`；同一案例的各组必须相同。
 
 技能名由技能的 `SKILL.md` 中 `name` 字段决定，与目录名无关：`frontend-skills/taste-skill` 的技能名是 `design-taste-frontend`，挂载时必须使用这个名字。
 
@@ -34,14 +34,15 @@ python3 -m http.server 8765 --directory .
 
 然后打开 `http://localhost:8765/`。首页的预览图与示例链接都使用相对路径，直接打开 `index.html` 也能浏览，通过本地服务器预览更接近发布环境。
 
-仓库没有构建步骤与单元测试。改动后的验证方式是实际跑一组生成任务，查看 `verify_run.py` 的输出与生成的页面；改动首页时，在 1440 与 375 两个宽度下检查案例轨道、图片与跳转链接。
+仓库没有构建步骤。唯一的自动测试是 `python3 -m unittest bench/test_timing.py`，用假的 `claude` 进程检查 `run.sh` 的计时与轮次汇总，改动 `run.sh`、`timed_run.py` 或 `verify_run.py` 后运行。其余改动的验证方式是实际跑一组生成任务，查看 `verify_run.py` 的输出与生成的页面；改动首页时，在 1440 与 375 两个宽度下检查案例轨道、图片与跳转链接。
 
 未另行说明时，同一案例的多组生成默认三路并发：调度脚本写在 `.tmp/` 下（该目录已忽略），同时保持三个生成进程，任一组结束后补入下一组。
 
 ## 静态画廊
 
 - 根 `index.html` 是正式首页，采用纵向案例、横向结果轨道的版式，点击缩略图在新标签页打开 `examples/` 下的成品，滚动位置存入 `sessionStorage`。
-- `assets/previews/case-NN/<技能名>.jpg` 是 1440×900 的首屏截图，由首页直接引用；新增案例时同步补齐截图。
+- `assets/previews/case-NN/<技能目录名>.jpg` 是 1440×900 的首屏截图，由首页直接引用；文件名用 `frontend-skills/` 下的目录名，对照组为 `no-skill`（如 `taste-skill.jpg`，不是 `design-taste-frontend.jpg`）。新增案例时同步补齐截图。
+- 部分案例在章节色带上提供模型切换，补充模型的结果放在 `examples/case-NN/<模型>-<思考强度>/<技能目录名>/`，截图放在 `assets/previews/case-NN/<模型>-<思考强度>/<技能目录名>.jpg`（如 `deepseek-v4.1-flash-1017-max/`），对照记录中另起一节记录。
 - `gallery-prototype/design-demos/dir-1.html` 是首页的设计源文件，与根首页内容同步，仅资源路径不同（`../../assets/`、`../../examples/`）。
 - [gallery-prototype/direction-approved.md](gallery-prototype/direction-approved.md) 记录选定方向与用户原话，[gallery-prototype/directions.md](gallery-prototype/directions.md) 保存全部候选与筛选理由。`gallery-prototype/` 已入库，用于追溯设计过程，不属于归档案例。
 - 归档新案例时，需要把成品放进 `examples/case-NN/`，补齐 `对照记录.md` 与 `assets/previews/case-NN/`，再更新首页的案例目录、章节色带、提示词、结果卡片与生成说明。
@@ -49,7 +50,7 @@ python3 -m http.server 8765 --directory .
 
 ## 运行链路
 
-`bench/run.sh` 承担全部隔离工作：检查参数 → 把提示词复制到输出目录 → 技能组把技能目录复制成单技能插件（`.claude-plugin/plugin.json` 加上 `skills/<技能名>`）→ 用 `env -i` 启动 `claude -p` → 调用 `verify_run.py` → 写 `run.meta`。
+`bench/run.sh` 承担全部隔离工作：检查参数 → 把提示词复制到输出目录 → 技能组把技能目录复制成单技能插件（`.claude-plugin/plugin.json` 加上 `skills/<技能名>`）→ 用 `env -i` 启动 `claude -p`，由 `timed_run.py` 独立计时并写入 `elapsed_ms` → 调用 `verify_run.py` → 从完整会话记录汇总轮次，写 `run.meta`。
 
 隔离依赖五层同时生效：一次性 `CLAUDE_CONFIG_DIR`、`CLAUDE_CODE_DISABLE_CLAUDE_MDS=1`、`CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1`、空 MCP 配置、`--plugin-dir` 只挂载一个技能。`HOME` 必须保留真实主目录，改动 `HOME` 会让 `~/.claude/skills` 下的个人技能全部进入技能清单。细节与失败过的配置写法见 [bench/README.md](bench/README.md)。
 
@@ -57,8 +58,8 @@ python3 -m http.server 8765 --directory .
 
 ## 目录约定
 
-- `examples/case-NN/<技能名>-claude-code/`：单个结果的成品目录，自包含、无外部依赖，样式与脚本内联，图片内嵌。通常包含 `index.html`；提示词要求多页时还会有 `work.html` 等页面，页面之间用相对链接。
-- `examples/case-NN/对照记录.md`：汇总该案例的运行条件、六组指标与页面观察；`examples/case-NN` 的编号递增。
+- `examples/case-NN/<技能目录名>-claude-code/`：单个结果的成品目录（对照组为 `no-skill-claude-code`），自包含、无外部依赖，样式与脚本内联，图片内嵌。通常包含 `index.html`；提示词要求多页时还会有 `work.html` 等页面，页面之间用相对链接。
+- `examples/case-NN/对照记录.md`：汇总该案例的运行条件、各组指标与页面观察；`examples/case-NN` 的编号递增。
 - 原始运行目录（`result.json`、`cfg-*` 会话记录、`run.meta`）放在仓库外的 `~/Code/benchmark-runs/<案例>/`，体积大且只用于追溯，不入库。
 - `frontend-skills/` 是上游技能的只读快照，来源仓库、提交号与许可证记录在 [frontend-skills/README.md](frontend-skills/README.md)，不要修改其中的技能内容。
 - [案例提示词.md](案例提示词.md) 保存各案例的提示词原文；实际运行时在提示词末尾补一段「交付要求」，写明文件名、单文件与内联约束。
