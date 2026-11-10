@@ -25,7 +25,7 @@ bash bench/run.sh \
   --prompt /path/to/case.md \
   --skill oil-ui \
   --skill-dir frontend-skills/oil-ui \
-  --model codex/gpt-6.1-terra \
+  --model <模型 ID> \
   --out "$HOME/Code/benchmark-runs/coffee-oil-ui"
 ```
 

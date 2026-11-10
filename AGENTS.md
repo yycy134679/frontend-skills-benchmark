@@ -7,12 +7,13 @@
 运行一组生成任务，输出目录必须是仓库外尚不存在的新目录。脚本先解析符号链接与 `..` 后检查位置，再原子创建目录；失败重跑使用新目录：
 
 ```bash
-export ANTHROPIC_BASE_URL=http://127.0.0.1:3425
-export ANTHROPIC_AUTH_TOKEN=magpie
-bash bench/run.sh --prompt <提示词文件> --model codex/gpt-6.1-terra --out ~/Code/benchmark-runs/<案例>/<组名>
+source bench/local.env
+bash bench/run.sh --prompt <提示词文件> --model "$BENCH_MODEL" --out ~/Code/benchmark-runs/<案例>/<组名>
 ```
 
-直连 Anthropic 官方接口时不导出上面两个变量（在 Claude Code 会话里还要 `env -u ANTHROPIC_BASE_URL` 去掉会话注入的值），`run.sh` 会读取命令行 claude 的登录令牌，`--model` 填官方模型 ID，如 `claude-opus-5-5`。
+`bench/local.env` 是本机的模型代理配置（`ANTHROPIC_BASE_URL`、`ANTHROPIC_AUTH_TOKEN` 与默认模型 `BENCH_MODEL`），已被 `.gitignore` 忽略。仓库公开发布，代理地址、令牌与路由方式只写在这个文件里，不要写进任何入库文件；用户指定其他模型时以用户为准。
+
+直连 Anthropic 官方接口时不加载该文件（在 Claude Code 会话里还要 `env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN` 去掉会话注入的值），`run.sh` 会读取命令行 claude 的登录令牌，`--model` 填官方模型 ID，如 `claude-opus-5-5`。
 
 技能组追加 `--skill <技能名> --skill-dir frontend-skills/<目录>`，对照组只去掉这两个参数，其余保持一致。思考强度用 `--effort` 指定，默认 `high`；同一案例的各组必须相同。
 
@@ -48,6 +49,7 @@ python3 -m http.server 8765 --directory .
 
 - 根 `index.html` 是正式首页，采用纵向案例、横向结果轨道的版式，点击缩略图在新标签页打开 `examples/` 下的成品，滚动位置存入 `sessionStorage`。
 - `assets/previews/case-NN/<技能目录名>.jpg` 是 1440×900 的首屏截图，由首页直接引用；文件名用 `frontend-skills/` 下的目录名，对照组为 `no-skill`（如 `taste-skill.jpg`，不是 `design-taste-frontend.jpg`）。新增案例时同步补齐截图。
+- `assets/og-cover.jpg` 是 1200×630 的社交分享封面，由首页 `og:image` / `twitter:image` 以 GitHub Pages 绝对地址引用；封面写有技能数与案例数，新增案例或技能后要重新生成。
 - 部分案例在章节色带上提供模型切换，补充模型的结果放在 `examples/case-NN/<模型>-<思考强度>/<技能目录名>/`，截图放在 `assets/previews/case-NN/<模型>-<思考强度>/<技能目录名>.jpg`（如 `deepseek-v4.1-flash-1017-max/`），对照记录中另起一节记录。
 - `index.html` 是首页的唯一编辑源。修改后运行 `python3 bench/sync_gallery.py` 生成 `gallery-prototype/design-demos/dir-1.html`，仅改写资源相对路径；用 `python3 bench/sync_gallery.py --check` 只读检查字节一致性，再运行同步测试。设计演示页由脚本生成并一起提交。
 - [gallery-prototype/direction-approved.md](gallery-prototype/direction-approved.md) 记录选定方向与用户原话，[gallery-prototype/directions.md](gallery-prototype/directions.md) 保存全部候选与筛选理由。`gallery-prototype/` 已入库，用于追溯设计过程，不属于归档案例。

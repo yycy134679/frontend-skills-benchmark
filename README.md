@@ -1,12 +1,16 @@
 # 技能对照册
 
+[English](README.en.md) | 简体中文
+
 用相同的前端需求，对比不使用技能与使用不同前端技能时生成的页面。仓库保存了实际生成的成品、提示词和对照记录，并通过静态画廊展示，方便浏览与选型。
+
+**在线浏览：<https://yycy134679.github.io/frontend-skills-benchmark/>**
 
 部分案例参考了 [Oil UI](https://ui.oiloil.org)。
 
 ## 浏览画廊
 
-克隆仓库后，在仓库根目录运行：
+可以直接打开上面的在线地址。想在本地浏览时，克隆仓库后在仓库根目录运行：
 
 ```bash
 python3 -m http.server 8765 --directory .
@@ -39,14 +43,14 @@ python3 -m http.server 8765 --directory .
 
 ## 运行自己的对照
 
-需要安装 Claude Code、Python 3 和 Bash，并配置可用的模型服务及相应的 `ANTHROPIC_BASE_URL`、`ANTHROPIC_AUTH_TOKEN` 环境变量。下面以仓库已有的 `oil-ui` 技能为例；将提示词路径和模型名替换为自己的配置：
+需要安装 Claude Code、Python 3 和 Bash。直连 Anthropic 官方接口时先在命令行登录 claude，`--model` 填官方模型 ID（如 `claude-opus-5-5`）；使用其他兼容 Anthropic 接口的模型服务时，导出 `ANTHROPIC_BASE_URL` 与 `ANTHROPIC_AUTH_TOKEN`。下面以仓库已有的 `oil-ui` 技能为例；将提示词路径和模型名替换为自己的配置：
 
 ```bash
 bash bench/run.sh \
   --prompt /path/to/case.md \
   --skill oil-ui \
   --skill-dir frontend-skills/oil-ui \
-  --model codex/gpt-6.1-terra \
+  --model <模型 ID> \
   --out "$HOME/Code/benchmark-runs/example-oil-ui"
 ```
 
@@ -67,3 +71,7 @@ bash bench/run.sh \
 | [案例提示词.md](案例提示词.md) | 案例需求提示词 |
 | [产品概要设计.md](产品概要设计.md) | 画廊的产品定位与功能设计 |
 | [gallery-prototype/](gallery-prototype/) | 首页设计方向的候选与选定记录 |
+
+## 许可
+
+仓库自有内容（画廊、运行与核验脚本、案例成品与记录）以 [MIT 许可证](LICENSE) 发布。[frontend-skills/](frontend-skills/) 下的技能快照不在此列，各自沿用上游许可证，见各目录内的许可文件和[前端技能对照库](frontend-skills/README.md)。

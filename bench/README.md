@@ -5,14 +5,15 @@
 ## 快速开始
 
 ```bash
-export ANTHROPIC_BASE_URL=http://127.0.0.1:3425
-export ANTHROPIC_AUTH_TOKEN=magpie
+# 使用兼容 Anthropic 接口的模型服务时导出这两个变量；直连官方接口时跳过
+export ANTHROPIC_BASE_URL=<模型服务地址>
+export ANTHROPIC_AUTH_TOKEN=<令牌>
 
 bash bench/run.sh \
   --prompt /path/to/case.md \
   --skill frontend-design \
   --skill-dir frontend-skills/frontend-design \
-  --model codex/gpt-6.1-terra \
+  --model <模型 ID> \
   --out "$HOME/Code/benchmark-runs/coffee-fd"
 ```
 
@@ -23,7 +24,7 @@ bash bench/run.sh \
 ```bash
 bash bench/run.sh \
   --prompt /path/to/case.md \
-  --model codex/gpt-6.1-terra \
+  --model <模型 ID> \
   --out "$HOME/Code/benchmark-runs/coffee-control"
 ```
 
@@ -51,7 +52,7 @@ bash bench/run.sh \
 
 **`--safe-mode` 会连插件一起禁用。** 它确实能关掉全部自定义内容，但 `--plugin-dir` 也会失效，技能组无法挂载被测技能。
 
-**`--bare` 会关闭技能机制。** 精简模式下技能清单为空，被测技能无法调用；它还要求使用 `ANTHROPIC_API_KEY` 鉴权，与本地代理的令牌方式不兼容。
+**`--bare` 会关闭技能机制。** 精简模式下技能清单为空，被测技能无法调用；它还要求使用 `ANTHROPIC_API_KEY` 鉴权，与 `ANTHROPIC_AUTH_TOKEN` 令牌方式不兼容。
 
 ## 输出结构
 
@@ -89,7 +90,7 @@ bash bench/run.sh \
 
 ```bash
 python3 bench/verify_run.py \
-  --cfg /path/to/run/cfg-xxx --skill frontend-design --model codex/gpt-6.1-terra \
+  --cfg /path/to/run/cfg-xxx --skill frontend-design --model <模型 ID> \
   --result /path/to/run/result.json
 ```
 

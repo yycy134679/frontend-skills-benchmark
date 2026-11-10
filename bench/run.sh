@@ -22,18 +22,18 @@ usage() {
   -h, --help           显示帮助
 
 鉴权（二选一）：
-  代理：导出 ANTHROPIC_BASE_URL 与 ANTHROPIC_AUTH_TOKEN
+  模型服务：导出 ANTHROPIC_BASE_URL 与 ANTHROPIC_AUTH_TOKEN
   直连：不导出上面两个变量，使用 CLAUDE_CODE_OAUTH_TOKEN；
         未设置时从钥匙串读取命令行 claude 的登录令牌（需先 claude 登录）
 
 示例：
-  export ANTHROPIC_BASE_URL=http://127.0.0.1:3425
-  export ANTHROPIC_AUTH_TOKEN=magpie
+  export ANTHROPIC_BASE_URL=<兼容 Anthropic 接口的模型服务地址>
+  export ANTHROPIC_AUTH_TOKEN=<令牌>
   bash bench/run.sh \
     --prompt case.md \
     --skill frontend-design \
     --skill-dir frontend-skills/frontend-design \
-    --model codex/gpt-6.1-terra \
+    --model <模型 ID> \
     --out "$HOME/Code/benchmark-runs/coffee-fd"
 USAGE
 }

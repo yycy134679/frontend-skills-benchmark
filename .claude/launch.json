@@ -4,7 +4,7 @@
     {
       "name": "bench-runs",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8777", "-d", "/Users/yycy/Code/benchmark-runs"],
+      "runtimeArgs": ["-m", "http.server", "8777", "-d", "../benchmark-runs"],
       "port": 8777
     },
     {

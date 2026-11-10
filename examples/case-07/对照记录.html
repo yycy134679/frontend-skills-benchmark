@@ -69,7 +69,7 @@ td{min-width:4.5em}
 <h2 id="运行条件">运行条件</h2>
 <ul>
 <li>日期：2026-11-09</li>
-<li>模型：<code>codex/gpt-6.1-sol</code>（GPT-6.1 Sol），思考强度 <code>high</code>；经本地代理 <code>http://127.0.0.1:3425</code> 调用。</li>
+<li>模型：<code>codex/gpt-6.1-sol</code>（GPT-6.1 Sol），思考强度 <code>high</code>；经兼容 Anthropic 接口的模型服务调用。</li>
 <li>提示词：大学室友阿遥给苏禾做的 22 岁生日祝福网页，包含倒计时与日期预览、一封信、22 个瞬间、蛋糕与蜡烛、愿望、朋友留言和生日歌；桌面 1440 为主并适配到 390 宽。原文见 <a href="../../案例提示词.html">案例提示词</a>。</li>
 <li>交付要求：单个 <code>index.html</code>；样式与脚本内联，不引用外部资源，图形由页面自行绘制或内嵌。</li>
 <li>隔离方式：<code>bench/run.sh</code>，每组独立进程、独立配置目录、空 MCP 配置，关闭内置技能后只挂载被测技能。</li>
