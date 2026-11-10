@@ -14,25 +14,25 @@ The gallery, prompts, and per-case records are written in Chinese. Every generat
 
 Skills under test (snapshots with upstream commit and license are listed in [frontend-skills/README.md](frontend-skills/README.md)):
 
-| Skill | Source | License |
-| --- | --- | --- |
-| `frontend-design` | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | Apache 2.0 |
-| `impeccable` | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | Apache 2.0 |
-| `design-taste-frontend` | [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill) | MIT |
-| `hallmark` | [Nutlope/hallmark](https://github.com/Nutlope/hallmark) | MIT |
-| `oil-ui` | [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui) | MIT |
+| Skill                   | Source                                                                                     | License    |
+| ----------------------- | ------------------------------------------------------------------------------------------ | ---------- |
+| `frontend-design`       | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | Apache 2.0 |
+| `impeccable`            | [pbakaus/impeccable](https://github.com/pbakaus/impeccable)                                | Apache 2.0 |
+| `design-taste-frontend` | [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill)                            | MIT        |
+| `hallmark`              | [Nutlope/hallmark](https://github.com/Nutlope/hallmark)                                    | MIT        |
+| `oil-ui`                | [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui)                                        | MIT        |
 
 Cases so far (each has a no-skill baseline plus one run per skill):
 
-| # | Case | Record (Chinese) |
-| --- | --- | --- |
-| 01 | Specialty coffee subscription site | [对照记录](examples/case-01/对照记录.md) |
-| 02 | Picture-book illustrator portfolio | [对照记录](examples/case-02/对照记录.md) |
-| 03 | Vinyl music player | [对照记录](examples/case-03/对照记录.md) |
-| 04 | Landing page for "Orvo", a fictional AI app builder | [对照记录](examples/case-04/对照记录.md) |
-| 05 | Indie developer homepage + article page | [对照记录](examples/case-05/对照记录.md) |
-| 06 | Promo page for a Chinese pop song | [对照记录](examples/case-06/对照记录.md) |
-| 07 | 22nd birthday greeting page | [对照记录](examples/case-07/对照记录.md) |
+| #   | Case                                                | Record (Chinese)                         |
+| --- | --------------------------------------------------- | ---------------------------------------- |
+| 01  | Specialty coffee subscription site                  | [对照记录](examples/case-01/对照记录.md) |
+| 02  | Picture-book illustrator portfolio                  | [对照记录](examples/case-02/对照记录.md) |
+| 03  | Vinyl music player                                  | [对照记录](examples/case-03/对照记录.md) |
+| 04  | Landing page for "Orvo", a fictional AI app builder | [对照记录](examples/case-04/对照记录.md) |
+| 05  | Indie developer homepage + article page             | [对照记录](examples/case-05/对照记录.md) |
+| 06  | Promo page for a Chinese pop song                   | [对照记录](examples/case-06/对照记录.md) |
+| 07  | 22nd birthday greeting page                         | [对照记录](examples/case-07/对照记录.md) |
 
 Full prompts are in [案例提示词.md](案例提示词.md).
 
@@ -73,16 +73,20 @@ bash bench/run.sh \
 
 ## Repository layout
 
-| Path | Contents |
-| --- | --- |
-| [index.html](index.html) | Static gallery |
-| [examples/](examples/) | Generated pages, run records, and scoring records per case |
-| [assets/previews/](assets/previews/) | 1440×900 first-screen screenshots used by the gallery |
-| [frontend-skills/](frontend-skills/) | Read-only snapshots of the skills under test |
-| [bench/](bench/) | Isolated runner and verification scripts with tests |
-| [评分规则.md](评分规则.md) | Scoring rubric |
-| [案例提示词.md](案例提示词.md) | Case prompts |
+| Path                                 | Contents                                                   |
+| ------------------------------------ | ---------------------------------------------------------- |
+| [index.html](index.html)             | Static gallery                                             |
+| [examples/](examples/)               | Generated pages, run records, and scoring records per case |
+| [assets/previews/](assets/previews/) | 1440×900 first-screen screenshots used by the gallery      |
+| [frontend-skills/](frontend-skills/) | Read-only snapshots of the skills under test               |
+| [bench/](bench/)                     | Isolated runner and verification scripts with tests        |
+| [评分规则.md](评分规则.md)           | Scoring rubric                                             |
+| [案例提示词.md](案例提示词.md)       | Case prompts                                               |
 
 ## License
 
 The repository's own content (gallery, scripts, generated pages, and records) is released under the [MIT License](LICENSE). Skill snapshots under [frontend-skills/](frontend-skills/) keep their upstream licenses; see the license file in each skill directory.
+
+## Community Support
+
+- [Linux.do](https://linux.do/)

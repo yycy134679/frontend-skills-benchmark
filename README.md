@@ -60,18 +60,22 @@ bash bench/run.sh \
 
 ## 仓库结构
 
-| 路径 | 内容 |
-| --- | --- |
-| [index.html](index.html) | 静态画廊首页 |
-| [examples/](examples/) | 各案例的成品、对照记录和评分记录 |
-| [assets/previews/](assets/previews/) | 画廊使用的首屏截图 |
-| [frontend-skills/](frontend-skills/) | 参与对比的上游技能快照 |
-| [bench/](bench/) | 隔离运行与结果核验脚本 |
-| [评分规则.md](评分规则.md) | AI 评分的维度、分值与评价写法 |
-| [案例提示词.md](案例提示词.md) | 案例需求提示词 |
-| [产品概要设计.md](产品概要设计.md) | 画廊的产品定位与功能设计 |
-| [gallery-prototype/](gallery-prototype/) | 首页设计方向的候选与选定记录 |
+| 路径                                     | 内容                             |
+| ---------------------------------------- | -------------------------------- |
+| [index.html](index.html)                 | 静态画廊首页                     |
+| [examples/](examples/)                   | 各案例的成品、对照记录和评分记录 |
+| [assets/previews/](assets/previews/)     | 画廊使用的首屏截图               |
+| [frontend-skills/](frontend-skills/)     | 参与对比的上游技能快照           |
+| [bench/](bench/)                         | 隔离运行与结果核验脚本           |
+| [评分规则.md](评分规则.md)               | AI 评分的维度、分值与评价写法    |
+| [案例提示词.md](案例提示词.md)           | 案例需求提示词                   |
+| [产品概要设计.md](产品概要设计.md)       | 画廊的产品定位与功能设计         |
+| [gallery-prototype/](gallery-prototype/) | 首页设计方向的候选与选定记录     |
 
 ## 许可
 
 仓库自有内容（画廊、运行与核验脚本、案例成品与记录）以 [MIT 许可证](LICENSE) 发布。[frontend-skills/](frontend-skills/) 下的技能快照不在此列，各自沿用上游许可证，见各目录内的许可文件和[前端技能对照库](frontend-skills/README.md)。
+
+## 社区支持
+
+- [Linux.do](https://linux.do/)
