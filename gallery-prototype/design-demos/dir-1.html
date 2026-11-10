@@ -1075,7 +1075,16 @@
 
 <script>
   const tracks = [...document.querySelectorAll('[data-track]')];
-  const save = (key, value) => sessionStorage.setItem(key, String(value));
+  // 存储受限时仍保留本页状态，避免影响模型切换和轨道操作。
+  const memory = new Map();
+  const save = (key, value) => {
+    memory.set(key, String(value));
+    try { sessionStorage.setItem(key, String(value)); } catch {}
+  };
+  const load = key => {
+    if (memory.has(key)) return memory.get(key);
+    try { return sessionStorage.getItem(key); } catch { return null; }
+  };
   // 每项：[技能目录名, 轮次, 秒数, 首屏标题, 分数?, 评价?]；有分数时卡片显示分数与评价，否则显示首屏标题
   const deepseekResults = {
     case01: [
@@ -1139,7 +1148,7 @@
       }
     };
     if (picker) {
-      const savedModel = sessionStorage.getItem(`model-${id}`);
+      const savedModel = load(`model-${id}`);
       if (savedModel === 'deepseek') picker.value = savedModel;
       applyModel();
     }
@@ -1158,16 +1167,21 @@
       save(`track-${id}`, 0);
       update();
     });
-    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+    const scroll = direction => track.scrollBy({
+      left: direction * step(),
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+    });
+    prev.addEventListener('click', () => scroll(-1));
+    next.addEventListener('click', () => scroll(1));
     track.addEventListener('scroll', () => { update(); save(`track-${id}`, track.scrollLeft); }, { passive: true });
+    window.addEventListener('resize', update);
 
-    const saved = sessionStorage.getItem(`track-${id}`);
+    const saved = load(`track-${id}`);
     if (saved !== null) track.scrollLeft = Number(saved);
     update();
   });
 
-  const savedY = sessionStorage.getItem('gallery-y');
+  const savedY = load('gallery-y');
   if (savedY !== null && !location.hash) requestAnimationFrame(() => window.scrollTo(0, Number(savedY)));
   window.addEventListener('scroll', () => save('gallery-y', window.scrollY), { passive: true });
 </script>

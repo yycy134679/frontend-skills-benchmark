@@ -1,7 +1,7 @@
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd -P)"
 
 die() {
   printf '错误：%s\n' "$1" >&2
@@ -17,6 +17,8 @@ usage() {
   --skill <名称>       一起运行的技能名；不传或填 none 表示无技能对照组
   --skill-dir <目录>   技能目录，必须包含 SKILL.md；指定 --skill 时必填
   --effort <级别>      思考强度，默认 high
+  --allow-extra-model <名称>  允许的辅助模型，可重复；默认只允许 --model
+  --require-file <文件>      额外必需文件，相对输出目录，可重复
   -h, --help           显示帮助
 
 鉴权（二选一）：
@@ -42,8 +44,15 @@ SKILL_DIR=""
 MODEL=""
 EFFORT="high"
 OUT_DIR=""
+EXTRA_MODELS=()
+REQUIRED_FILES=()
 
 while [ $# -gt 0 ]; do
+  case "$1" in
+    --prompt|--skill|--skill-dir|--model|--effort|--out|--allow-extra-model|--require-file)
+      [ $# -ge 2 ] && [ -n "$2" ] || die "参数 $1 缺少值"
+      ;;
+  esac
   case "$1" in
     --prompt) PROMPT_FILE="$2"; shift 2 ;;
     --skill) SKILL_NAME="$2"; shift 2 ;;
@@ -51,6 +60,8 @@ while [ $# -gt 0 ]; do
     --model) MODEL="$2"; shift 2 ;;
     --effort) EFFORT="$2"; shift 2 ;;
     --out) OUT_DIR="$2"; shift 2 ;;
+    --allow-extra-model) EXTRA_MODELS+=("$2"); shift 2 ;;
+    --require-file) REQUIRED_FILES+=("$2"); shift 2 ;;
     -h|--help) usage; exit 0 ;;
     *) die "未知参数：$1" ;;
   esac
@@ -82,15 +93,18 @@ fi
 command -v claude >/dev/null 2>&1 || die "找不到 claude 命令"
 command -v python3 >/dev/null 2>&1 || die "找不到 python3 命令"
 
-case "$OUT_DIR" in
-  /*) ;;
-  *) OUT_DIR="$PWD/$OUT_DIR" ;;
-esac
-case "$OUT_DIR/" in
-  "$REPO_ROOT"/*) die "输出目录必须位于仓库之外，避免模型读到仓库内的案例与基准文件：$OUT_DIR" ;;
-esac
-mkdir -p "$OUT_DIR"
-OUT_DIR="$(cd "$OUT_DIR" && pwd)"
+# 解析现有父目录的符号链接与 ..，通过检查后才创建目录。
+OUT_DIR="$(python3 - "$REPO_ROOT" "$OUT_DIR" <<'PY'
+from pathlib import Path
+import sys
+repo, out = (Path(value).resolve() for value in sys.argv[1:])
+if out == repo or repo in out.parents:
+    sys.exit(f"错误：输出目录必须位于仓库之外：{out}")
+print(out)
+PY
+)"
+mkdir -p "$(dirname "$OUT_DIR")"
+mkdir "$OUT_DIR" 2>/dev/null || die "输出目录必须是新目录，请换一个路径：$OUT_DIR"
 
 CFG_DIR="$OUT_DIR/cfg-$(date +%Y%m%d-%H%M%S)-$$"
 mkdir -p "$CFG_DIR"
@@ -130,33 +144,19 @@ if ! python3 "$SCRIPT_DIR/timed_run.py" "$OUT_DIR/elapsed_ms" env -i \
   die "claude 执行失败，查看 $OUT_DIR/result.json"
 fi
 
-VERIFY_ARGS=(--cfg "$CFG_DIR" --skill "$SKILL_NAME" --model "$MODEL" --result "$OUT_DIR/result.json")
-if [ -f "$OUT_DIR/index.html" ]; then
-  VERIFY_ARGS+=(--html "$OUT_DIR/index.html")
+VERIFY_ARGS=(--cfg "$CFG_DIR" --skill "$SKILL_NAME" --model "$MODEL" --result "$OUT_DIR/result.json"
+  --meta "$OUT_DIR/run.meta" --effort "$EFFORT")
+# macOS Bash 3.2 在 set -u 下不能直接展开空数组。
+if [ ${#EXTRA_MODELS[@]} -gt 0 ]; then
+  for extra_model in "${EXTRA_MODELS[@]}"; do
+    VERIFY_ARGS+=(--allow-extra-model "$extra_model")
+  done
+fi
+if [ ${#REQUIRED_FILES[@]} -gt 0 ]; then
+  for required_file in "${REQUIRED_FILES[@]}"; do
+    VERIFY_ARGS+=(--require-file "$required_file")
+  done
 fi
 python3 "$SCRIPT_DIR/verify_run.py" "${VERIFY_ARGS[@]}"
-
-# 多段会话汇总主会话轮次；耗时由外部计时器测量。
-read -r TURNS DURATION_MIN < <(python3 - "$SCRIPT_DIR" "$CFG_DIR" "$OUT_DIR/result.json" "$OUT_DIR/elapsed_ms" <<'PY'
-import json, sys
-sys.path.insert(0, sys.argv[1])
-from verify_run import load_records, total_turns
-lines = [line for line in open(sys.argv[3], encoding="utf-8").read().splitlines() if line.strip()]
-data = json.loads(lines[-1])
-turns = total_turns(data, load_records(sys.argv[2]))
-ms = int(open(sys.argv[4], encoding="utf-8").read().strip())
-print(turns if turns is not None else "unknown", f"{ms / 60000:.1f}")
-PY
-)
-
-{
-  printf 'model=%s\n' "$MODEL"
-  printf 'skill=%s\n' "$SKILL_NAME"
-  printf 'effort=%s\n' "$EFFORT"
-  printf 'turns=%s\n' "$TURNS"
-  printf 'duration_min=%s\n' "$DURATION_MIN"
-  printf 'date=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-  printf 'config_dir=%s\n' "$CFG_DIR"
-} > "$OUT_DIR/run.meta"
 
 printf '完成：%s\n' "$OUT_DIR"

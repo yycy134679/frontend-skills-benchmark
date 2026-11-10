@@ -14,8 +14,11 @@ class RenderMdTest(unittest.TestCase):
         self.assertIn('<td class="mark-ok">✓</td>', body)
 
     def test_pipe_inside_code_stays_in_cell(self):
-        body, _, _ = render_md.parse("| a | b |\n| - | - |\n| `x|y` | z |\n")
-        self.assertIn("<code>x|y</code>", body)
+        body, _, _ = render_md.parse("| a | b |\n| --- | --- |\n| `x|y` | z |\n")
+        self.assertIn("<table>", body)
+        self.assertIn('<th scope="row"><code>x|y</code></th>', body)
+        self.assertEqual(body.count('<th scope="col">'), 2)
+        self.assertEqual(body.count("<td>"), 1)
 
     def test_html_in_inline_code_is_escaped(self):
         body, _, _ = render_md.parse("用 `<details>` 写了问答，<b>不应生效</b>")

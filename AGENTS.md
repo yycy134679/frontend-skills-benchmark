@@ -1,14 +1,10 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## 仓库用途
 
 前端技能横向对比仓库：用完全相同的提示词与模型，分别在不挂载技能、挂载单个技能的隔离 Claude Code 进程中生成前端页面，把成品与指标归档，供静态画廊展示。根目录 `index.html` 是画廊首页，`bench/` 负责隔离运行与核验，`frontend-skills/` 保存上游技能快照，`examples/` 保存每个案例的成品与对照记录，`assets/previews/` 保存画廊使用的页面截图。
 
 ## 常用命令
 
-运行一组生成任务，输出目录必须位于仓库之外：
+运行一组生成任务，输出目录必须是仓库外尚不存在的新目录。脚本先解析符号链接与 `..` 后检查位置，再原子创建目录；失败重跑使用新目录：
 
 ```bash
 export ANTHROPIC_BASE_URL=http://127.0.0.1:3425
@@ -28,6 +24,8 @@ bash bench/run.sh --prompt <提示词文件> --model codex/gpt-6.1-terra --out ~
 python3 bench/verify_run.py --cfg <cfg 目录> --skill <技能名|none> --model <模型> --result <result.json> --html <页面>
 ```
 
+核验默认只读，要求结果成功且有非空 `index.html`；多页案例追加可重复的 `--require-file work.html`。模型默认必须只有 `--model` 指定的一种；官方接口确有辅助模型时，按 [bench/README.md](bench/README.md) 显式追加可重复的 `--allow-extra-model <名称>`，`run.sh` 支持同名参数透传。只有显式指定 `--meta <路径>` 才会写元信息，`--effort` 指定其中的思考强度。
+
 对照记录、评分记录、评分规则、案例提示词与技能库 README 由 Markdown 渲染成同名 `.html`（只用标准库、样式内联），首页链接指向 `.html`。修改任何这些 `.md` 后重新生成并一起提交：
 
 ```bash
@@ -42,16 +40,16 @@ python3 -m http.server 8765 --directory .
 
 然后打开 `http://localhost:8765/`。首页的预览图与示例链接都使用相对路径，直接打开 `index.html` 也能浏览，通过本地服务器预览更接近发布环境。
 
-仓库没有构建步骤。自动测试有两组：`python3 -m unittest bench/test_timing.py` 用假的 `claude` 进程检查 `run.sh` 的计时与轮次汇总，改动 `run.sh`、`timed_run.py` 或 `verify_run.py` 后运行；`python3 -m unittest bench/test_render_md.py` 检查 Markdown 渲染器，改动 `render_md.py` 后运行。其余改动的验证方式是实际跑一组生成任务，查看 `verify_run.py` 的输出与生成的页面；改动首页时，在 1440 与 375 两个宽度下检查案例轨道、图片与跳转链接。
+仓库没有构建步骤。运行链路改动后运行 `python3 -m unittest bench/test_timing.py bench/test_verify_run.py`，用假 `claude` 和临时日志验证隔离参数、核验失败路径、计时及并发目录认领，不调用真实模型。渲染器改动后运行 `python3 -m unittest bench/test_render_md.py`。首页改动后运行 `node --test bench/test_gallery.js`、`python3 -m unittest bench/test_sync_gallery.py` 和同步检查，并在 1440 与 375 两个宽度下检查案例轨道、图片与跳转链接。
 
-未另行说明时，同一案例的多组生成默认三路并发：调度脚本写在 `.tmp/` 下（该目录已忽略），同时保持三个生成进程，任一组结束后补入下一组。
+未另行说明时，同一案例的多组生成默认三路并发：调度脚本写在 `.tmp/` 下（该目录已忽略），同时保持三个生成进程，任一组结束后补入下一组。每组使用各自的新输出目录；调度器只创建父目录，把组目录留给 `run.sh` 原子认领。
 
 ## 静态画廊
 
 - 根 `index.html` 是正式首页，采用纵向案例、横向结果轨道的版式，点击缩略图在新标签页打开 `examples/` 下的成品，滚动位置存入 `sessionStorage`。
 - `assets/previews/case-NN/<技能目录名>.jpg` 是 1440×900 的首屏截图，由首页直接引用；文件名用 `frontend-skills/` 下的目录名，对照组为 `no-skill`（如 `taste-skill.jpg`，不是 `design-taste-frontend.jpg`）。新增案例时同步补齐截图。
 - 部分案例在章节色带上提供模型切换，补充模型的结果放在 `examples/case-NN/<模型>-<思考强度>/<技能目录名>/`，截图放在 `assets/previews/case-NN/<模型>-<思考强度>/<技能目录名>.jpg`（如 `deepseek-v4.1-flash-1017-max/`），对照记录中另起一节记录。
-- `gallery-prototype/design-demos/dir-1.html` 是首页的设计源文件，与根首页内容同步，仅资源路径不同（`../../assets/`、`../../examples/`）。
+- `index.html` 是首页的唯一编辑源。修改后运行 `python3 bench/sync_gallery.py` 生成 `gallery-prototype/design-demos/dir-1.html`，仅改写资源相对路径；用 `python3 bench/sync_gallery.py --check` 只读检查字节一致性，再运行同步测试。设计演示页由脚本生成并一起提交。
 - [gallery-prototype/direction-approved.md](gallery-prototype/direction-approved.md) 记录选定方向与用户原话，[gallery-prototype/directions.md](gallery-prototype/directions.md) 保存全部候选与筛选理由。`gallery-prototype/` 已入库，用于追溯设计过程，不属于归档案例。
 - 归档新案例时，需要把成品放进 `examples/case-NN/`，补齐 `对照记录.md` 与 `assets/previews/case-NN/`，运行 `python3 bench/render_md.py` 生成对应 html，按下方「AI 评分」完成评分，再更新首页的案例目录、章节色带、提示词、结果卡片、生成说明与评分说明。
 - 首页文案只写用户需要知道的信息：案例不写描述段落，案例目录与色带不写结果数量；生成说明格式为「日期 生成 · Claude Code · 模型展示名 · 思考强度 xx · 完整记录」，用模型展示名（如 GPT-6.1 Terra），不写 `codex/`、`cline/` 等内部路由名。
@@ -71,11 +69,11 @@ python3 -m http.server 8765 --directory .
 
 ## 运行链路
 
-`bench/run.sh` 承担全部隔离工作：检查参数 → 把提示词复制到输出目录 → 技能组把技能目录复制成单技能插件（`.claude-plugin/plugin.json` 加上 `skills/<技能名>`）→ 用 `env -i` 启动 `claude -p`，由 `timed_run.py` 独立计时并写入 `elapsed_ms` → 调用 `verify_run.py` → 从完整会话记录汇总轮次，写 `run.meta`。
+`bench/run.sh` 承担全部隔离工作：检查参数与输出真实路径、原子认领新目录 → 复制提示词 → 技能组把技能目录复制成单技能插件（`.claude-plugin/plugin.json` 加上 `skills/<技能名>`）→ 用 `env -i` 启动 `claude -p`，由 `timed_run.py` 独立计时并写入 `elapsed_ms` → 调用 `verify_run.py` 核验，由它使用已计算的轮次、耗时写 `run.meta`。
 
 隔离依赖五层同时生效：一次性 `CLAUDE_CONFIG_DIR`、`CLAUDE_CODE_DISABLE_CLAUDE_MDS=1`、`CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1`、空 MCP 配置、`--plugin-dir` 只挂载一个技能。`HOME` 必须保留真实主目录，改动 `HOME` 会让 `~/.claude/skills` 下的个人技能全部进入技能清单。细节与失败过的配置写法见 [bench/README.md](bench/README.md)。
 
-`verify_run.py` 读取 `cfg-*/projects/*/*.jsonl` 会话记录，取出 `skill_listing` 附件与 `Skill` 工具调用，核对四件事：技能清单只含被测技能与 `plugin-authoring`；对照组没有调用任何技能；技能组确实调用了被测技能；`result.json` 的 `modelUsage` 与 `--model` 一致。任一不符即以非零状态退出。
+`verify_run.py` 按 `result.json` 的 `session_id` 定位主会话与关联子代理，检查所有技能清单、调用和成功返回；损坏日志或无法识别的清单直接失败。目标技能只接受裸名与 `<技能名>:<技能名>`；`plugin-authoring` 允许出现在清单中，也允许技能组调用，但对照组要求零技能调用。核验还要求成功结果、模型集合符合显式白名单、首页与额外必需文件非空。详细参数和兼容说明见 [bench/README.md](bench/README.md)。
 
 ## 目录约定
 
